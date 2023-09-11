@@ -2,7 +2,10 @@
 
 A library of Flutter components made by Zebra Technologies based on the Zebra Design System, or ZDS.
 
-![GitHub-Mark-Light](assets/zds-light.png#gh-light-mode-only)![GitHub-Mark-Dark](assets/zds-dark.png#gh-dark-mode-only)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/zds-dark.png">
+  <img alt="zds_flutter example" src="assets/zds-light.png">
+</picture>
 
 ## Requirements
 
@@ -40,7 +43,7 @@ class DemoApp extends StatelessWidget {
 
 ## Viewing the components
 
-To view examples of all the components in the library, you can run the example app in this repo or go to [TODO: INSERT LINK HERE]
+To view examples of all the components in the library, you can run the example app in this repo or go to [this link](https://zebradevs.github.io/zds_flutter).
 
 ## Theming
 
