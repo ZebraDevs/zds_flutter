@@ -39,6 +39,14 @@ jobs:
       - name: Change flutter version tag
         run: |
           echo "FLUTTER_BUILD_VERSION=$(cider bump patch --bump-build)" >> "$GITHUB_ENV"
+      - name: Update CHANGELOG
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ secrets.PAT }}
+          tag: ${{ steps.read-version.outputs.version-number }}
+          excludeTypes: ""
+          includeInvalidCommits: true
       - name: Update
         id: update
         run: |
@@ -85,10 +93,9 @@ jobs:
       - name: Setup flutter
         run: flutter pub get
       - name: build
-        # TODO(thelukewalton): check this works
         run: |
           cd example
-          flutter build web -o ../build --no-tree-shake-icons
+          flutter build web -o ../build --no-tree-shake-icons --base-href "/zds_flutter/"
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
