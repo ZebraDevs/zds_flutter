@@ -1,0 +1,226 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import '../../../zds_flutter.dart';
+
+/// Defines an item to be used in a [ZdsDropdownList]
+class ZdsDropdownListItem<T> {
+  /// The value of the item
+  final T value;
+
+  /// The name of the item
+  final String name;
+
+  /// Creates a new [ZdsDropdownListItem]
+  ZdsDropdownListItem({
+    required this.value,
+    required this.name,
+  });
+}
+
+/// A [DropdownButtonFormField] with Zds style and behavior.
+class ZdsDropdownList<T> extends StatefulWidget {
+  /// The label that will be shown above the dropdown.
+  final String? label;
+
+  /// A function called whenever the selected items change.
+  final void Function(T selectedValue)? onChange;
+
+  /// A function called whenever no items selected.
+  final void Function()? onReset;
+
+  /// A function called whenever the dropdown is tapped.
+  ///
+  /// This will disable the functionality of the dropdown and the list will no longer open.
+  /// You will neeed to manage the state yourself by changing [value].
+  final void Function()? onTap;
+
+  /// The list of options for the dropdown.
+  final List<ZdsDropdownListItem<T>> options;
+
+  /// The value of the selected item.
+  ///
+  /// The value must match the value property of one of the [ZdsDropdownListItem]s in [options].
+  /// If two options have the same value, the first one in the list will be used.
+  final T? value;
+
+  /// The textStyle used for dropdown label.
+  ///
+  /// Defaults to [TextTheme.headlineSmall].
+  final TextStyle? labelStyle;
+
+  /// The hint shown when the dropdown has no value.
+  final String? hint;
+
+  /// The border color of the dropdown.
+  final Color? borderColor;
+
+  /// Constructs a [ZdsDropdownList].
+  const ZdsDropdownList({
+    this.onChange,
+    this.onReset,
+    this.value,
+    this.label,
+    this.onTap,
+    this.hint,
+    this.labelStyle,
+    this.borderColor,
+    this.options = const [],
+    super.key,
+  });
+
+  @override
+  ZdsDropdownListState<T> createState() => ZdsDropdownListState<T>();
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('label', label));
+    properties.add(ObjectFlagProperty<void Function(T selectedValue)?>.has('onChange', onChange));
+    properties.add(ObjectFlagProperty<void Function()?>.has('onReset', onReset));
+    properties.add(ObjectFlagProperty<void Function()?>.has('onTap', onTap));
+    properties.add(IterableProperty<ZdsDropdownListItem<T>>('options', options));
+    properties.add(DiagnosticsProperty<T?>('value', value));
+    properties.add(DiagnosticsProperty<TextStyle?>('labelStyle', labelStyle));
+    properties.add(StringProperty('hint', hint));
+    properties.add(ColorProperty('borderColor', borderColor));
+  }
+}
+
+/// State for [ZdsDropdownList].
+class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
+  ZdsDropdownListItem<T>? _selectedItem;
+  final TextEditingController _formFieldController = TextEditingController();
+  bool _isOpen = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _setValue();
+  }
+
+  void _setValue() {
+    try {
+      _selectedItem = widget.options.where((element) => element.value == widget.value).first;
+      _formFieldController.text = _selectedItem?.name ?? '';
+    } catch (e) {
+      _selectedItem = null;
+    }
+  }
+
+  @override
+  void didUpdateWidget(ZdsDropdownList<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      setState(_setValue);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _formFieldController.dispose();
+  }
+
+  /// Resets the value of the dropdown
+  void reset() {
+    setState(() {
+      _selectedItem = null;
+    });
+    _formFieldController.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final border = widget.borderColor != null
+        ? ZdsInputBorder(
+            borderSide: BorderSide(color: widget.borderColor!),
+            space: 2,
+            borderRadius: BorderRadius.circular(6),
+          )
+        : null;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.label != null) ...[
+          Text(
+            widget.label!,
+            style: widget.labelStyle ??
+                Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      color: ZdsColors.greySwatch(context)[900],
+                    ),
+          ),
+          const SizedBox(height: 4),
+        ],
+        Semantics(
+          onTap: widget.onTap != null ? () => widget.onTap : null,
+          button: true,
+          label: _selectedItem?.name ?? widget.hint,
+          enabled: widget.options.isNotEmpty || widget.onTap != null,
+          excludeSemantics: true,
+          child: GestureDetector(
+            onTap: () => widget.onTap?.call(),
+            child: DropdownButton2<T>(
+              value: _selectedItem?.value,
+              onMenuStateChange: (isOpen) => setState(() {
+                _isOpen = isOpen;
+              }),
+              customButton: TextFormField(
+                controller: _formFieldController,
+                decoration: ZdsInputDecoration.withNoLabel(
+                  suffixPadding: const EdgeInsets.only(right: 8),
+                  suffixIcon: Icon(
+                    _isOpen ? ZdsIcons.chevron_up : ZdsIcons.chevron_down,
+                    color: ZdsColors.greySwatch(context)[700],
+                  ),
+                  border: border,
+                  errorBorder: border,
+                  focusedBorder: border,
+                  disabledBorder: border,
+                  hintText: widget.hint,
+                  enabled: false,
+                ),
+              ),
+              underline: const SizedBox(),
+              items: widget.onTap == null
+                  ? widget.options.map(
+                      (item) {
+                        return DropdownMenuItem<T>(
+                          value: item.value,
+                          child: Text(
+                            item.name,
+                            style: const TextStyle(overflow: TextOverflow.ellipsis),
+                          ),
+                        );
+                      },
+                    ).toList()
+                  : [],
+              menuItemStyleData: MenuItemStyleData(
+                selectedMenuItemBuilder: (context, child) {
+                  return ColoredBox(
+                    color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                    child: child,
+                  );
+                },
+              ),
+              dropdownStyleData: const DropdownStyleData(elevation: 4),
+              onChanged: (T? value) {
+                if (value != null && value == _selectedItem?.value) {
+                  reset();
+                  widget.onReset?.call();
+                } else if (value != null) {
+                  setState(() {
+                    _selectedItem = widget.options.firstWhere((element) => element.value == value);
+                  });
+                  _formFieldController.text = _selectedItem?.name ?? '';
+                  widget.onChange?.call(value);
+                }
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
