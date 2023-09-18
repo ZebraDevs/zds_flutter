@@ -8,75 +8,86 @@ class ImagesDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     final List images = [
       {
-        'name': 'ZdsImages.notifications',
-        'image': ZdsImages.notifications,
+        'name': 'ZdsImages.calendar',
+        'image': ZdsImages.calendar,
       },
       {
         'name': 'ZdsImages.chat',
         'image': ZdsImages.chat,
       },
       {
-        'name': 'ZdsImages.notes',
-        'image': ZdsImages.notes,
-      },
-      {
-        'name': 'ZdsImages.calendar',
-        'image': ZdsImages.calendar,
+        'name': 'ZdsImages.cloudFail',
+        'image': ZdsImages.cloudFail,
       },
       {
         'name': 'ZdsImages.completedTasks',
         'image': ZdsImages.completedTasks,
       },
       {
+        'name': 'ZdsImages.connectionDead',
+        'image': ZdsImages.connectionDead,
+      },
+      {
         'name': 'ZdsImages.emptyBox',
         'image': ZdsImages.emptyBox,
       },
       {
-        'name': 'ZdsImages.sadZebra',
-        'image': ZdsImages.sadZebra,
-      },
-      {
-        'name': 'ZdsImages.sleepingZebra',
-        'image': ZdsImages.sleepingZebra,
-      },
-      {
-        'name': 'ZdsImages.search',
-        'image': ZdsImages.search,
+        'name': 'ZdsImages.internetFail',
+        'image': ZdsImages.internetFail,
       },
       {
         'name': 'ZdsImages.loadFail',
         'image': ZdsImages.loadFail,
       },
       {
-        'name': 'ZdsImages.cloudFail',
-        'image': ZdsImages.cloudFail,
+        'name': 'ZdsImages.map',
+        'image': ZdsImages.map,
+      },
+      {
+        'name': 'ZdsImages.notes',
+        'image': ZdsImages.notes,
+      },
+      {
+        'name': 'ZdsImages.notifications',
+        'image': ZdsImages.notifications,
+      },
+      {
+        'name': 'ZdsImages.sadZebra',
+        'image': ZdsImages.sadZebra,
+      },
+      {
+        'name': 'ZdsImages.search',
+        'image': ZdsImages.search,
       },
       {
         'name': 'ZdsImages.serverFail',
         'image': ZdsImages.serverFail,
       },
       {
-        'name': 'ZdsImages.punch',
-        'image': ZdsImages.punch,
-      },
-      {
-        'name': 'ZdsImages.map',
-        'image': ZdsImages.map,
+        'name': 'ZdsImages.sleepingZebra',
+        'image': ZdsImages.sleepingZebra,
       },
     ];
 
-    return SingleChildScrollView(
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: images
-              .map((e) => ImgBox(img: e['image'], name: e['name']))
-              .toList()
-              .divide(const SizedBox(height: 32))
-              .toList(),
-        ),
-      ),
+    return GridView.count(
+      crossAxisCount: (MediaQuery.of(context).size.width / 200).floor(),
+      padding: const EdgeInsets.symmetric(vertical: 32),
+      mainAxisSpacing: 40,
+      crossAxisSpacing: 40,
+      children: [
+        ...images.map((e) {
+          return Column(children: [
+            SizedBox(width: 140, height: 140, child: e['image']),
+            Row(
+              children: [
+                Expanded(
+                  child: FittedBox(fit: BoxFit.scaleDown, child: Text(e['name'])),
+                ),
+              ],
+            ),
+          ]);
+        }).toList()
+      ],
     );
   }
 }
@@ -89,13 +100,6 @@ class ImgBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        img,
-        const SizedBox(height: 12),
-        Text(name),
-        const SizedBox(height: 32),
-      ],
-    );
+    return SizedBox(width: 144, height: 144, child: Column(children: [img, Text(name)]));
   }
 }
