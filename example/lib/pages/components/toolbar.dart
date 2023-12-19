@@ -13,33 +13,31 @@ class _ToolBarDemoState extends State<ToolBarDemo> {
 
   @override
   Widget build(BuildContext context) {
+    final zetaColors = Zeta.of(context).colors;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-      ),
+      appBar: AppBar(elevation: 0),
       body: SingleChildScrollView(
         child: Column(
           children: [
             ZdsToolbar(
-              title: DateRange(
+              title: ZdsDateRange(
                 emptyLabel: 'Select range',
                 isWeekMode: true,
                 actions: [
                   ZdsButton.text(
-                    child: Text(' View', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
+                    child: Text(' View'),
                     onTap: () {},
                   ),
                 ],
               ),
             ),
             ZdsToolbar(
-              title: DateRange(
+              backgroundColor: zetaColors.iconDefault,
+              title: ZdsDateRange(
                 emptyLabel: 'Select range',
                 isSelectable: false,
                 initialDateRange: r,
-                onChange: (r1) {
-                  setState(() => r = r1);
-                },
+                onChange: (r1) => setState(() => r = r1),
                 actions: [
                   ZdsButton.text(
                     child: Text('Fiscal View', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
@@ -48,9 +46,9 @@ class _ToolBarDemoState extends State<ToolBarDemo> {
                 ],
               ),
             ),
-            const SizedBox(height: 80),
             ZdsToolbar(
-              title: DateRange(
+              backgroundColor: zetaColors.primary,
+              title: ZdsDateRange(
                 emptyLabel: 'Select range',
                 initialDateRange: r,
                 onChange: (r1) => setState(() => r = r1),
@@ -89,17 +87,17 @@ class _ToolBarDemoState extends State<ToolBarDemo> {
               ),
             ),
             ZdsToolbar(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              title: DateRange(
-                textStyle: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
+              backgroundColor: zetaColors.yellow.surface,
+              title: ZdsDateRange(
+                textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: zetaColors.yellow.selected,
+                    ),
                 initialDateRange: DateTimeRange(
                   start: DateTime(2022, 05, 12),
                   end: DateTime(2022, 05, 18),
                 ),
-                isSelectable: false,
+                //isSelectable: false,
               ),
             ),
             ZdsToolbar(
@@ -112,7 +110,7 @@ class _ToolBarDemoState extends State<ToolBarDemo> {
                 ),
               ],
               child: Container(
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.surfacePrimary,
                 height: 400,
               ),
             ),

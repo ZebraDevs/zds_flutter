@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zds_flutter/zds_flutter.dart';
 
+import 'test_utility.dart';
+
 void main() {
   testWidgets('ZdsDayPicker without any parameters', (WidgetTester tester) async {
     // Build our app and trigger a frame.
@@ -46,11 +48,4 @@ void main() {
       throwsAssertionError,
     );
   });
-}
-
-Widget getTestWidget(Widget widget) {
-  return MediaQuery(
-    data: const MediaQueryData(),
-    child: MaterialApp(home: widget),
-  );
 }

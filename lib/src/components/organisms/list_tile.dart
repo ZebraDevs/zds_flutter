@@ -2,7 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../utils/theme.dart';
+import '../../utils/tools/utils.dart';
+import '../atoms/card.dart';
+import '../atoms/conditional_wrapper.dart';
+import '../molecules/list.dart';
+import '../molecules/list_tile_wrapper.dart';
+import 'list_group.dart';
 
 /// List tile with Zds styling.
 ///
@@ -14,6 +20,24 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsList]
 ///  * [ZdsListGroup].
 class ZdsListTile extends StatelessWidget {
+  /// Constructs a [ZdsListTile].
+  const ZdsListTile({
+    super.key,
+    this.leading,
+    this.title,
+    this.subtitle,
+    this.trailing,
+    this.bottom,
+    this.onTap,
+    this.shrinkWrap = true,
+    this.contentPadding,
+    this.backgroundColor,
+    this.margin,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.cardVariant = ZdsCardVariant.elevated,
+    this.semanticLabel,
+  });
+
   /// A widget to display before the title.
   ///
   /// Typically an [Icon] or a [CircleAvatar] widget.
@@ -44,10 +68,10 @@ class ZdsListTile extends StatelessWidget {
 
   /// Whether the tiles are closely packed together or separated
   ///
-  /// Defaults to false
+  /// Defaults to true
   ///
   /// Is overridden to true if the tile is within a [ZdsListGroup].
-  final bool? shrinkWrap;
+  final bool shrinkWrap;
 
   /// Called when the user taps this list tile.
   final VoidCallback? onTap;
@@ -59,7 +83,7 @@ class ZdsListTile extends StatelessWidget {
 
   /// The background color of the tile.
   ///
-  /// Defaults to [ColorScheme.background], or [Colors.transparent] if with a [ZdsListGroup].
+  /// Defaults to [ColorScheme.surface], or [Colors.transparent] if with a [ZdsListGroup].
   final Color? backgroundColor;
 
   /// The crossAxisAlignment of the tile's main Row.
@@ -76,25 +100,9 @@ class ZdsListTile extends StatelessWidget {
   /// for semantics of list tile
   final String? semanticLabel;
 
-  /// Constructs a [ZdsListTile].
-  const ZdsListTile({
-    super.key,
-    this.leading,
-    this.title,
-    this.subtitle,
-    this.trailing,
-    this.bottom,
-    this.onTap,
-    this.shrinkWrap,
-    this.contentPadding,
-    this.backgroundColor,
-    this.margin,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.cardVariant = ZdsCardVariant.elevated,
-    this.semanticLabel,
-  });
-
   bool _isAction(Widget? widget) => widget is IconButton || widget is Switch;
+
+  bool _isFormField(Widget? widget) => widget is TextField || widget is TextFormField;
 
   EdgeInsets _resolveInsets(EdgeInsets padding) {
     return EdgeInsets.only(
@@ -111,47 +119,50 @@ class ZdsListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).zdsListTileThemeData;
-    final padding = contentPadding ?? theme.contentPadding;
+    final themeData = Theme.of(context);
+    final EdgeInsets padding = contentPadding ?? kZdsListTileTheme.contentPadding;
+    final TextStyle? titleStyle = themeData.textTheme.bodyMedium;
+    final zetaColors = Zeta.of(context).colors;
+    final Color subtitleColor = zetaColors.textSubtle;
+    final EdgeInsets insets = _resolveInsets(padding);
+    final Color effectiveBackground = backgroundColor ??
+        (context.findAncestorWidgetOfExactType<ZdsListGroup>() != null
+            ? Colors.transparent
+            : themeData.colorScheme.surface);
 
-    final leadingWrapper = leading != null
-        ? IconTheme(
-            data: Theme.of(context)
-                .iconTheme
-                .copyWith(size: theme.iconSize, color: Theme.of(context).colorScheme.secondary),
-            child: leading!,
-          )
-        : null;
-    final titleStyle = Theme.of(context).textTheme.bodyMedium!;
-    final subtitleColor = theme.subtitleColor;
-    final trailingWrapper = trailing != null
+    final shouldShrink = shrinkWrap ||
+        (context.findAncestorWidgetOfExactType<ZdsListGroup>() != null ||
+            context.findAncestorWidgetOfExactType<ZdsListTileWrapper>() != null);
+
+    final DefaultTextStyle? trailingWrapper = trailing != null
         ? DefaultTextStyle(
-            style: titleStyle.copyWith(color: subtitleColor),
+            style: safeTextStyle(titleStyle).copyWith(color: subtitleColor),
             child: IconTheme(
-              data: Theme.of(context).iconTheme.copyWith(
-                    size: theme.iconSize,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
+              data: themeData.iconTheme.copyWith(
+                size: kZdsListTileTheme.iconSize,
+                color: themeData.colorScheme.onSurface,
+              ),
               child: trailing!,
             ),
           )
         : null;
 
-    final insets = _resolveInsets(padding);
+    final IconTheme? leadingWrapper = leading != null
+        ? IconTheme(
+            data:
+                themeData.iconTheme.copyWith(size: kZdsListTileTheme.iconSize, color: themeData.colorScheme.secondary),
+            child: leading!,
+          )
+        : null;
 
-    final setBackgroundColor = backgroundColor ??
-        (context.findAncestorWidgetOfExactType<ZdsListGroup>() != null
-            ? Colors.transparent
-            : Theme.of(context).colorScheme.surface);
     Widget tile = Container(
       padding: insets,
       constraints: const BoxConstraints(minHeight: 40),
       alignment: Alignment.center,
-      color: setBackgroundColor,
       child: Row(
         crossAxisAlignment: crossAxisAlignment,
-        children: [
-          if (leadingWrapper != null) ...[
+        children: <Widget>[
+          if (leadingWrapper != null) ...<Widget>[
             leadingWrapper,
             SizedBox(width: _isAction(leading) ? 2 : 6),
           ],
@@ -160,12 +171,12 @@ class ZdsListTile extends StatelessWidget {
               padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (title != null) DefaultTextStyle(style: titleStyle, child: title!),
-                  if (subtitle != null) ...[
+                children: <Widget>[
+                  if (title != null) DefaultTextStyle(style: safeTextStyle(titleStyle), child: title!),
+                  if (subtitle != null) ...<Widget>[
                     const SizedBox(height: 5),
                     DefaultTextStyle(
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: subtitleColor),
+                      style: safeTextStyle(themeData.textTheme.bodyMedium).copyWith(color: subtitleColor),
                       child: subtitle!,
                     ),
                   ],
@@ -173,20 +184,25 @@ class ZdsListTile extends StatelessWidget {
               ),
             ),
           ),
-          if (trailing != null)
-            Theme(
-              data: Theme.of(context).copyWith(
-                inputDecorationTheme: const InputDecorationTheme(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 4),
-                  border: InputBorder.none,
-                ),
-              ),
-              child: Container(
-                padding: const EdgeInsets.only(left: 12),
-                width:
-                    trailing is TextField || trailing is TextFormField ? MediaQuery.of(context).size.width / 2 : null,
-                child: trailingWrapper,
-              ),
+          if (trailingWrapper != null)
+            ZdsConditionalWrapper(
+              condition: _isFormField(trailing),
+              wrapperBuilder: (Widget child) {
+                return Theme(
+                  data: themeData.copyWith(
+                    inputDecorationTheme: const InputDecorationTheme(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 4),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 12),
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: child,
+                  ),
+                );
+              },
+              child: trailingWrapper,
             ),
         ],
       ),
@@ -194,15 +210,17 @@ class ZdsListTile extends StatelessWidget {
 
     tile = InkWell(
       onTap: onTap,
-      splashColor: ZdsColors.splashColor,
-      hoverColor: ZetaColors.of(context).isDarkMode ? ZetaColors.of(context).warm.shade10 : ZdsColors.hoverColor,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          tile,
-          if (bottom != null) bottom!,
-        ],
-      ),
+      splashColor: zetaColors.surfaceSelected,
+      hoverColor: zetaColors.surfaceHovered,
+      child: (bottom != null)
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                tile,
+                bottom!,
+              ],
+            )
+          : tile,
     );
 
     if (semanticLabel != null) {
@@ -215,36 +233,35 @@ class ZdsListTile extends StatelessWidget {
       );
     }
 
-    if (!(shrinkWrap ?? true)) {
+    if (!shouldShrink) {
       tile = Padding(
-        padding: EdgeInsets.symmetric(vertical: theme.tileMargin),
+        padding: EdgeInsets.symmetric(vertical: kZdsListTileTheme.tileMargin),
         child: ZdsCard(
           variant: cardVariant ?? ZdsCardVariant.elevated,
           padding: EdgeInsets.zero,
           margin: margin,
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: theme.tileMargin),
+            padding: EdgeInsets.symmetric(vertical: kZdsListTileTheme.tileMargin),
             child: tile,
           ),
         ),
       );
     }
-    return Material(
-      color: Colors.transparent,
-      child: tile,
-    );
+
+    return Material(color: effectiveBackground, child: tile);
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool?>('shrinkWrap', shrinkWrap));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('contentPadding', contentPadding));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(EnumProperty<CrossAxisAlignment>('crossAxisAlignment', crossAxisAlignment));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('margin', margin));
-    properties.add(EnumProperty<ZdsCardVariant?>('cardVariant', cardVariant));
-    properties.add(StringProperty('semanticLabel', semanticLabel));
+    properties
+      ..add(DiagnosticsProperty<bool?>('shrinkWrap', shrinkWrap))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(DiagnosticsProperty<EdgeInsets?>('contentPadding', contentPadding))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(EnumProperty<CrossAxisAlignment>('crossAxisAlignment', crossAxisAlignment))
+      ..add(DiagnosticsProperty<EdgeInsets?>('margin', margin))
+      ..add(EnumProperty<ZdsCardVariant?>('cardVariant', cardVariant))
+      ..add(StringProperty('semanticLabel', semanticLabel));
   }
 }

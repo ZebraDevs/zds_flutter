@@ -70,19 +70,21 @@ class SheetHeaderDemo extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ZdsListTile(
-                leading: const Text('Urgent'), trailing: ZdsIndex(color: ZdsColors.red, child: const Text('U'))),
+              leading: const Text('Urgent'),
+              trailing: ZdsIndex(color: Zeta.of(context).colors.red, child: const Text('U')),
+            ),
             ZdsListTile(
               leading: const Text('High'),
-              trailing: ZdsIndex(color: ZdsColors.orange, child: const Text('1')),
+              trailing: ZdsIndex(color: Zeta.of(context).colors.orange, child: const Text('1')),
             ),
             ZdsListTile(
               leading: const Text('Medium'),
-              trailing: ZdsIndex(color: ZdsColors.teal, child: const Text('2')),
+              trailing: ZdsIndex(color: Zeta.of(context).colors.teal, child: const Text('2')),
             ),
             ZdsListTile(
               leading: const Text('Low'),
               trailing: ZdsIndex(
-                color: ZdsColors.green,
+                color: Zeta.of(context).colors.green,
                 child: const Text('3'),
               ),
             ),

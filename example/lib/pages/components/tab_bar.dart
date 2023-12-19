@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class TabBarDemo extends StatefulWidget {
@@ -57,30 +58,41 @@ class _TabBarDemoState extends State<TabBarDemo> with SingleTickerProviderStateM
         label: 'History',
       ),
     ];
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-      ),
-      body: DefaultTabController(
-        length: 5,
-        child: SingleChildScrollView(
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+        ),
+        body: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text('Colors: primary, basic, surface', style: Theme.of(context).textTheme.displaySmall),
               Text('ZdsTabBar with icons', style: Theme.of(context).textTheme.displaySmall),
               ZdsTabBar(color: ZdsTabBarColor.primary, tabs: items2),
               ZdsTabBar(color: ZdsTabBarColor.basic, tabs: items2),
-              ZdsTabBar(color: ZdsTabBarColor.surface, tabs: items2),
+              ZdsCard(
+                child: ZdsTabBar(
+                  isScrollable: true,
+                  color: ZdsTabBarColor.surface,
+                  tabs: items2,
+                ),
+              ),
               Text('ZdsResponsiveTabBar with icons', style: Theme.of(context).textTheme.displaySmall),
-              SizedBox(
-                width: 345,
-                child: Column(
-                  children: [
-                    ZdsResponsiveTabBar(color: ZdsTabBarColor.primary, tabs: items2),
-                    ZdsResponsiveTabBar(color: ZdsTabBarColor.basic, tabs: items2),
-                    ZdsResponsiveTabBar(color: ZdsTabBarColor.surface, tabs: items2),
-                  ],
+              ZdsCard(
+                child: ZdsResponsiveTabBar(color: ZdsTabBarColor.surface, tabs: items2),
+              ),
+              Center(
+                child: SizedBox(
+                  width: 345,
+                  child: Column(
+                    children: [
+                      ZdsResponsiveTabBar(color: ZdsTabBarColor.primary, tabs: items2),
+                      ZdsResponsiveTabBar(color: ZdsTabBarColor.basic, tabs: items2),
+                      ZdsResponsiveTabBar(color: ZdsTabBarColor.surface, tabs: items2),
+                    ],
+                  ),
                 ),
               ),
               Text('ZdsTabBar without icons', style: Theme.of(context).textTheme.displaySmall),
@@ -88,14 +100,18 @@ class _TabBarDemoState extends State<TabBarDemo> with SingleTickerProviderStateM
               ZdsTabBar(color: ZdsTabBarColor.basic, tabs: items2.map((e) => e.withoutIcon).toList()),
               ZdsTabBar(color: ZdsTabBarColor.surface, tabs: items2.map((e) => e.withoutIcon).toList()),
               Text('ZdsResponsiveTabBar without icons', style: Theme.of(context).textTheme.displaySmall),
-              SizedBox(
-                width: 345,
-                child: Column(
-                  children: [
-                    ZdsResponsiveTabBar(color: ZdsTabBarColor.primary, tabs: items2.map((e) => e.withoutIcon).toList()),
-                    ZdsResponsiveTabBar(color: ZdsTabBarColor.basic, tabs: items2.map((e) => e.withoutIcon).toList()),
-                    ZdsResponsiveTabBar(color: ZdsTabBarColor.surface, tabs: items2.map((e) => e.withoutIcon).toList()),
-                  ],
+              Center(
+                child: SizedBox(
+                  width: 345,
+                  child: Column(
+                    children: [
+                      ZdsResponsiveTabBar(
+                          color: ZdsTabBarColor.primary, tabs: items2.map((e) => e.withoutIcon).toList()),
+                      ZdsResponsiveTabBar(color: ZdsTabBarColor.basic, tabs: items2.map((e) => e.withoutIcon).toList()),
+                      ZdsResponsiveTabBar(
+                          color: ZdsTabBarColor.surface, tabs: items2.map((e) => e.withoutIcon).toList()),
+                    ],
+                  ),
                 ),
               ),
               Text('ZdsTabBar without text', style: Theme.of(context).textTheme.displaySmall),
@@ -103,18 +119,26 @@ class _TabBarDemoState extends State<TabBarDemo> with SingleTickerProviderStateM
               ZdsTabBar(color: ZdsTabBarColor.basic, tabs: items2.map((e) => e.withoutText).toList()),
               ZdsTabBar(color: ZdsTabBarColor.surface, tabs: items2.map((e) => e.withoutText).toList()),
               Text('ZdsResponsiveTabBar without text', style: Theme.of(context).textTheme.displaySmall),
-              SizedBox(
-                width: 245,
-                child: Column(
-                  children: [
-                    ZdsResponsiveTabBar(color: ZdsTabBarColor.primary, tabs: items2.map((e) => e.withoutText).toList()),
-                    ZdsResponsiveTabBar(color: ZdsTabBarColor.basic, tabs: items2.map((e) => e.withoutText).toList()),
-                    ZdsResponsiveTabBar(color: ZdsTabBarColor.surface, tabs: items2.map((e) => e.withoutText).toList()),
-                  ],
+              Center(
+                child: SizedBox(
+                  width: 245,
+                  child: Column(
+                    children: [
+                      ZdsResponsiveTabBar(
+                          color: ZdsTabBarColor.primary, tabs: items2.map((e) => e.withoutText).toList()),
+                      ZdsResponsiveTabBar(color: ZdsTabBarColor.basic, tabs: items2.map((e) => e.withoutText).toList()),
+                      ZdsResponsiveTabBar(
+                          color: ZdsTabBarColor.surface, tabs: items2.map((e) => e.withoutText).toList()),
+                    ],
+                  ),
                 ),
               ),
             ].divide(const SizedBox(height: 40)).toList(),
           ),
+        ),
+        bottomNavigationBar: ZdsResponsiveTabBar(
+          color: ZdsTabBarColor.surface,
+          tabs: items2.map((e) => e.withoutText).toList(),
         ),
       ),
     );

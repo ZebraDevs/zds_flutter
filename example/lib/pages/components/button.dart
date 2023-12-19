@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:zds_flutter/zds_flutter.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 class ButtonDemo extends StatefulWidget {
   const ButtonDemo({Key? key}) : super(key: key);
@@ -115,32 +116,33 @@ class _ButtonDemoState extends State<ButtonDemo> {
                 child: const Text('Muted'),
               ),
             ],
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: SingleChildScrollView(
-            //         scrollDirection: Axis.horizontal,
-            //         child: Row(
-            //           children: [
-            //             const SizedBox(width: 24),
-            //             ...ZetaColors.of(context)
-            //                 .rainbow
-            //                 .map(
-            //                   (e) => ZdsButton.filled(
-            //                     onTap: () {},
-            //                     color: e,
-            //                     child: const Text('Button'),
-            //                   ),
-            //                 )
-            //                 .divide(const SizedBox(width: 16))
-            //                 .toList(),
-            //             const SizedBox(width: 24),
-            //           ],
-            //         ),
-            //       ),
-            //     )
-            //   ],
-            // ).paddingInsets(const EdgeInsets.symmetric(vertical: 24)),
+            Row(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 24),
+                        ...Zeta.of(context)
+                            .colors
+                            .rainbow
+                            .map(
+                              (e) => ZdsButton.filled(
+                                onTap: () {},
+                                customColor: e,
+                                child: const Text('Button'),
+                              ),
+                            )
+                            .divide(const SizedBox(width: 16))
+                            .toList(),
+                        const SizedBox(width: 24),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ).paddingInsets(const EdgeInsets.symmetric(vertical: 24)),
             Align(
               alignment: Alignment.centerRight,
               child: ZdsPopupMenu(
@@ -148,7 +150,7 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   splashRadius: 20,
                   visualDensity: VisualDensity.compact,
                   onPressed: open,
-                  color: ZdsColors.greySwatch(context)[800],
+                  color: Zeta.of(context).colors.iconSubtle,
                   icon: const Icon(ZdsIcons.more_vert),
                 ),
                 items: const [
@@ -199,15 +201,15 @@ class _ButtonDemoState extends State<ButtonDemo> {
                       onTap: () => setState(() => isButtonSelected = !isButtonSelected),
                       leadingIcon: const Icon(ZdsIcons.person_info),
                       onClose: () {},
-                      // color: ZetaColorBase.green,
                     ),
                     ZdsSelectionPill(
                       selected: !isButtonSelected,
                       label: 'Approved',
+                      leadingIcon: const Icon(ZdsIcons.person_info),
                       onTap: () => setState(() => isButtonSelected = !isButtonSelected),
                       onClose: () {},
                     ),
-                    const ZdsSelectionPill(
+                    ZdsSelectionPill(
                       selected: true,
                       label: 'Pending',
                     ),
@@ -235,9 +237,9 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   ),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: ZdsColors.greyWarmSwatch.shade900,
+                    buttonColor: Zeta.of(context).colors.iconDefault,
                     buttonText: 'Clock Out',
-                    buttonSliderColor: ZdsColors.greyWarmSwatch.shade200,
+                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
                     buttonIcon: ZdsIcons.clock_stop,
                   ),
                   const SizedBox(height: 36),
@@ -266,10 +268,10 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   Text('Active, basic without animation', style: Theme.of(context).textTheme.headlineMedium),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: ZdsColors.greyWarmSwatch.shade900,
+                    buttonColor: Zeta.of(context).colors.iconDefault,
                     buttonText: 'Clock Out',
                     buttonIcon: ZdsIcons.clock_stop,
-                    buttonSliderColor: ZdsColors.greyWarmSwatch.shade200,
+                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
                     onSlideComplete: () async {
                       debugPrint('Done!');
                       return true;
@@ -282,13 +284,13 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   ),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: ZdsColors.greyWarmSwatch.shade900,
+                    buttonColor: Zeta.of(context).colors.iconDefault,
                     buttonColorEnd: Theme.of(context).colorScheme.secondary,
                     buttonText: 'Clock Out',
                     buttonTextEnd: DateTime.now().format('KK:mm a'),
                     buttonIcon: ZdsIcons.clock_stop,
                     buttonIconEnd: ZdsIcons.check_circle,
-                    buttonSliderColor: ZdsColors.greyWarmSwatch.shade200,
+                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
                     buttonSliderColorEnd: Theme.of(context).primaryColorLight,
                     onSlideComplete: () async {
                       debugPrint('Done!');
@@ -300,19 +302,19 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   Text('Disabled, no message', style: Theme.of(context).textTheme.headlineMedium),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: ZdsColors.greyWarmSwatch.shade900,
+                    buttonColor: Zeta.of(context).colors.iconDefault,
                     buttonText: 'Clock Out',
                     buttonIcon: ZdsIcons.clock_stop,
-                    buttonSliderColor: ZdsColors.greyWarmSwatch.shade200,
+                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
                   ),
                   const SizedBox(height: 36),
                   Text('Disabled with message', style: Theme.of(context).textTheme.headlineMedium),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: ZdsColors.greyWarmSwatch.shade900,
+                    buttonColor: Zeta.of(context).colors.iconDefault,
                     buttonText: 'Clock Out',
                     buttonIcon: ZdsIcons.clock_stop,
-                    buttonSliderColor: ZdsColors.greyWarmSwatch.shade200,
+                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
                     disabledMessage: 'Disabled message that is quite long and goes over two lines',
                   ),
                 ],

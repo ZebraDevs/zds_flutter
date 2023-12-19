@@ -26,8 +26,7 @@ class _PopOverDemoState extends State<PopOverDemo> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
         child: child ??
             const Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            ),
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
       ),
     );
   }
@@ -43,17 +42,18 @@ class _PopOverDemoState extends State<PopOverDemo> {
             icon: const Icon(ZdsIcons.info),
             popOverBuilder: (context) {
               return const Text(
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-              ).paddingInsets(_contentPadding);
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')
+                  .paddingInsets(_contentPadding);
             },
           ),
           ZdsPopOverIconButton(
             icon: const Icon(ZdsIcons.sort),
-            backgroundColor: ZdsColors.red,
+            backgroundColor: Zeta.of(context).colors.red,
             popOverBuilder: (context) {
               return Container(
-                child: const Text('Lorem ipsum dolor sit amet.')
-                    .textStyle(Theme.of(context).textTheme.bodyLarge!.copyWith(color: ZdsColors.white)),
+                child: const Text('Lorem ipsum dolor sit amet.').textStyle(
+                  Theme.of(context).textTheme.bodyLarge?.copyWith(color: Zeta.of(context).colors.red.onColor),
+                ),
               ).paddingInsets(_contentPadding);
             },
           ),

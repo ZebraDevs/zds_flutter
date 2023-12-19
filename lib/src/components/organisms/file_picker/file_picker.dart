@@ -1,20 +1,30 @@
-// TODO(thelukewalton): throwing error on mac
-
 import 'dart:async';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
-import 'package:giphy_get/giphy_get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../../zds_flutter.dart' hide ImagePicker;
+import '../../../utils/assets/icons.dart';
+import '../../../utils/localizations/translation.dart';
+import '../../../utils/theme/input_border.dart';
+import '../../../utils/tools/modifiers.dart';
+import '../../../utils/tools/utils.dart';
+import '../../atoms/absorb_pointer.dart';
+import '../../atoms/button.dart';
+import '../../atoms/card.dart';
+import '../../molecules/list.dart';
+import '../file_preview.dart';
+import '../list_tile.dart';
+import 'file_picker.dart';
 import 'giphy_picker.dart';
+
+export 'package:giphy_get/giphy_get.dart';
 
 export 'file_post_processor.dart';
 export 'file_validator.dart';
@@ -28,6 +38,7 @@ typedef ZdsFileValidator = Future<FilePickerException?> Function(
   ZdsFilePickerController controller,
   FilePickerConfig config,
   FileWrapper fileWrapper,
+  FilePickerOptions option,
 );
 
 /// The configuration used in a [ZdsFilePicker].
@@ -39,6 +50,26 @@ typedef ZdsFileValidator = Future<FilePickerException?> Function(
 ///
 ///  * [ZdsFilePicker]
 class FilePickerConfig {
+  /// Creates the configuration to use in the [ZdsFilePicker].
+  const FilePickerConfig({
+    this.videoCompressionLevel = 3,
+    this.maxFilesAllowed = 0,
+    this.maxFileSize = 0,
+    this.maxPixelSize = 0,
+    this.allowedExtensions = const {},
+    this.useLiveMediaOnly = false,
+    this.options = const [
+      FilePickerOptions.VIDEO,
+      FilePickerOptions.FILE,
+      FilePickerOptions.CAMERA,
+      FilePickerOptions.GALLERY,
+    ],
+    this.giphyApiKey,
+  })  : assert(maxPixelSize >= 0, 'maxPixelSize must be greater than or equal to 0'),
+        assert(maxFileSize >= 0, 'maxFileSize must be greater than or equal to 0');
+
+  /// Creates the configuration to use in the [ZdsFilePicker].
+
   /// The maximum number of files allowed.
   ///
   /// Defaults to 0.
@@ -48,6 +79,12 @@ class FilePickerConfig {
   ///
   /// If empty, all files are allowed. Defaults to empty.
   final Set<String> allowedExtensions;
+
+  /// The [useLiveMediaOnly]. flag use to disable photo library/gallery or file browser option.
+  /// If `true` then we disable all photos & videos from file picker a the time of validation
+  /// If `false`, all files are allowed. which are available in [allowedExtensions].
+  /// Defaults to false.
+  final bool useLiveMediaOnly;
 
   /// If the file picked is an image, its maximum side dimension once it's been selected.
   ///
@@ -80,25 +117,8 @@ class FilePickerConfig {
 
   /// API Key, required to use giphy service.
   ///
-  /// See https://developers.giphy.com/
+  /// See [Giphy Developers](https://developers.giphy.com/)
   final String? giphyApiKey;
-
-  /// Creates the configuration to use in the [ZdsFilePicker].
-  const FilePickerConfig({
-    this.videoCompressionLevel = 3,
-    this.maxFilesAllowed = 0,
-    this.maxFileSize = 0,
-    this.maxPixelSize = 0,
-    this.allowedExtensions = const {},
-    this.giphyApiKey,
-    this.options = const [
-      FilePickerOptions.VIDEO,
-      FilePickerOptions.FILE,
-      FilePickerOptions.CAMERA,
-      FilePickerOptions.GALLERY,
-    ],
-  })  : assert(maxPixelSize >= 0, 'maxPixelSize must be greater than or equal to 0'),
-        assert(maxFileSize >= 0, 'maxFileSize must be greater than or equal to 0');
 
   /// Creates a copy of this [FilePickerConfig], but with the given fields replaced wih the new values.
   FilePickerConfig copyWith({
@@ -107,6 +127,7 @@ class FilePickerConfig {
     int? maxFileSize,
     int? maxPixelSize,
     Set<String>? allowedExtensions,
+    bool? useLiveMediaOnly,
     List<FilePickerOptions>? options,
   }) {
     return FilePickerConfig(
@@ -116,6 +137,7 @@ class FilePickerConfig {
       maxPixelSize: maxPixelSize ?? this.maxPixelSize,
       allowedExtensions: allowedExtensions ?? this.allowedExtensions,
       options: options ?? this.options,
+      useLiveMediaOnly: useLiveMediaOnly ?? this.useLiveMediaOnly,
     );
   }
 
@@ -170,6 +192,23 @@ enum ZdsOptionDisplay {
 ///  * [ImagePicker], a widget used to select a single image and show its preview.
 ///  * [ZdsFilePreview], which this component uses to show previews of the selected files.
 class ZdsFilePicker extends StatefulWidget {
+  /// Creates a component that allows to select files and can display a preview of the selected files.
+  const ZdsFilePicker({
+    required this.controller,
+    super.key,
+    this.onChange,
+    this.config = const FilePickerConfig(),
+    this.displayStyle = ZdsFilePickerDisplayStyle.vertical,
+    this.validator = zdsValidator,
+    this.onError = zdsFileError,
+    this.postProcessors = zdsDefaultPostProcessors,
+    this.optionDisplay = ZdsOptionDisplay.standard,
+    this.showLinkName = true,
+    this.showSelected = true,
+    this.useCard = true,
+    this.visualDensity = VisualDensity.standard,
+  });
+
   /// Whether to use a default card background. If false, uses a transparent background.
   ///
   /// Defaults to true.
@@ -222,45 +261,30 @@ class ZdsFilePicker extends StatefulWidget {
   /// Defaults to [zds FileError]
   final void Function(BuildContext context, FilePickerConfig config, Exception exception)? onError;
 
-  /// Creates a component that allows to select files and can display a preview of the selected files.
-  const ZdsFilePicker({
-    required this.controller,
-    super.key,
-    this.onChange,
-    this.config = const FilePickerConfig(),
-    this.displayStyle = ZdsFilePickerDisplayStyle.vertical,
-    this.validator = zdsValidator,
-    this.onError = zdsFileError,
-    this.postProcessors = zdsDefaultPostProcessors,
-    this.optionDisplay = ZdsOptionDisplay.standard,
-    this.showLinkName = true,
-    this.showSelected = true,
-    this.useCard = true,
-    this.visualDensity = VisualDensity.standard,
-  });
-
   @override
   ZdsFilePickerState createState() => ZdsFilePickerState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('useCard', useCard));
-    properties.add(DiagnosticsProperty<bool>('showSelected', showSelected));
-    properties.add(EnumProperty<ZdsOptionDisplay>('optionDisplay', optionDisplay));
-    properties.add(EnumProperty<ZdsFilePickerDisplayStyle?>('displayStyle', displayStyle));
-    properties.add(DiagnosticsProperty<VisualDensity?>('visualDensity', visualDensity));
-    properties.add(DiagnosticsProperty<FilePickerConfig>('config', config));
-    properties.add(DiagnosticsProperty<ZdsFilePickerController>('controller', controller));
-    properties.add(ObjectFlagProperty<void Function(List<FileWrapper> items)?>.has('onChange', onChange));
-    properties.add(DiagnosticsProperty<bool>('showLinkName', showLinkName));
-    properties.add(IterableProperty<ZdsFilePostProcessor>('postProcessors', postProcessors));
-    properties.add(ObjectFlagProperty<ZdsFileValidator?>.has('validator', validator));
-    properties.add(
-      ObjectFlagProperty<void Function(BuildContext context, FilePickerConfig config, Exception exception)?>.has(
-        'onError',
-        onError,
-      ),
-    );
+    properties
+      ..add(DiagnosticsProperty<bool>('useCard', useCard))
+      ..add(DiagnosticsProperty<bool>('showSelected', showSelected))
+      ..add(EnumProperty<ZdsOptionDisplay>('optionDisplay', optionDisplay))
+      ..add(EnumProperty<ZdsFilePickerDisplayStyle?>('displayStyle', displayStyle))
+      ..add(DiagnosticsProperty<VisualDensity?>('visualDensity', visualDensity))
+      ..add(DiagnosticsProperty<FilePickerConfig>('config', config))
+      ..add(DiagnosticsProperty<ZdsFilePickerController>('controller', controller))
+      ..add(ObjectFlagProperty<void Function(List<FileWrapper> items)?>.has('onChange', onChange))
+      ..add(DiagnosticsProperty<bool>('showLinkName', showLinkName))
+      ..add(IterableProperty<ZdsFilePostProcessor>('postProcessors', postProcessors))
+      ..add(ObjectFlagProperty<ZdsFileValidator?>.has('validator', validator))
+      ..add(
+        ObjectFlagProperty<void Function(BuildContext context, FilePickerConfig config, Exception exception)?>.has(
+          'onError',
+          onError,
+        ),
+      );
   }
 }
 
@@ -284,7 +308,7 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
   FilePickerConfig get config => widget.config;
 
   List<FilePickerOptions> get _allowedOptions {
-    final list = [...config.options];
+    final List<FilePickerOptions> list = <FilePickerOptions>[...config.options];
     if (config.giphyApiKey == null || config.giphyApiKey!.isEmpty) {
       list.remove(FilePickerOptions.GIF);
     }
@@ -306,21 +330,21 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final maxFiles = config.maxFilesAllowed;
-    final busy = _busy || controller.busy;
-    final attachmentList = controller.items.where((element) => !element.isLink).toList();
-    final disableWidget = _busy || controller.busy || (maxFiles != 0 && maxFiles <= attachmentList.length);
-    final content = AnimatedSize(
+    final int maxFiles = config.maxFilesAllowed;
+    final bool busy = _busy || controller.busy;
+    final List<FileWrapper> attachmentList = controller.items.where((FileWrapper element) => !element.isLink).toList();
+    final bool disableWidget = _busy || controller.busy || (maxFiles != 0 && maxFiles <= attachmentList.length);
+    final AnimatedSize content = AnimatedSize(
       duration: const Duration(milliseconds: 250),
       child: Stack(
         alignment: Alignment.center,
-        children: [
+        children: <Widget>[
           ZdsAbsorbPointer(
             absorbing: busy,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
-                if (widget.showSelected && (controller.items.isNotEmpty)) ...[
+              children: <Widget>[
+                if (widget.showSelected && (controller.items.isNotEmpty)) ...<Widget>[
                   _buildAttachments(),
                   if (widget.displayStyle == ZdsFilePickerDisplayStyle.vertical) const Divider(),
                 ],
@@ -329,7 +353,7 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: _allowedOptions
-                        .map((option) => _buildOption(context, option))
+                        .map((FilePickerOptions option) => _buildOption(context, option))
                         .toList()
                         .divide(_divider)
                         .toList(),
@@ -357,17 +381,17 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
     return SizedBox(
       height: height,
       child: Builder(
-        builder: (context) {
+        builder: (BuildContext context) {
           return DefaultTextStyle(
             style: Theme.of(context).textTheme.bodySmall!,
             child: ZdsHorizontalList.builder(
               isReducedHeight: true,
               itemCount: controller.items.length,
-              itemBuilder: (context, index) {
-                final fileWrapper = controller.items[index];
+              itemBuilder: (BuildContext context, int index) {
+                final FileWrapper fileWrapper = controller.items[index];
                 return Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
+                  children: <Widget>[
                     ZdsFilePreview(
                       file: fileWrapper,
                       size: height * 0.7,
@@ -394,15 +418,15 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
       itemCount: controller.items.length,
       separatorBuilder: (_, __) => const Divider(),
       physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        final wrapper = controller.items[index];
+      itemBuilder: (BuildContext context, int index) {
+        final FileWrapper wrapper = controller.items[index];
         return SwipeActionCell(
           key: ObjectKey(wrapper.hashCode),
           backgroundColor: Theme.of(context).colorScheme.surface,
-          trailingActions: [
+          trailingActions: <SwipeAction>[
             SwipeAction(
               color: Theme.of(context).colorScheme.error,
-              onTap: (handler) async => controller.openFile(context, config, wrapper),
+              onTap: (_) async => controller.openFile(context, config, wrapper),
               content: Semantics(
                 focused: true,
                 label: ComponentStrings.of(context).get('DELETE', 'Delete'),
@@ -416,7 +440,6 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
           child: Semantics(
             hint: ComponentStrings.of(context).get('SWIPE_TO_REVEAL_SEMANTIC', 'Swipe left to reveal actions'),
             child: ZdsListTile(
-              shrinkWrap: true,
               leading: ZdsFilePreview(file: wrapper, size: 50, useCard: false),
               onTap: () async => controller.openFile(context, config, wrapper),
               title: Text(
@@ -445,17 +468,19 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
 
   @override
   bool get wantKeepAlive => true;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ZdsFilePickerController>('controller', controller));
-    properties.add(DiagnosticsProperty<FilePickerConfig>('config', config));
+    properties
+      ..add(DiagnosticsProperty<ZdsFilePickerController>('controller', controller))
+      ..add(DiagnosticsProperty<FilePickerConfig>('config', config));
   }
 }
 
 extension _FileWrapperIcon on FilePickerOptions {
   IconData get icon {
-    final Map<FilePickerOptions, IconData> map = {
+    final Map<FilePickerOptions, IconData> map = <FilePickerOptions, IconData>{
       FilePickerOptions.FILE: ZdsIcons.upload,
       FilePickerOptions.LINK: ZdsIcons.add_link,
       FilePickerOptions.GALLERY: ZdsIcons.image,
@@ -468,7 +493,7 @@ extension _FileWrapperIcon on FilePickerOptions {
   }
 
   String getLabel(BuildContext context) {
-    final Map<FilePickerOptions, String> map = {
+    final Map<FilePickerOptions, String> map = <FilePickerOptions, String>{
       FilePickerOptions.FILE: ComponentStrings.of(context).get('FILE', 'File'),
       FilePickerOptions.LINK: ComponentStrings.of(context).get('LINK', 'Link'),
       FilePickerOptions.GALLERY: ComponentStrings.of(context).get('GALLERY', 'Gallery'),
@@ -493,15 +518,16 @@ extension _Methods on ZdsFilePickerState {
       await _handleVideoAction(context);
     } else if (option == FilePickerOptions.CAMERA) {
       await _handleCameraAction(context);
-    } else if (option == FilePickerOptions.GIF) {
+    } else if (option == FilePickerOptions.GIF && config.giphyApiKey != null && config.giphyApiKey!.isNotEmpty) {
       await _handleGifAction(context);
     }
   }
 
   Future<void> _handleLinkAction(BuildContext context) async {
     String? isValidUrl(Uri? uri) {
-      final urlExp = RegExp(r'(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?');
-      final url = uri.toString();
+      final RegExp urlExp =
+          RegExp(r'(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?');
+      final String url = uri.toString();
       if (uri == null || !uri.isAbsolute || !urlExp.hasMatch(url)) {
         return ComponentStrings.of(context).get('URL_INVALID_ER', 'Please enter valid URL.');
       } else {
@@ -509,21 +535,21 @@ extension _Methods on ZdsFilePickerState {
       }
     }
 
-    final result = await showDialog<List<_TextField>?>(
+    final List<_TextField>? result = await showDialog<List<_TextField>?>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        final strings = ComponentStrings.of(context);
+        final ComponentStrings strings = ComponentStrings.of(context);
         return _MultiInputDialog(
           title: strings.get('ADD_URL', 'Add url'),
-          textFields: [
+          textFields: <_TextField>[
             if (widget.showLinkName)
               _TextField(id: 'name', hint: strings.get('LINK_NAME', 'Link Name'), autoFocus: true),
             _TextField(id: 'url', hint: strings.get('LINK_URL', 'Link URL'), autoFocus: true),
           ],
           primaryAction: strings.get('SAVE', 'Save'),
           secondaryAction: strings.get('CANCEL', 'Cancel'),
-          onValidate: (field) {
+          onValidate: (_TextField field) {
             if (field.id == 'url') {
               return isValidUrl(Uri.tryParse(field.value));
             } else {
@@ -535,12 +561,12 @@ extension _Methods on ZdsFilePickerState {
     );
 
     if (result != null) {
-      final urlField = result.last;
-      final nameField = result.length == 2 ? result.first : null;
-      final uri = Uri.tryParse(urlField.value);
+      final _TextField urlField = result.last;
+      final _TextField? nameField = result.length == 2 ? result.first : null;
+      final Uri? uri = Uri.tryParse(urlField.value);
       if (uri != null) {
-        final name = nameField?.value ?? '';
-        controller.addFiles([
+        final String name = nameField?.value ?? '';
+        controller.addFiles(<FileWrapper>[
           FileWrapper(FilePickerOptions.LINK, XUri(uri: uri, name: name.isEmpty ? uri.toString() : name)),
         ]);
       }
@@ -551,14 +577,13 @@ extension _Methods on ZdsFilePickerState {
     final GiphyGif? gif = await Navigator.push<GiphyGif?>(
       context,
       MaterialPageRoute<GiphyGif?>(
-        builder: (context) => ZdsGiphyPicker(apiKey: config.giphyApiKey ?? ''),
+        builder: (BuildContext context) => ZdsGiphyPicker(apiKey: config.giphyApiKey!),
       ),
     );
-
     try {
       if (gif == null) return;
       _busy = true;
-      if (mounted) await onPicked(context, FileWrapper(FilePickerOptions.GIF, gif));
+      if (mounted) await onPicked(context, FileWrapper(FilePickerOptions.GIF, gif), FilePickerOptions.GIF);
     } on Exception catch (e) {
       if (mounted) widget.onError?.call(context, config, e);
     } finally {
@@ -569,10 +594,10 @@ extension _Methods on ZdsFilePickerState {
   Future<void> _handleCameraAction(BuildContext context) async {
     try {
       final ImagePicker picker = ImagePicker();
-      final photo = await picker.pickImage(source: ImageSource.camera);
+      final XFile? photo = await picker.pickImage(source: ImageSource.camera);
       if (photo != null && mounted) {
         final FileWrapper file = FileWrapper(FilePickerOptions.CAMERA, photo);
-        await onPicked(context, file);
+        await onPicked(context, file, FilePickerOptions.CAMERA);
       }
     } on Exception catch (e) {
       if (mounted) widget.onError?.call(context, config, e);
@@ -584,11 +609,11 @@ extension _Methods on ZdsFilePickerState {
   Future<void> _handleVideoAction(BuildContext context) async {
     try {
       final ImagePicker picker = ImagePicker();
-      final video = await picker.pickVideo(source: ImageSource.camera);
+      final XFile? video = await picker.pickVideo(source: ImageSource.camera);
 
       if (video != null && mounted) {
         final FileWrapper file = FileWrapper(FilePickerOptions.VIDEO, video);
-        await onPicked(context, file);
+        await onPicked(context, file, FilePickerOptions.VIDEO);
       }
     } on Exception catch (e) {
       if (mounted) widget.onError?.call(context, config, e);
@@ -602,10 +627,10 @@ extension _Methods on ZdsFilePickerState {
   /// Allow to pick media if allowed extensions are empty.
   /// Else checks based on allowed types.
   Future<void> _handleGalleryAction(BuildContext context) async {
-    var fileType = FileType.media;
+    FileType fileType = FileType.media;
 
-    final allowImages = config.allowImages();
-    final allowVideos = config.allowVideos();
+    final bool allowImages = config.allowImages();
+    final bool allowVideos = config.allowVideos();
 
     if (allowImages && allowVideos) {
       fileType = FileType.media;
@@ -626,7 +651,12 @@ extension _Methods on ZdsFilePickerState {
     FilePickerOptions option = FilePickerOptions.FILE,
   }) async {
     try {
-      final allowedFileExt = Set<String>.from(config.allowedExtensions);
+      final allowedFileExt = Set<String>.from(
+        getAllowedFileBrowserTypes(
+          useLiveMediaOnly: config.useLiveMediaOnly,
+          allowedFileTypes: config.allowedExtensions,
+        ),
+      );
       final maxFilesAllowed = config.maxFilesAllowed;
       final allowMultiple = maxFilesAllowed == 0 || maxFilesAllowed > 1;
       final mutableType = type == FileType.any
@@ -637,10 +667,10 @@ extension _Methods on ZdsFilePickerState {
 
       _busy = true;
 
-      final result = mutableType == FileType.custom
+      final FilePickerResult? result = mutableType == FileType.custom
           ? await FilePicker.platform.pickFiles(
               type: mutableType,
-              allowedExtensions: List.from(allowedFileExt),
+              allowedExtensions: List<String>.from(allowedFileExt),
               allowMultiple: allowMultiple,
             )
           : await FilePicker.platform.pickFiles(
@@ -649,17 +679,19 @@ extension _Methods on ZdsFilePickerState {
             );
 
       if (result != null && mounted) {
-        for (final file in result.files) {
+        for (final PlatformFile file in result.files) {
           if (maxFilesAllowed != 0 &&
-              controller.items.where((element) => !element.isLink).toList().length >= maxFilesAllowed) break;
+              controller.items.where((FileWrapper element) => !element.isLink).toList().length >= maxFilesAllowed) {
+            break;
+          }
           if (kIsWeb) {
-            final mimeType = lookupMimeType(file.name);
-            final xfile = XFile.fromData(file.bytes!, name: file.name, length: file.size, mimeType: mimeType);
-            await onPicked(context, FileWrapper(option, xfile));
+            final String? mimeType = lookupMimeType(file.name);
+            final XFile xfile = XFile.fromData(file.bytes!, name: file.name, length: file.size, mimeType: mimeType);
+            await onPicked(context, FileWrapper(option, xfile), option);
           } else {
-            final mimeType = lookupMimeType(file.path ?? '');
-            final xfile = XFile(file.path!, name: file.name, length: file.size, mimeType: mimeType);
-            await onPicked(context, FileWrapper(option, xfile));
+            final String? mimeType = lookupMimeType(file.path ?? '');
+            final XFile xfile = XFile(file.path!, name: file.name, length: file.size, mimeType: mimeType);
+            await onPicked(context, FileWrapper(option, xfile), option);
           }
         }
       }
@@ -670,16 +702,20 @@ extension _Methods on ZdsFilePickerState {
     }
   }
 
-  Future<void> onPicked(BuildContext context, FileWrapper file) async {
+  Future<void> onPicked(
+    BuildContext context,
+    FileWrapper file,
+    FilePickerOptions option,
+  ) async {
     try {
       if (file.content == null) return;
       _busy = true;
 
-      final exception = await widget.validator?.call(controller, config, file);
+      final FilePickerException? exception = await widget.validator?.call(controller, config, file, option);
 
-      var input = file;
+      FileWrapper input = file;
       if (exception == null && widget.postProcessors != null) {
-        for (final p in widget.postProcessors!) {
+        for (final ZdsFilePostProcessor p in widget.postProcessors!) {
           input = await p.process(config, input);
         }
       }
@@ -687,7 +723,7 @@ extension _Methods on ZdsFilePickerState {
       if (exception != null && mounted) {
         widget.onError?.call(context, config, exception);
       } else {
-        controller.addFiles([input]);
+        controller.addFiles(<FileWrapper>[input]);
       }
     } on Exception catch (e) {
       if (mounted) widget.onError?.call(context, config, e);
@@ -704,7 +740,7 @@ extension on ZdsFilePickerState {
             height: widget.visualDensity == VisualDensity.standard ? 40 : 26,
             decoration: BoxDecoration(
               border: Border(
-                left: BorderSide(color: ZdsColors.greySwatch(context)[400] ?? ZdsColors.lightGrey),
+                left: BorderSide(color: Zeta.of(context).colors.borderSubtle),
               ),
             ),
           )
@@ -713,10 +749,11 @@ extension on ZdsFilePickerState {
 
   Widget _buildOption(BuildContext context, FilePickerOptions option) {
     final bool isStandard = widget.visualDensity == VisualDensity.standard;
-    final style = isStandard
+    final TextStyle? style = isStandard
         ? Theme.of(context).textTheme.bodyMedium
         : Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12, height: 16 / 12);
-    final padding = 16 + ((widget.visualDensity?.vertical ?? 0) * 4);
+    final double padding = 16 + ((widget.visualDensity?.vertical ?? 0) * 4);
+    final zetaColors = Zeta.of(context).colors;
     return Expanded(
       child: Semantics(
         button: true,
@@ -731,19 +768,19 @@ extension on ZdsFilePickerState {
                   : 30,
           onTap: () async => handleOptionAction(context, option),
           child: Column(
-            children: [
+            children: <Widget>[
               Icon(
                 option.icon,
                 size: 24 + ((widget.visualDensity?.vertical ?? 0) * 4),
-                color: ZetaColors.of(context).textSubtle,
+                color: zetaColors.iconSubtle,
               ),
-              if (widget.optionDisplay == ZdsOptionDisplay.standard) ...[
+              if (widget.optionDisplay == ZdsOptionDisplay.standard) ...<Widget>[
                 SizedBox(height: 10 + ((widget.visualDensity?.vertical ?? 0) * 4)),
                 Text(
                   option.getLabel(context),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: style?.copyWith(color: ZdsColors.greySwatch(context)[800]),
+                  style: style?.copyWith(color: zetaColors.textSubtle),
                   textScaleFactor: MediaQuery.of(context).textScaleFactor > 2.7 ? 2.7 : null,
                 ),
               ],
@@ -773,10 +810,10 @@ class ZdsFilePickerController extends ChangeNotifier {
   }
 
   /// The selected files.
-  List<FileWrapper> items = [];
+  List<FileWrapper> items = <FileWrapper>[];
 
   /// file from server to check itemCount only
-  List<dynamic> remoteItems = [];
+  List<dynamic> remoteItems = <dynamic>[];
 
   /// Programmatically adds a list of files to the linked [ZdsFilePicker].
   void addFiles(List<FileWrapper> files) {
@@ -786,7 +823,7 @@ class ZdsFilePickerController extends ChangeNotifier {
 
   /// Programmatically removes files from the linked [ZdsFilePicker].
   int removeFile(FileWrapper file, {bool notify = true}) {
-    final index = items.indexWhere((element) => element == file);
+    final int index = items.indexWhere((FileWrapper element) => element == file);
     if (index >= 0) {
       items.removeAt(index);
       if (notify) notifyListeners();
@@ -800,15 +837,15 @@ class ZdsFilePickerController extends ChangeNotifier {
   /// Opens links in an InAppWebView, otherwise opens the file using the native viewer.
   Future<void> openFile(BuildContext context, FilePickerConfig config, FileWrapper file) async {
     if (file.content != null && file.content is XFile) {
-      final fileToOpen = file.content as XFile;
+      final XFile fileToOpen = file.content as XFile;
       if (file.isImage()) {
         // Edit the file
-        final editPostProcessor = ZdsFileEditPostProcessor(() => context);
-        final editedFile = await editPostProcessor.process(config, file);
+        final ZdsFileEditPostProcessor editPostProcessor = ZdsFileEditPostProcessor(() => context);
+        final FileWrapper editedFile = await editPostProcessor.process(config, file);
         if (editedFile.content != file.content) {
-          const compressPostProcessor = ZdsFileCompressPostProcessor();
-          final compressedFile = await compressPostProcessor.process(config, editedFile);
-          final index = removeFile(file);
+          const ZdsFileCompressPostProcessor compressPostProcessor = ZdsFileCompressPostProcessor();
+          final FileWrapper compressedFile = await compressPostProcessor.process(config, editedFile);
+          final int index = removeFile(file);
           items.insert(index, compressedFile);
           notifyListeners();
         }
@@ -830,12 +867,6 @@ class _TextField {
 }
 
 class _MultiInputDialog extends StatefulWidget {
-  final String? title;
-  final String primaryAction;
-  final String? secondaryAction;
-  final List<_TextField> textFields;
-  final String? Function(_TextField)? onValidate;
-
   const _MultiInputDialog({
     required this.textFields,
     required this.primaryAction,
@@ -844,25 +875,34 @@ class _MultiInputDialog extends StatefulWidget {
     this.onValidate,
   });
 
+  final String? title;
+  final String primaryAction;
+  final String? secondaryAction;
+  final List<_TextField> textFields;
+  final String? Function(_TextField)? onValidate;
+
   @override
   _MultiInputDialogState createState() => _MultiInputDialogState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('title', title));
-    properties.add(StringProperty('primaryAction', primaryAction));
-    properties.add(StringProperty('secondaryAction', secondaryAction));
-    properties.add(IterableProperty<_TextField>('textFields', textFields));
-    properties.add(ObjectFlagProperty<String? Function(_TextField p1)?>.has('onValidate', onValidate));
+    properties
+      ..add(StringProperty('title', title))
+      ..add(StringProperty('primaryAction', primaryAction))
+      ..add(StringProperty('secondaryAction', secondaryAction))
+      ..add(IterableProperty<_TextField>('textFields', textFields))
+      ..add(ObjectFlagProperty<String? Function(_TextField p1)?>.has('onValidate', onValidate));
   }
 }
 
 class _MultiInputDialogState extends State<_MultiInputDialog> {
-  bool get isValid => widget.textFields.fold<bool>(true, (p, r) => p && (widget.onValidate?.call(r) == null));
+  bool get isValid =>
+      widget.textFields.fold<bool>(true, (bool p, _TextField r) => p && (widget.onValidate?.call(r) == null));
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
 
     return Dialog(
       child: Container(
@@ -872,7 +912,7 @@ class _MultiInputDialogState extends State<_MultiInputDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+            children: <Widget>[
               if (widget.title != null) Text(widget.title!, style: theme.textTheme.displaySmall),
               if (widget.textFields.isEmpty) const SizedBox(),
               ListView.builder(
@@ -881,21 +921,22 @@ class _MultiInputDialogState extends State<_MultiInputDialog> {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 itemCount: widget.textFields.length,
                 itemBuilder: (BuildContext context, int index) {
+                  final themeData = Theme.of(context);
                   return TextFormField(
                     autofocus: widget.textFields[index].autoFocus,
                     textInputAction: TextInputAction.done,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    onChanged: (value) {
+                    onChanged: (String value) {
                       setState(() {
                         widget.textFields[index].value = value;
                       });
                     },
-                    onFieldSubmitted: (value) => widget.textFields[index].value = value,
-                    validator: (value) => widget.onValidate?.call(widget.textFields[index]),
+                    onFieldSubmitted: (String value) => widget.textFields[index].value = value,
+                    validator: (String? value) => widget.onValidate?.call(widget.textFields[index]),
                     decoration: ZdsInputDecoration(
                       hintText: widget.textFields[index].hint,
                       errorText: widget.textFields[index].error,
-                      errorStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ZdsColors.red),
+                      errorStyle: themeData.textTheme.bodyMedium?.copyWith(color: themeData.colorScheme.error),
                     ),
                   );
                 },

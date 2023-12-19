@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class TextFieldDemo extends StatefulWidget {
@@ -12,6 +13,7 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
   String? error;
   final noteController = TextEditingController();
   String? dropdownVal;
+
   @override
   void initState() {
     noteController.text = 'Lets get an early jump on the seasonal plannogram for this week. for this week.';
@@ -32,6 +34,7 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
           ),
           const SizedBox(height: 16),
           ZdsDropdownList<String>(
+            label: 'Dropdown label',
             options: [
               ZdsDropdownListItem(name: 'Approved', value: 'A'),
               ZdsDropdownListItem(name: 'Pending', value: 'P'),
@@ -50,6 +53,7 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
           const SizedBox(height: 20),
           ZdsCard(
             child: ZdsResizableTextArea(
+              enabled: false,
               controller: noteController,
               label: 'Responder Notes',
               maxLines: 100,
@@ -73,17 +77,18 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
               labelText: 'Edit Filter Name',
               counterText: 'Character left: 255',
             ),
-          ),
+          ).paddingOnly(bottom: 16),
           TextField(
             maxLines: 10,
             decoration: ZdsInputDecoration(
               labelText: 'Message',
               counterText: 'Character left: 255',
             ),
-          ),
+          ).paddingOnly(bottom: 16),
           TextFormField(
             initialValue: 'Weekly Task',
             decoration: ZdsInputDecoration(
+              mandatory: true,
               labelText: 'Title',
             ),
           ),
@@ -109,10 +114,15 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
             ].divide(const SizedBox(width: 10)).toList(),
           ),
           TextFormField(
-            decoration: ZdsInputDecoration.withNoLabel(errorText: error),
+            decoration: ZdsInputDecoration.withNoLabel(
+              prefixIcon: Icon(Icons.verified_user),
+              suffixIcon: Icon(Icons.chevron_right),
+            ),
           ),
           TextFormField(
-            decoration: ZdsInputDecoration.withNoLabel(),
+            decoration: ZdsInputDecoration.withNoLabel(
+              errorText: error,
+            ),
           ),
           ZdsButton.muted(
             child: const Text('Validate'),

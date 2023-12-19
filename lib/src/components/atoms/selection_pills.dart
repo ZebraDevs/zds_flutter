@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../utils/assets/icons.dart';
+import '../../utils/tools/modifiers.dart';
 
 /// A text button that can be selectable and that accepts a string and isButtonSelected boolean value.
 ///
@@ -18,6 +19,20 @@ import '../../../zds_flutter.dart';
 ///
 /// /// ```
 class ZdsSelectionPill extends StatelessWidget {
+  /// Constructs a circular, checkable button.
+  const ZdsSelectionPill({
+    required this.label,
+    super.key,
+    this.selected = false,
+    this.onTap,
+    this.leadingIcon,
+    this.onClose,
+    this.padding = const EdgeInsets.all(9),
+    this.color,
+    this.selectedColor,
+    this.borderColor,
+  });
+
   /// The button's label.
   ///
   /// Prefer to use short strings.
@@ -52,7 +67,6 @@ class ZdsSelectionPill extends StatelessWidget {
   final ZetaColorSwatch? color;
 
   ///Use [color] instead. Will be deprecated in future release.
-
   ///
   /// Custom color to override pill background color.
   ///
@@ -66,31 +80,30 @@ class ZdsSelectionPill extends StatelessWidget {
   /// Defaults to `ZdsColors.greyCoolSwatch[100]`.
   final Color? borderColor;
 
-  /// Constructs a circular, checkable button.
-  const ZdsSelectionPill({
-    required this.label,
-    super.key,
-    this.selected = false,
-    this.onTap,
-    this.leadingIcon,
-    this.onClose,
-    this.padding = const EdgeInsets.all(9),
-    this.color,
-    this.selectedColor,
-    this.borderColor,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final Color background =
-        color?.surface ?? selectedColor ?? Theme.of(context).colorScheme.secondary.withOpacity(0.1);
-    final Color disabledColor = color?.disabled ?? ZdsColors.greyWarmSwatch[100]!;
-    final Color border = color?.border ?? borderColor ?? ZdsColors.greyCoolSwatch[100]!;
+    final zetaColors = Zeta.of(context).colors;
+    final themeData = Theme.of(context);
+    final bool disabled = onTap == null;
 
-    final Color selectedForeground = color?.icon ??
-        (selectedColor != null ? computeForeground(selectedColor!) : Theme.of(context).colorScheme.secondary);
+    final Color background = disabled
+        ? zetaColors.surfaceDisabled
+        : selected
+            ? color?.surface ?? selectedColor?.withOpacity(0.2) ?? zetaColors.secondary.surface
+            : themeData.colorScheme.surface;
 
-    final disabled = onTap == null;
+    final Color foreground = disabled
+        ? zetaColors.iconDisabled
+        : selected
+            ? color?.icon ?? selectedColor ?? zetaColors.secondary.icon
+            : zetaColors.iconSubtle;
+
+    final Color border = borderColor ??
+        (disabled
+            ? zetaColors.borderDisabled
+            : selected
+                ? color?.border ?? zetaColors.secondary.border
+                : zetaColors.borderDefault);
 
     return ExpandTapWidget(
       onTap: onTap ?? () {},
@@ -99,67 +112,54 @@ class ZdsSelectionPill extends StatelessWidget {
         child: Semantics(
           checked: selected,
           onTap: onTap,
-          child: Container(
-            constraints: const BoxConstraints(minWidth: 50),
+          child: Padding(
             padding: padding,
-            child: Material(
-              child: InkWell(
-                borderRadius: const BorderRadius.all(Radius.circular(19)),
-                onTap: onTap,
-                child: AnimatedContainer(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  duration: const Duration(milliseconds: 200),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(50)),
-                    border: Border.fromBorderSide(
-                      BorderSide(
-                        color: selected ? border : Colors.transparent,
-                      ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(19)),
+              child: Material(
+                color: background,
+                child: InkWell(
+                  onTap: onTap,
+                  child: AnimatedContainer(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    duration: const Duration(milliseconds: 200),
+                    constraints: const BoxConstraints(minWidth: 50),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+                      border: Border.fromBorderSide(BorderSide(color: border)),
+                      color: background,
                     ),
-                    color: disabled
-                        ? disabledColor
-                        : selected
-                            ? background
-                            : null,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (leadingIcon != null)
-                        IconTheme(
-                          data: IconThemeData(color: selectedForeground),
-                          child: Row(children: [leadingIcon!, const SizedBox(width: 8)]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        if (leadingIcon != null)
+                          IconTheme(
+                            data: IconThemeData(color: foreground),
+                            child: leadingIcon!.paddingOnly(right: 8),
+                          ),
+                        Text(
+                          label,
+                          textAlign: TextAlign.center,
+                          style: themeData.textTheme.bodyMedium?.copyWith(
+                            color: disabled
+                                ? zetaColors.textDisabled
+                                : selected
+                                    ? color?.text ?? foreground
+                                    : themeData.colorScheme.onSurface,
+                            fontWeight: selected && !disabled ? FontWeight.w600 : null,
+                          ),
                         ),
-                      Text(
-                        label,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: disabled
-                                  ? ZdsColors.greyWarmSwatch[1000]
-                                  : selected
-                                      ? color?.text ?? selectedForeground
-                                      : Theme.of(context).colorScheme.onSurface,
-                              fontWeight: selected && !disabled ? FontWeight.w600 : null,
-                            ),
-                      ),
-                      if (onClose != null)
-                        Row(
-                          children: [
-                            const SizedBox(width: 10),
-                            IconButton(
-                              constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
-                              onPressed: onClose,
-                              icon: Icon(
-                                ZdsIcons.close,
-                                color: selected ? Theme.of(context).colorScheme.secondary : ZdsColors.blueGrey,
-                              ),
-                              splashRadius: 16,
-                              iconSize: 16,
-                              padding: EdgeInsets.zero,
-                            ),
-                          ],
-                        ),
-                    ],
+                        if (onClose != null)
+                          IconButton(
+                            constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
+                            onPressed: onClose,
+                            icon: Icon(ZdsIcons.close, color: foreground),
+                            splashRadius: 16,
+                            iconSize: 16,
+                            padding: EdgeInsets.zero,
+                          ).paddingOnly(left: 10),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -173,13 +173,14 @@ class ZdsSelectionPill extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('label', label));
-    properties.add(DiagnosticsProperty<bool>('selected', selected));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onClose', onClose));
-    properties.add(DiagnosticsProperty<EdgeInsets>('padding', padding));
-    properties.add(ColorProperty('selectedColor', selectedColor));
-    properties.add(ColorProperty('borderColor', borderColor));
-    properties.add(ColorProperty('color', color));
+    properties
+      ..add(StringProperty('label', label))
+      ..add(DiagnosticsProperty<bool>('selected', selected))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onClose', onClose))
+      ..add(DiagnosticsProperty<EdgeInsets>('padding', padding))
+      ..add(ColorProperty('selectedColor', selectedColor))
+      ..add(ColorProperty('borderColor', borderColor))
+      ..add(ColorProperty('color', color));
   }
 }

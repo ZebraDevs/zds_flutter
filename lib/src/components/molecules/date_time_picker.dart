@@ -1,21 +1,28 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' hide DatePickerDialog;
+import 'package:flutter/material.dart';
 import 'package:interval_time_picker/interval_time_picker.dart' as interval_picker;
-import 'package:intl/intl.dart';
 
-import '../../../zds_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
+
+import '../../utils/localizations/translation.dart';
+import '../../utils/theme/input_border.dart';
+import '../../utils/theme/theme.dart';
+import '../../utils/tools/controller.dart';
+import '../organisms/date_range_picker_tile.dart';
+import '../organisms/fiscal_date_picker.dart';
 
 /// Variants of [ZdsDateTimePicker].
 enum DateTimePickerMode {
-  /// Creates and shows a [DatePickerDialog] with Zds style and behavior.
+  /// Creates and shows a [ZdsDatePickerDialog] with Zebra style and behavior.
   date,
 
-  /// Creates and shows a [TimePickerDialog] with Zds style and behavior.
+  /// Creates and shows a [TimePickerDialog] with Zebra style and behavior.
   time,
 
-  /// Creates  and shows first a [DatePickerDialog] and then a [TimePickerDialog] with Zds style and behavior.
+  /// Creates  and shows first a [ZdsDatePickerDialog] and then a [TimePickerDialog] with Zebra style and behavior.
   dateAndTime
 }
 
@@ -23,11 +30,11 @@ enum DateTimePickerMode {
 ///
 /// A [controller] can be used to handle this date and use it to manage state.
 ///
-/// This widget is typically used as a non-editable textfield by using [ZdsInputDecoration] for [inputDecoration].
+/// This widget is typically used as a non-editable text field by using [ZdsInputDecoration] for [inputDecoration].
 /// It can also be used as a button on its own by not assigning any [inputDecoration].
 ///
 /// ```dart
-/// // As a textfield
+/// // As a text field
 /// ZdsDateTimePicker(
 ///   emptyLabel: 'select date',
 ///   minDate: DateTime.now(),
@@ -54,8 +61,45 @@ enum DateTimePickerMode {
 /// See also:
 ///
 ///  * [ZdsDateRangePickerTile], which allows to select a date range's start and end time separately.
-///  * [showDatePicker] to show a date picker directly
 class ZdsDateTimePicker extends StatefulWidget {
+  /// Constructs a [ZdsDateTimePicker].
+  ZdsDateTimePicker({
+    required this.emptyLabel,
+    super.key,
+    String? format,
+    this.mode = DateTimePickerMode.date,
+    this.textAlign = TextAlign.start,
+    this.helpText,
+    this.helpTextStyle,
+    this.minDate,
+    this.maxDate,
+    this.selectedDate,
+    this.textStyle,
+    this.onChange,
+    this.padding,
+    this.inputDecoration,
+    this.controller,
+    this.readOnly = false,
+    this.interval,
+    this.visibleStep = interval_picker.VisibleStep.fifths,
+    this.timePickerErrorText,
+    this.use24HourFormat,
+    this.timePickerEntryMode = TimePickerEntryMode.inputOnly,
+    this.okClickText,
+    this.cancelClickText,
+    this.startDayOfWeek,
+  })  : format = (format?.isNotEmpty ?? false)
+            ? format!
+            : (mode == DateTimePickerMode.date
+                ? 'MMM dd, yyyy'
+                : mode == DateTimePickerMode.time
+                    ? 'hh:mm a'
+                    : 'MMM dd, yyyy hh:mm a'),
+        assert(
+          (minDate != null && maxDate != null) ? minDate.isBefore(maxDate) : (minDate == null || maxDate == null),
+          'minDate must be before maxDate.',
+        );
+
   /// The type of picker to show - `date`, `time` or `dateAndTime`.
   final DateTimePickerMode mode;
 
@@ -128,66 +172,45 @@ class ZdsDateTimePicker extends StatefulWidget {
   /// Initial entry mode for time pickers.
   final TimePickerEntryMode timePickerEntryMode;
 
-  /// Constructs a [ZdsDateTimePicker].
-  ZdsDateTimePicker({
-    required this.emptyLabel,
-    super.key,
-    String? format,
-    this.mode = DateTimePickerMode.date,
-    this.textAlign = TextAlign.start,
-    this.helpText,
-    this.helpTextStyle,
-    this.minDate,
-    this.maxDate,
-    this.selectedDate,
-    this.textStyle,
-    this.onChange,
-    this.padding,
-    this.inputDecoration,
-    this.controller,
-    this.readOnly = false,
-    this.interval,
-    this.visibleStep = interval_picker.VisibleStep.fifths,
-    this.timePickerErrorText,
-    this.use24HourFormat,
-    this.timePickerEntryMode = TimePickerEntryMode.inputOnly,
-  })  : format = (format?.isNotEmpty ?? false)
-            ? format!
-            : (mode == DateTimePickerMode.date
-                ? 'MMM dd, yyyy'
-                : mode == DateTimePickerMode.time
-                    ? 'hh:mm a'
-                    : 'MMM dd, yyyy hh:mm a'),
-        assert(
-          (minDate != null && maxDate != null) ? minDate.isBefore(maxDate) : (minDate == null || maxDate == null),
-          'minDate must be before maxDate.',
-        );
+  /// The text displayed on the ok button.
+  final String? okClickText;
+
+  /// The text displayed on the cancel button.
+  final String? cancelClickText;
+
+  /// Starting day of week 1, 2, 3, Sunday, Monday, Tuesday respectively.
+  final int? startDayOfWeek;
 
   @override
   ZdsDateTimePickerState createState() => ZdsDateTimePickerState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(EnumProperty<DateTimePickerMode>('mode', mode));
-    properties.add(StringProperty('format', format));
-    properties.add(StringProperty('emptyLabel', emptyLabel));
-    properties.add(StringProperty('helpText', helpText));
-    properties.add(DiagnosticsProperty<TextStyle?>('helpTextStyle', helpTextStyle));
-    properties.add(EnumProperty<TextAlign>('textAlign', textAlign));
-    properties.add(DiagnosticsProperty<DateTime?>('minDate', minDate));
-    properties.add(DiagnosticsProperty<DateTime?>('maxDate', maxDate));
-    properties.add(DiagnosticsProperty<bool>('readOnly', readOnly));
-    properties.add(DiagnosticsProperty<DateTime?>('selectedDate', selectedDate));
-    properties.add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('padding', padding));
-    properties.add(DiagnosticsProperty<InputDecoration?>('inputDecoration', inputDecoration));
-    properties.add(ObjectFlagProperty<void Function(DateTime? dateTime)?>.has('onChange', onChange));
-    properties.add(DiagnosticsProperty<ZdsValueController<DateTime>?>('controller', controller));
-    properties.add(IntProperty('interval', interval));
-    properties.add(EnumProperty<interval_picker.VisibleStep>('visibleStep', visibleStep));
-    properties.add(StringProperty('timePickerErrorText', timePickerErrorText));
-    properties.add(DiagnosticsProperty<bool?>('use24HourFormat', use24HourFormat));
-    properties.add(EnumProperty<TimePickerEntryMode>('timePickerEntryMode', timePickerEntryMode));
+    properties
+      ..add(EnumProperty<DateTimePickerMode>('mode', mode))
+      ..add(StringProperty('format', format))
+      ..add(StringProperty('emptyLabel', emptyLabel))
+      ..add(StringProperty('helpText', helpText))
+      ..add(DiagnosticsProperty<TextStyle?>('helpTextStyle', helpTextStyle))
+      ..add(EnumProperty<TextAlign>('textAlign', textAlign))
+      ..add(DiagnosticsProperty<DateTime?>('minDate', minDate))
+      ..add(DiagnosticsProperty<DateTime?>('maxDate', maxDate))
+      ..add(DiagnosticsProperty<bool>('readOnly', readOnly))
+      ..add(DiagnosticsProperty<DateTime?>('selectedDate', selectedDate))
+      ..add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle))
+      ..add(DiagnosticsProperty<EdgeInsets?>('padding', padding))
+      ..add(DiagnosticsProperty<InputDecoration?>('inputDecoration', inputDecoration))
+      ..add(ObjectFlagProperty<void Function(DateTime? dateTime)?>.has('onChange', onChange))
+      ..add(DiagnosticsProperty<ZdsValueController<DateTime>?>('controller', controller))
+      ..add(IntProperty('interval', interval))
+      ..add(EnumProperty<interval_picker.VisibleStep>('visibleStep', visibleStep))
+      ..add(StringProperty('timePickerErrorText', timePickerErrorText))
+      ..add(DiagnosticsProperty<bool?>('use24HourFormat', use24HourFormat))
+      ..add(EnumProperty<TimePickerEntryMode>('timePickerEntryMode', timePickerEntryMode))
+      ..add(StringProperty('okClickText', okClickText))
+      ..add(StringProperty('cancelClickText', cancelClickText))
+      ..add(IntProperty('startDayOfWeek', startDayOfWeek));
   }
 }
 
@@ -233,12 +256,13 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final zetaColors = Zeta.of(context).colors;
     Widget child = Text(
       _formattedDate.toLowerCase(),
       textAlign: widget.textAlign,
       style: widget.textStyle ??
           textTheme.bodyLarge?.copyWith(
-            color: _dateTime == null ? ZdsColors.greySwatch(context)[600] : textTheme.bodyLarge?.color,
+            color: _dateTime == null ? zetaColors.textSubtle : textTheme.bodyLarge?.color,
           ),
     );
 
@@ -250,10 +274,10 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
     }
 
     return Material(
-      color: ZdsColors.transparent,
+      color: Colors.transparent,
       child: InkWell(
-        splashColor: ZdsColors.splashColor,
-        hoverColor: ZdsColors.hoverColor,
+        splashColor: zetaColors.surfaceSelected,
+        hoverColor: zetaColors.surfaceSelectedHovered,
         radius: MediaQuery.of(context).size.width,
         onTap: () {
           if (!widget.readOnly) unawaited(onShowPicker(context, _dateTime));
@@ -264,8 +288,8 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
         child: Semantics(
           label: _formattedDate == widget.emptyLabel ? '' : _formattedDate,
           excludeSemantics: true,
-          onTap: () async {
-            if (!widget.readOnly) await onShowPicker(context, _dateTime);
+          onTap: () {
+            if (!widget.readOnly) unawaited(onShowPicker(context, _dateTime));
           },
           child: Padding(
             padding: widget.padding ?? (widget.inputDecoration == null ? const EdgeInsets.all(16) : EdgeInsets.zero),
@@ -277,10 +301,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
   }
 
   /// Shows correct date or time picker for component.
-  Future<void> onShowPicker(
-    BuildContext context,
-    DateTime? currentValue,
-  ) async {
+  Future<void> onShowPicker(BuildContext context, DateTime? currentValue) async {
     DateTime? newValue;
 
     if (widget.mode == DateTimePickerMode.date) {
@@ -289,11 +310,13 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
       final newTime = await _showTimePicker(context, currentValue);
       newValue = newTime != null ? _convert(newTime) : null;
     } else {
-      final date = await _showDatePicker(context, currentValue);
+      final date = await _showDatePicker(context, currentValue ?? DateTime.now());
       if (date != null) {
         if (mounted) {
-          final time = await _showTimePicker(context, date);
-          newValue = _combine(date, time);
+          final time = await _showTimePicker(context, currentValue ?? DateTime.now());
+          if (time != null) {
+            newValue = _combine(date, time);
+          }
         }
       }
     }
@@ -305,18 +328,15 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
     });
   }
 
-  Future<DateTime?> _showDatePicker(
-    BuildContext context,
-    DateTime? currentValue,
-  ) {
-    return showDatePicker(
+  Future<DateTime?> _showDatePicker(BuildContext context, DateTime? currentValue) {
+    return showZdsFiscalDatePicker(
+      format: widget.format,
       context: context,
       initialDate: currentValue ??
           (widget.minDate != null && DateTime.now().isBefore(widget.minDate!) ? widget.minDate! : DateTime.now()),
       firstDate: widget.minDate ?? DateTime(1900),
       lastDate: widget.maxDate ?? DateTime(2100),
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      helpText: widget.helpText,
+      titleText: widget.helpText ?? 'Select Date',
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).zdsDateTimePickerTheme.copyWith(
@@ -325,6 +345,9 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
           child: child!,
         );
       },
+      cancelText: widget.cancelClickText ?? ComponentStrings.of(context).get('CANCEL', 'Cancel'),
+      okText: widget.okClickText ?? ComponentStrings.of(context).get('OK', 'OK'),
+      startDayOfWeek: widget.startDayOfWeek ?? 1,
     );
   }
 
@@ -339,10 +362,14 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
       );
     }
 
+    final initialValue = widget.interval == null
+        ? TimeOfDay.fromDateTime(currentValue ?? DateTime.now())
+        : TimeOfDay.fromDateTime(currentValue ?? _roundDate(DateTime.now()));
+
     final timePickerResult = widget.interval == null && mounted
         ? await showTimePicker(
             context: context,
-            initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+            initialTime: initialValue,
             initialEntryMode: widget.timePickerEntryMode,
             errorInvalidText: widget.timePickerErrorText,
             helpText: widget.helpText,
@@ -351,7 +378,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
         : mounted
             ? await interval_picker.showIntervalTimePicker(
                 context: context,
-                initialTime: TimeOfDay.fromDateTime(currentValue ?? _roundDate(DateTime.now())),
+                initialTime: initialValue,
                 interval: widget.interval!,
                 visibleStep: widget.visibleStep,
                 errorInvalidText: widget.timePickerErrorText,
@@ -361,9 +388,9 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
               )
             : null;
 
-    final selectedTime = timePickerResult ?? (currentValue != null ? TimeOfDay.fromDateTime(currentValue) : null);
+    // final selectedTime = timePickerResult ?? (currentValue != null ? TimeOfDay.fromDateTime(currentValue) : null);
 
-    return selectedTime;
+    return timePickerResult;
   }
 
   interval_picker.TimePickerEntryMode _getIntervalPickerMode() {

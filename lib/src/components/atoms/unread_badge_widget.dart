@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
-import '../../../zds_flutter.dart';
+
+import '../molecules/icon_badge_widget.dart';
 
 /// A widget that shows a badge to display how many unread notifications there are.
 ///
@@ -11,6 +12,26 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [IconWithBadge], an icon that uses [UnreadBadge].
 class UnreadBadge extends StatelessWidget {
+  /// Displays the [unread] parameter in a red circle.
+  ///
+  /// If not null, [semanticsLabel] is read instead of the [unread] amount if given.
+  ///
+  /// [maximumDigits] represents how many digits will be shown. It must be equal or greater than 1
+  /// (if [maximumDigits] is 3, any number over 999 will be shown as 999+).
+  ///
+  /// [maximumDigits] and [unread] must not be null.
+  const UnreadBadge({
+    required this.unread,
+    super.key,
+    this.semanticsLabel,
+    this.maximumDigits = 3,
+    this.foregroundColor,
+    this.backgroundColor,
+    this.minWidth = 16,
+    this.minHeight = 16,
+    this.badgeContainerColor,
+  }) : assert(maximumDigits >= 1, 'Maximum digits must be greater than 1');
+
   /// The number to show in the badge.
   final int unread;
 
@@ -49,31 +70,10 @@ class UnreadBadge extends StatelessWidget {
   /// This color is later used to draw a border around the count bubble.
   final Color? badgeContainerColor;
 
-  /// Displays the [unread] parameter in a red circle.
-  ///
-  /// If not null, [semanticsLabel] is read instead of the [unread] amount if given.
-  ///
-  /// [maximumDigits] represents how many digits will be shown. It must be equal or greater than 1
-  /// (if [maximumDigits] is 3, any number over 999 will be shown as 999+).
-  ///
-  /// [maximumDigits] and [unread] must not be null.
-  const UnreadBadge({
-    required this.unread,
-    super.key,
-    this.semanticsLabel,
-    this.maximumDigits = 3,
-    this.foregroundColor,
-    this.backgroundColor,
-    this.minWidth = 16,
-    this.minHeight = 16,
-    this.badgeContainerColor,
-  }) : assert(maximumDigits >= 1, 'Maximum digits must be greater than 1');
-
   @override
   Widget build(BuildContext context) {
     final String maximumNumber = '9' * maximumDigits;
-    final themeData = Theme.of(context);
-
+    final ThemeData themeData = Theme.of(context);
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(2),
@@ -101,11 +101,7 @@ class UnreadBadge extends StatelessWidget {
                         : '+$maximumNumber',
                 textScaleFactor: MediaQuery.of(context).textScaleFactor > 1.35 ? 1.35 : null,
                 style: themeData.textTheme.bodySmall?.copyWith(
-                  color: foregroundColor ??
-                      ZetaColors.computeForeground(
-                        input: backgroundColor ?? themeData.colorScheme.error,
-                      ),
-                  // TODO(colors): determine why onError doesnt work in darkmode themeData.colorScheme.onError,
+                  color: foregroundColor ?? (backgroundColor ?? themeData.colorScheme.error).onColor,
                   fontSize: max(themeData.textTheme.bodySmall?.fontSize ?? 0, minHeight * 0.65),
                 ),
               ),

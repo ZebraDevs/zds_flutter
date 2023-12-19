@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class IndexDemo extends StatelessWidget {
@@ -14,14 +15,14 @@ class IndexDemo extends StatelessWidget {
             ZdsListTile(
               leading: ZdsIndex(
                 child: Text('2'),
-                color: ZdsColors.blue,
+                color: Zeta.of(context).colors.blue,
               ),
               title: Text('Showcase Extravaganza'),
             ),
             ZdsListTile(
               leading: ZdsIndex(
                 child: Text('2'),
-                color: ZdsColors.purple,
+                color: Zeta.of(context).colors.purple,
               ),
               title: Text('Showcase Extravaganza'),
             ),

@@ -13,72 +13,62 @@ class _ToastDemoState extends State<ToastDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Scaffold(
-        appBar: AppBar(),
-        body: SizedBox.expand(
-          child: Column(
-            children: [
-              ZdsButton.muted(
-                child: const Text('green toast'),
-                onTap: () {
-                  showToast(context, color: ZdsToastColors.success);
-                },
-              ),
-              ZdsButton(
-                isDangerButton: true,
-                child: const Text('red toast'),
-                onTap: () {
-                  showToast(context, color: ZdsToastColors.error);
-                },
-              ),
-              ZdsButton(
-                child: const Text('blue toast'),
-                onTap: () {
-                  showToast(context, color: ZdsToastColors.primary);
-                },
-              ),
-              ZdsButton.muted(
-                child: const Text('orange toast'),
-                onTap: () {
-                  showToast(context, color: ZdsToastColors.warning);
-                },
-              ),
-              ZdsButton.muted(
-                child: const Text('longer toast'),
-                onTap: () {
-                  showLongerToast(
-                    context,
-                  );
-                },
-              ),
-              ZdsButton.muted(
-                child: const Text('Dark toast'),
-                onTap: () {
-                  showToast(context, color: ZdsToastColors.dark);
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Show persistent toast'),
-                  Switch(value: showPersistentToast, onChanged: (bool b) => setState(() => showPersistentToast = b)),
-                ],
-              ),
-            ].divide(const SizedBox(height: 10)).toList(),
-          ),
-        ),
-        bottomNavigationBar: PreferredSizeColumn(
+    return Scaffold(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(14),
+        child: Column(
           children: [
-            if (showPersistentToast)
-              const ZdsToast(
-                rounded: false,
-                title: Text('Persistent default toast'),
-              ),
-          ],
+            ZdsButton.muted(
+              child: const Text('green/positive toast'),
+              onTap: () => showToast(context, color: ZdsToastColors.success),
+            ),
+            ZdsButton(
+              isDangerButton: true,
+              child: const Text('red/negative toast'),
+              onTap: () => showToast(context, color: ZdsToastColors.error),
+            ),
+            ZdsButton.muted(
+              child: const Text('orange/warning toast'),
+              onTap: () => showToast(context, color: ZdsToastColors.warning),
+            ),
+            ZdsButton.muted(
+              child: const Text('purple/info toast'),
+              onTap: () => showToast(context, color: ZdsToastColors.info),
+            ),
+            ZdsButton(
+              child: const Text('primary toast'),
+              onTap: () => showToast(context, color: ZdsToastColors.primary),
+            ),
+            ZdsButton.muted(
+              child: const Text('longer toast'),
+              onTap: () => showLongerToast(context),
+            ),
+            ZdsButton.muted(
+              child: const Text('Dark toast'),
+              onTap: () => showToast(context, color: ZdsToastColors.dark),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Show persistent toast'),
+                Switch(value: showPersistentToast, onChanged: (bool b) => setState(() => showPersistentToast = b)),
+              ],
+            ),
+          ].divide(const SizedBox(height: 10)).toList(),
         ),
       ),
+      bottomNavigationBar: showPersistentToast
+          ? SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: ZdsToast(
+                  rounded: false,
+                  title: Text('Persistent default toast'),
+                ),
+              ),
+            )
+          : null,
     );
   }
 

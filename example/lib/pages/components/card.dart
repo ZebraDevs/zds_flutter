@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class CardDemo extends StatelessWidget {
@@ -79,7 +80,7 @@ class CardDemo extends StatelessWidget {
                           onPressed: () {},
                           icon: Transform.rotate(
                             angle: math.pi / 2,
-                            child: Icon(ZdsIcons.more_vert, color: ZdsColors.blueGrey),
+                            child: Icon(ZdsIcons.more_vert, color: Zeta.of(context).colors.iconSubtle),
                           ),
                         ),
                         child: const Text('With Header'),
@@ -88,9 +89,10 @@ class CardDemo extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 150),
-                const ZdsDashedLine(child: SizedBox(height: 150, width: 150)),
-                const SizedBox(height: 150),
+                const SafeArea(
+                  top: false,
+                  child: SizedBox(),
+                ),
               ],
             ),
           ),

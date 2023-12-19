@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:zds_flutter/zds_flutter.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
 class ColorExample {
   final String name;
@@ -25,12 +24,12 @@ class ColorsDemo extends StatelessWidget {
       {
         'color': Theme.of(context).colorScheme.primary,
         'name': 'Primary',
-        'subtitle': 'Theme.of(context).colorScheme.primary',
+        'subtitle': 'Zeta.of(context).colors.primary | Theme.of(context).colorScheme.primary',
       },
       {
         'color': Theme.of(context).colorScheme.secondary,
         'name': 'Secondary',
-        'subtitle': 'Theme.of(context).colorScheme.secondary',
+        'subtitle': 'Zeta.of(context).colors.secondary | Theme.of(context).colorScheme.secondary',
       },
       {
         'color': Theme.of(context).colorScheme.primaryContainer,
@@ -43,55 +42,7 @@ class ColorsDemo extends StatelessWidget {
         'subtitle': 'Theme.of(context).colorScheme.secondaryContainer',
       },
     ];
-    final List<Map<String, Object>> greys = [
-      {
-        'color': ZdsColors.black,
-        'name': 'Black',
-        'subtitle': 'ZdsColors.black',
-      },
-      {
-        'color': ZdsColors.darkGrey,
-        'name': 'Grey 1',
-        'subtitle': 'ZdsColors.darkGrey',
-      },
-      {
-        'color': ZdsColors.blueGrey,
-        'name': 'Grey 2',
-        'subtitle': 'ZdsColors.blueGrey',
-      },
-      {
-        'color': ZdsColors.lightGrey,
-        'name': 'Grey 3',
-        'subtitle': 'ZdsColors.lightGrey',
-      },
-      {
-        'color': ZdsColors.white,
-        'name': 'White',
-        'subtitle': 'ZdsColors.white',
-      },
-    ];
-    final otherColors = [
-      {
-        'color': ZdsColors.red,
-        'name': 'Red',
-        'subtitle': 'ZdsColors.red',
-      },
-      {
-        'color': ZdsColors.green,
-        'name': 'Green',
-        'subtitle': 'ZdsColors.green',
-      },
-      {
-        'color': ZdsColors.yellow,
-        'name': 'Yellow',
-        'subtitle': 'ZdsColors.yellow',
-      },
-      {
-        'color': ZdsColors.orange,
-        'name': 'Orange',
-        'subtitle': 'ZdsColors.orange',
-      },
-    ];
+
     final theme = [
       {
         'color': Theme.of(context).colorScheme.primary,
@@ -164,8 +115,43 @@ class ColorsDemo extends StatelessWidget {
         'subtitle': 'Theme.of(context).colorScheme.onError',
       },
     ];
+    final List<Map<String, Object>> greys = [
+      {
+        'color': Zeta.of(context).colors.black,
+        'name': 'Black',
+        'subtitle': 'Zeta.of(context).colors.black',
+      },
+      {
+        'color': Zeta.of(context).colors.white,
+        'name': 'White',
+        'subtitle': 'Zeta.of(context).colors.white',
+      },
+    ];
+    final alertColors = [
+      {
+        'color': Zeta.of(context).colors.positive,
+        'name': 'Positive',
+        'subtitle': 'Zeta.of(context).colors.positive',
+      },
+      {
+        'color': Zeta.of(context).colors.negative,
+        'name': 'Negative',
+        'subtitle': 'Zeta.of(context).colors.negative',
+      },
+      {
+        'color': Zeta.of(context).colors.warning,
+        'name': 'Warning',
+        'subtitle': 'Zeta.of(context).colors.warning',
+      },
+      {
+        'color': Zeta.of(context).colors.info,
+        'name': 'Info',
+        'subtitle': 'Zeta.of(context).colors.info',
+      },
+    ];
 
-    final List<ColorSwatchExample> zeta = ZetaColors.of(context).rainbow.map((e) => ColorSwatchExample(e, '')).toList();
+    final List<ColorSwatchExample> zeta =
+        Zeta.of(context).colors.rainbow.map((e) => ColorSwatchExample(e, '')).toList();
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -173,16 +159,15 @@ class ColorsDemo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('ZDS Colors', style: Theme.of(context).textTheme.displayLarge).paddingOnly(left: 16),
-              _ColorRow(colors: primaryColors, title: 'Theme colors'),
+              _ColorRow(colors: theme, title: 'Theme colors'),
+              _ColorRow(colors: primaryColors, title: 'Primary colors'),
               _ColorRow(colors: greys, title: 'Greys'),
-              _ColorRow(colors: otherColors, title: 'Other colors'),
+              _ColorRow(colors: alertColors, title: 'Alert colors'),
               const _PrimarySwatches(),
               const _OtherSwatches(),
-              _ColorRow(colors: theme, title: 'All theme ColorScheme colors'),
-              const _Spacer(),
               const _Spacer(),
               Text('Zeta Colors', style: Theme.of(context).textTheme.displayLarge).paddingOnly(left: 16),
+              const _Spacer(),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -234,11 +219,11 @@ class _ColorBoxZeta extends StatelessWidget {
         children: [
           Text(
             text,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: computeForeground(color)),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: color.onColor),
           ),
           Text(
             color.toHexNoAlpha().toUpperCase(),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: computeForeground(color)),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color.onColor),
           ),
         ],
       ).padding(16),
@@ -251,6 +236,36 @@ class _OtherSwatches extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final swatches = [
+      {
+        'key': 'Red',
+        'value': Zeta.of(context).colors.red,
+      },
+      {
+        'key': 'Orange',
+        'value': Zeta.of(context).colors.orange,
+      },
+      {
+        'key': 'Yellow',
+        'value': Zeta.of(context).colors.yellow,
+      },
+      {
+        'key': 'Green',
+        'value': Zeta.of(context).colors.green,
+      },
+      {
+        'key': 'Blue',
+        'value': Zeta.of(context).colors.blue,
+      },
+      {
+        'key': 'Teal',
+        'value': Zeta.of(context).colors.teal,
+      },
+      {
+        'key': 'Pink',
+        'value': Zeta.of(context).colors.pink,
+      },
+    ];
     return Column(
       children: [
         const _Spacer(),
@@ -269,29 +284,26 @@ class _OtherSwatches extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _Spacer(),
-              _Swatch(
-                swatch: ZdsColors.redSwatch,
-                values: [
-                  {'val': 'fair', 'display': 'fair'},
-                  {'val': 'light', 'display': 'light'},
-                  {'val': 'medium', 'display': 'medium'},
-                  {'val': 'dark', 'display': 'dark'},
-                ],
-                headColor: ZdsColors.red,
-                headText: 'Red',
-              ),
-              _Spacer(),
-              _Swatch(
-                swatch: ZdsColors.greenSwatch,
-                values: [
-                  {'val': 'light', 'display': 'light'},
-                  {'val': 'medium', 'display': 'medium'},
-                  {'val': 'dark', 'display': 'dark'},
-                ],
-                headColor: ZdsColors.green,
-                headText: 'Green',
-              ),
+              for (final swatch in swatches) ...[
+                _Spacer(),
+                _Swatch(
+                  swatch: swatch['value'] as ZetaColorSwatch,
+                  values: [
+                    {'val': 10, 'display': '10'},
+                    {'val': 20, 'display': '20'},
+                    {'val': 30, 'display': '30'},
+                    {'val': 40, 'display': '40'},
+                    {'val': 50, 'display': '50'},
+                    {'val': 60, 'display': '60'},
+                    {'val': 70, 'display': '70'},
+                    {'val': 80, 'display': '80'},
+                    {'val': 90, 'display': '90'},
+                    {'val': 100, 'display': '100'},
+                  ],
+                  headColor: swatch['value'] as ZetaColorSwatch,
+                  headText: swatch['key'] as String,
+                ),
+              ],
               _Spacer(),
             ],
           ),
@@ -327,36 +339,30 @@ class _PrimarySwatches extends StatelessWidget {
             children: [
               const _Spacer(),
               _Swatch(
-                swatch: ZdsColors.primarySwatch(context),
-                values: List.generate(9, (i) => {'val': (i + 1) * 100, 'display': '${(i + 1) * 10}%'}),
+                swatch: Zeta.of(context).colors.primary,
+                values: List.generate(10, (i) => {'val': (i + 1) * 10, 'display': '${(i + 1) * 10}%'}),
                 headColor: Theme.of(context).colorScheme.primary,
                 headText: 'Primary',
               ),
               const _Spacer(),
               _Swatch(
-                swatch: ZdsColors.secondarySwatch(context),
-                values: List.generate(9, (i) => {'val': (i + 1) * 100, 'display': '${(i + 1) * 10}%'}),
+                swatch: Zeta.of(context).colors.secondary,
+                values: List.generate(10, (i) => {'val': (i + 1) * 10, 'display': '${(i + 1) * 10}%'}),
                 headColor: Theme.of(context).colorScheme.secondary,
                 headText: 'Secondary',
               ),
               const _Spacer(),
               _Swatch(
-                swatch: ZdsColors.greyWarmSwatch,
-                values: [
-                  const {'val': 50, 'display': 50},
-                  ...List.generate(12, (i) => {'val': (i + 1) * 100, 'display': (i + 1) * 100})
-                ],
-                headColor: ZdsColors.darkGrey,
+                swatch: Zeta.of(context).colors.warm,
+                values: List.generate(10, (i) => {'val': (i + 1) * 10, 'display': '${(i + 1) * 10}%'}),
+                headColor: Zeta.of(context).colors.warm,
                 headText: 'Warm grey',
               ),
               const _Spacer(),
               _Swatch(
-                swatch: ZdsColors.greyCoolSwatch,
-                values: [
-                  const {'val': 50, 'display': 50},
-                  ...List.generate(12, (i) => {'val': (i + 1) * 100, 'display': (i + 1) * 100})
-                ],
-                headColor: ZdsColors.blueGrey,
+                swatch: Zeta.of(context).colors.cool,
+                values: List.generate(10, (i) => {'val': (i + 1) * 10, 'display': '${(i + 1) * 10}%'}),
+                headColor: Zeta.of(context).colors.cool,
                 headText: 'Cool grey',
               ),
               const _Spacer(),
@@ -373,6 +379,7 @@ class _PrimarySwatches extends StatelessWidget {
 class _ColorRow extends StatelessWidget {
   final List<Map<String, Object>> colors;
   final String title;
+
   const _ColorRow({Key? key, required this.colors, required this.title}) : super(key: key);
 
   @override
@@ -426,6 +433,7 @@ class _ColorBox extends StatelessWidget {
   final Color color;
   final String text;
   final String subtitle;
+
   const _ColorBox({Key? key, required this.color, required this.text, required this.subtitle}) : super(key: key);
 
   @override
@@ -440,15 +448,15 @@ class _ColorBox extends StatelessWidget {
         children: [
           Text(
             text,
-            style: Theme.of(context).textTheme.displaySmall?.copyWith(color: computeForeground(color)),
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(color: color.onColor),
           ),
           Text(
             color.toHexNoAlpha().toUpperCase(),
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: computeForeground(color)),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: color.onColor),
           ),
           Text(
             subtitle,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: computeForeground(color)),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: color.onColor),
           ),
         ],
       ).padding(16),
@@ -477,11 +485,11 @@ class _Swatch extends StatelessWidget {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
               headText,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: computeForeground(headColor)),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: headColor.onColor),
             ),
             const Expanded(child: SizedBox()),
             DefaultTextStyle(
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: computeForeground(headColor)),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: headColor.onColor),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Text('100%'), Text(headColor.toHexNoAlpha().toUpperCase())],
@@ -500,11 +508,11 @@ class _Swatch extends StatelessWidget {
               children: [
                 Text(
                   element['display'].toString(),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: computeForeground(color)),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: color.onColor),
                 ),
                 Text(
                   color.toHexNoAlpha().toUpperCase(),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: computeForeground(color)),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: color.onColor),
                 ),
               ],
             ).paddingOnly(left: 20, right: 20),

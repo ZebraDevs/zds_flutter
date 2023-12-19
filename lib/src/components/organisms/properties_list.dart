@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Enum to determine direction used in [ZdsPropertiesList].
 enum ZdsPropertiesListDirection {
@@ -35,6 +35,14 @@ enum ZdsPropertiesListDirection {
 ///
 ///  * [ZdsFieldsListTile], another way of showing table-like data.
 class ZdsPropertiesList extends StatelessWidget {
+  /// Shows a list of properties with their respective values.
+  const ZdsPropertiesList({
+    super.key,
+    this.title,
+    this.properties,
+    this.direction = ZdsPropertiesListDirection.horizontal,
+  });
+
   /// The optional title to show at the top of the list.
   ///
   /// Typically a [Text].
@@ -52,35 +60,28 @@ class ZdsPropertiesList extends StatelessWidget {
   /// Defaults to [ZdsPropertiesListDirection.horizontal].
   final ZdsPropertiesListDirection direction;
 
-  /// Shows a list of properties with their respective values.
-  const ZdsPropertiesList({
-    super.key,
-    this.title,
-    this.properties,
-    this.direction = ZdsPropertiesListDirection.horizontal,
-  });
-
   bool get _horizontal => direction == ZdsPropertiesListDirection.horizontal;
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           if (title != null)
             title!
                 .textStyle(
-                  Theme.of(context).textTheme.displaySmall!.copyWith(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                      ),
+                  themeData.textTheme.displaySmall!.copyWith(
+                    color: themeData.colorScheme.primaryContainer,
+                  ),
                 )
                 .space(20),
           if (properties != null)
             ...properties!.entries
                 .map(
-                  (set) => _wrap(
+                  (MapEntry<String, String> set) => _wrap(
                     context,
                     Text(set.key),
                     _horizontal ? Text(set.value, textAlign: TextAlign.end) : Text(set.value),
@@ -98,13 +99,20 @@ class ZdsPropertiesList extends StatelessWidget {
   }
 
   Widget _wrap(BuildContext context, Widget label, Widget value) {
+    final zetaColors = Zeta.of(context).colors;
+    final themeData = Theme.of(context);
+
     if (_horizontal) {
       return MergeSemantics(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            label.textStyle(Theme.of(context).textTheme.bodyLarge),
-            Flexible(child: value.textStyle(Theme.of(context).textTheme.titleSmall!.copyWith(color: ZdsColors.black))),
+          children: <Widget>[
+            label.textStyle(themeData.textTheme.bodyLarge),
+            Flexible(
+              child: value.textStyle(
+                themeData.textTheme.titleSmall?.copyWith(color: zetaColors.textDefault),
+              ),
+            ),
           ],
         ),
       );
@@ -113,14 +121,10 @@ class ZdsPropertiesList extends StatelessWidget {
     return MergeSemantics(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          label
-              .textStyle(
-                Theme.of(context).textTheme.titleSmall!.copyWith(color: ZdsColors.blueGrey),
-              )
-              .space(8),
+        children: <Widget>[
+          label.textStyle(themeData.textTheme.titleSmall?.copyWith(color: zetaColors.textSubtle)).space(8),
           value.textStyle(
-            Theme.of(context).textTheme.bodyLarge!.copyWith(color: Theme.of(context).colorScheme.onBackground),
+            themeData.textTheme.bodyLarge?.copyWith(color: zetaColors.textDefault),
             overflow: TextOverflow.clip,
           ),
         ],

@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
-import '../../../zds_flutter.dart';
+
+import '../../utils/tools/utils.dart';
+import '../molecules/tag.dart';
 
 /// A component used to show status information, like index, order, or state, in a very small space.
 ///
@@ -14,6 +16,11 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [ZdsTag], which uses this component in its prefix.
 class ZdsIndex extends StatelessWidget {
+  /// Creates a small circle used to show status information at a glance.
+  /// This circle is optional to cater for when a leading icon is required, without a circle.
+  /// An example of this is 'Approved' with a leading check icon.
+  const ZdsIndex({super.key, this.child, this.color, this.useBoxDecoration = true});
+
   /// The background color of the circle.
   ///
   /// Defaults to [ColorScheme.primaryContainer].
@@ -29,28 +36,25 @@ class ZdsIndex extends StatelessWidget {
   /// If rectangular boolean is false in [ZdsTag], this defaults to true.
   final bool useBoxDecoration;
 
-  /// Creates a small circle used to show status information at a glance.
-  /// This circle is optional to cater for when a leading icon is required, without a circle.
-  /// An example of this is 'Approved' with a leading check icon.
-  const ZdsIndex({super.key, this.child, this.color, this.useBoxDecoration = true});
-
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+    final bgColor = color ?? themeData.colorScheme.primaryContainer;
     return Container(
       width: 20,
       height: 20,
       margin: !useBoxDecoration ? const EdgeInsets.only(left: 6) : EdgeInsets.zero,
       decoration: useBoxDecoration
           ? BoxDecoration(
-              color: color ?? Theme.of(context).colorScheme.primaryContainer,
+              color: bgColor,
               shape: BoxShape.circle,
             )
           : const BoxDecoration(),
       child: Center(
         child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: ZetaColors.of(context).white,
-              ),
+          style: safeTextStyle(themeData.textTheme.bodySmall).copyWith(
+            color: useBoxDecoration ? bgColor.onColor : themeData.colorScheme.onSurface,
+          ),
           child: child ?? const SizedBox(),
         ),
       ),

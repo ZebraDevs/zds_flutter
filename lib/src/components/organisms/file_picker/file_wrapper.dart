@@ -1,12 +1,10 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/cupertino.dart';
-import 'package:giphy_get/giphy_get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart' as mime;
 import 'package:path/path.dart' as path;
-
-import '../../../../zds_flutter.dart';
+import 'file_picker.dart';
 
 /// Extension on FilePickerException to show message
 
@@ -87,7 +85,7 @@ class FileWrapper {
   /// Returns mimeType of the [content] if it is a valid file
   String? get mimeType {
     if (content is XFile) {
-      final file = content as XFile;
+      final XFile file = content as XFile;
       return file.mimeType ?? mime.lookupMimeType(file.path) ?? mime.lookupMimeType(file.name);
     } else {
       return null;
@@ -120,12 +118,12 @@ class FileWrapper {
     // ignore: avoid_dynamic_calls
     if (other.content.runtimeType != content.runtimeType) return false;
     if (content is XFile && other.content is XFile) {
-      final f1 = content as XFile;
-      final f2 = other.content as XFile;
+      final XFile f1 = content as XFile;
+      final XFile f2 = other.content as XFile;
       return f1.name == f2.name || f1.path == f2.path;
     } else if (content is XUri && other.content is XUri) {
-      final u1 = content as XUri;
-      final u2 = other.content as XUri;
+      final XUri u1 = content as XUri;
+      final XUri u2 = other.content as XUri;
       return u1.uri == u2.uri;
     } else {
       return content == other.content;
@@ -136,14 +134,14 @@ class FileWrapper {
 /// Uri wrapper
 @immutable
 class XUri {
+  /// Const constructor
+  const XUri({required this.uri, required this.name});
+
   /// Uri
   final Uri uri;
 
   /// Name of the uri
   final String name;
-
-  /// Const constructor
-  const XUri({required this.uri, required this.name});
 
   /// Creates a deep copy
   XUri copyWith({Uri? uri, String? name}) {

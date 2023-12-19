@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 const double _itemHeight = 56;
 
@@ -33,6 +33,9 @@ const double _itemHeight = 56;
 ///
 ///  * [ZdsNavigationMenu], used to create drawer navigation menus.
 class ZdsMenuItem extends StatelessWidget {
+  /// Creates a menu item for navigation.
+  const ZdsMenuItem({super.key, this.label, this.leading, this.title, this.trailing, this.onTap});
+
   /// A widget that will be shown before the title.
   ///
   /// Typically an [Icon].
@@ -56,11 +59,9 @@ class ZdsMenuItem extends StatelessWidget {
   /// A function called whenever a user taps on this component.
   final VoidCallback? onTap;
 
-  /// Creates a menu item for navigation.
-  const ZdsMenuItem({super.key, this.label, this.leading, this.title, this.trailing, this.onTap});
-
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return Semantics(
       button: onTap != null,
       child: ConstrainedBox(
@@ -68,22 +69,22 @@ class ZdsMenuItem extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: IconTheme.merge(
-            data: IconThemeData(size: 24, color: ZdsColors.greySwatch(context)[800]),
+            data: IconThemeData(size: 24, color: Zeta.of(context).colors.iconSubtle),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       if (label != null) ZdsNavigationMenuLabel(child: label!),
                       Row(
-                        children: [
+                        children: <Widget>[
                           if (leading != null)
                             IconTheme.merge(
                               child: leading!,
                               data: IconThemeData(
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: themeData.colorScheme.secondary,
                               ),
                             ),
                           if (title != null) Expanded(child: title!),
@@ -91,7 +92,7 @@ class ZdsMenuItem extends StatelessWidget {
                       ),
                     ],
                   ).textStyle(
-                    Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).colorScheme.onBackground),
+                    themeData.textTheme.bodyLarge?.copyWith(color: themeData.colorScheme.onBackground),
                   ),
                 ),
                 if (trailing != null) trailing!,

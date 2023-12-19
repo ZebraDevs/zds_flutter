@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:zds_flutter/zds_flutter.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
 class IconTextButtonDemo extends StatelessWidget {
   const IconTextButtonDemo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final zeta = Zeta.of(context);
     return Center(
       child: SingleChildScrollView(
         child: SizedBox(
@@ -23,13 +23,13 @@ class IconTextButtonDemo extends StatelessWidget {
                 onTap: () => {onButtonTapped(context)},
                 icon: ZdsIcons.clock_switch,
                 label: 'Shift Trade',
-                backgroundColor: ZetaColors.of(context).orange,
+                backgroundColor: zeta.colors.orange,
               ),
               ZdsIconTextButton(
                 onTap: () => {onButtonTapped(context)},
                 icon: ZdsIcons.clock_available,
                 label: 'Availability',
-                backgroundColor: ZetaColors.of(context).pink,
+                backgroundColor: zeta.colors.pink,
               )
             ],
           ),

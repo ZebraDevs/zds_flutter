@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
-/// A Container typically used with [Scaffold.bottomNavigationBar], in [showZdsBottomSheet].bottomBuilder, or as the
+/// A container typically used with [Scaffold.bottomNavigationBar], in [showZdsBottomSheet].bottomBuilder, or as the
 /// last child of a [Column] that contains an [Expanded] to ensure [ZdsBottomBar] stays at the bottom.
 ///
 /// Typically used with a [Scaffold]:
@@ -30,6 +30,18 @@ import '../../../zds_flutter.dart';
 /// ensure that the ZdsBottomBar covers the entire width of the screen, and that it is not used anywhere but in the
 /// bottom of the screen.
 class ZdsBottomBar extends StatelessWidget implements PreferredSizeWidget {
+  /// Creates a bottom bar that can be used as a bottom application bar, or as a bottom action bar
+  ///
+  /// If [color], [shadows], and [contentPadding] are null, their [ZdsBottomBarTheme] values will be used instead.
+  const ZdsBottomBar({
+    super.key,
+    this.child,
+    this.color,
+    this.shadows,
+    this.minHeight = kBottomBarHeight,
+    this.contentPadding,
+  });
+
   /// The widget that will be below this widget in the widget tree, typically a [Row].
   final Widget? child;
 
@@ -46,21 +58,9 @@ class ZdsBottomBar extends StatelessWidget implements PreferredSizeWidget {
   /// Defaults to the [ZdsBottomBarTheme] value.
   final EdgeInsets? contentPadding;
 
-  /// Creates a bottom bar that can be used as a bottom application bar, or as a bottom action bar
-  ///
-  /// If [color], [shadows], and [contentPadding] are null, their [ZdsBottomBarTheme] values will be used instead.
-  const ZdsBottomBar({
-    super.key,
-    this.child,
-    this.color,
-    this.shadows,
-    this.minHeight = kBottomBarHeight,
-    this.contentPadding,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final customTheme = ZdsBottomBarTheme.of(context);
+    final ZdsBottomBarThemeData customTheme = ZdsBottomBarTheme.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
         color: color ?? customTheme.backgroundColor,

@@ -18,7 +18,7 @@ class ZdsValueController<T> {
     updateListener?.call(_value);
   }
 
-  List<void Function(T? newValue)>? _listeners = [];
+  List<void Function(T? newValue)>? _listeners = <void Function(T? newValue)>[];
 
   /// Should be used by the state to listen for updates from the calling widget.
   void Function(T? newValue)? updateListener;

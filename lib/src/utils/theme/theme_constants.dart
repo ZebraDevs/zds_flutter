@@ -2,28 +2,40 @@ import 'package:flutter/material.dart';
 import '../../../zds_flutter.dart';
 
 /// Default bottom bar height.
-const kBottomBarHeight = 62.0;
+const double kBottomBarHeight = 62;
 
 /// Default radius for search bar.
-const kSearchBorderRadius = 53.0;
+const double kSearchBorderRadius = 53;
+
+/// Default radius for card.
+const double kZdsCardRadius = 8;
+
+/// Default card elevation.
+const double kZdsCardElevation = 1;
+
+/// Default card margin.
+const double kZdsCardMargin = 3;
+
+/// Shadow color used for cards
+const Color kZdsCardShadowColor = Color(0x33444D56);
 
 /// Default toolbar height.
-const kZdsToolbarHeight = 64.0;
+const double kZdsToolbarHeight = 64;
 
 /// Default horizontal menu padding.
-const kMenuHorizontalPadding = EdgeInsets.symmetric(horizontal: 24);
+const EdgeInsets kMenuHorizontalPadding = EdgeInsets.symmetric(horizontal: 24);
 
 /// Default vertical menu padding.
-const kMenuVerticalPadding = EdgeInsets.symmetric(vertical: 24 / 2);
+const EdgeInsets kMenuVerticalPadding = EdgeInsets.symmetric(vertical: 24 / 2);
 
 /// Default height of toast.
-const kToastHeight = 48.0;
+const double kToastHeight = 48;
 
 /// Default header border size.
-const kHeaderBoarderSize = 1.0;
+const double kHeaderBoarderSize = 1;
 
 /// Default max action height.
-const kMaxActionHeight = 48.0;
+const double kMaxActionHeight = 48;
 
 /// Height for[ZdsToggleButton].
 const double kBigToggleHeight = 40;
@@ -38,10 +50,10 @@ const double kDefaultBorderRadius = 6;
 const double rectangularBorderRadius = 2;
 
 /// Default horizontal padding for [ZdsList].
-const kDefaultHorizontalPadding = 14.0;
+const double kDefaultHorizontalPadding = 14;
 
 /// Default vertical  padding for [ZdsList].
-const kDefaultVerticalPadding = 8.0;
+const double kDefaultVerticalPadding = 8;
 
 /// Space used for [ZdsInputBorder].
 const double kSpace = 6;
@@ -62,4 +74,19 @@ const double calendarRowHeight = 60;
 const double calendarDaysOfWeekHeight = 36;
 
 /// Width / height of circular buttons in [ZdsCheckableButton].
+const double kZdsCheckableButtonSize = 48;
+
+/// Width / height of circular buttons in [ZdsCheckableButton].
+@Deprecated('Use kZdsCheckableButtonSize instead')
 const double checkableButtonSize = 48;
+
+/// ListTile theme
+const ZdsListTileTheme kZdsListTileTheme = ZdsListTileTheme(
+  contentPadding: EdgeInsets.only(left: 24, top: 18, bottom: 18, right: 24),
+  iconSize: 24,
+  tileMargin: 6,
+  labelAdditionalMargin: 10,
+);
+
+/// Toolbar theme
+const kZdsToolbarTheme = ZdsToolbarThemeData(contentPadding: EdgeInsets.all(24));

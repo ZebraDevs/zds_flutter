@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:zds_flutter/zds_flutter.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class CalendarDemo extends StatefulWidget {
   const CalendarDemo({Key? key}) : super(key: key);
@@ -20,13 +20,12 @@ class _CalendarDemoState extends State<CalendarDemo> {
         child: Column(
           children: [
             TextButton(
-              onPressed: () {
-                setState(() {
-                  focusedDate = focusedDate.add(const Duration(days: 1));
-                });
-              },
-              child: const Text('increase day'),
-            ),
+                onPressed: () {
+                  setState(() {
+                    focusedDate = focusedDate.add(const Duration(days: 1));
+                  });
+                },
+                child: const Text('increase day')),
             ZdsCalendar(
               selectedDay: focusedDate,
               events: [
@@ -100,10 +99,12 @@ class _CalendarDemoState extends State<CalendarDemo> {
                 return DateTime(DateTime.now().year, index + 1, 10);
               }),
               isGridShown: true,
-              singleMarkerBuilder: (context, date, _) {
+              singleMarkerBuilder: (BuildContext context, DateTime date, dynamic _) {
                 return Container(
                   decoration: BoxDecoration(
-                      color: date.isAfter(DateTime.now()) ? ZdsColors.red : ZdsColors.green, shape: BoxShape.circle),
+                    color: date.isAfter(DateTime.now()) ? Zeta.of(context).colors.red : Zeta.of(context).colors.green,
+                    shape: BoxShape.circle,
+                  ),
                   width: 5,
                   height: 5,
                 ).paddingOnly(top: 7);
@@ -134,6 +135,9 @@ class _CalendarDemoState extends State<CalendarDemo> {
                       child: ZdsDateRangePickerDialog(
                         lastDate: DateTime.now().add(const Duration(days: 50)),
                         firstDate: DateTime.now().subtract(const Duration(days: 50)),
+                        startDayOfWeek: 5,
+                        shortMonthDayFormat: 'MM/dd',
+                        shortDateFormat: 'MM/dd/yyyy',
                       ),
                     );
                   },

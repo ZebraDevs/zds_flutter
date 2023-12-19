@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Variants of [ZdsCard].
 enum ZdsCardVariant {
-  /// Creates a card with a border on all edges of color [ZdsColors.greySwatch.shade600].
+  /// Creates a card with a border on all edges of color [ZetaColors.borderDefault].
   outlined,
 
   /// Creates a card with a box shadow around the edges with a radius of 4.
@@ -47,6 +47,22 @@ enum ZdsCardVariant {
 ///  * [ZdsCardHeader], used to create a title header in a card
 ///  * [ZdsCardWithActions], a [ZdsCard] variant with an actions/status bar at the bottom.
 class ZdsCard extends StatelessWidget {
+  /// Creates a card to display information.
+  ///
+  /// [padding] and [variant] must not be null.
+  const ZdsCard({
+    super.key,
+    this.child,
+    this.onTap,
+    this.backgroundColor,
+    this.gradient,
+    this.onTapHint,
+    this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+    this.variant = ZdsCardVariant.elevated,
+    this.margin,
+    this.semanticLabel,
+  });
+
   /// The card's contents.
   ///
   /// Typically a [Row] or a [Column] so information is organized in a hierarchy from start to end.
@@ -94,84 +110,84 @@ class ZdsCard extends StatelessWidget {
   /// If not null, the semantics in the card will be excluded.
   final String? semanticLabel;
 
-  /// Creates a card to display information.
-  ///
-  /// [padding] and [variant] must not be null.
-  const ZdsCard({
-    super.key,
-    this.child,
-    this.onTap,
-    this.backgroundColor,
-    this.gradient,
-    this.onTapHint,
-    this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-    this.variant = ZdsCardVariant.elevated,
-    this.margin,
-    this.semanticLabel,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final borderRadius = (Theme.of(context).cardTheme.shape as RoundedRectangleBorder?)?.borderRadius as BorderRadius?;
-    final shadowColor = Theme.of(context).cardTheme.shadowColor;
-    final container = Container(
+    final zetaColors = Zeta.of(context).colors;
+    final themeData = Theme.of(context);
+
+    // Regular border radius
+    BorderRadius borderRadius = BorderRadius.circular(kZdsCardRadius);
+
+    // Check if the card shape is Rounded Rectangle and accordingly set its borderRadius
+    if (themeData.cardTheme.shape != null && themeData.cardTheme.shape is RoundedRectangleBorder) {
+      final cardShape = themeData.cardTheme.shape as RoundedRectangleBorder?;
+      if (cardShape != null && cardShape.borderRadius is BorderRadius) {
+        borderRadius = cardShape.borderRadius as BorderRadius;
+      }
+    }
+
+    final shadowColor = themeData.cardTheme.shadowColor;
+
+    final Container container = Container(
       clipBehavior: Clip.antiAlias,
-      margin: margin ?? Theme.of(context).cardTheme.margin,
+      margin: margin ?? themeData.cardTheme.margin,
       decoration: BoxDecoration(
-        color: backgroundColor ?? Theme.of(context).colorScheme.surface,
+        color: backgroundColor ?? themeData.colorScheme.surface,
         gradient: gradient,
         borderRadius: borderRadius,
-        border: variant == ZdsCardVariant.outlined
-            ? Border.all(
-                color: ZdsColors.greySwatch(
-                  context,
-                )[Theme.of(context).colorScheme.brightness == Brightness.dark ? 1000 : 600]!,
-              )
-            : null,
-        boxShadow: [
-          if (shadowColor != null && variant == ZdsCardVariant.elevated) BoxShadow(color: shadowColor, blurRadius: 4),
+        border: variant == ZdsCardVariant.outlined ? Border.all(color: zetaColors.borderDefault) : null,
+        boxShadow: <BoxShadow>[
+          if (shadowColor != null && variant == ZdsCardVariant.elevated) ...[
+            BoxShadow(blurRadius: 1, color: shadowColor),
+          ],
         ],
       ),
       child: Material(
-        color: ZdsColors.transparent,
+        color: Colors.transparent,
         child: Semantics(
           onTapHint: onTapHint,
-          child: InkWell(
-            splashColor: ZdsColors.splashColor,
-            hoverColor: Colors.transparent,
-            onTap: onTap ?? () {},
-            child: Padding(
-              padding: padding,
-              child: child,
-            ),
+          child: ZdsConditionalWrapper(
+            condition: onTap != null,
+            child: Padding(padding: padding, child: child),
+            wrapperBuilder: (child) {
+              return InkWell(
+                splashColor: zetaColors.surfaceSelected,
+                hoverColor: zetaColors.surfaceSelectedHovered,
+                onTap: onTap,
+                child: child,
+              );
+            },
           ),
         ),
       ),
     );
 
-    if (semanticLabel != null) {
-      return Semantics(
-        label: semanticLabel,
-        onTapHint: onTapHint,
-        onTap: onTap,
-        excludeSemantics: true,
-        child: container,
-      );
-    } else {
-      return container;
-    }
+    return ZdsConditionalWrapper(
+      condition: semanticLabel != null,
+      child: container,
+      wrapperBuilder: (Widget child) {
+        return Semantics(
+          label: semanticLabel,
+          onTapHint: onTapHint,
+          onTap: onTap,
+          excludeSemantics: true,
+          child: child,
+        );
+      },
+    );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(DiagnosticsProperty<Gradient?>('gradient', gradient));
-    properties.add(StringProperty('onTapHint', onTapHint));
-    properties.add(DiagnosticsProperty<EdgeInsets>('padding', padding));
-    properties.add(EnumProperty<ZdsCardVariant>('variant', variant));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('margin', margin));
-    properties.add(StringProperty('semanticLabel', semanticLabel));
+    properties
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(DiagnosticsProperty<Gradient?>('gradient', gradient))
+      ..add(StringProperty('onTapHint', onTapHint))
+      ..add(DiagnosticsProperty<EdgeInsets>('padding', padding))
+      ..add(EnumProperty<ZdsCardVariant>('variant', variant))
+      ..add(DiagnosticsProperty<EdgeInsets?>('margin', margin))
+      ..add(StringProperty('semanticLabel', semanticLabel));
   }
 }

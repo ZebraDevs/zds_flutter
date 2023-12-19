@@ -6,7 +6,6 @@ import '../../../zds_flutter.dart';
 
 /// Provides localizations for this library.
 ///
-/// Provided used within [ZdsApp], so if [ZdsApp] is used, this should not be added to application.
 class ComponentLocalisation extends StatelessWidget {
   /// Creates a [ComponentLocalisation].
   const ComponentLocalisation({
@@ -17,8 +16,6 @@ class ComponentLocalisation extends StatelessWidget {
   });
 
   /// The widget to contain translations.
-  ///
-  /// Typically the entire application, as is the case for any app using [ZdsApp], as it contains [ComponentLocalisation]
   ///
   /// ```dart
   ///class App extends StatelessWidget {
@@ -54,7 +51,7 @@ class ComponentLocalisation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Localizations(
       delegates: delegates ??
-          [
+          <LocalizationsDelegate<dynamic>>[
             GlobalMaterialLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
@@ -68,7 +65,8 @@ class ComponentLocalisation extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<LocalizationsDelegate<dynamic>>('delegates', delegates));
-    properties.add(DiagnosticsProperty<Locale?>('localeOverride', localeOverride));
+    properties
+      ..add(IterableProperty<LocalizationsDelegate<dynamic>>('delegates', delegates))
+      ..add(DiagnosticsProperty<Locale?>('localeOverride', localeOverride));
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// An AppBar with an integrated [ZdsSearchField].
 ///
@@ -62,6 +62,25 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsAppBar], a more typical appBar
 ///  * [ZdsEmpty], which can be used to show a no results message.
 class ZdsSearchAppBar extends StatefulWidget implements PreferredSizeWidget {
+  /// Creates an appBar with a search field.
+  const ZdsSearchAppBar({
+    super.key,
+    this.hintText,
+    this.onChange,
+    this.onSubmit,
+    this.leading,
+    this.trailing,
+    this.focusNode,
+    this.textEditingController,
+    this.height = 80.0,
+    this.overlayBuilder,
+    this.showOverlay = false,
+    this.onClear,
+    this.initValue,
+    this.backgroundColor,
+    this.topPadding,
+  });
+
   /// Hint text that will appear when the user hasn't written anything in the search field.
   final String? hintText;
 
@@ -112,25 +131,6 @@ class ZdsSearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   /// Set custom top padding .
   final double? topPadding;
 
-  /// Creates an appBar with a search field.
-  const ZdsSearchAppBar({
-    super.key,
-    this.hintText,
-    this.onChange,
-    this.onSubmit,
-    this.leading,
-    this.trailing,
-    this.focusNode,
-    this.textEditingController,
-    this.height = 80.0,
-    this.overlayBuilder,
-    this.showOverlay = false,
-    this.onClear,
-    this.initValue,
-    this.backgroundColor,
-    this.topPadding,
-  });
-
   @override
   ZdsSearchAppBarState createState() => ZdsSearchAppBarState();
 
@@ -139,18 +139,19 @@ class ZdsSearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('hintText', hintText));
-    properties.add(StringProperty('initValue', initValue));
-    properties.add(ObjectFlagProperty<void Function(String value)?>.has('onChange', onChange));
-    properties.add(ObjectFlagProperty<void Function(String value)?>.has('onSubmit', onSubmit));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onClear', onClear));
-    properties.add(DiagnosticsProperty<TextEditingController?>('textEditingController', textEditingController));
-    properties.add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode));
-    properties.add(DoubleProperty('height', height));
-    properties.add(ObjectFlagProperty<WidgetBuilder?>.has('overlayBuilder', overlayBuilder));
-    properties.add(DiagnosticsProperty<bool>('showOverlay', showOverlay));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(DoubleProperty('topPadding', topPadding));
+    properties
+      ..add(StringProperty('hintText', hintText))
+      ..add(StringProperty('initValue', initValue))
+      ..add(ObjectFlagProperty<void Function(String value)?>.has('onChange', onChange))
+      ..add(ObjectFlagProperty<void Function(String value)?>.has('onSubmit', onSubmit))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onClear', onClear))
+      ..add(DiagnosticsProperty<TextEditingController?>('textEditingController', textEditingController))
+      ..add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode))
+      ..add(DoubleProperty('height', height))
+      ..add(ObjectFlagProperty<WidgetBuilder?>.has('overlayBuilder', overlayBuilder))
+      ..add(DiagnosticsProperty<bool>('showOverlay', showOverlay))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(DoubleProperty('topPadding', topPadding));
   }
 }
 
@@ -198,7 +199,7 @@ class ZdsSearchAppBarState extends State<ZdsSearchAppBar> {
     const EdgeInsets padding = EdgeInsets.all(20);
 
     return OverlayEntry(
-      builder: (context) => Positioned(
+      builder: (BuildContext context) => Positioned(
         top: offset.dy + (size.height * 0.8),
         left: offset.dx + padding.left,
         width: size.width - padding.left - padding.right,
@@ -212,7 +213,7 @@ class ZdsSearchAppBarState extends State<ZdsSearchAppBar> {
   }
 
   bool _showSuffixClearButton = false;
-  final _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   TextEditingController get _textEditingController {
     return widget.textEditingController ?? _searchController;
@@ -257,12 +258,13 @@ class ZdsSearchAppBarState extends State<ZdsSearchAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final clearButton = _showSuffixClearButton
+    final IconButton? clearButton = _showSuffixClearButton
         ? IconButton(
             tooltip: ComponentStrings.of(context).get('CLEAR', 'Clear'),
             icon: Icon(
               ZdsIcons.close_circle,
-              color: ZdsColors.greySwatch(context)[800],
+              size: 20,
+              color: Zeta.of(context).colors.iconSubtle,
             ),
             onPressed: () {
               _textEditingController.clear();
@@ -272,17 +274,18 @@ class ZdsSearchAppBarState extends State<ZdsSearchAppBar> {
           )
         : null;
 
-    final backgroundColor = widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor;
+    final Color backgroundColor = widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: computeSystemOverlayStyle(backgroundColor),
       child: Material(
         color: backgroundColor,
         child: SafeArea(
           child: Row(
-            children: [
+            children: <Widget>[
               if (widget.leading != null) widget.leading!,
               Expanded(
                 child: ZdsSearchField(
+                  key: _searchKey,
                   variant: ZdsSearchFieldVariant.outlined,
                   textFormFieldKey: _searchKey,
                   focusNode: widget.focusNode,

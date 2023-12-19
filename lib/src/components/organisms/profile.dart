@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A component used to show a snapshot of someone's profile.
 ///
@@ -31,6 +31,17 @@ import '../../../zds_flutter.dart';
 ///
 ///  [ZdsNetworkAvatar] and [ZdsAvatar], used to show someone's profile picture.
 class ZdsProfile extends StatelessWidget {
+  /// Creates a snapshot of someone's profile.
+  const ZdsProfile({
+    required this.avatar,
+    required this.nameText,
+    required this.jobTitleText,
+    this.semanticLabelTitle,
+    this.semanticLabelSubTitle,
+    super.key,
+    this.action,
+  });
+
   /// The user's avatar.
   ///
   /// Typically a [ZdsNetworkAvatar] or a [ZdsAvatar].
@@ -53,39 +64,32 @@ class ZdsProfile extends StatelessWidget {
   /// Semantic label subtitle.
   final String? semanticLabelSubTitle;
 
-  /// Creates a snapshot of someone's profile.
-  const ZdsProfile({
-    required this.avatar,
-    required this.nameText,
-    required this.jobTitleText,
-    this.semanticLabelTitle,
-    this.semanticLabelSubTitle,
-    super.key,
-    this.action,
-  });
-
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+    final zetaColors = Zeta.of(context).colors;
     return Row(
-      children: [
+      children: <Widget>[
         avatar,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: Semantics(
                       label: semanticLabelTitle,
                       child: nameText.textStyle(
-                        Theme.of(context).textTheme.displaySmall?.copyWith(height: 1.2, fontSize: 20),
+                        themeData.textTheme.displaySmall?.copyWith(
+                          color: zetaColors.textDefault,
+                        ),
                       ),
                     ),
                   ),
                   if (action != null)
-                    action!.applyTheme(Theme.of(context).shrunkenButtonsThemeData).frameConstrained(
+                    action!.applyTheme(themeData.shrunkenButtonsThemeData).frameConstrained(
                           minWidth: 0,
                           maxWidth: double.infinity,
                           minHeight: 0,
@@ -96,7 +100,9 @@ class ZdsProfile extends StatelessWidget {
               Semantics(
                 label: semanticLabelSubTitle,
                 child: jobTitleText.textStyle(
-                  Theme.of(context).textTheme.titleSmall!.copyWith(color: Theme.of(context).colorScheme.onBackground),
+                  themeData.textTheme.titleMedium?.copyWith(
+                    color: zetaColors.textSubtle,
+                  ),
                 ),
               ),
             ],

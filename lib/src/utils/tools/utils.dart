@@ -6,8 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../components/atoms/card.dart';
+import '../../components/atoms/tab.dart';
 
 /// Extension to add dividers to any view that can take an iterable.
 extension ListDivider on List<Widget> {
@@ -37,7 +39,7 @@ extension DateTimeRangeUtils on DateTimeRange {
 ///
 /// Optional `startingDayOfWeek` defaults to sunday (1). See `startingDayOfWeekToInt` for more information
 DateTime startMonthDay(DateTime date, {int startingDayOfWeek = 1}) {
-  final d = date._firstDayOfWeek(startingDayOfWeek);
+  final DateTime d = date._firstDayOfWeek(startingDayOfWeek);
   return DateTime(d.year, d.month);
 }
 
@@ -65,7 +67,7 @@ extension DateTimeFormatter on DateTime {
   /// Gets the week number within a year.
   int get weekNumberOfYear {
     final int dayOfYear = int.parse(DateFormat('D').format(this));
-    final myWeekday = weekday == 7 ? 1 : weekday + 1;
+    final int myWeekday = weekday == 7 ? 1 : weekday + 1;
     int woy = ((dayOfYear - myWeekday + 10) / 7).floor();
     if (woy < 1) {
       woy = numberOfWeeksInYear(year - 1);
@@ -93,7 +95,7 @@ extension DateTimeFormatter on DateTime {
 
   /// returns first date of the week
   DateTime _firstDayOfWeek(int startingDayOfWeekInt) {
-    final date = this;
+    final DateTime date = this;
     final int weekNumber = _getWeekDayNumber(DateFormat('EEEE').format(date));
     final int difference = weekNumber - startingDayOfWeekInt;
     return date.subtract(Duration(days: difference));
@@ -106,16 +108,16 @@ extension DateTimeFormatter on DateTime {
     final DateTime startOfMonthDate = DateTime(year, month);
     final DateTime endOfMonthDate =
         DateTime(year, month).endOfMonth._firstDayOfWeek(startingDayOfWeekInt).add(const Duration(days: 6));
-    final monthTotal = endOfMonthDate.difference(startOfMonthDate).inDays;
+    final int monthTotal = endOfMonthDate.difference(startOfMonthDate).inDays;
 
-    final List<DateTime> weekNumbers = [];
+    final List<DateTime> weekNumbers = <DateTime>[];
     for (int i = 0; i < monthTotal; i = i + 7) {
       weekNumbers.add(startOfMonthDate.add(Duration(days: i))._firstDayOfWeek(startingDayOfWeekInt));
     }
 
-    final List<int> weeks = [];
-    for (final week in weekNumbers) {
-      final weekNum = _getWeekNumber(week, startingDayOfWeekInt);
+    final List<int> weeks = <int>[];
+    for (final DateTime week in weekNumbers) {
+      final int weekNum = _getWeekNumber(week, startingDayOfWeekInt);
       weeks.add(weekNum);
     }
     return weeks;
@@ -139,7 +141,7 @@ extension DateTimeFormatter on DateTime {
   /// * `weekStartDay` is 0 indexed where Sunday is 0 and Saturday is 6
   /// Defaults to 0.
   DateTime getLastDayOfWeek({int weekStartDay = 0}) {
-    final first = getFirstDayOfWeek(weekStartDay: weekStartDay);
+    final DateTime first = getFirstDayOfWeek(weekStartDay: weekStartDay);
     return DateTime(
       first.year,
       first.month,
@@ -196,7 +198,7 @@ int startingDayOfWeekToInt(StartingDayOfWeek startingDayOfWeek) {
 
 /// Gets the date of the sunday of a week in a year.
 DateTime firstSundayFromWeekInYear(int weekNumber, int year) {
-  final weekDay = DateTime(2022).add(Duration(days: (weekNumber - 2) * 7));
+  final DateTime weekDay = DateTime(2022).add(Duration(days: (weekNumber - 2) * 7));
   return weekDay.add(Duration(days: (DateTime.sunday - weekDay.weekday) % DateTime.daysPerWeek));
 }
 
@@ -217,6 +219,29 @@ extension DateTimeParser on String {
       return null;
     }
   }
+
+  /// Returns a Color parsed from the contents of the String.
+  ///
+  /// Supports Hex colors with or without a leading #
+  Color? toColor() {
+    try {
+      var hexColor = toUpperCase().replaceAll('#', ''); // Remove '#' and make uppercase for consistency.
+
+      if (hexColor.length == 3) {
+        // Convert shorthand (3 digits) to full length (6 digits)
+        hexColor = hexColor.split('').map((c) => '$c$c').join();
+      } else if (hexColor.length == 6) {
+        // If 6 digits, append 'FF' for alpha at the beginning
+        hexColor = 'FF$hexColor';
+      } else if (hexColor.length != 8) {
+        throw const FormatException('Invalid hex color format');
+      }
+
+      return Color(int.parse(hexColor, radix: 16));
+    } catch (e) {
+      return null;
+    }
+  }
 }
 
 /// Selection of extensions to [Color].
@@ -224,18 +249,26 @@ extension LightHexColor on Color {
   /// Lightens this [Color].
   Color withLight(double opacity, {Color? background}) {
     return Color.fromRGBO(
-      _transform(opacity, red, (background ?? ZdsColors.white).red),
-      _transform(opacity, green, (background ?? ZdsColors.white).green),
-      _transform(opacity, blue, (background ?? ZdsColors.white).blue),
+      _transform(opacity, red, (background ?? Colors.white).red),
+      _transform(opacity, green, (background ?? Colors.white).green),
+      _transform(opacity, blue, (background ?? Colors.white).blue),
       1,
     );
+  }
+
+  /// This getter on the Color class that determines if the color is warm or not.
+  /// We can use the Hue-Saturation-Value (HSV) representation of the color.
+  /// A color is generally considered warm if its hue lies between 0 and 180 degrees.
+  bool get isWarm {
+    final HSVColor hsvColor = HSVColor.fromColor(this);
+    return hsvColor.hue >= 0 && hsvColor.hue <= 180;
   }
 
   /// Creates a [Color] from a String.
   ///
   /// The String follows either of the "RRGGBB" or "AARRGGBB" formats, with an optional leading "#".
   static Color fromHex(String hexString) {
-    final buffer = StringBuffer();
+    final StringBuffer buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
     buffer.write(hexString.replaceFirst('#', ''));
     return Color(int.parse(buffer.toString(), radix: 16));
@@ -295,7 +328,7 @@ extension LoaderDialog on CircularProgressIndicator {
       useRootNavigator: false,
       builder: (BuildContext context) {
         return Dialog(
-          backgroundColor: ZdsColors.transparent,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           key: keyLoader,
           insetPadding: EdgeInsets.zero,
@@ -348,31 +381,18 @@ Color getShadedColor(Color input, double shade) {
 /// [shade] Shade from 0-1
 int changeShade(int rgb, double shade) => rgb + ((255 - rgb) * shade).floor();
 
-/// Calculates a foreground color based on the input background color
-/// [color] background color
-Color computeForeground(Color color) {
-  return color.isDark ? ZdsColors.white : ZdsColors.darkGrey;
-}
-
 /// System overlay should be opposite to the brightness of the background color.
 SystemUiOverlayStyle computeSystemOverlayStyle(Color color) {
-  return color.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
-}
-
-/// Checks if the color scheme is using warm or cool greys and returns the correct swatch.
-extension ZdsCheckIsWarm on ThemeData {
-  /// Checks if the color scheme is using warm or cool greys.
-  bool get isWarm => colorScheme.background != ZdsColors.greyCoolSwatch[50];
-
-  /// Gets correct [ZdsColors.greySwatch] based on if color scheme is warm or cool.
-  MaterialColor get greySwatch => isWarm ? ZdsColors.greyWarmSwatch : ZdsColors.greyCoolSwatch;
+  return (color.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark).copyWith(
+    statusBarColor: Colors.transparent,
+  );
 }
 
 /// Converts byte length to human readable format.
 String fileSizeWithUnit(int bytes) {
   if (bytes <= 0) return '0 B';
-  const suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  final i = (log(bytes) / log(1024)).floor();
+  const List<String> suffixes = <String>['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  final int i = (log(bytes) / log(1024)).floor();
   return '${(bytes / pow(1024, i)).toStringAsFixed(0)} ${suffixes[i]}';
 }
 
@@ -384,13 +404,14 @@ Color getRandomColorFromTheme(Object? seed, {List<Color>? colors}) {
   Object? s = seed;
 
   if (colors == null || colors.isEmpty) {
-    setColors = [
-      ZdsColors.redSwatch['dark']!,
-      ZdsColors.blueGrey,
-      ZdsColors.blue,
-      ZdsColors.teal,
-      ZdsColors.purple,
-      ZdsColors.greenSwatch['dark']!,
+    setColors = <ui.Color>[
+      ZetaColorBase.red,
+      ZetaColorBase.orange,
+      ZetaColorBase.yellow,
+      ZetaColorBase.green,
+      ZetaColorBase.blue,
+      ZetaColorBase.teal,
+      ZetaColorBase.pink,
     ];
   } else {
     setColors = colors;
@@ -405,7 +426,7 @@ Color getRandomColorFromTheme(Object? seed, {List<Color>? colors}) {
 
 /// Checks if the ZdsTab contains an icon
 bool hasIcons(List<ZdsTab> items) {
-  return items.any((element) => element.icon != null);
+  return items.any((ZdsTab element) => element.icon != null);
 }
 
 /// Enum to define device types.
@@ -443,13 +464,13 @@ extension DeviceTypeFromContext on BuildContext {
 
   /// True if current device is a tablet.
   bool isTablet() {
-    final deviceType = getDeviceType();
+    final DeviceType deviceType = getDeviceType();
     return deviceType == DeviceType.tabletLandscape || deviceType == DeviceType.tabletPortrait;
   }
 
   /// True if current device is a phone.
   bool isPhone() {
-    final deviceType = getDeviceType();
+    final DeviceType deviceType = getDeviceType();
     return deviceType == DeviceType.phoneLandscape || deviceType == DeviceType.phonePortrait;
   }
 
@@ -499,29 +520,115 @@ bool hasTextOverflow(String text, TextStyle style, double width, {int maxLines =
 ///   * [TextPainter]
 double textWidth(String text, TextStyle style, {int maxLines = 1}) => _textPainter(text, style, maxLines).width;
 
-/// Returns the corresponding value for a given `selectedOption` from the `branches` map.
+/// This extension adds utility functions to the Map class.
 extension MapExtensions<Option, Value> on Map<Option, Value> {
-  /// Returns the corresponding value for a given [key].
-  /// If the [key] is not found within the map, or if the value for that key is `null`,
-  /// the [orDefault] value is returned.
+  /// Gets the value from the map for the provided key. If the key does not
+  /// exist in the map, it returns the value of the `fallback` parameter.
   ///
-  /// Parameters:
-  /// - `key`: The key to be looked up in the map.
-  /// - `orDefault` (optional): The default value to be returned if the [key] is not found or if its value is `null`.
-  ///                           If not provided, it defaults to `null`.
+  /// - Parameters:
+  ///   - key: The key for which to fetch the value from the map.
+  ///   - fallback: The value to be returned if the key does not exist in the map.
   ///
-  /// Example:
-  ///
-  /// ```dart
-  /// var fruitColors = {
-  ///   'apple': 'red',
-  ///   'banana': 'yellow',
-  ///   'grape': 'purple'
-  /// };
-  /// print(fruitColors.get('apple', orDefault: 'unknown')); // Outputs: red
-  /// print(fruitColors.get('orange', orDefault: 'unknown')); // Outputs: unknown
-  /// ```
-  Value? get(Option key, {Value? orDefault}) {
-    return this[key] ?? orDefault;
+  /// - Returns: The value for the given key if it exists, otherwise the `fallback` value.
+  Value get(Option key, {required Value fallback}) {
+    return this[key] ?? fallback;
   }
+}
+
+/// Method to return 'TextStyle'. This method will return a safe text style
+/// by providing a fallback to a default text style when no text style is provided.
+TextStyle safeTextStyle(TextStyle? style) {
+  // Use the provided style if it exists, else we use the default TextStyle.
+  return style ?? const TextStyle();
+}
+
+/// rotate array to left by position
+List<T> rotateArrayLeft<T>(List<T> array, int positions) {
+  final length = array.length;
+  final normalizedPositions = positions % length;
+  final rotatedPart = array.sublist(0, normalizedPositions);
+  final remainingPart = array.sublist(normalizedPositions);
+  return remainingPart + rotatedPart;
+}
+
+/// Generates a MaterialStateProperty based on given values for different states.
+MaterialStateProperty<T?> materialStatePropertyResolver<T>({
+  // Value when MaterialState is hovered
+  T? hoveredValue,
+  // Value when MaterialState is focused
+  T? focusedValue,
+  // Value when MaterialState is pressed
+  T? pressedValue,
+  // Value when MaterialState is dragged
+  T? draggedValue,
+  // Value when MaterialState is selected
+  T? selectedValue,
+  // Value when MaterialState is scrolledUnder
+  T? scrolledUnderValue,
+  // Value when MaterialState is disabled
+  T? disabledValue,
+  // Value when MaterialState is error
+  T? errorValue,
+  // Default value when no state is present
+  T? defaultValue,
+}) {
+  // The blocks check for each possible state and returns the value
+  // If none of the states is present, default value is returned
+  return MaterialStateProperty.resolveWith<T?>((states) {
+    if (hoveredValue != null && states.contains(MaterialState.hovered)) return hoveredValue;
+    if (focusedValue != null && states.contains(MaterialState.focused)) return focusedValue;
+    if (pressedValue != null && states.contains(MaterialState.pressed)) return pressedValue;
+    if (draggedValue != null && states.contains(MaterialState.dragged)) return draggedValue;
+    if (selectedValue != null && states.contains(MaterialState.selected)) return selectedValue;
+    if (scrolledUnderValue != null && states.contains(MaterialState.scrolledUnder)) return scrolledUnderValue;
+    if (disabledValue != null && states.contains(MaterialState.disabled)) return disabledValue;
+    if (errorValue != null && states.contains(MaterialState.error)) return errorValue;
+    return defaultValue;
+  });
+}
+
+/// it gives us a allowed file types
+/// If [useLiveMediaOnly] is true then we remove all media (images & videos) types from [allowedFileTypes] set of strings
+/// If [useLiveMediaOnly] is false then we return [allowedFileTypes] as it is.
+Set<String> getAllowedFileBrowserTypes({required bool useLiveMediaOnly, required Set<String> allowedFileTypes}) {
+  if (useLiveMediaOnly) {
+    final allowedFileBrowserTypes = Set<String>.from(allowedFileTypes)
+      //remove all image file type
+      ..removeWhere(
+        (element) => {
+          'apng',
+          'avif',
+          'gif',
+          'jpg',
+          'jpeg',
+          'jfif',
+          'pjpeg',
+          'pjp',
+          'png',
+          'svg',
+          'webp',
+          'bmp',
+          'ico',
+          'cur',
+          'tif',
+          'tiff',
+          'heif',
+        }.contains(element),
+      )
+      //remove all video file type
+      ..removeWhere(
+        (element) => {
+          'mp4',
+          'mov',
+          'm4v',
+          'hevc',
+          '3gp',
+          'mkv',
+          'ts',
+          'webm',
+        }.contains(element),
+      );
+    return allowedFileBrowserTypes;
+  }
+  return allowedFileTypes;
 }

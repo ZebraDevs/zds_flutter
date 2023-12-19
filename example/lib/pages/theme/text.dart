@@ -1,81 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:zds_flutter/zds_flutter.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
 class TextDemo extends StatelessWidget {
   const TextDemo({Key? key}) : super(key: key);
 
-//?TODO: Integrate and use Zeta text themes
   @override
   Widget build(BuildContext context) {
     final display = [
       {
-        'header': 'Display Large',
+        'header': 'H1 / displayLarge',
         'textStyle': Theme.of(context).textTheme.displayLarge,
       },
       {
-        'header': 'Display Medium',
+        'header': 'H2 / displayMedium',
         'textStyle': Theme.of(context).textTheme.displayMedium,
       },
       {
-        'header': 'Display Small',
+        'header': 'H3 / displaySmall',
         'textStyle': Theme.of(context).textTheme.displaySmall,
       },
     ];
     final headline = [
       {
-        'header': 'Headline Large',
+        'header': 'H3 / headlineLarge',
         'textStyle': Theme.of(context).textTheme.headlineLarge,
       },
       {
-        'header': 'Headline Medium',
+        'header': 'H4 / headlineMedium',
         'textStyle': Theme.of(context).textTheme.headlineMedium,
       },
       {
-        'header': 'Headline Small',
+        'header': 'H5 / headlineSmall',
         'textStyle': Theme.of(context).textTheme.headlineSmall,
       },
     ];
     final body = [
       {
-        'header': 'Body Large',
+        'header': 'Body 1 / bodyLarge',
         'textStyle': Theme.of(context).textTheme.bodyLarge,
       },
       {
-        'header': 'Body Medium',
+        'header': 'Body 2 / bodyMedium',
         'textStyle': Theme.of(context).textTheme.bodyMedium,
       },
       {
-        'header': 'Body Small',
+        'header': 'Body 3 / bodySmall',
         'textStyle': Theme.of(context).textTheme.bodySmall,
       },
     ];
 
     final title = [
       {
-        'header': 'Title Large',
+        'header': 'titleLarge',
         'textStyle': Theme.of(context).textTheme.titleLarge,
       },
       {
-        'header': 'Title Medium',
+        'header': 'Subtitle 1 / titleMedium',
         'textStyle': Theme.of(context).textTheme.titleMedium,
       },
       {
-        'header': 'Title Small',
+        'header': 'Subtiitle 2 / titleSmall',
         'textStyle': Theme.of(context).textTheme.titleSmall,
       },
     ];
     final label = [
       {
-        'header': 'Label Large',
+        'header': 'labelLarge',
         'textStyle': Theme.of(context).textTheme.labelLarge,
       },
       {
-        'header': 'Label Medium',
+        'header': 'labelMedium',
         'textStyle': Theme.of(context).textTheme.labelMedium,
       },
       {
-        'header': 'Label Small',
+        'header': 'labelSmall',
         'textStyle': Theme.of(context).textTheme.labelSmall,
       },
     ];
@@ -116,8 +114,8 @@ class _FontGroup extends StatelessWidget {
                 children: [
                   Text(e['header'].toString(), style: style),
                   Text(
-                    'Font: ${style.fontFamily?.split('/').last}\nSize: ${style.fontSize?.toInt()}\nLine height: ${(style.height ?? 1 * style.fontSize!).toInt()}',
-                    style: TextStyle(color: ZetaColors.of(context).cool.shade70),
+                    'Font: ${style.fontFamily}\nSize: ${style.fontSize?.toInt()}\nLine height: ${((style.height ?? 1) * style.fontSize!).toInt()}',
+                    style: TextStyle(color: Zeta.of(context).colors.textSubtle),
                   ),
                   const _Spacer(),
                 ],
@@ -125,7 +123,6 @@ class _FontGroup extends StatelessWidget {
             })
             .toList()
             .divide(const _Spacer()),
-        const _Spacer(),
         const Divider(),
         const _Spacer(),
       ],

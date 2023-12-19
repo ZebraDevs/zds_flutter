@@ -7,10 +7,16 @@ import 'package:flutter/widgets.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../../../zds_flutter.dart';
+
 /// Translated Strings file
 class ComponentStrings {
+  /// Constructs a [ComponentStrings].
+  /// default value for [debugStrings] is false.
+  ComponentStrings(this.locale, {this.debugStrings = false});
+
   /// Default locale of the components is English.
-  static const defaultLocale = Locale('en');
+  static const Locale defaultLocale = Locale('en');
 
   /// Locale set to get translated strings of.
   ///
@@ -25,11 +31,7 @@ class ComponentStrings {
   /// Delegate used to get the translated strings.
   static LocalizationsDelegate<ComponentStrings> delegate = ComponentDelegate();
 
-  Map<String, String> _strings = {};
-
-  /// Constructs a [ComponentStrings].
-  /// default value for [debugStrings] is false.
-  ComponentStrings(this.locale, {this.debugStrings = false});
+  Map<String, String> _strings = <String, String>{};
 
   /// Returns the localized resources object of the given `ComponentStrings` for the widget
   /// tree that corresponds to the given `context`.
@@ -115,10 +117,13 @@ class ComponentStrings {
   String get(String key, String fallback, {List<String>? args}) {
     if (debugStrings) return '#$key';
 
-    final str = _strings[key] ?? '';
-    final string = str.isEmpty ? fallback : str;
+    final String str = _strings[key] ?? '';
+    final String string = str.isEmpty ? fallback : str;
     if (args != null && args.isNotEmpty) {
-      final mapping = List<MapEntry<String, String>>.generate(args.length, (index) => MapEntry('$index', args[index]));
+      final List<MapEntry<String, String>> mapping = List<MapEntry<String, String>>.generate(
+        args.length,
+        (int index) => MapEntry<String, String>('$index', args[index]),
+      );
       return string.format(Map<String, String>.fromEntries(mapping));
     } else {
       return string;
@@ -132,7 +137,7 @@ class ComponentStrings {
 
   /// Update existing strings with [delta].
   void update(Map<String, String> delta) {
-    for (final entry in delta.entries) {
+    for (final MapEntry<String, String> entry in delta.entries) {
       if (entry.value.isNotEmpty) {
         _strings[entry.key] = entry.value;
       }
@@ -147,7 +152,7 @@ class ComponentStrings {
   }
 
   Future<Map<String, String>> _loadStrings() async {
-    const assetPath = 'packages/zds_flutter/lib/assets/strings/';
+    const String assetPath = 'packages/$packageName/lib/assets/strings/';
 
     String strings = '';
 
@@ -176,12 +181,12 @@ class ComponentStrings {
     }
 
     if (strings.isEmpty) {
-      return {};
+      return <String, String>{};
     } else {
       try {
-        return Map<String, String>.from(jsonDecode(strings) as Map);
+        return Map<String, String>.from(jsonDecode(strings) as Map<dynamic, dynamic>);
       } catch (e) {
-        return {};
+        return <String, String>{};
       }
     }
   }
@@ -196,20 +201,20 @@ abstract class ComponentDeltaProvider {
 
 /// Delegate to get translations for these components.
 class ComponentDelegate extends LocalizationsDelegate<ComponentStrings> {
+  /// Constructs a [ComponentDelegate].
+  ComponentDelegate({this.deltaProvider, this.debugStrings = false});
+
   /// Custom string delta
   final ComponentDeltaProvider? deltaProvider;
 
   ///debug strings
   final bool debugStrings;
 
-  /// Constructs a [ComponentDelegate].
-  ComponentDelegate({this.deltaProvider, this.debugStrings = false});
-
   @override
   Future<ComponentStrings> load(Locale locale) async {
-    final strings = await ComponentStrings(locale).load();
+    final ComponentStrings strings = await ComponentStrings(locale).load();
     if (deltaProvider != null) {
-      final delta = await deltaProvider!.loadDelta(locale);
+      final Map<String, String> delta = await deltaProvider!.loadDelta(locale);
       if (delta.isNotEmpty) {
         strings.update(delta);
       }
@@ -269,8 +274,8 @@ extension StringFormatter on String {
   ///  print("Hello {user}! You have {count} new messages.".format({ "user" : "John", "count" : "10"}))
   ///  prints -> "Hello John! You have 10 new messages."
   String format(Map<String, String> args) {
-    var test = this;
-    for (final entry in args.entries) {
+    String test = this;
+    for (final MapEntry<String, String> entry in args.entries) {
       test = test.replaceAll('{${entry.key}}', entry.value);
     }
     return test;

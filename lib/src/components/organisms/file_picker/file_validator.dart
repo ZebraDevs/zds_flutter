@@ -9,14 +9,14 @@ import 'file_picker.dart';
 
 /// Class defining different exceptions types with its arguments
 class FilePickerException implements Exception {
+  /// Default constructor
+  FilePickerException(this.type, {this.args = const <String>[]});
+
   /// Used to specify different types of errors
   PickerExceptionType type;
 
   /// Used to specify custom error sizes
   List<String> args;
-
-  /// Default constructor
-  FilePickerException(this.type, {this.args = const []});
 }
 
 /// Types of errors, commonly used to generate error toast messages later
@@ -60,9 +60,22 @@ Future<FilePickerException?> zdsValidator(
   ZdsFilePickerController controller,
   FilePickerConfig config,
   FileWrapper wrapper,
+  FilePickerOptions option,
 ) async {
-  final file = wrapper.content;
+  final dynamic file = wrapper.content;
   if (file is! XFile) return null;
+
+  //file type check if [useLiveMediaOnly] is true and
+  //option will be [FilePickerOptions.FILE]
+  if (config.useLiveMediaOnly && option == FilePickerOptions.FILE) {
+    final allowedFileTypes = getAllowedFileBrowserTypes(
+      useLiveMediaOnly: config.useLiveMediaOnly,
+      allowedFileTypes: config.allowedExtensions,
+    );
+    if (allowedFileTypes.isNotEmpty && !allowedFileTypes.contains(wrapper.extension)) {
+      return FilePickerException(PickerExceptionType.unsupportedFile);
+    }
+  }
 
   // File type check
   if (config.allowedExtensions.isNotEmpty && !config.allowedExtensions.contains(wrapper.extension)) {
@@ -76,7 +89,7 @@ Future<FilePickerException?> zdsValidator(
 
   // check if the file size is within the limit
   if (!(wrapper.isImage() || wrapper.isVideo()) && config.maxFileSize > 0 && config.maxFileSize < await file.length()) {
-    return FilePickerException(PickerExceptionType.maxFileSize, args: [fileSizeWithUnit(config.maxFileSize)]);
+    return FilePickerException(PickerExceptionType.maxFileSize, args: <String>[fileSizeWithUnit(config.maxFileSize)]);
   }
 
   return null;
@@ -106,8 +119,8 @@ void zdsFileError(BuildContext context, FilePickerConfig config, Exception excep
 ///extension used to return different strings on exceptions.
 extension TextMessage on PickerExceptionType {
   ///  method returns FilePickerException message's.
-  String message(BuildContext context, {List<String> args = const []}) {
-    final strings = ComponentStrings.of(context);
+  String message(BuildContext context, {List<String> args = const <String>[]}) {
+    final ComponentStrings strings = ComponentStrings.of(context);
     switch (this) {
       case PickerExceptionType.unsupportedFile:
         return strings.get('FILE_UNSUPPORTED', 'This file type is not allowed');
