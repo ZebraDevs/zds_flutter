@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_editor_plus/image_editor_plus.dart';
 
-import '../../../../zds_flutter.dart';
+import '../../../../../zds_flutter.dart';
 
 /// Editors used to edit only image files & to launch other types of files
 class ZdsImageAnnotationPostProcessor implements ZdsFilePostProcessor {
@@ -29,8 +29,8 @@ class ZdsImageAnnotationPostProcessor implements ZdsFilePostProcessor {
     if (kIsWeb) return file;
 
     if (file.isImage() && file.content != null) {
-      final originalFile = File(file.xFilePath);
-      final result = await _editFile(buildContext.call(), originalFile);
+      final File originalFile = File(file.xFilePath);
+      final XFile? result = await _editFile(buildContext.call(), originalFile);
       if (result != null) {
         return FileWrapper(file.type, result);
       }
@@ -41,10 +41,10 @@ class ZdsImageAnnotationPostProcessor implements ZdsFilePostProcessor {
 
   Future<XFile?> _editFile(BuildContext context, File originalFile) async {
     ImageEditor.i18n(ComponentStrings.of(context).getAll());
-    final bytes = await Navigator.push<Uint8List>(
+    final Uint8List? bytes = await Navigator.push<Uint8List?>(
       context,
-      MaterialPageRoute(
-        builder: (context) {
+      MaterialPageRoute<Uint8List?>(
+        builder: (BuildContext context) {
           return SingleImageEditor(
             image: originalFile.readAsBytesSync(),
           );
@@ -54,7 +54,7 @@ class ZdsImageAnnotationPostProcessor implements ZdsFilePostProcessor {
 
     if (bytes != null) {
       await originalFile.delete(recursive: true);
-      final result = File(originalFile.path);
+      final File result = File(originalFile.path);
       await result.writeAsBytes(bytes);
       return ZdsXFile.fromFile(result);
     } else {

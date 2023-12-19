@@ -1,10 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A label typically used to showcase status information.
 class ZdsLabel extends StatelessWidget {
+  /// Creates a label.
+  const ZdsLabel({super.key, this.icon, this.child, this.size = 16, this.padding = const EdgeInsets.only(right: 16)})
+      : assert(size != null ? size >= 0 : size == null, 'Size must be greater than or equal to 0');
+
   /// The icon to be shown at the start of this component.
   final IconData? icon;
 
@@ -23,17 +27,13 @@ class ZdsLabel extends StatelessWidget {
   /// Defaults to EdgeInsets.only(right: 16).
   final EdgeInsets padding;
 
-  /// Creates a label.
-  const ZdsLabel({super.key, this.icon, this.child, this.size = 16, this.padding = const EdgeInsets.only(right: 16)})
-      : assert(size != null ? size >= 0 : size == null, 'Size must be greater than or equal to 0');
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
       child: Row(
-        children: [
-          if (icon != null) ...[
+        children: <Widget>[
+          if (icon != null) ...<Widget>[
             Icon(
               icon,
               size: size,

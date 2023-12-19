@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
+import '../../utils/tools/app.dart';
 
 /// Tag colors
 ///
@@ -41,6 +42,28 @@ enum ZdsTagColor {
 ///  * Setting [rectangular] as true, typically with [prefix], typically used to indicate status, e.g pending, approved and declined.
 ///  * Setting [rounded] and [rectangular] as false, typically used to indicate status and to allow actions on the tag with [onClose].
 class ZdsTag extends StatelessWidget {
+  /// Tag item that can have a close/remove button.
+  ///
+  /// When [unrestrictedSize] is true, the tag will size itself to its child's size. This is useful for bigger fonts
+  /// or non-text children like images and such.
+  const ZdsTag({
+    super.key,
+    this.rounded = false,
+    this.rectangular = false,
+    this.filled = false,
+    this.prefix,
+    this.color = ZdsTagColor.basic,
+    this.customColor,
+    this.child,
+    this.onClose,
+    this.unrestrictedSize = false,
+    this.customBackgroundColor,
+  })  : assert(
+          prefix != null && (rounded || rectangular) || prefix == null,
+          'If prefix is not null, rounded must be true',
+        ),
+        assert(filled && prefix == null || !filled, 'If filled is true, prefix must be null');
+
   /// Whether to have completely rounded ends (pill shape) or to have a rectangle shape
   ///
   /// If [prefix] is not null, this must be true. Defaults to false
@@ -97,31 +120,9 @@ class ZdsTag extends StatelessWidget {
   /// Defaults to false.
   final bool unrestrictedSize;
 
-  /// Tag item that can have a close/remove button.
-  ///
-  /// When [unrestrictedSize] is true, the tag will size itself to its child's size. This is useful for bigger fonts
-  /// or non-text children like images and such.
-  const ZdsTag({
-    super.key,
-    this.rounded = false,
-    this.rectangular = false,
-    this.filled = false,
-    this.prefix,
-    this.color = ZdsTagColor.basic,
-    this.customColor,
-    this.child,
-    this.onClose,
-    this.unrestrictedSize = false,
-    this.customBackgroundColor,
-  })  : assert(
-          prefix != null && (rounded || rectangular) || prefix == null,
-          'If prefix is not null, rounded must be true',
-        ),
-        assert(filled && prefix == null || !filled, 'If filled is true, prefix must be null');
-
   @override
   Widget build(BuildContext context) {
-    final colors = _resolveColor(context, color);
+    final List<Color> colors = _resolveColor(context, color);
 
     final double height = onClose == null
         ? rounded
@@ -134,7 +135,7 @@ class ZdsTag extends StatelessWidget {
 
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: <Widget>[
         MergeSemantics(
           child: Padding(
             padding: const EdgeInsets.all(2),
@@ -151,7 +152,7 @@ class ZdsTag extends StatelessWidget {
                 ),
               ),
               child: Row(
-                children: [
+                children: <Widget>[
                   if (prefix != null)
                     ZdsIndex(
                       useBoxDecoration: !rectangular,
@@ -194,7 +195,7 @@ class ZdsTag extends StatelessWidget {
     final Color foregroundColor = customColor ?? _tagColors(context, color);
 
     if (filled) {
-      return [ZdsColors.white, foregroundColor];
+      return <Color>[ZdsColors.white, foregroundColor];
     }
 
     Color background = customBackgroundColor ?? foregroundColor.withLight(0.1);
@@ -207,10 +208,26 @@ class ZdsTag extends StatelessWidget {
       background = ZdsColors.greenSwatch['light']!;
     }
 
-    return [foregroundColor, background];
+    return <Color>[foregroundColor, background];
   }
 
   Color _tagColors(BuildContext context, ZdsTagColor tagColor) {
+    if (appZetaColors != null) {
+      switch (tagColor) {
+        case ZdsTagColor.error:
+          return appZetaColors!.red;
+        case ZdsTagColor.alert:
+          return appZetaColors!.orange;
+        case ZdsTagColor.primary:
+          return Theme.of(context).colorScheme.primary;
+        case ZdsTagColor.secondary:
+          return Theme.of(context).colorScheme.secondary;
+        case ZdsTagColor.success:
+          return appZetaColors!.green;
+        case ZdsTagColor.basic:
+          return appZetaColors!.warm.shade80;
+      }
+    }
     switch (tagColor) {
       case ZdsTagColor.error:
         return ZdsColors.red;
@@ -230,13 +247,14 @@ class ZdsTag extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('rounded', rounded));
-    properties.add(DiagnosticsProperty<bool>('rectangular', rectangular));
-    properties.add(DiagnosticsProperty<bool>('filled', filled));
-    properties.add(EnumProperty<ZdsTagColor>('color', color));
-    properties.add(ColorProperty('customColor', customColor));
-    properties.add(ColorProperty('customBackgroundColor', customBackgroundColor));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onClose', onClose));
-    properties.add(DiagnosticsProperty<bool>('unrestrictedSize', unrestrictedSize));
+    properties
+      ..add(DiagnosticsProperty<bool>('rounded', rounded))
+      ..add(DiagnosticsProperty<bool>('rectangular', rectangular))
+      ..add(DiagnosticsProperty<bool>('filled', filled))
+      ..add(EnumProperty<ZdsTagColor>('color', color))
+      ..add(ColorProperty('customColor', customColor))
+      ..add(ColorProperty('customBackgroundColor', customBackgroundColor))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onClose', onClose))
+      ..add(DiagnosticsProperty<bool>('unrestrictedSize', unrestrictedSize));
   }
 }

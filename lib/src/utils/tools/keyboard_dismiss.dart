@@ -15,6 +15,14 @@ import 'package:flutter/material.dart';
 /// functionality, you must take care that the methods used to dismiss the keyboard are familiar to each platforms'
 /// users if possible.
 class KeyboardDismiss extends StatelessWidget {
+  /// Provides functionality so that by tapping on descendant widgets (except textfields) the keyboard is dismissed.
+  const KeyboardDismiss({
+    required this.child,
+    super.key,
+    this.onDismissed,
+    this.shouldDismiss = true,
+  });
+
   /// The widget that will have this functionality implemented.
   final Widget child;
 
@@ -25,14 +33,6 @@ class KeyboardDismiss extends StatelessWidget {
   ///
   /// Defaults to true.
   final bool shouldDismiss;
-
-  /// Provides functionality so that by tapping on descendant widgets (except textfields) the keyboard is dismissed.
-  const KeyboardDismiss({
-    required this.child,
-    super.key,
-    this.onDismissed,
-    this.shouldDismiss = true,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +51,14 @@ class KeyboardDismiss extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onDismissed', onDismissed));
-    properties.add(DiagnosticsProperty<bool>('shouldDismiss', shouldDismiss));
+    properties
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onDismissed', onDismissed))
+      ..add(DiagnosticsProperty<bool>('shouldDismiss', shouldDismiss));
   }
 }
 
 void _maybeDismissKeyboard(BuildContext context) {
-  final currentFocus = FocusScope.of(context);
+  final FocusScopeNode currentFocus = FocusScope.of(context);
   if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
     currentFocus.focusedChild!.unfocus();
   }

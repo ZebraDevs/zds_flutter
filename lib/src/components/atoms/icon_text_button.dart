@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A widget that creates a Large icon button with text.
 ///
@@ -17,6 +17,17 @@ import '../../../zds_flutter.dart';
 ///
 /// ```
 class ZdsIconTextButton extends StatelessWidget {
+  /// Constructs a [ZdsIconTextButton].
+  const ZdsIconTextButton({
+    required this.label,
+    super.key,
+    this.icon,
+    this.iconColor,
+    this.labelColor,
+    this.onTap,
+    this.backgroundColor,
+  }) : assert(label.length != 0, 'label must not be empty');
+
   /// The icon to be shown above the label
   final IconData? icon;
 
@@ -39,20 +50,10 @@ class ZdsIconTextButton extends StatelessWidget {
   /// Defaults to [ColorScheme.primary]
   final Color? backgroundColor;
 
-  /// Constructs a [ZdsIconTextButton].
-  const ZdsIconTextButton({
-    required this.label,
-    super.key,
-    this.icon,
-    this.iconColor,
-    this.labelColor,
-    this.onTap,
-    this.backgroundColor,
-  }) : assert(label.length != 0, 'label must not be empty');
-
   @override
   Widget build(BuildContext context) {
-    final borderRadius = (Theme.of(context).cardTheme.shape as RoundedRectangleBorder?)?.borderRadius;
+    final BorderRadiusGeometry? borderRadius =
+        (Theme.of(context).cardTheme.shape as RoundedRectangleBorder?)?.borderRadius;
 
     return Container(
       height: 112,
@@ -60,7 +61,7 @@ class ZdsIconTextButton extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         color: backgroundColor ?? Theme.of(context).colorScheme.primary,
-        boxShadow: [BoxShadow(blurRadius: 4, color: ZdsColors.blueGrey.withOpacity(0.1))],
+        boxShadow: <BoxShadow>[BoxShadow(blurRadius: 4, color: ZdsColors.blueGrey.withOpacity(0.1))],
       ),
       child: Material(
         color: ZdsColors.transparent,
@@ -69,14 +70,16 @@ class ZdsIconTextButton extends StatelessWidget {
             onTap: onTap,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 Icon(icon, size: 56, color: iconColor),
                 const SizedBox(height: 8),
                 Text(
                   label,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color:
-                            labelColor ?? computeForeground(backgroundColor ?? Theme.of(context).colorScheme.primary),
+                        color: labelColor ??
+                            computeForeground(
+                              backgroundColor ?? Theme.of(context).colorScheme.primary,
+                            ),
                       ),
                 ),
               ],
@@ -90,11 +93,12 @@ class ZdsIconTextButton extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<IconData?>('icon', icon));
-    properties.add(ColorProperty('iconColor', iconColor));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(StringProperty('label', label));
-    properties.add(ColorProperty('labelColor', labelColor));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
+    properties
+      ..add(DiagnosticsProperty<IconData?>('icon', icon))
+      ..add(ColorProperty('iconColor', iconColor))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(StringProperty('label', label))
+      ..add(ColorProperty('labelColor', labelColor))
+      ..add(ColorProperty('backgroundColor', backgroundColor));
   }
 }

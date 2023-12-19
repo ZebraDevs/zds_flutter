@@ -17,4 +17,7 @@ abstract class ZdsFilePostProcessor {
 }
 
 /// Default post processors
-const zdsDefaultPostProcessors = [ZdsFileCompressPostProcessor(), ZdsFileRenamePostProcessor()];
+const List<ZdsFilePostProcessor> zdsDefaultPostProcessors = <ZdsFilePostProcessor>[
+  ZdsFileCompressPostProcessor(),
+  ZdsFileRenamePostProcessor(),
+];

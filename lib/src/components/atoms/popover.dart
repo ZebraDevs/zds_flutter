@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:popover/popover.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// An icon button with a popover.
 ///
@@ -15,6 +15,34 @@ import '../../../zds_flutter.dart';
 /// ),
 /// ```
 class ZdsPopOverIconButton extends StatelessWidget {
+  /// Constructs an icon button with a popover.
+  const ZdsPopOverIconButton({
+    required this.icon,
+    required this.popOverBuilder,
+    super.key,
+    this.onDismissed,
+    this.iconSize = 24.0,
+    this.visualDensity,
+    this.padding = const EdgeInsets.all(8),
+    this.alignment = Alignment.center,
+    this.splashRadius,
+    this.color,
+    this.focusColor,
+    this.hoverColor,
+    this.highlightColor,
+    this.splashColor,
+    this.disabledColor,
+    this.mouseCursor = SystemMouseCursors.click,
+    this.focusNode,
+    this.autofocus = false,
+    this.enableFeedback = true,
+    this.buttonConstraints,
+    this.popOverConstraints,
+    this.backgroundColor,
+    this.contentDyOffset = 0.0,
+    this.barrierLabel,
+  }) : assert(splashRadius == null || splashRadius > 0, 'Splash radius must be greater than 0');
+
   /// Icon for the icon button.
   final Icon icon;
 
@@ -94,34 +122,6 @@ class ZdsPopOverIconButton extends StatelessWidget {
   /// Semantic label used for a dismissible barrier.
   final String? barrierLabel;
 
-  /// Constructs an icon button with a popover.
-  const ZdsPopOverIconButton({
-    required this.icon,
-    required this.popOverBuilder,
-    super.key,
-    this.onDismissed,
-    this.iconSize = 24.0,
-    this.visualDensity,
-    this.padding = const EdgeInsets.all(8),
-    this.alignment = Alignment.center,
-    this.splashRadius,
-    this.color,
-    this.focusColor,
-    this.hoverColor,
-    this.highlightColor,
-    this.splashColor,
-    this.disabledColor,
-    this.mouseCursor = SystemMouseCursors.click,
-    this.focusNode,
-    this.autofocus = false,
-    this.enableFeedback = true,
-    this.buttonConstraints,
-    this.popOverConstraints,
-    this.backgroundColor,
-    this.contentDyOffset = 0.0,
-    this.barrierLabel,
-  }) : assert(splashRadius == null || splashRadius > 0, 'Splash radius must be greater than 0');
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -153,7 +153,7 @@ class ZdsPopOverIconButton extends StatelessWidget {
       enableFeedback: enableFeedback,
       constraints: buttonConstraints,
       onPressed: () async {
-        final result = await showZdsPopOver<dynamic>(
+        final dynamic result = await showZdsPopOver<dynamic>(
           context: context,
           backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.surface,
           contentDyOffset: contentDyOffset,

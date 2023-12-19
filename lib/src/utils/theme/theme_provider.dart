@@ -5,6 +5,14 @@ import '../../../zds_flutter.dart';
 
 /// Provides the Zds Theme to all children in the app
 class ThemeProvider extends StatefulWidget {
+  /// Constructs a ThemeProvider
+  const ThemeProvider({
+    required this.builder,
+    required this.colors,
+    super.key,
+    this.isDarkMode = false,
+  });
+
   /// Builds the child.
   final Widget Function(
     BuildContext context,
@@ -21,14 +29,6 @@ class ThemeProvider extends StatefulWidget {
   /// Not yet supported.
   final bool isDarkMode;
 
-  /// Constructs a ThemeProvider
-  const ThemeProvider({
-    required this.builder,
-    required this.colors,
-    super.key,
-    this.isDarkMode = false,
-  });
-
   @override
   ThemeProviderState createState() => ThemeProviderState();
 
@@ -42,14 +42,16 @@ class ThemeProvider extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      ObjectFlagProperty<Widget Function(BuildContext context, BrandColors colors, bool isDarkMode)>.has(
-        'builder',
-        builder,
-      ),
-    );
-    properties.add(DiagnosticsProperty<BrandColors>('colors', colors));
-    properties.add(DiagnosticsProperty<bool>('isDarkMode', isDarkMode));
+    properties
+      ..add(
+        // ignore: avoid_positional_boolean_parameters
+        ObjectFlagProperty<Widget Function(BuildContext context, BrandColors colors, bool isDarkMode)>.has(
+          'builder',
+          builder,
+        ),
+      )
+      ..add(DiagnosticsProperty<BrandColors>('colors', colors))
+      ..add(DiagnosticsProperty<bool>('isDarkMode', isDarkMode));
   }
 }
 
@@ -95,7 +97,8 @@ class ThemeProviderState extends State<ThemeProvider> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<BrandColors>('colors', colors));
-    properties.add(DiagnosticsProperty<bool>('isDarkMode', isDarkMode));
+    properties
+      ..add(DiagnosticsProperty<BrandColors>('colors', colors))
+      ..add(DiagnosticsProperty<bool>('isDarkMode', isDarkMode));
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 // TODO(colors): Add zeta
 
@@ -53,6 +53,17 @@ enum ZdsToastColors {
 ///
 ///  * [ZdsSnackBarExtension.showZdsToast], used to display a toast message on screen.
 class ZdsToast extends StatelessWidget implements PreferredSizeWidget {
+  /// The contents of a toast, typically used with [ZdsSnackBarExtension.showZdsToast].
+  const ZdsToast({
+    super.key,
+    this.leading,
+    this.title,
+    this.actions,
+    this.color = ZdsToastColors.primary,
+    this.rounded = true,
+    this.multiLine = false,
+  });
+
   /// An icon that will be shown before the [title].
   ///
   /// Typically an [Icon].
@@ -83,17 +94,6 @@ class ZdsToast extends StatelessWidget implements PreferredSizeWidget {
   /// Defaults to false.
   final bool multiLine;
 
-  /// The contents of a toast, typically used with [ZdsSnackBarExtension.showZdsToast].
-  const ZdsToast({
-    super.key,
-    this.leading,
-    this.title,
-    this.actions,
-    this.color = ZdsToastColors.primary,
-    this.rounded = true,
-    this.multiLine = false,
-  });
-
   Color _backgroundColor(BuildContext context, ZdsToastColors toastColor) {
     switch (toastColor) {
       case ZdsToastColors.success:
@@ -120,7 +120,7 @@ class ZdsToast extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: <Widget>[
         Container(
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(horizontal: rounded ? 8.0 : 0),
@@ -143,7 +143,7 @@ class ZdsToast extends StatelessWidget implements PreferredSizeWidget {
               child: IconTheme(
                 data: IconThemeData(color: _foregroundColor(color!)),
                 child: Row(
-                  children: [
+                  children: <Widget>[
                     if (leading != null) leading!,
                     Expanded(
                       child: () {
@@ -178,9 +178,10 @@ class ZdsToast extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(EnumProperty<ZdsToastColors?>('color', color));
-    properties.add(DiagnosticsProperty<bool>('rounded', rounded));
-    properties.add(DiagnosticsProperty<bool>('multiLine', multiLine));
+    properties
+      ..add(EnumProperty<ZdsToastColors?>('color', color))
+      ..add(DiagnosticsProperty<bool>('rounded', rounded))
+      ..add(DiagnosticsProperty<bool>('multiLine', multiLine));
   }
 }
 

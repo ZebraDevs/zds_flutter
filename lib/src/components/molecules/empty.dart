@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Creates a message about no results being returned.
 ///
 /// This widget can be used to show a message for, when example, a search returns no results, or when no options are
 /// available. Typically, this widget is shown instead of the results list when the list is empty.
 class ZdsEmpty extends StatelessWidget {
+  /// Creates a message about no results being returned.
+  const ZdsEmpty({super.key, this.icon, this.message});
+
   /// The icon used for this message.
   ///
   /// Typically an [Icon].
@@ -17,15 +20,12 @@ class ZdsEmpty extends StatelessWidget {
   /// Typically a [Text].
   final Widget? message;
 
-  /// Creates a message about no results being returned.
-  const ZdsEmpty({super.key, this.icon, this.message});
-
   @override
   Widget build(BuildContext context) {
     return Align(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           // Icon
           if (!(context.isShortScreen() || context.isSmallScreen() || (context.isPhone() && context.isLandscape())))
             ExcludeSemantics(
@@ -44,7 +44,7 @@ class ZdsEmpty extends StatelessWidget {
           // Message
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               Flexible(
                 child: MergeSemantics(
                   child: message ??
@@ -53,7 +53,7 @@ class ZdsEmpty extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                 ).textStyle(
-                  Theme.of(context).textTheme.bodyLarge,
+                  Theme.of(context).textTheme.displayMedium,
                   overflow: TextOverflow.visible,
                   textAlign: TextAlign.center,
                 ),

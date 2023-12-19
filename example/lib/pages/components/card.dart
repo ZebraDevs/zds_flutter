@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class CardDemo extends StatelessWidget {
@@ -88,9 +89,10 @@ class CardDemo extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 150),
-                const ZdsDashedLine(child: SizedBox(height: 150, width: 150)),
-                const SizedBox(height: 150),
+                const SafeArea(
+                  top: false,
+                  child: SizedBox(),
+                ),
               ],
             ),
           ),

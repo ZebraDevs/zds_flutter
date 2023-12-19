@@ -11,6 +11,7 @@ class SplitNavigatorDemo extends StatefulWidget {
 
 class _SplitNavigatorDemoState extends State<SplitNavigatorDemo> {
   int _currentIndex = 0;
+
   int get currentIndex => _currentIndex;
 
   set currentIndex(int currentIndex) {

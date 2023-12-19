@@ -2,12 +2,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A bar used to display status information.
 ///
 /// Typically used at the top of the page, below the appbar, to display status information.
 class ZdsInformationBar extends StatelessWidget {
+  /// Creates a bar used to display status information.
+  const ZdsInformationBar({
+    super.key,
+    this.icon,
+    this.label,
+    this.customBackground,
+    this.customForeground,
+    this.zetaColorSwatch,
+  });
+
   /// The icon shown before the [label].
   ///
   /// The color used will be determined by [zetaColorSwatch].
@@ -35,23 +45,13 @@ class ZdsInformationBar extends StatelessWidget {
   /// * Background: `color.surface`.
   /// * Icon: `color.icon`.
   /// * Text: default text color.
-  ///
-  /// Defaults to primary color swatch.
   final ZetaColorSwatch? zetaColorSwatch;
-
-  /// Creates a bar used to display status information.
-  const ZdsInformationBar({
-    super.key,
-    this.icon,
-    this.label,
-    this.customBackground,
-    this.customForeground,
-    this.zetaColorSwatch,
-  });
 
   @override
   Widget build(BuildContext context) {
-    final Color bg = zetaColorSwatch?.shade20 ?? customBackground ?? ZetaColors.of(context).primary.surface;
+    final ZetaColorSwatch zetaColor = zetaColorSwatch ?? ZetaColors.of(context).primary;
+
+    final Color bg = customBackground ?? zetaColor.shade20;
     return Container(
       height: 42,
       width: double.maxFinite,
@@ -61,11 +61,11 @@ class ZdsInformationBar extends StatelessWidget {
         bottom: false,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             if (icon != null)
               Icon(
                 icon,
-                color: zetaColorSwatch?.icon ?? customForeground ?? ZetaColors.of(context).primary.icon,
+                color: customForeground ?? zetaColor.icon,
                 size: 24,
               ).paddingOnly(right: 8),
             if (label != null)
@@ -73,8 +73,9 @@ class ZdsInformationBar extends StatelessWidget {
                 child: Text(
                   label!,
                   overflow: TextOverflow.ellipsis,
-                  style:
-                      Theme.of(context).textTheme.titleSmall?.copyWith(color: ZetaColors.computeForeground(input: bg)),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: ZetaColors.computeForeground(input: bg),
+                      ),
                 ),
               ),
           ],
@@ -86,11 +87,11 @@ class ZdsInformationBar extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-
-    properties.add(DiagnosticsProperty<IconData?>('icon', icon));
-    properties.add(StringProperty('label', label));
-    properties.add(ColorProperty('customForeground', customForeground));
-    properties.add(ColorProperty('customBackground', customBackground));
-    properties.add(ColorProperty('zetaColorSwatch', zetaColorSwatch));
+    properties
+      ..add(DiagnosticsProperty<IconData?>('icon', icon))
+      ..add(StringProperty('label', label))
+      ..add(ColorProperty('customForeground', customForeground))
+      ..add(ColorProperty('customBackground', customBackground))
+      ..add(ColorProperty('zetaColorSwatch', zetaColorSwatch));
   }
 }

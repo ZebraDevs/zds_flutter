@@ -1,6 +1,8 @@
 import 'package:flutter_svg/flutter_svg.dart';
 
-/// A collection of Images and SvgPictures to be used in Zds applications.
+import '../../../zds_flutter.dart';
+
+/// A collection of Images and SvgPictures to be used in Zebra applications.
 ///
 /// These images are all static and so do not need to have any instantiation.
 ///
@@ -17,48 +19,60 @@ class ZdsImages {
   // prevents instantiation and extension.
   ZdsImages._();
 
-  /// ![Calendar illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/calendar.png)
-  static SvgPicture calendar = SvgPicture.asset('packages/zds_flutter/lib/assets/images/calendar.svg');
+  /// ![Calendar illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/calendar.png)
+  static SvgPicture calendar = SvgPicture.asset('packages/$packageName/lib/assets/images/calendar.svg');
 
-  /// ![Chat graphic](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/chat.png)
-  static SvgPicture chat = SvgPicture.asset('packages/zds_flutter/lib/assets/images/chat.svg');
+  /// ![Chat illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/chat.png)
+  static SvgPicture chat = SvgPicture.asset('packages/$packageName/lib/assets/images/chat.svg');
 
-  /// ![Fail load graphic](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/cloud_fail.png)
-  static SvgPicture cloudFail = SvgPicture.asset('packages/zds_flutter/lib/assets/images/cloud_fail.svg');
+  /// ![Clock illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/clock.png)
+  static SvgPicture clock = SvgPicture.asset('packages/$packageName/lib/assets/images/clocks.svg');
 
-  /// ![Completed Tasks illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/completed_tasks.png)
-  static SvgPicture completedTasks = SvgPicture.asset('packages/zds_flutter/lib/assets/images/completed_tasks.svg');
+  /// ![Cloud fail illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/cloud_fail.png)
+  static SvgPicture cloudFail = SvgPicture.asset('packages/$packageName/lib/assets/images/cloud_fail.svg');
 
-  /// ![Map illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/connection_dead.png)
-  static SvgPicture connectionDead = SvgPicture.asset('packages/zds_flutter/lib/assets/images/connection_dead.svg');
+  /// ![Completed tasks illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/completed_tasks.png)
+  static SvgPicture completedTasks = SvgPicture.asset('packages/$packageName/lib/assets/images/completed_tasks.svg');
 
-  /// ![Empty Box illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/empty_box.png)
-  static SvgPicture emptyBox = SvgPicture.asset('packages/zds_flutter/lib/assets/images/empty_box.svg');
+  /// ![Connection loss illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/connection_loss.png)
+  static SvgPicture connectionLoss = SvgPicture.asset('packages/$packageName/lib/assets/images/connection_loss.svg');
 
-  /// ![Fail load graphic](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/internet_fail.png)
-  static SvgPicture internetFail = SvgPicture.asset('packages/zds_flutter/lib/assets/images/internet_fail.svg');
+  /// ![Dark mode illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/dark_mode.png)
+  static SvgPicture darkMode = SvgPicture.asset('packages/$packageName/lib/assets/images/dark_mode.svg');
 
-  /// ![Fail load graphic](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/load_fail.png)
-  static SvgPicture loadFail = SvgPicture.asset('packages/zds_flutter/lib/assets/images/load_fail.svg');
+  /// ![Empty box illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/empty_box.png)
+  static SvgPicture emptyBox = SvgPicture.asset('packages/$packageName/lib/assets/images/empty_box.svg');
 
-  /// ![Map illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/load_fail.png)
-  static SvgPicture map = SvgPicture.asset('packages/zds_flutter/lib/assets/images/map.svg');
+  /// ![Internet fail illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/internet_fail.png)
+  static SvgPicture internetFail = SvgPicture.asset('packages/$packageName/lib/assets/images/internet_fail.svg');
 
-  /// ![Notes graphic](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/notes.png)
-  static SvgPicture notes = SvgPicture.asset('packages/zds_flutter/lib/assets/images/notes.svg');
+  /// ![Light mode illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/light_mode.png)
+  static SvgPicture lightMode = SvgPicture.asset('packages/$packageName/lib/assets/images/light_mode.svg');
 
-  /// ![Notifications graphic](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/notifications.png)
-  static SvgPicture notifications = SvgPicture.asset('packages/zds_flutter/lib/assets/images/notifications.svg');
+  /// ![Load fail illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/load_fail.png)
+  static SvgPicture loadFail = SvgPicture.asset('packages/$packageName/lib/assets/images/load_fail.svg');
 
-  /// ![Sad Zebra illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/sad_zebra.png)
-  static SvgPicture sadZebra = SvgPicture.asset('packages/zds_flutter/lib/assets/images/sad_zebra.svg');
+  /// ![Map illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/map.png)
+  static SvgPicture map = SvgPicture.asset('packages/$packageName/lib/assets/images/map.svg');
 
-  /// ![Search illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/search.png)
-  static SvgPicture search = SvgPicture.asset('packages/zds_flutter/lib/assets/images/search.svg');
+  /// ![Notes illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/notes.png)
+  static SvgPicture notes = SvgPicture.asset('packages/$packageName/lib/assets/images/notes.svg');
 
-  /// ![Fail load graphic](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/server_fail.png)
-  static SvgPicture serverFail = SvgPicture.asset('packages/zds_flutter/lib/assets/images/server_fail.svg');
+  /// ![Notifications illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/notifications.png)
+  static SvgPicture notifications = SvgPicture.asset('packages/$packageName/lib/assets/images/notifications.svg');
 
-  /// ![Sleeping Zebra illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/assets/images/sleeping_zebra.png)
-  static SvgPicture sleepingZebra = SvgPicture.asset('packages/zds_flutter/lib/assets/images/sleeping_zebra.svg');
+  /// ![Sad Zebra illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/sad_zebra.png)
+  static SvgPicture sadZebra = SvgPicture.asset('packages/$packageName/lib/assets/images/sad_zebra.svg');
+
+  /// ![Search illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/search.png)
+  static SvgPicture search = SvgPicture.asset('packages/$packageName/lib/assets/images/search.svg');
+
+  /// ![Server fail illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/server_fail.png)
+  static SvgPicture serverFail = SvgPicture.asset('packages/$packageName/lib/assets/images/server_fail.svg');
+
+  /// ![Sleeping Zebra illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/sleeping_zebra.png)
+  static SvgPicture sleepingZebra = SvgPicture.asset('packages/$packageName/lib/assets/images/sleeping_zebra.svg');
+
+  /// ![System mode illustration](https://raw.githubusercontent.com/ZebraDevs/zds_flutter/main/docs/assets/system_mode.png)
+  static SvgPicture systemMode = SvgPicture.asset('packages/$packageName/lib/assets/images/system_mode.svg');
 }

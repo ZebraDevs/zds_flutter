@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class TextFieldDemo extends StatefulWidget {
@@ -12,6 +13,7 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
   String? error;
   final noteController = TextEditingController();
   String? dropdownVal;
+
   @override
   void initState() {
     noteController.text = 'Lets get an early jump on the seasonal plannogram for this week. for this week.';
@@ -32,6 +34,7 @@ class _TextFieldDemoState extends State<TextFieldDemo> {
           ),
           const SizedBox(height: 16),
           ZdsDropdownList<String>(
+            label: 'Dropdown label',
             options: [
               ZdsDropdownListItem(name: 'Approved', value: 'A'),
               ZdsDropdownListItem(name: 'Pending', value: 'P'),

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A component used to show status information, like index, order, or state, in a very small space.
 ///
@@ -14,6 +14,11 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [ZdsTag], which uses this component in its prefix.
 class ZdsIndex extends StatelessWidget {
+  /// Creates a small circle used to show status information at a glance.
+  /// This circle is optional to cater for when a leading icon is required, without a circle.
+  /// An example of this is 'Approved' with a leading check icon.
+  const ZdsIndex({super.key, this.child, this.color, this.useBoxDecoration = true});
+
   /// The background color of the circle.
   ///
   /// Defaults to [ColorScheme.primaryContainer].
@@ -28,11 +33,6 @@ class ZdsIndex extends StatelessWidget {
   ///
   /// If rectangular boolean is false in [ZdsTag], this defaults to true.
   final bool useBoxDecoration;
-
-  /// Creates a small circle used to show status information at a glance.
-  /// This circle is optional to cater for when a leading icon is required, without a circle.
-  /// An example of this is 'Approved' with a leading check icon.
-  const ZdsIndex({super.key, this.child, this.color, this.useBoxDecoration = true});
 
   @override
   Widget build(BuildContext context) {

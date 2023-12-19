@@ -104,8 +104,7 @@ Future<Uint8List?> cropImageDataWithDartLibrary({required ExtendedImageEditorSta
       fileData = onlyOneFrame ? encodeJpg(Image.from(src.frames.first)) : encodeGif(src);
     } else {
       //fileData = await lb.run<List<int>, Image>(encodeJpg, src);
-      fileData =
-          (onlyOneFrame ? await compute(encodeJpg, Image.from(src.frames.first)) : await compute(encodeGif, src));
+      fileData = onlyOneFrame ? await compute(encodeJpg, Image.from(src.frames.first)) : await compute(encodeGif, src);
     }
   }
   final DateTime time5 = DateTime.now();
@@ -156,7 +155,7 @@ Future<dynamic> isolateDecodeImage(List<int> data) async {
   await Isolate.spawn(_isolateDecodeImage, response.sendPort);
   final dynamic sendPort = await response.first;
   final ReceivePort answer = ReceivePort();
-  sendPort.send([answer.sendPort, data]);
+  sendPort.send(<Object>[answer.sendPort, data]);
   return answer.first;
 }
 
@@ -166,7 +165,7 @@ Future<dynamic> isolateEncodeImage(Image src) async {
   await Isolate.spawn(_isolateEncodeImage, response.sendPort);
   final dynamic sendPort = await response.first;
   final ReceivePort answer = ReceivePort();
-  sendPort.send([answer.sendPort, src]);
+  sendPort.send(<Object>[answer.sendPort, src]);
   return answer.first;
 }
 
@@ -202,6 +201,7 @@ Future<Uint8List> _loadNetwork(ExtendedNetworkImageProvider key) async {
       cancelToken: key.cancelToken,
     );
     return response!.bodyBytes;
+    // ignore: avoid_catching_errors
   } on OperationCanceledError catch (_) {
     debugPrint('User cancel request ${key.url}.');
     return Future<Uint8List>.error(StateError('User cancel request ${key.url}.'));

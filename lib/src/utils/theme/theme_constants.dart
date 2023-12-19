@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import '../../../zds_flutter.dart';
 
 /// Default bottom bar height.
-const kBottomBarHeight = 62.0;
+const double kBottomBarHeight = 62;
 
 /// Default radius for search bar.
-const kSearchBorderRadius = 53.0;
+const double kSearchBorderRadius = 53;
 
 /// Default toolbar height.
-const kZdsToolbarHeight = 64.0;
+const double kZdsToolbarHeight = 64;
 
 /// Default horizontal menu padding.
-const kMenuHorizontalPadding = EdgeInsets.symmetric(horizontal: 24);
+const EdgeInsets kMenuHorizontalPadding = EdgeInsets.symmetric(horizontal: 24);
 
 /// Default vertical menu padding.
-const kMenuVerticalPadding = EdgeInsets.symmetric(vertical: 24 / 2);
+const EdgeInsets kMenuVerticalPadding = EdgeInsets.symmetric(vertical: 24 / 2);
 
 /// Default height of toast.
-const kToastHeight = 48.0;
+const double kToastHeight = 48;
 
 /// Default header border size.
-const kHeaderBoarderSize = 1.0;
+const double kHeaderBoarderSize = 1;
 
 /// Default max action height.
-const kMaxActionHeight = 48.0;
+const double kMaxActionHeight = 48;
 
 /// Height for[ZdsToggleButton].
 const double kBigToggleHeight = 40;
@@ -38,10 +38,10 @@ const double kDefaultBorderRadius = 6;
 const double rectangularBorderRadius = 2;
 
 /// Default horizontal padding for [ZdsList].
-const kDefaultHorizontalPadding = 14.0;
+const double kDefaultHorizontalPadding = 14;
 
 /// Default vertical  padding for [ZdsList].
-const kDefaultVerticalPadding = 8.0;
+const double kDefaultVerticalPadding = 8;
 
 /// Space used for [ZdsInputBorder].
 const double kSpace = 6;

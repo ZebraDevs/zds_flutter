@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A Material-style date picker dialog.
 ///
@@ -23,15 +23,6 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [showDatePicker], which is a way to display the date picker.
 class DatePickerDialog extends StatefulWidget {
-  static const Size _calendarPortraitDialogSize = Size(330, 518);
-  static const Size _calendarLandscapeDialogSize = Size(496, 346);
-  static const Size _inputPortraitDialogSize = Size(330, 270);
-  static const Size _inputLandscapeDialogSize = Size(496, 160);
-  static const Size _inputRangeLandscapeDialogSize = Size(496, 164);
-  static const Duration _dialogSizeAnimationDuration = Duration(milliseconds: 200);
-  static const double _inputFormPortraitHeight = 98;
-  static const double _inputFormLandscapeHeight = 108;
-
   /// A Material-style date picker dialog.
   DatePickerDialog({
     required DateTime initialDate,
@@ -71,6 +62,14 @@ class DatePickerDialog extends StatefulWidget {
       'Provided initialDate ${this.initialDate} must satisfy provided selectableDayPredicate',
     );
   }
+  static const Size _calendarPortraitDialogSize = Size(330, 518);
+  static const Size _calendarLandscapeDialogSize = Size(496, 346);
+  static const Size _inputPortraitDialogSize = Size(330, 270);
+  static const Size _inputLandscapeDialogSize = Size(496, 160);
+  static const Size _inputRangeLandscapeDialogSize = Size(496, 164);
+  static const Duration _dialogSizeAnimationDuration = Duration(milliseconds: 200);
+  static const double _inputFormPortraitHeight = 98;
+  static const double _inputFormLandscapeHeight = 108;
 
   /// The initially selected [DateTime] that the picker should display.
   final DateTime initialDate;
@@ -1400,7 +1399,7 @@ class _CalendarRangePickerDialog extends StatelessWidget {
     final Color headerDisabledForeground = headerForeground.withOpacity(0.38);
     final String startDateText = _formatRangeStartDate(localizations, selectedStartDate, selectedEndDate);
     final String endDateText = _formatRangeEndDate(localizations, selectedStartDate, selectedEndDate, DateTime.now());
-    final TextStyle? headlineStyle = textTheme.headlineSmall;
+    final TextStyle? headlineStyle = textTheme.displaySmall;
     final TextStyle? startDateStyle = headlineStyle?.apply(
       color: selectedStartDate != null ? headerForeground : headerDisabledForeground,
     );
@@ -1417,7 +1416,7 @@ class _CalendarRangePickerDialog extends StatelessWidget {
         leading: CloseButton(
           onPressed: onCancel,
         ),
-        actions: [
+        actions: <Widget>[
           if (orientation == Orientation.portrait && entryModeButton != null)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -1430,7 +1429,7 @@ class _CalendarRangePickerDialog extends StatelessWidget {
             width: double.infinity,
             height: 46,
             child: Row(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -1480,7 +1479,7 @@ class _CalendarRangePickerDialog extends StatelessWidget {
       ),
       bottomNavigationBar: ZdsBottomBar(
         child: Row(
-          children: [
+          children: <Widget>[
             const Spacer(),
             ZdsButton.outlined(
               onTap: onCancel,
@@ -2462,7 +2461,7 @@ class MonthItemState extends State<MonthItem> {
           child: ExcludeSemantics(
             child: Text(
               localizations.formatMonthYear(widget.displayedMonth),
-              style: textTheme.bodyMedium!.apply(color: themeData.colorScheme.onSurface),
+              style: textTheme.bodyMedium?.apply(color: themeData.colorScheme.onSurface),
             ),
           ),
         ),

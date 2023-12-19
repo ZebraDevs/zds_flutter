@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/rendering.dart';
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Shows an icon with an unread badge.
 ///
@@ -15,6 +15,30 @@ import '../../../zds_flutter.dart';
 ///  * [UnreadBadge], used to show the unread badge in this
 ///  * [ZdsNavItem], where this widget can be used as the icon.
 class IconWithBadge extends StatelessWidget {
+  /// Displays an icon with an optional unread badge if the [unread] parameter is given. The optional [semanticsLabel]
+  /// parameter is used by the unreadBadge child.
+  ///
+  /// No badge will show if [unread] is 0.
+  ///
+  /// All parameters except [semanticsLabel] must not be null.
+  const IconWithBadge(
+    this.icon, {
+    super.key,
+    this.color,
+    this.fill,
+    this.grade,
+    this.maximumDigits = 3,
+    this.opticalSize,
+    this.semanticLabel,
+    this.semanticsLabel,
+    this.shadows,
+    this.size = 24,
+    this.textDirection,
+    this.unread = 0,
+    this.weight,
+    this.iconContainerColor,
+  }) : assert(maximumDigits >= 1, 'maximumDigits must be greater than or equal to 1.');
+
   /// The number to show in the badge. If it's equal to 0, only the icon will be shown and no badge will show.
   ///
   /// Defaults to 0.
@@ -187,38 +211,14 @@ class IconWithBadge extends StatelessWidget {
   /// This color is later used to draw a border around the [UnreadBadge].
   final Color? iconContainerColor;
 
-  /// Displays an icon with an optional unread badge if the [unread] parameter is given. The optional [semanticsLabel]
-  /// parameter is used by the unreadBadge child.
-  ///
-  /// No badge will show if [unread] is 0.
-  ///
-  /// All parameters except [semanticsLabel] must not be null.
-  const IconWithBadge(
-    this.icon, {
-    super.key,
-    this.color,
-    this.fill,
-    this.grade,
-    this.maximumDigits = 3,
-    this.opticalSize,
-    this.semanticLabel,
-    this.semanticsLabel,
-    this.shadows,
-    this.size = 24,
-    this.textDirection,
-    this.unread = 0,
-    this.weight,
-    this.iconContainerColor,
-  }) : assert(maximumDigits >= 1, 'maximumDigits must be greater than or equal to 1.');
-
   @override
   Widget build(BuildContext context) {
-    final badgeSize = size * 0.6;
+    final double badgeSize = size * 0.6;
     return Center(
       child: Stack(
         alignment: Alignment.center,
         clipBehavior: Clip.none,
-        children: [
+        children: <Widget>[
           Icon(
             icon,
             size: size,

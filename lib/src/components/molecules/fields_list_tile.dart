@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A tile showing a list of properties with their respective values.
 ///
@@ -30,6 +30,21 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsPropertiesList], another way to show table-like data.
 ///  * [TileField], which defines the fields.
 class ZdsFieldsListTile<T> extends StatelessWidget {
+  /// Creates a tile showing a list of properties with their respective values.
+  const ZdsFieldsListTile({
+    super.key,
+    this.title,
+    this.fields,
+    this.fieldsStartTextStyle,
+    this.fieldsEndTextStyle,
+    this.data,
+    this.footnote,
+    this.onTap,
+    this.shrink = true,
+    this.startFieldFlexFactor,
+    this.cardPadding = const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+  });
+
   /// The title, shown at the top of this tile.
   ///
   /// Typically a [Text].
@@ -78,21 +93,6 @@ class ZdsFieldsListTile<T> extends StatelessWidget {
   /// Defaults to EdgeInsets.symmetric(horizontal: 14, vertical: 18).
   final EdgeInsets cardPadding;
 
-  /// Creates a tile showing a list of properties with their respective values.
-  const ZdsFieldsListTile({
-    super.key,
-    this.title,
-    this.fields,
-    this.fieldsStartTextStyle,
-    this.fieldsEndTextStyle,
-    this.data,
-    this.footnote,
-    this.onTap,
-    this.shrink = true,
-    this.startFieldFlexFactor,
-    this.cardPadding = const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-  });
-
   @override
   Widget build(BuildContext context) {
     return ZdsCard(
@@ -100,7 +100,7 @@ class ZdsFieldsListTile<T> extends StatelessWidget {
       onTap: onTap != null ? () => onTap!.call(data) : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+        children: <Widget>[
           if (title != null)
             DefaultTextStyle(
               style: Theme.of(context).textTheme.bodyLarge!,
@@ -110,20 +110,20 @@ class ZdsFieldsListTile<T> extends StatelessWidget {
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (_, index) => buildDetailRow(
+              itemBuilder: (_, int index) => buildDetailRow(
                 context: context,
                 field: fields![index],
                 fieldsStartDefaultStyle: fieldsStartTextStyle,
                 fieldsEndDefaultStyle: fieldsEndTextStyle,
                 startFieldFlexFactor: startFieldFlexFactor,
               ),
-              separatorBuilder: (_, index) =>
+              separatorBuilder: (_, int index) =>
                   SizedBox(height: fields?[index].start != null && fields?[index].end != null ? (shrink ? 10 : 18) : 0),
               itemCount: fields!.length,
             ),
           if (footnote != null)
             Column(
-              children: [
+              children: <Widget>[
                 const SizedBox(height: 8),
                 DefaultTextStyle(
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -141,14 +141,15 @@ class ZdsFieldsListTile<T> extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<TileField>('fields', fields));
-    properties.add(DiagnosticsProperty<TextStyle?>('fieldsStartTextStyle', fieldsStartTextStyle));
-    properties.add(DiagnosticsProperty<TextStyle?>('fieldsEndTextStyle', fieldsEndTextStyle));
-    properties.add(DiagnosticsProperty<T?>('data', data));
-    properties.add(ObjectFlagProperty<void Function(T? p1)?>.has('onTap', onTap));
-    properties.add(DiagnosticsProperty<bool>('shrink', shrink));
-    properties.add(IntProperty('startFieldFlexFactor', startFieldFlexFactor));
-    properties.add(DiagnosticsProperty<EdgeInsets>('cardPadding', cardPadding));
+    properties
+      ..add(IterableProperty<TileField>('fields', fields))
+      ..add(DiagnosticsProperty<TextStyle?>('fieldsStartTextStyle', fieldsStartTextStyle))
+      ..add(DiagnosticsProperty<TextStyle?>('fieldsEndTextStyle', fieldsEndTextStyle))
+      ..add(DiagnosticsProperty<T?>('data', data))
+      ..add(ObjectFlagProperty<void Function(T? p1)?>.has('onTap', onTap))
+      ..add(DiagnosticsProperty<bool>('shrink', shrink))
+      ..add(IntProperty('startFieldFlexFactor', startFieldFlexFactor))
+      ..add(DiagnosticsProperty<EdgeInsets>('cardPadding', cardPadding));
   }
 }
 
@@ -163,7 +164,7 @@ extension _UIBuilder on ZdsFieldsListTile<dynamic> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         if (field.start != null)
           DefaultTextStyle(
             style:
@@ -187,15 +188,15 @@ extension _UIBuilder on ZdsFieldsListTile<dynamic> {
 
 /// Pairs of data used with [ZdsFieldsListTile].
 class TileField {
-  /// Start widget of the data.
-  final Widget? start;
-
-  /// End widget of the data.
-  final Widget? end;
-
   /// Constructs a [TileField].
   const TileField({
     this.start,
     this.end,
   });
+
+  /// Start widget of the data.
+  final Widget? start;
+
+  /// End widget of the data.
+  final Widget? end;
 }

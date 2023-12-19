@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui' as ui show Image;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -31,45 +32,6 @@ class Compression {
         assert(minWidth > 0, 'minWidth must be greater than 0.'),
         assert(inSampleSize > 0, 'inSampleSize must be greater than 0.'),
         assert(minHeight > 0, 'minHeight must be greater than 0.');
-
-  /// Compression quality. Ranges from 1-100
-  ///
-  /// If [format] is png, the param will be ignored in iOS
-  final int quality;
-
-  /// Minimum width of the image. Compression will be made around this width.
-  final int minWidth;
-
-  /// Minimum width of the image. Compression will be made around this height.
-  final int minHeight;
-
-  /// Maximum byte-size of the image. Default to 250Kb
-  final int maxFileSize;
-
-  /// Compress format, only used in case of images
-  final CompressFormat format;
-
-  /// The param is only support android.
-  ///
-  /// If set to a value > 1, requests the decoder to subsample the original image, returning a smaller image to save
-  /// memory. The sample size is the number of pixels in either dimension that correspond to a single pixel in the
-  /// decoded bitmap. For example, inSampleSize == 4 returns an image that is 1/4 the width/height of the original,
-  /// and 1/16 the number of pixels. Any value <= 1 is treated the same as 1. Note: the decoder uses a final value
-  /// based on powers of 2, any other value will be rounded down to the nearest power of 2.
-  final int inSampleSize;
-
-  /// If you need to rotate the picture, use this parameter.
-  final int rotate;
-
-  /// Modify rotate to 0 or autoCorrectionAngle to false.
-  final bool autoCorrectionAngle;
-
-  /// If this parameter is true, EXIF information is saved in the compressed result.
-  /// Default value is false.
-  final bool keepExif;
-
-  /// No of retries before giving up on error.
-  final int numberOfRetries;
 
   /// Efficient compression with minimum values
   const Compression.standard()
@@ -114,6 +76,45 @@ class Compression {
         format = CompressFormat.jpeg,
         assert(minWidth > 0, 'minWidth must be greater than 0'),
         assert(minHeight > 0, 'minHeight must be greater than 0');
+
+  /// Compression quality. Ranges from 1-100
+  ///
+  /// If [format] is png, the param will be ignored in iOS
+  final int quality;
+
+  /// Minimum width of the image. Compression will be made around this width.
+  final int minWidth;
+
+  /// Minimum width of the image. Compression will be made around this height.
+  final int minHeight;
+
+  /// Maximum byte-size of the image. Default to 250Kb
+  final int maxFileSize;
+
+  /// Compress format, only used in case of images
+  final CompressFormat format;
+
+  /// The param is only support android.
+  ///
+  /// If set to a value > 1, requests the decoder to subsample the original image, returning a smaller image to save
+  /// memory. The sample size is the number of pixels in either dimension that correspond to a single pixel in the
+  /// decoded bitmap. For example, inSampleSize == 4 returns an image that is 1/4 the width/height of the original,
+  /// and 1/16 the number of pixels. Any value <= 1 is treated the same as 1. Note: the decoder uses a final value
+  /// based on powers of 2, any other value will be rounded down to the nearest power of 2.
+  final int inSampleSize;
+
+  /// If you need to rotate the picture, use this parameter.
+  final int rotate;
+
+  /// Modify rotate to 0 or autoCorrectionAngle to false.
+  final bool autoCorrectionAngle;
+
+  /// If this parameter is true, EXIF information is saved in the compressed result.
+  /// Default value is false.
+  final bool keepExif;
+
+  /// No of retries before giving up on error.
+  final int numberOfRetries;
 
   /// Creates a copy of this compression, but with the given fields replaced wih the new values.
   Compression copyWith({
@@ -163,28 +164,28 @@ class ZdsCompressor {
 
       final int maxFileSize = compression.maxFileSize;
 
-      final originalSize = await image.length();
-      var quality = compression.quality;
+      final int originalSize = await image.length();
+      int quality = compression.quality;
 
       if (kDebugMode) print('Size before compression : $originalSize');
 
       compressedImage = image;
 
       //tempFile for more compression if needed
-      final dir = await zdsTempDirectory('compressed');
-      final imageExt = compression.format == CompressFormat.jpeg
+      final String dir = await zdsTempDirectory('compressed');
+      final String imageExt = compression.format == CompressFormat.jpeg
           ? 'jpeg'
           : compression.format == CompressFormat.png
               ? 'png'
               : path.extension(compressedImage.absolute.path).toLowerCase();
 
-      final tmpName = 'TMP_${DateTime.now().microsecondsSinceEpoch}.$imageExt';
-      final tempFile = File(path.join(dir, tmpName));
+      final String tmpName = 'TMP_${DateTime.now().microsecondsSinceEpoch}.$imageExt';
+      final File tempFile = File(path.join(dir, tmpName));
 
       //targetFile
-      final targetFile = File('$dir/${path.basenameWithoutExtension(image.absolute.path)}.$imageExt');
-      final decodeImage = await decodeImageFromList(image.readAsBytesSync());
-      final scaleFactor = decodeImage.height > decodeImage.width
+      final File targetFile = File('$dir/${path.basenameWithoutExtension(image.absolute.path)}.$imageExt');
+      final ui.Image decodeImage = await decodeImageFromList(image.readAsBytesSync());
+      final double scaleFactor = decodeImage.height > decodeImage.width
           ? compression.minHeight / decodeImage.height
           : compression.minWidth / decodeImage.width;
 
@@ -196,7 +197,7 @@ class ZdsCompressor {
       /// Compress at-least once
       do {
         if (targetFile.existsSync()) await targetFile.delete();
-        final processedFile = await FlutterImageCompress.compressAndGetFile(
+        final XFile? processedFile = await FlutterImageCompress.compressAndGetFile(
           compressedImage?.absolute.path ?? '',
           autoCorrectionAngle: compression.autoCorrectionAngle,
           format: compression.format,
@@ -250,9 +251,9 @@ class ZdsCompressor {
     try {
       quality ??= VideoQuality.Res640x480Quality;
 
-      var compressedVideo = video;
-      final originalSize = await compressedVideo.length();
-      var iteration = 1;
+      File compressedVideo = video;
+      final int originalSize = await compressedVideo.length();
+      int iteration = 1;
       if (kDebugMode) print('Size before compression : $originalSize');
 
       int compressedSize;
@@ -275,10 +276,10 @@ class ZdsCompressor {
       } while (compressedSize >= maxFileSize && iteration < 4);
 
       /// Create target file
-      var newTarget = target;
+      File? newTarget = target;
       if (newTarget == null) {
-        final fileExtension = path.extension(compressedVideo.absolute.path).toLowerCase();
-        final newName = 'VID_${DateTime.now().microsecondsSinceEpoch}$fileExtension';
+        final String fileExtension = path.extension(compressedVideo.absolute.path).toLowerCase();
+        final String newName = 'VID_${DateTime.now().microsecondsSinceEpoch}$fileExtension';
         final String dir = path.dirname(compressedVideo.absolute.path);
         newTarget = File(path.join(dir, newName));
       }
@@ -287,7 +288,7 @@ class ZdsCompressor {
       if (newTarget.existsSync()) await newTarget.delete();
 
       /// move file to target
-      final compressed = await compressedVideo.copy(newTarget.absolute.path);
+      final File compressed = await compressedVideo.copy(newTarget.absolute.path);
 
       /// Delete cached file
       if (compressedVideo.absolute.path != compressed.absolute.path) await compressedVideo.delete();

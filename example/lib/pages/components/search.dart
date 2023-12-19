@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
 class SearchDemo extends StatefulWidget {
   const SearchDemo({Key? key}) : super(key: key);
@@ -50,10 +50,7 @@ class _SearchDemoState extends State<SearchDemo> {
   Widget build(BuildContext context) {
     final clearButton = _showSuffixClearButton
         ? IconButton(
-            icon: Icon(
-              ZdsIcons.close_circle,
-              color: ZetaColors.of(context).textSubtle,
-            ),
+            icon: Icon(ZdsIcons.close_circle, color: ZdsColors.greySwatch(context)[800]),
             onPressed: _clearButtonFieldController.clear,
           )
         : null;
@@ -86,8 +83,7 @@ class _SearchDemoState extends State<SearchDemo> {
                     color: Theme.of(context).primaryColor,
                   ).padding(5),
                   const Text('Try smart search').textStyle(
-                    Theme.of(context).textTheme.titleSmall!.copyWith(color: Theme.of(context).primaryColor),
-                  )
+                      Theme.of(context).textTheme.titleSmall!.copyWith(color: Theme.of(context).primaryColor))
                 ],
               ),
             )

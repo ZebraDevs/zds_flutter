@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class TagDemo extends StatelessWidget {
@@ -138,15 +139,17 @@ class TagDemo extends StatelessWidget {
                 trailing: ZdsTag(
                   rectangular: true,
                   color: ZdsTagColor.success,
-                  prefix: const Icon(Icons.check, size: 18),
-                  child: const Text('Approved'),
+                  prefix: Icon(Icons.check, size: 18, color: ZdsColors.green),
+                  child: const Text(
+                    'Approved',
+                  ),
                 ),
               ),
               ZdsListTile(
                 trailing: ZdsTag(
                   rectangular: true,
                   color: ZdsTagColor.secondary,
-                  prefix: const Icon(Icons.hourglass_bottom, size: 18),
+                  prefix: Icon(Icons.hourglass_bottom, size: 18, color: Theme.of(context).colorScheme.secondary),
                   child: const Text('Pending'),
                 ),
               ),
@@ -154,7 +157,7 @@ class TagDemo extends StatelessWidget {
                 trailing: ZdsTag(
                   rectangular: true,
                   color: ZdsTagColor.error,
-                  prefix: const Icon(Icons.close, size: 18),
+                  prefix: Icon(Icons.close, size: 18, color: ZdsColors.red),
                   child: const Text('Declined'),
                 ),
               ),

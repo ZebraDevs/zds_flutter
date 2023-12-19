@@ -1,11 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
+
+import '../../../../zds_flutter.dart';
 
 /// Component to add additional styling to a ZdsListTile.
 ///
 /// Removes the gap between ZdsTiles when used in a list and adds dividing lines between the tiles and rounds the corners.
 class ZdsListTileWrapper extends StatelessWidget {
+  /// Constructs a [ZdsListTileWrapper].
+  const ZdsListTileWrapper({required this.child, super.key, this.top = false, this.bottom = false});
+
   /// Typically a ZdsListTile for the styling to be applied to.
   final Widget child;
 
@@ -19,12 +23,8 @@ class ZdsListTileWrapper extends StatelessWidget {
   /// Defaults to false.
   final bool bottom;
 
-  /// Constructs a [ZdsListTileWrapper].
-  const ZdsListTileWrapper({required this.child, super.key, this.top = false, this.bottom = false});
-
   @override
   Widget build(BuildContext context) {
-    final ZetaColors colors = ZetaColors.of(context);
     return ClipRect(
       clipper: _PaddingRect(
         const EdgeInsets.symmetric(horizontal: 10).copyWith(top: top ? 10 : 0, bottom: bottom ? 10 : 0),
@@ -34,13 +34,13 @@ class ZdsListTileWrapper extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             border: Border(
-              top: top ? BorderSide.none : BorderSide(color: colors.cool.shade40),
-              bottom: bottom ? BorderSide.none : BorderSide(color: colors.cool.shade40),
+              top: top ? BorderSide.none : BorderSide(color: ZdsColors.lightGrey),
+              bottom: bottom ? BorderSide.none : BorderSide(color: ZdsColors.lightGrey),
             ),
-            boxShadow: [
+            boxShadow: <BoxShadow>[
               BoxShadow(
                 blurRadius: 4,
-                color: colors.shadow,
+                color: ZdsColors.blueGrey.withOpacity(0.1),
               ),
             ],
           ),
@@ -52,7 +52,7 @@ class ZdsListTileWrapper extends StatelessWidget {
               bottomLeft: bottom ? const Radius.circular(6) : Radius.zero,
               bottomRight: bottom ? const Radius.circular(6) : Radius.zero,
             ),
-            color: ZetaColors.of(context).background,
+            color: Theme.of(context).colorScheme.background,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 border: Border(

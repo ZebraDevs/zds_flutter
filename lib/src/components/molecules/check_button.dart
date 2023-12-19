@@ -2,10 +2,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A circular button that can be checked and that accepts either a string or an icon as a child.
 class ZdsCheckableButton extends StatelessWidget {
+  /// Constructs a circular, checkable button.
+  const ZdsCheckableButton({
+    super.key,
+    this.icon,
+    this.label,
+    this.isChecked = false,
+    this.onChanged,
+  }) : assert(
+          icon != null && label == null || icon == null && label != null,
+          'Icon and label cannot be used at the same time, either of them must be null',
+        );
+
   /// The widget that will be shown inside the button.
   ///
   /// If this parameter is not null, [label] must be null.
@@ -30,24 +42,16 @@ class ZdsCheckableButton extends StatelessWidget {
   /// Typically used to setState on [isChecked].
   final VoidCallback? onChanged;
 
-  /// Constructs a circular, checkable button.
-  const ZdsCheckableButton({
-    super.key,
-    this.icon,
-    this.label,
-    this.isChecked = false,
-    this.onChanged,
-  }) : assert(
-          icon != null && label == null || icon == null && label != null,
-          'Icon and label cannot be used at the same time, either of them must be null',
-        );
-
   @override
   Widget build(BuildContext context) {
     final ZetaColors colors = ZetaColors.of(context);
     final bool enabled = onChanged != null;
-    final Color foreground =
-        isChecked ? ZetaColors.computeForeground(input: Theme.of(context).colorScheme.secondary) : colors.warm.shade60;
+    final Color foreground = isChecked
+        ? computeForeground(Theme.of(context).colorScheme.secondary)
+        : enabled
+            ? ZdsColors.greySwatch(context)[ZetaColors.of(context).isDarkMode ? 600 : 1000]!
+            : ZdsColors.greySwatch(context)[1000]!;
+
     return MergeSemantics(
       child: Semantics(
         checked: isChecked,

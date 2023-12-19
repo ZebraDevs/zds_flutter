@@ -54,7 +54,7 @@ class ComponentLocalisation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Localizations(
       delegates: delegates ??
-          [
+          <LocalizationsDelegate<dynamic>>[
             GlobalMaterialLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
@@ -68,7 +68,8 @@ class ComponentLocalisation extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<LocalizationsDelegate<dynamic>>('delegates', delegates));
-    properties.add(DiagnosticsProperty<Locale?>('localeOverride', localeOverride));
+    properties
+      ..add(IterableProperty<LocalizationsDelegate<dynamic>>('delegates', delegates))
+      ..add(DiagnosticsProperty<Locale?>('localeOverride', localeOverride));
   }
 }

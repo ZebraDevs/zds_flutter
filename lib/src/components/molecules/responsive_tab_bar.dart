@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A TabBar that solves certain issues with Material's TabBar. When using isScrollable is set to true in TabBar, the
 /// tabs will not fit the device's width. When isScrollable is set to false, the tabs all have the same size and do not
@@ -91,13 +91,13 @@ class ZdsResponsiveTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int numberOfTabs = tabs.length;
-    final appBar = context.findAncestorWidgetOfExactType<ZdsAppBar>();
+    final ZdsAppBar? appBar = context.findAncestorWidgetOfExactType<ZdsAppBar>();
 
-    final customThemeContainer = Theme.of(context).zdsTabBarThemeData(
+    final ZdsTabBarStyleContainer customThemeContainer = Theme.of(context).zdsTabBarThemeData(
       context,
       hasIcons: hasIcons(tabs),
     )[appBar != null ? appBar.color : color]!;
-    final customTheme = customThemeContainer.customTheme;
+    final ZdsTabBarThemeData customTheme = customThemeContainer.customTheme;
 
     return Container(
       color: (customThemeContainer.customTheme.decoration as BoxDecoration).color,
@@ -105,9 +105,9 @@ class ZdsResponsiveTabBar extends StatelessWidget {
         bottom: false,
         top: topSafeArea,
         child: LayoutBuilder(
-          builder: (context, constraints) {
+          builder: (BuildContext context, BoxConstraints constraints) {
             // 16*2 refers to kTabLabelPadding (on both sides of the label)
-            var minWidth = constraints.maxWidth / numberOfTabs - (16 * 2);
+            double minWidth = constraints.maxWidth / numberOfTabs - (16 * 2);
             minWidth = minWidth > 0 ? minWidth : 12;
 
             return Container(
@@ -127,8 +127,8 @@ class ZdsResponsiveTabBar extends StatelessWidget {
                   labelColor: selectedTextColor,
                   unselectedLabelColor: textColor,
                   indicatorColor: indicatorColor,
-                  tabs: [
-                    for (final tab in tabs)
+                  tabs: <Widget>[
+                    for (final ZdsTab tab in tabs)
                       ConstrainedBox(
                         constraints: BoxConstraints(minWidth: minWidth),
                         child: tab,

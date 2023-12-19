@@ -1,21 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A class that [ZdsRadioList.items] must extend.
 ///
 /// View [ZdsRadioList] for more details.
 @immutable
 abstract class ZdsRadioItem<T> {
+  /// Constructs a [ZdsRadioItem].
+  const ZdsRadioItem(this.label, this.value);
+
   /// The label that will be shown for this item in the ZdsRadioList.
   final String label;
 
   /// The associated value to this item.
   final T value;
-
-  /// Constructs a [ZdsRadioItem].
-  const ZdsRadioItem(this.label, this.value);
 
   @override
   bool operator ==(Object other) {
@@ -51,6 +51,17 @@ abstract class ZdsRadioItem<T> {
 /// enum DateRange {currentWeek,lastWeek, currentMonth,}
 /// ```
 class ZdsRadioList<U extends ZdsRadioItem<dynamic>> extends StatefulWidget {
+  /// Create a list of items with a radio button and a label.
+  ///
+  /// [items] can't be null.
+  const ZdsRadioList({
+    super.key,
+    this.title,
+    this.items = const <Never>[],
+    this.onChange,
+    this.initialValue,
+  });
+
   /// Primary content of the list, typically a [Text] widget.
   final Widget? title;
 
@@ -62,17 +73,6 @@ class ZdsRadioList<U extends ZdsRadioItem<dynamic>> extends StatefulWidget {
 
   /// Callback to update item state.
   final void Function(U? item)? onChange;
-
-  /// Create a list of items with a radio button and a label.
-  ///
-  /// [items] can't be null.
-  const ZdsRadioList({
-    super.key,
-    this.title,
-    this.items = const [],
-    this.onChange,
-    this.initialValue,
-  });
 
   @override
   ZdsRadioListState<U> createState() => ZdsRadioListState<U>();
@@ -120,7 +120,7 @@ class ZdsRadioListState<U extends ZdsRadioItem<dynamic>> extends State<ZdsRadioL
     return Padding(
       padding: _isInExpansionTile ? const EdgeInsets.only(bottom: 14) : EdgeInsets.zero,
       child: Column(
-        children: widget.items.map((item) {
+        children: widget.items.map((U item) {
           return Material(
             color: ZdsColors.transparent,
             // The list tile wraps its children with a MergeSemantics. This attempts to merge its descendant Semantics
@@ -133,7 +133,7 @@ class ZdsRadioListState<U extends ZdsRadioItem<dynamic>> extends State<ZdsRadioL
                   child: _paddingWrapper(
                     child: IgnorePointer(
                       child: Row(
-                        children: [
+                        children: <Widget>[
                           Radio<U>(
                             value: item,
                             groupValue: _groupValue,

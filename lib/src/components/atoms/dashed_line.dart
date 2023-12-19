@@ -1,20 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Corner attributes for the [ZdsDashedLine].
 class ZdsDashedLineCorner {
-  /// Corner radius for top left corner.
-  final double topLeft;
-
-  /// Corner radius for top right corner.
-  final double topRight;
-
-  /// Corner radius for bottom right corner.
-  final double bottomRight;
-
-  /// Corner radius for bottom left corner.
-  final double bottomLeft;
-
   /// Specify the size of each rounded corner.
   const ZdsDashedLineCorner({
     this.topLeft = 0,
@@ -29,6 +19,18 @@ class ZdsDashedLineCorner {
         topRight = radius,
         bottomRight = radius,
         bottomLeft = radius;
+
+  /// Corner radius for top left corner.
+  final double topLeft;
+
+  /// Corner radius for top right corner.
+  final double topRight;
+
+  /// Corner radius for bottom right corner.
+  final double bottomRight;
+
+  /// Corner radius for bottom left corner.
+  final double bottomLeft;
 }
 
 /// A widget for creating dashed line or a container
@@ -52,6 +54,24 @@ class ZdsDashedLineCorner {
 /// This widget can be used as dashed line or dashed container. When supplied with [height] or [child] it will be a
 /// Container.
 class ZdsDashedLine extends StatefulWidget {
+  /// A widget for creating dashed line or a container
+  ///
+  /// [color], [strokeWidth], [dottedLength], and [space] must not be null.
+  const ZdsDashedLine({
+    super.key,
+    this.child,
+    this.color,
+    this.height,
+    this.width,
+    this.dottedLength = 5.0,
+    this.space = 3.0,
+    this.strokeWidth = 1.0,
+    this.corner,
+  }) : assert(
+          width != null || height != null || child != null,
+          'Either width, height, or child must not be null else nothing would be rendered.',
+        );
+
   /// Dotted line color.
   ///
   /// Defaults to [ColorScheme.onSurface].
@@ -91,24 +111,6 @@ class ZdsDashedLine extends StatefulWidget {
   /// At this time, [width] and [height] will no longer be valid.
   final Widget? child;
 
-  /// A widget for creating dashed line or a container
-  ///
-  /// [color], [strokeWidth], [dottedLength], and [space] must not be null.
-  const ZdsDashedLine({
-    super.key,
-    this.child,
-    this.color,
-    this.height,
-    this.width,
-    this.dottedLength = 5.0,
-    this.space = 3.0,
-    this.strokeWidth = 1.0,
-    this.corner,
-  }) : assert(
-          width != null || height != null || child != null,
-          'Either width, height, or child must not be null else nothing would be rendered.',
-        );
-
   @override
   ZdsDashedLineState createState() => ZdsDashedLineState();
   @override
@@ -140,7 +142,7 @@ class ZdsDashedLineState extends State<ZdsDashedLine> {
     if (_isEmpty(widget.width) && _isEmpty(widget.height) && widget.child == null) return const SizedBox();
     if (widget.child != null) {
       tryToGetChildSize();
-      final children = <Widget>[
+      final List<Widget> children = <Widget>[
         Container(
           clipBehavior: widget.corner == null ? Clip.none : Clip.antiAlias,
           decoration: BoxDecoration(
@@ -168,12 +170,12 @@ class ZdsDashedLineState extends State<ZdsDashedLine> {
 
   /// Attempts to get the [_childWidth] and [_childHeight] of the child to be wrapped with a dashed line.
   void tryToGetChildSize() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
       try {
-        final box = _childKey.currentContext?.findRenderObject() as RenderBox?;
-        final tempWidth = box?.size.width ?? 0.0;
-        final tempHeight = box?.size.height ?? 0.0;
-        final needUpdate = tempWidth != _childWidth || tempHeight != _childHeight;
+        final RenderBox? box = _childKey.currentContext?.findRenderObject() as RenderBox?;
+        final double tempWidth = box?.size.width ?? 0.0;
+        final double tempHeight = box?.size.height ?? 0.0;
+        final bool needUpdate = tempWidth != _childWidth || tempHeight != _childHeight;
         if (needUpdate) {
           setState(() {
             _childWidth = tempWidth;
@@ -215,8 +217,8 @@ class _DashedLinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final isHorizontal = size.width > size.height;
-    final paint = Paint()
+    final bool isHorizontal = size.width > size.height;
+    final Paint paint = Paint()
       ..isAntiAlias = true
       ..color = color
       ..filterQuality = FilterQuality.high
@@ -225,11 +227,11 @@ class _DashedLinePainter extends CustomPainter {
 
     if (!isShape) {
       /// line
-      final length = isHorizontal ? size.width : size.height;
-      final count = length / (dottedLength + space);
+      final double length = isHorizontal ? size.width : size.height;
+      final double count = length / (dottedLength + space);
       if (count < 2.0) return;
-      var startOffset = Offset.zero;
-      for (var i = 0; i < count.toInt(); i++) {
+      Offset startOffset = Offset.zero;
+      for (int i = 0; i < count.toInt(); i++) {
         canvas.drawLine(
           startOffset,
           startOffset.translate(isHorizontal ? dottedLength : 0, isHorizontal ? 0 : dottedLength),
@@ -240,7 +242,7 @@ class _DashedLinePainter extends CustomPainter {
       }
     } else {
       /// shape
-      final path = Path()
+      final Path path = Path()
         ..addRRect(
           RRect.fromLTRBAndCorners(
             0,
@@ -254,17 +256,17 @@ class _DashedLinePainter extends CustomPainter {
           ),
         );
 
-      final draw = buildDashPath(path, dottedLength, space);
+      final Path draw = buildDashPath(path, dottedLength, space);
       canvas.drawPath(draw, paint);
     }
   }
 
   Path buildDashPath(Path path, double dottedLength, double space) {
-    final r = Path();
-    for (final metric in path.computeMetrics()) {
-      var start = 0.0;
+    final Path r = Path();
+    for (final PathMetric metric in path.computeMetrics()) {
+      double start = 0;
       while (start < metric.length) {
-        final end = start + dottedLength;
+        final double end = start + dottedLength;
         r.addPath(metric.extractPath(start, end), Offset.zero);
         start = end + space;
       }

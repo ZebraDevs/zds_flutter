@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class ImagesDemo extends StatelessWidget {
@@ -16,6 +17,10 @@ class ImagesDemo extends StatelessWidget {
         'image': ZdsImages.chat,
       },
       {
+        'name': 'ZdsImages.clock',
+        'image': ZdsImages.clock,
+      },
+      {
         'name': 'ZdsImages.cloudFail',
         'image': ZdsImages.cloudFail,
       },
@@ -24,8 +29,8 @@ class ImagesDemo extends StatelessWidget {
         'image': ZdsImages.completedTasks,
       },
       {
-        'name': 'ZdsImages.connectionDead',
-        'image': ZdsImages.connectionDead,
+        'name': 'ZdsImages.darkMode',
+        'image': ZdsImages.darkMode,
       },
       {
         'name': 'ZdsImages.emptyBox',
@@ -34,6 +39,10 @@ class ImagesDemo extends StatelessWidget {
       {
         'name': 'ZdsImages.internetFail',
         'image': ZdsImages.internetFail,
+      },
+      {
+        'name': 'ZdsImages.lightMode',
+        'image': ZdsImages.lightMode,
       },
       {
         'name': 'ZdsImages.loadFail',
@@ -67,27 +76,24 @@ class ImagesDemo extends StatelessWidget {
         'name': 'ZdsImages.sleepingZebra',
         'image': ZdsImages.sleepingZebra,
       },
+      {
+        'name': 'ZdsImages.systemMode',
+        'image': ZdsImages.systemMode,
+      },
     ];
 
-    return GridView.count(
-      crossAxisCount: (MediaQuery.of(context).size.width / 200).floor(),
-      padding: const EdgeInsets.symmetric(vertical: 32),
-      mainAxisSpacing: 40,
-      crossAxisSpacing: 40,
-      children: [
-        ...images.map((e) {
-          return Column(children: [
-            SizedBox(width: 140, height: 140, child: e['image']),
-            Row(
-              children: [
-                Expanded(
-                  child: FittedBox(fit: BoxFit.scaleDown, child: Text(e['name'])),
-                ),
-              ],
-            ),
-          ]);
-        }).toList()
-      ],
+    return SingleChildScrollView(
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: images
+              .map((e) => ImgBox(img: e['image'], name: e['name']))
+              .toList()
+              .divide(const SizedBox(height: 32))
+              .toList(),
+        ),
+      ),
     );
   }
 }
@@ -95,11 +101,15 @@ class ImagesDemo extends StatelessWidget {
 class ImgBox extends StatelessWidget {
   final Widget img;
   final String name;
-
   const ImgBox({Key? key, required this.img, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: 144, height: 144, child: Column(children: [img, Text(name)]));
+    return Column(children: [
+      img,
+      const SizedBox(height: 12),
+      Text(name),
+      const SizedBox(height: 32),
+    ]);
   }
 }

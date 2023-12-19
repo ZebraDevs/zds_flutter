@@ -11,8 +11,8 @@ import '../../../utils/tools/utils.dart';
 import '../temp_directory/resolver.dart';
 import 'file_picker.dart';
 
-const _maxImageUploadSize = 256 * 1024; // 256 Kb
-const _maxVideoUploadSize = 5 * 1024 * 1024; // 25 Mb
+const int _maxImageUploadSize = 256 * 1024; // 256 Kb
+const int _maxVideoUploadSize = 5 * 1024 * 1024; // 25 Mb
 
 /// Compressors for mobile devices
 @immutable
@@ -38,10 +38,10 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
 
   Future<XFile> _compressVideo(File video, FilePickerConfig config) async {
     try {
-      final dir = await zdsTempDirectory();
-      final fileExtension = path.extension(video.path).toLowerCase().replaceAll('.', '');
-      final targetFile = File('$dir/${path.basenameWithoutExtension(video.path)}.$fileExtension');
-      final maxFileSize = config.maxFileSize == 0 ? _maxVideoUploadSize : config.maxFileSize;
+      final String dir = await zdsTempDirectory();
+      final String fileExtension = path.extension(video.path).toLowerCase().replaceAll('.', '');
+      final File targetFile = File('$dir/${path.basenameWithoutExtension(video.path)}.$fileExtension');
+      final int maxFileSize = config.maxFileSize == 0 ? _maxVideoUploadSize : config.maxFileSize;
 
       File compressedVideo;
       try {
@@ -56,9 +56,9 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
         compressedVideo = video;
       }
 
-      final size = await compressedVideo.length();
+      final int size = await compressedVideo.length();
       if (size > maxFileSize) {
-        throw FilePickerException(PickerExceptionType.maxFileSize, args: [fileSizeWithUnit(maxFileSize)]);
+        throw FilePickerException(PickerExceptionType.maxFileSize, args: <String>[fileSizeWithUnit(maxFileSize)]);
       }
 
       return ZdsXFile.fromFile(compressedVideo);
@@ -68,7 +68,7 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
   }
 
   VideoQuality _videoQuality(int config) {
-    const qualityMap = {
+    const Map<int, VideoQuality> qualityMap = <int, VideoQuality>{
       1: VideoQuality.Res1280x720Quality,
       2: VideoQuality.Res960x540Quality,
       3: VideoQuality.Res640x480Quality,
@@ -81,13 +81,13 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
 
   Future<XFile> _compressImage(File image, FilePickerConfig config) async {
     try {
-      final fileSize = config.maxFileSize == 0 ? _maxImageUploadSize : config.maxFileSize;
-      final h = config.maxPixelSize <= 0 ? 1080 : config.maxPixelSize;
+      final int fileSize = config.maxFileSize == 0 ? _maxImageUploadSize : config.maxFileSize;
+      final int h = config.maxPixelSize <= 0 ? 1080 : config.maxPixelSize;
 
       // Resolve compression type
-      final fileExtension = path.extension(image.path).toLowerCase().replaceAll('.', '');
-      final format = _getCompressFormat(fileExtension, config);
-      final quality = h < 1000
+      final String fileExtension = path.extension(image.path).toLowerCase().replaceAll('.', '');
+      final CompressFormat? format = _getCompressFormat(fileExtension, config);
+      final int quality = h < 1000
           ? 95
           : h < 1500
               ? 75
@@ -97,8 +97,9 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
 
       if (format != null) {
         try {
-          final c = Compression(maxFileSize: fileSize, minHeight: h, minWidth: h, format: format, quality: quality);
-          var compressed = await ZdsCompressor.compressImage(image: image, compression: c);
+          final Compression c =
+              Compression(maxFileSize: fileSize, minHeight: h, minWidth: h, format: format, quality: quality);
+          File? compressed = await ZdsCompressor.compressImage(image: image, compression: c);
           if (compressed != null) {
             // Rename file back to jpg if picked file was jpg and allowed file types dose not contain jpeg.
             // This step is needed as jpg is compressed to jpeg
@@ -116,7 +117,7 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
 
       final int size = await result.length();
       if (size > fileSize) {
-        throw FilePickerException(PickerExceptionType.maxFileSize, args: [fileSizeWithUnit(fileSize)]);
+        throw FilePickerException(PickerExceptionType.maxFileSize, args: <String>[fileSizeWithUnit(fileSize)]);
       }
 
       return ZdsXFile.fromFile(result);
@@ -126,7 +127,7 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
   }
 
   CompressFormat? _getCompressFormat(String extension, FilePickerConfig config) {
-    final allowedExt = config.allowedExtensions.map((e) => e.toLowerCase());
+    final Iterable<String> allowedExt = config.allowedExtensions.map((String e) => e.toLowerCase());
 
     // If allowed file extension list is empty then return jpeg
     if (allowedExt.isEmpty) return CompressFormat.jpeg;

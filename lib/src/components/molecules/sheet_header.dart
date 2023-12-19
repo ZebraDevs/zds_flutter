@@ -2,11 +2,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Creates the header component for a bottom sheet with Zds style.
 class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
-  static const _kSheetHeight = 54.0;
+  /// Constructs a [ZdsSheetHeader].
+  const ZdsSheetHeader({
+    required this.headerText,
+    super.key,
+    this.leading,
+    this.trailing,
+    this.busy = false,
+    this.headerTextStyle,
+  });
+  static const double _kSheetHeight = 54;
 
   /// Sheet header title of type [String].
   final String headerText;
@@ -27,16 +36,6 @@ class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
   /// Defaults to [TextTheme.headlineMedium].
   final TextStyle? headerTextStyle;
 
-  /// Constructs a [ZdsSheetHeader].
-  const ZdsSheetHeader({
-    required this.headerText,
-    super.key,
-    this.leading,
-    this.trailing,
-    this.busy = false,
-    this.headerTextStyle,
-  });
-
   @override
   Widget build(BuildContext context) {
     return Semantics(
@@ -45,27 +44,28 @@ class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
         height: _kSheetHeight,
         width: double.infinity,
         child: Material(
-          color: Colors.transparent,
+          color: ZdsColors.transparent,
           child: SafeArea(
             top: false,
             bottom: false,
             child: Stack(
-              children: [
+              children: <Widget>[
                 Center(
                   child: Text(
                     headerText,
-                    style: headerTextStyle ?? Theme.of(context).textTheme.titleLarge,
+                    style: headerTextStyle ?? Theme.of(context).textTheme.headlineMedium,
                     overflow: TextOverflow.ellipsis,
                     textScaleFactor: MediaQuery.of(context).textScaleFactor > 2 ? 2 : null,
                   ),
                 ).paddingOnly(bottom: 5),
                 if (leading != null)
-                  leading.runtimeType == IconButton
-                      ? Padding(
+                  leading is IconButton || leading is Icon
+                      ? Container(
+                          height: _kSheetHeight,
                           padding: EdgeInsets.only(left: context.isTablet() ? 0 : 16),
                           child: Material(
                             shape: const CircleBorder(),
-                            color: Colors.transparent,
+                            color: ZdsColors.transparent,
                             clipBehavior: Clip.antiAlias,
                             child: Semantics(
                               sortKey: const OrdinalSortKey(1),
@@ -104,8 +104,9 @@ class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('headerText', headerText));
-    properties.add(DiagnosticsProperty<bool>('busy', busy));
-    properties.add(DiagnosticsProperty<TextStyle?>('headerTextStyle', headerTextStyle));
+    properties
+      ..add(StringProperty('headerText', headerText))
+      ..add(DiagnosticsProperty<bool>('busy', busy))
+      ..add(DiagnosticsProperty<TextStyle?>('headerTextStyle', headerTextStyle));
   }
 }

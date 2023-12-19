@@ -37,7 +37,7 @@ extension DateTimeRangeUtils on DateTimeRange {
 ///
 /// Optional `startingDayOfWeek` defaults to sunday (1). See `startingDayOfWeekToInt` for more information
 DateTime startMonthDay(DateTime date, {int startingDayOfWeek = 1}) {
-  final d = date._firstDayOfWeek(startingDayOfWeek);
+  final DateTime d = date._firstDayOfWeek(startingDayOfWeek);
   return DateTime(d.year, d.month);
 }
 
@@ -65,7 +65,7 @@ extension DateTimeFormatter on DateTime {
   /// Gets the week number within a year.
   int get weekNumberOfYear {
     final int dayOfYear = int.parse(DateFormat('D').format(this));
-    final myWeekday = weekday == 7 ? 1 : weekday + 1;
+    final int myWeekday = weekday == 7 ? 1 : weekday + 1;
     int woy = ((dayOfYear - myWeekday + 10) / 7).floor();
     if (woy < 1) {
       woy = numberOfWeeksInYear(year - 1);
@@ -93,7 +93,7 @@ extension DateTimeFormatter on DateTime {
 
   /// returns first date of the week
   DateTime _firstDayOfWeek(int startingDayOfWeekInt) {
-    final date = this;
+    final DateTime date = this;
     final int weekNumber = _getWeekDayNumber(DateFormat('EEEE').format(date));
     final int difference = weekNumber - startingDayOfWeekInt;
     return date.subtract(Duration(days: difference));
@@ -106,16 +106,16 @@ extension DateTimeFormatter on DateTime {
     final DateTime startOfMonthDate = DateTime(year, month);
     final DateTime endOfMonthDate =
         DateTime(year, month).endOfMonth._firstDayOfWeek(startingDayOfWeekInt).add(const Duration(days: 6));
-    final monthTotal = endOfMonthDate.difference(startOfMonthDate).inDays;
+    final int monthTotal = endOfMonthDate.difference(startOfMonthDate).inDays;
 
-    final List<DateTime> weekNumbers = [];
+    final List<DateTime> weekNumbers = <DateTime>[];
     for (int i = 0; i < monthTotal; i = i + 7) {
       weekNumbers.add(startOfMonthDate.add(Duration(days: i))._firstDayOfWeek(startingDayOfWeekInt));
     }
 
-    final List<int> weeks = [];
-    for (final week in weekNumbers) {
-      final weekNum = _getWeekNumber(week, startingDayOfWeekInt);
+    final List<int> weeks = <int>[];
+    for (final DateTime week in weekNumbers) {
+      final int weekNum = _getWeekNumber(week, startingDayOfWeekInt);
       weeks.add(weekNum);
     }
     return weeks;
@@ -139,7 +139,7 @@ extension DateTimeFormatter on DateTime {
   /// * `weekStartDay` is 0 indexed where Sunday is 0 and Saturday is 6
   /// Defaults to 0.
   DateTime getLastDayOfWeek({int weekStartDay = 0}) {
-    final first = getFirstDayOfWeek(weekStartDay: weekStartDay);
+    final DateTime first = getFirstDayOfWeek(weekStartDay: weekStartDay);
     return DateTime(
       first.year,
       first.month,
@@ -196,7 +196,7 @@ int startingDayOfWeekToInt(StartingDayOfWeek startingDayOfWeek) {
 
 /// Gets the date of the sunday of a week in a year.
 DateTime firstSundayFromWeekInYear(int weekNumber, int year) {
-  final weekDay = DateTime(2022).add(Duration(days: (weekNumber - 2) * 7));
+  final DateTime weekDay = DateTime(2022).add(Duration(days: (weekNumber - 2) * 7));
   return weekDay.add(Duration(days: (DateTime.sunday - weekDay.weekday) % DateTime.daysPerWeek));
 }
 
@@ -235,7 +235,7 @@ extension LightHexColor on Color {
   ///
   /// The String follows either of the "RRGGBB" or "AARRGGBB" formats, with an optional leading "#".
   static Color fromHex(String hexString) {
-    final buffer = StringBuffer();
+    final StringBuffer buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
     buffer.write(hexString.replaceFirst('#', ''));
     return Color(int.parse(buffer.toString(), radix: 16));
@@ -371,8 +371,8 @@ extension ZdsCheckIsWarm on ThemeData {
 /// Converts byte length to human readable format.
 String fileSizeWithUnit(int bytes) {
   if (bytes <= 0) return '0 B';
-  const suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  final i = (log(bytes) / log(1024)).floor();
+  const List<String> suffixes = <String>['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  final int i = (log(bytes) / log(1024)).floor();
   return '${(bytes / pow(1024, i)).toStringAsFixed(0)} ${suffixes[i]}';
 }
 
@@ -384,7 +384,7 @@ Color getRandomColorFromTheme(Object? seed, {List<Color>? colors}) {
   Object? s = seed;
 
   if (colors == null || colors.isEmpty) {
-    setColors = [
+    setColors = <ui.Color>[
       ZdsColors.redSwatch['dark']!,
       ZdsColors.blueGrey,
       ZdsColors.blue,
@@ -405,7 +405,7 @@ Color getRandomColorFromTheme(Object? seed, {List<Color>? colors}) {
 
 /// Checks if the ZdsTab contains an icon
 bool hasIcons(List<ZdsTab> items) {
-  return items.any((element) => element.icon != null);
+  return items.any((ZdsTab element) => element.icon != null);
 }
 
 /// Enum to define device types.
@@ -443,13 +443,13 @@ extension DeviceTypeFromContext on BuildContext {
 
   /// True if current device is a tablet.
   bool isTablet() {
-    final deviceType = getDeviceType();
+    final DeviceType deviceType = getDeviceType();
     return deviceType == DeviceType.tabletLandscape || deviceType == DeviceType.tabletPortrait;
   }
 
   /// True if current device is a phone.
   bool isPhone() {
-    final deviceType = getDeviceType();
+    final DeviceType deviceType = getDeviceType();
     return deviceType == DeviceType.phoneLandscape || deviceType == DeviceType.phonePortrait;
   }
 
@@ -499,29 +499,17 @@ bool hasTextOverflow(String text, TextStyle style, double width, {int maxLines =
 ///   * [TextPainter]
 double textWidth(String text, TextStyle style, {int maxLines = 1}) => _textPainter(text, style, maxLines).width;
 
-/// Returns the corresponding value for a given `selectedOption` from the `branches` map.
+/// This extension adds utility functions to the Map class.
 extension MapExtensions<Option, Value> on Map<Option, Value> {
-  /// Returns the corresponding value for a given [key].
-  /// If the [key] is not found within the map, or if the value for that key is `null`,
-  /// the [orDefault] value is returned.
+  /// Gets the value from the map for the provided key. If the key does not
+  /// exist in the map, it returns the value of the `fallback` parameter.
   ///
-  /// Parameters:
-  /// - `key`: The key to be looked up in the map.
-  /// - `orDefault` (optional): The default value to be returned if the [key] is not found or if its value is `null`.
-  ///                           If not provided, it defaults to `null`.
+  /// - Parameters:
+  ///   - key: The key for which to fetch the value from the map.
+  ///   - fallback: The value to be returned if the key does not exist in the map.
   ///
-  /// Example:
-  ///
-  /// ```dart
-  /// var fruitColors = {
-  ///   'apple': 'red',
-  ///   'banana': 'yellow',
-  ///   'grape': 'purple'
-  /// };
-  /// print(fruitColors.get('apple', orDefault: 'unknown')); // Outputs: red
-  /// print(fruitColors.get('orange', orDefault: 'unknown')); // Outputs: unknown
-  /// ```
-  Value? get(Option key, {Value? orDefault}) {
-    return this[key] ?? orDefault;
+  /// - Returns: The value for the given key if it exists, otherwise the `fallback` value.
+  Value get(Option key, {required Value fallback}) {
+    return this[key] ?? fallback;
   }
 }

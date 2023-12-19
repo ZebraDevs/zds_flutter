@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A circular container used to display a user's profile picture or initials.
 ///
@@ -17,6 +17,20 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsProfile], where [ZdsAvatar] can be used for [ZdsProfile.avatar].
 ///  * [computeForeground], a function used to calculate the text color for any background color.
 class ZdsAvatar extends StatelessWidget implements PreferredSizeWidget {
+  /// Displays either initials or an image in an optionally tappable circular container.
+  /// If given both [initials] and [image], the avatar will always show [image].
+  ///
+  /// If [size] is not null it must be greater than 0.
+  const ZdsAvatar({
+    super.key,
+    this.image,
+    this.initials,
+    this.onTap,
+    this.size,
+    this.textStyle,
+    this.backgroundColor,
+  }) : assert(size != null ? size > 0 : size == null, 'Size must be greater than 0');
+
   /// An image that will fill the entire avatar. As the avatar is circular, a square image will not get its corners
   /// shown, but the original image will be intact.
   ///
@@ -46,20 +60,6 @@ class ZdsAvatar extends StatelessWidget implements PreferredSizeWidget {
   ///
   /// Defaults to [ColorScheme.secondary].
   final Color? backgroundColor;
-
-  /// Displays either initials or an image in an optionally tappable circular container.
-  /// If given both [initials] and [image], the avatar will always show [image].
-  ///
-  /// If [size] is not null it must be greater than 0.
-  const ZdsAvatar({
-    super.key,
-    this.image,
-    this.initials,
-    this.onTap,
-    this.size,
-    this.textStyle,
-    this.backgroundColor,
-  }) : assert(size != null ? size > 0 : size == null, 'Size must be greater than 0');
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +93,11 @@ class ZdsAvatar extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('initials', initials));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(DoubleProperty('size', size));
-    properties.add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
+    properties
+      ..add(StringProperty('initials', initials))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(DoubleProperty('size', size))
+      ..add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle))
+      ..add(ColorProperty('backgroundColor', backgroundColor));
   }
 }

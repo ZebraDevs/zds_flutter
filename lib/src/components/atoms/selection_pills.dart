@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A text button that can be selectable and that accepts a string and isButtonSelected boolean value.
 ///
@@ -18,6 +18,20 @@ import '../../../zds_flutter.dart';
 ///
 /// /// ```
 class ZdsSelectionPill extends StatelessWidget {
+  /// Constructs a circular, checkable button.
+  const ZdsSelectionPill({
+    required this.label,
+    super.key,
+    this.selected = false,
+    this.onTap,
+    this.leadingIcon,
+    this.onClose,
+    this.padding = const EdgeInsets.all(9),
+    this.color,
+    this.selectedColor,
+    this.borderColor,
+  });
+
   /// The button's label.
   ///
   /// Prefer to use short strings.
@@ -52,7 +66,6 @@ class ZdsSelectionPill extends StatelessWidget {
   final ZetaColorSwatch? color;
 
   ///Use [color] instead. Will be deprecated in future release.
-
   ///
   /// Custom color to override pill background color.
   ///
@@ -66,20 +79,6 @@ class ZdsSelectionPill extends StatelessWidget {
   /// Defaults to `ZdsColors.greyCoolSwatch[100]`.
   final Color? borderColor;
 
-  /// Constructs a circular, checkable button.
-  const ZdsSelectionPill({
-    required this.label,
-    super.key,
-    this.selected = false,
-    this.onTap,
-    this.leadingIcon,
-    this.onClose,
-    this.padding = const EdgeInsets.all(9),
-    this.color,
-    this.selectedColor,
-    this.borderColor,
-  });
-
   @override
   Widget build(BuildContext context) {
     final Color background =
@@ -90,7 +89,7 @@ class ZdsSelectionPill extends StatelessWidget {
     final Color selectedForeground = color?.icon ??
         (selectedColor != null ? computeForeground(selectedColor!) : Theme.of(context).colorScheme.secondary);
 
-    final disabled = onTap == null;
+    final bool disabled = onTap == null;
 
     return ExpandTapWidget(
       onTap: onTap ?? () {},
@@ -124,16 +123,16 @@ class ZdsSelectionPill extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: <Widget>[
                       if (leadingIcon != null)
                         IconTheme(
                           data: IconThemeData(color: selectedForeground),
-                          child: Row(children: [leadingIcon!, const SizedBox(width: 8)]),
+                          child: Row(children: <Widget>[leadingIcon!, const SizedBox(width: 8)]),
                         ),
                       Text(
                         label,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: disabled
                                   ? ZdsColors.greyWarmSwatch[1000]
                                   : selected
@@ -144,7 +143,7 @@ class ZdsSelectionPill extends StatelessWidget {
                       ),
                       if (onClose != null)
                         Row(
-                          children: [
+                          children: <Widget>[
                             const SizedBox(width: 10),
                             IconButton(
                               constraints: const BoxConstraints(maxHeight: 24, maxWidth: 24),
@@ -173,13 +172,14 @@ class ZdsSelectionPill extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('label', label));
-    properties.add(DiagnosticsProperty<bool>('selected', selected));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onClose', onClose));
-    properties.add(DiagnosticsProperty<EdgeInsets>('padding', padding));
-    properties.add(ColorProperty('selectedColor', selectedColor));
-    properties.add(ColorProperty('borderColor', borderColor));
-    properties.add(ColorProperty('color', color));
+    properties
+      ..add(StringProperty('label', label))
+      ..add(DiagnosticsProperty<bool>('selected', selected))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onClose', onClose))
+      ..add(DiagnosticsProperty<EdgeInsets>('padding', padding))
+      ..add(ColorProperty('selectedColor', selectedColor))
+      ..add(ColorProperty('borderColor', borderColor))
+      ..add(ColorProperty('color', color));
   }
 }

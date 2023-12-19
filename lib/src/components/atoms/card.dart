@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Variants of [ZdsCard].
 enum ZdsCardVariant {
@@ -47,6 +47,22 @@ enum ZdsCardVariant {
 ///  * [ZdsCardHeader], used to create a title header in a card
 ///  * [ZdsCardWithActions], a [ZdsCard] variant with an actions/status bar at the bottom.
 class ZdsCard extends StatelessWidget {
+  /// Creates a card to display information.
+  ///
+  /// [padding] and [variant] must not be null.
+  const ZdsCard({
+    super.key,
+    this.child,
+    this.onTap,
+    this.backgroundColor,
+    this.gradient,
+    this.onTapHint,
+    this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+    this.variant = ZdsCardVariant.elevated,
+    this.margin,
+    this.semanticLabel,
+  });
+
   /// The card's contents.
   ///
   /// Typically a [Row] or a [Column] so information is organized in a hierarchy from start to end.
@@ -94,27 +110,12 @@ class ZdsCard extends StatelessWidget {
   /// If not null, the semantics in the card will be excluded.
   final String? semanticLabel;
 
-  /// Creates a card to display information.
-  ///
-  /// [padding] and [variant] must not be null.
-  const ZdsCard({
-    super.key,
-    this.child,
-    this.onTap,
-    this.backgroundColor,
-    this.gradient,
-    this.onTapHint,
-    this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-    this.variant = ZdsCardVariant.elevated,
-    this.margin,
-    this.semanticLabel,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final borderRadius = (Theme.of(context).cardTheme.shape as RoundedRectangleBorder?)?.borderRadius as BorderRadius?;
-    final shadowColor = Theme.of(context).cardTheme.shadowColor;
-    final container = Container(
+    final BorderRadius? borderRadius =
+        (Theme.of(context).cardTheme.shape as RoundedRectangleBorder?)?.borderRadius as BorderRadius?;
+    final Color? shadowColor = Theme.of(context).cardTheme.shadowColor;
+    final Container container = Container(
       clipBehavior: Clip.antiAlias,
       margin: margin ?? Theme.of(context).cardTheme.margin,
       decoration: BoxDecoration(
@@ -128,7 +129,7 @@ class ZdsCard extends StatelessWidget {
                 )[Theme.of(context).colorScheme.brightness == Brightness.dark ? 1000 : 600]!,
               )
             : null,
-        boxShadow: [
+        boxShadow: <BoxShadow>[
           if (shadowColor != null && variant == ZdsCardVariant.elevated) BoxShadow(color: shadowColor, blurRadius: 4),
         ],
       ),
@@ -139,7 +140,7 @@ class ZdsCard extends StatelessWidget {
           child: InkWell(
             splashColor: ZdsColors.splashColor,
             hoverColor: Colors.transparent,
-            onTap: onTap ?? () {},
+            onTap: onTap,
             child: Padding(
               padding: padding,
               child: child,
@@ -165,13 +166,14 @@ class ZdsCard extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(DiagnosticsProperty<Gradient?>('gradient', gradient));
-    properties.add(StringProperty('onTapHint', onTapHint));
-    properties.add(DiagnosticsProperty<EdgeInsets>('padding', padding));
-    properties.add(EnumProperty<ZdsCardVariant>('variant', variant));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('margin', margin));
-    properties.add(StringProperty('semanticLabel', semanticLabel));
+    properties
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(DiagnosticsProperty<Gradient?>('gradient', gradient))
+      ..add(StringProperty('onTapHint', onTapHint))
+      ..add(DiagnosticsProperty<EdgeInsets>('padding', padding))
+      ..add(EnumProperty<ZdsCardVariant>('variant', variant))
+      ..add(DiagnosticsProperty<EdgeInsets?>('margin', margin))
+      ..add(StringProperty('semanticLabel', semanticLabel));
   }
 }

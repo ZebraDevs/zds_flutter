@@ -10,7 +10,6 @@ class BottomSheetDemo extends StatefulWidget {
 
 class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProviderStateMixin {
   TabController? controller;
-
   @override
   void initState() {
     controller = TabController(length: 2, vsync: this);
@@ -186,6 +185,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
     showZdsBottomSheet(
       context: context,
       headerBuilder: (context) => ZdsTabBar(
+        color: ZdsTabBarColor.surface,
         controller: controller,
         tabs: const [
           ZdsTab(
@@ -234,23 +234,23 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
     showZdsBottomSheet(
       enforceSheet: enforceSheet,
       context: context,
+      headerBuilder: (context) => ZdsSheetHeader(headerText: 'Select Priority'),
       builder: (context) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Select priority').textStyle(Theme.of(context).textTheme.headlineSmall).paddingOnly(bottom: 20),
             ZdsListTile(
-              leading: const Text('Urgent'),
+              leading: Text('Urgent'),
               trailing: ZdsIndex(
                 color: ZdsColors.red,
-                child: const Text('U'),
+                child: Text('U'),
               ),
             ),
             ZdsListTile(
-              leading: const Text('Hight'),
+              leading: Text('Hight'),
               trailing: ZdsIndex(
                 color: ZdsColors.orange,
-                child: const Text('1'),
+                child: Text('1'),
               ),
             ),
             ZdsListTile(
@@ -261,10 +261,10 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
               ),
             ),
             ZdsListTile(
-              leading: const Text('Low'),
+              leading: Text('Low'),
               trailing: ZdsIndex(
                 color: ZdsColors.green,
-                child: const Text('3'),
+                child: Text('3'),
               ),
             ),
           ],

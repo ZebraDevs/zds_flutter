@@ -43,6 +43,22 @@ import 'bottom_tab_bar.dart';
 ///   * [ZdsBottomTabBar] - To use a bottom tab bar without a scaffold.
 ///   * [ZdsNavItem]
 class ZdsBottomTabScaffold extends StatefulWidget {
+  /// Builds a scaffold with built in support for bottom tabs.
+  const ZdsBottomTabScaffold({
+    required this.tabs,
+    super.key,
+    this.children,
+    this.bodyBuilder,
+    this.onTabChange,
+  })  : assert(
+          (children != null && bodyBuilder == null) || (children == null && bodyBuilder != null),
+          'You can have either children or a bodyBuilder, not both.',
+        ),
+        assert(
+          children != null && tabs.length == children.length || children == null,
+          'The size of children and tabs must be the same',
+        );
+
   /// List of [ZdsNavItem].
   final List<ZdsNavItem> tabs;
 
@@ -67,31 +83,15 @@ class ZdsBottomTabScaffold extends StatefulWidget {
   /// Returns the index of the selected tab.
   final void Function(int)? onTabChange;
 
-  /// Builds a scaffold with built in support for bottom tabs.
-  const ZdsBottomTabScaffold({
-    required this.tabs,
-    super.key,
-    this.children,
-    this.bodyBuilder,
-    this.onTabChange,
-  })  : assert(
-          (children != null && bodyBuilder == null) || (children == null && bodyBuilder != null),
-          'You can have either children or a bodyBuilder, not both.',
-        ),
-        assert(
-          children != null && tabs.length == children.length || children == null,
-          'The size of children and tabs must be the same',
-        );
-
   @override
   ZdsBottomTabScaffoldState createState() => ZdsBottomTabScaffoldState();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<ZdsNavItem>('tabs', tabs));
     properties
-        .add(ObjectFlagProperty<Widget Function(BuildContext context, int index)?>.has('bodyBuilder', bodyBuilder));
-    properties.add(ObjectFlagProperty<void Function(int p1)?>.has('onTabChange', onTabChange));
+      ..add(IterableProperty<ZdsNavItem>('tabs', tabs))
+      ..add(ObjectFlagProperty<Widget Function(BuildContext context, int index)?>.has('bodyBuilder', bodyBuilder))
+      ..add(ObjectFlagProperty<void Function(int p1)?>.has('onTabChange', onTabChange));
   }
 }
 

@@ -4,7 +4,7 @@ import 'package:giphy_get/giphy_get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 import '../atoms/ximage.dart';
 
 /// Creates a preview of a file.
@@ -56,7 +56,7 @@ class ZdsFilePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       clipBehavior: Clip.none,
-      children: [
+      children: <Widget>[
         SizedBox(
           height: size,
           width: size,
@@ -100,7 +100,7 @@ class ZdsFilePreview extends StatelessWidget {
   Widget _getPreview(double size) {
     return file.content is GiphyGif
         // ignore: avoid_dynamic_calls
-        ? _getImage(Uri.parse(file.content.images.previewGif?.url as String), size)
+        ? _getImage(Uri.parse(file.content.images!.previewGif.url as String), size)
         : file.isImage()
             ? _getImage(file.content, size)
             : _getFile(file);
@@ -116,18 +116,18 @@ class ZdsFilePreview extends StatelessWidget {
 
   Widget _getFile(FileWrapper file) {
     return Builder(
-      builder: (context) {
-        final isUrl = file.type == FilePickerOptions.LINK;
+      builder: (BuildContext context) {
+        final bool isUrl = file.type == FilePickerOptions.LINK;
         return Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Icon(
               isUrl ? ZdsIcons.sphere : file.name?.fileIcon(),
               size: 18,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            if (size >= 80) ...[
+            if (size >= 80) ...<Widget>[
               const SizedBox(height: 4),
               Text(
                 isUrl ? file.name ?? '' : (path.extension(file.name ?? 'file.file').replaceAll('.', '')),
@@ -145,11 +145,12 @@ class ZdsFilePreview extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<FileWrapper>('file', file));
-    properties.add(DoubleProperty('size', size));
-    properties.add(DiagnosticsProperty<bool>('useCard', useCard));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onDelete', onDelete));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
+    properties
+      ..add(DiagnosticsProperty<FileWrapper>('file', file))
+      ..add(DoubleProperty('size', size))
+      ..add(DiagnosticsProperty<bool>('useCard', useCard))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onDelete', onDelete))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
   }
 }
 
@@ -177,7 +178,7 @@ class ZdsFileSize extends StatelessWidget {
       return FutureBuilder<int>(
         // ignore: discarded_futures
         future: file!.length(),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           if (snapshot.data != null) {
             return _sizeText(context, snapshot.data ?? 0);
           } else {
@@ -193,7 +194,8 @@ class ZdsFileSize extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<XFile?>('file', file));
-    properties.add(IntProperty('fileSize', fileSize));
+    properties
+      ..add(DiagnosticsProperty<XFile?>('file', file))
+      ..add(IntProperty('fileSize', fileSize));
   }
 }

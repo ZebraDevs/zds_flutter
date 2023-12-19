@@ -1,10 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Defines a button for [ZdsBottomTabBar] or [ZdsVerticalNav]. Used in [ZdsBottomTabBar.items].
 class ZdsNavItem {
+  /// Creates a button to be used in [ZdsBottomTabBar]
+  const ZdsNavItem({
+    required this.label,
+    required this.icon,
+    this.semanticLabel,
+    this.semanticState = '',
+    this.id,
+  });
+
   /// used for automation purpose
   final String? id;
 
@@ -23,15 +32,6 @@ class ZdsNavItem {
   ///
   /// if [ZdsNavItem] state is selected then this get appended to the [semanticLabel].
   final String semanticState;
-
-  /// Creates a button to be used in [ZdsBottomTabBar]
-  const ZdsNavItem({
-    required this.label,
-    required this.icon,
-    this.semanticLabel,
-    this.semanticState = '',
-    this.id,
-  });
 }
 
 /// A [ZdsBottomBar] used to switch between different views. Typically used as a [Scaffold.bottomNavigationBar] in a
@@ -47,6 +47,21 @@ class ZdsNavItem {
 /// )
 /// ```
 class ZdsBottomTabBar extends StatelessWidget implements PreferredSizeWidget {
+  /// Creates a bottom tab navigation bar
+  ///
+  /// [items] can't be null. [currentIndex]'s value must be equal or greater than 0, and smaller than [items].length.
+  const ZdsBottomTabBar({
+    required this.items,
+    super.key,
+    this.currentIndex = 0,
+    this.onTap,
+    this.contentPadding,
+    this.minHeight = kBottomBarHeight,
+  }) : assert(
+          0 <= currentIndex && currentIndex < items.length,
+          'currentIndex must not be greater than the number of items',
+        );
+
   /// The [ZdsBottomTabBar] list that will be displayed. Each item should be linked to a separate view.
   final List<ZdsNavItem> items;
 
@@ -70,26 +85,11 @@ class ZdsBottomTabBar extends StatelessWidget implements PreferredSizeWidget {
   /// Defaults to [kBottomBarHeight].
   final double minHeight;
 
-  /// Creates a bottom tab navigation bar
-  ///
-  /// [items] can't be null. [currentIndex]'s value must be equal or greater than 0, and smaller than [items].length.
-  const ZdsBottomTabBar({
-    required this.items,
-    super.key,
-    this.currentIndex = 0,
-    this.onTap,
-    this.contentPadding,
-    this.minHeight = kBottomBarHeight,
-  }) : assert(
-          0 <= currentIndex && currentIndex < items.length,
-          'currentIndex must not be greater than the number of items',
-        );
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).bottomNavigationBarTheme;
-    final zdsBottomBarTheme = ZdsBottomBarTheme.of(context);
-    final tabBarContentPadding = contentPadding ??
+    final BottomNavigationBarThemeData theme = Theme.of(context).bottomNavigationBarTheme;
+    final ZdsBottomBarThemeData zdsBottomBarTheme = ZdsBottomBarTheme.of(context);
+    final EdgeInsets tabBarContentPadding = contentPadding ??
         zdsBottomBarTheme.contentPadding.copyWith(
           left: 0,
           right: 0,
@@ -103,13 +103,13 @@ class ZdsBottomTabBar extends StatelessWidget implements PreferredSizeWidget {
           overflow: TextOverflow.ellipsis,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              for (var i = 0; i < items.length; i++)
+            children: <Widget>[
+              for (int i = 0; i < items.length; i++)
                 () {
-                  final selected = i == currentIndex;
+                  final bool selected = i == currentIndex;
                   //keeping key empty for other apps should be replaced with proper translation once added in repo.
-                  final finalSemanticLabel = ComponentStrings.of(context)
-                      .get('', items[i].semanticLabel ?? items[i].label, args: ['${i + 1}', '${items.length}']);
+                  final String finalSemanticLabel = ComponentStrings.of(context)
+                      .get('', items[i].semanticLabel ?? items[i].label, args: <String>['${i + 1}', '${items.length}']);
                   return Expanded(
                     child: Semantics(
                       excludeSemantics: true,
@@ -147,22 +147,16 @@ class ZdsBottomTabBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IntProperty('currentIndex', currentIndex));
-    properties.add(IterableProperty<ZdsNavItem>('items', items));
-    properties.add(ObjectFlagProperty<void Function(int p1)?>.has('onTap', onTap));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('contentPadding', contentPadding));
-    properties.add(DoubleProperty('minHeight', minHeight));
+    properties
+      ..add(IntProperty('currentIndex', currentIndex))
+      ..add(IterableProperty<ZdsNavItem>('items', items))
+      ..add(ObjectFlagProperty<void Function(int p1)?>.has('onTap', onTap))
+      ..add(DiagnosticsProperty<EdgeInsets?>('contentPadding', contentPadding))
+      ..add(DoubleProperty('minHeight', minHeight));
   }
 }
 
 class _ZdsBottomTabBarTile extends StatelessWidget {
-  final VoidCallback? onTap;
-  final Widget icon;
-  final String label;
-  final bool selected;
-  final String? id;
-  final TextStyle labelStyle;
-
   const _ZdsBottomTabBarTile({
     required this.icon,
     required this.label,
@@ -171,10 +165,16 @@ class _ZdsBottomTabBarTile extends StatelessWidget {
     this.id,
     this.onTap,
   });
+  final VoidCallback? onTap;
+  final Widget icon;
+  final String label;
+  final bool selected;
+  final String? id;
+  final TextStyle labelStyle;
 
   @override
   Widget build(BuildContext context) {
-    final effectiveTooltip = label;
+    final String effectiveTooltip = label;
     Widget result = ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
       child: InkResponse(
@@ -216,10 +216,11 @@ class _ZdsBottomTabBarTile extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(StringProperty('label', label));
-    properties.add(DiagnosticsProperty<bool>('selected', selected));
-    properties.add(StringProperty('id', id));
-    properties.add(DiagnosticsProperty<TextStyle>('labelStyle', labelStyle));
+    properties
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(StringProperty('label', label))
+      ..add(DiagnosticsProperty<bool>('selected', selected))
+      ..add(StringProperty('id', id))
+      ..add(DiagnosticsProperty<TextStyle>('labelStyle', labelStyle));
   }
 }

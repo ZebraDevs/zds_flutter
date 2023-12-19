@@ -92,7 +92,7 @@ class ZdsShakeAnimation extends StatefulWidget {
 /// * [ZdsShakeAnimation].
 class ZdsShakeAnimationState extends State<ZdsShakeAnimation> with SingleTickerProviderStateMixin {
   /// Animation Controller to control the shake.
-  late final animationController = AnimationController(vsync: this, duration: widget.shakeDuration);
+  late final AnimationController animationController = AnimationController(vsync: this, duration: widget.shakeDuration);
 
   @override
   void dispose() {
@@ -127,8 +127,8 @@ class ZdsShakeAnimationState extends State<ZdsShakeAnimation> with SingleTickerP
       animation: animationController,
       // 3. optimization: pass the given child as an argument
       child: widget.child,
-      builder: (context, child) {
-        final sineValue = sin(widget.shakeCount * 2 * pi * animationController.value);
+      builder: (BuildContext context, Widget? child) {
+        final double sineValue = sin(widget.shakeCount * 2 * pi * animationController.value);
         return Transform.translate(
           // 4. apply a translation as a function of the animation value
           offset: Offset(sineValue * widget.shakeOffset, 0),

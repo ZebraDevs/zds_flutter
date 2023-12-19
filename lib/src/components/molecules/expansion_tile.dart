@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Types of expansion tile
 enum ExpansionTileType {
@@ -45,6 +45,52 @@ const Duration _kExpand = Duration(milliseconds: 200);
 /// ```
 
 class ZdsExpansionTile extends StatefulWidget {
+  /// A tile that can be expanded and collapsed to reveal further information.
+  const ZdsExpansionTile({
+    super.key,
+    required this.title,
+    required this.child,
+    this.subtitle,
+    this.bottom,
+    this.initiallyExpanded = false,
+    this.maintainState = true,
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
+    this.titlePadding = const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+    this.onExpanded,
+    this.onCollapse,
+    this.onCollapsed,
+    this.showDivider = true,
+    this.expandWithIconOnly = false,
+    this.hideExpansionSemantics = false,
+    this.isExpandable = true,
+    this.titleColor = ZdsColors.transparent,
+  })  : expansionTileType = ExpansionTileType.regular,
+        selected = false,
+        onSelected = null;
+
+  /// A selectable tile that can be expanded and collapsed to reveal further information.
+  const ZdsExpansionTile.selectable({
+    super.key,
+    required this.title,
+    required this.child,
+    this.subtitle,
+    this.bottom,
+    this.initiallyExpanded = false,
+    this.maintainState = true,
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
+    this.titlePadding = const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+    this.onExpanded,
+    this.onCollapse,
+    this.onCollapsed,
+    this.selected = false,
+    this.onSelected,
+    this.showDivider = true,
+    this.expandWithIconOnly = false,
+    this.hideExpansionSemantics = false,
+    this.isExpandable = true,
+    this.titleColor = ZdsColors.transparent,
+  }) : expansionTileType = ExpansionTileType.selectable;
+
   /// The title of this expansion tile. This title will always be shown.
   ///
   /// Typically a [Text] widget.
@@ -133,72 +179,28 @@ class ZdsExpansionTile extends StatefulWidget {
   /// Defaults to [ZdsColors.transparent].
   final Color titleColor;
 
-  /// A tile that can be expanded and collapsed to reveal further information.
-  const ZdsExpansionTile({
-    super.key,
-    required this.title,
-    required this.child,
-    this.subtitle,
-    this.bottom,
-    this.initiallyExpanded = false,
-    this.maintainState = true,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
-    this.titlePadding = const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-    this.onExpanded,
-    this.onCollapse,
-    this.onCollapsed,
-    this.showDivider = true,
-    this.expandWithIconOnly = false,
-    this.hideExpansionSemantics = false,
-    this.isExpandable = true,
-    this.titleColor = ZdsColors.transparent,
-  })  : expansionTileType = ExpansionTileType.regular,
-        selected = false,
-        onSelected = null;
-
-  /// A selectable tile that can be expanded and collapsed to reveal further information.
-  const ZdsExpansionTile.selectable({
-    super.key,
-    required this.title,
-    required this.child,
-    this.subtitle,
-    this.bottom,
-    this.initiallyExpanded = false,
-    this.maintainState = true,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
-    this.titlePadding = const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-    this.onExpanded,
-    this.onCollapse,
-    this.onCollapsed,
-    this.selected = false,
-    this.onSelected,
-    this.showDivider = true,
-    this.expandWithIconOnly = false,
-    this.hideExpansionSemantics = false,
-    this.isExpandable = true,
-    this.titleColor = ZdsColors.transparent,
-  }) : expansionTileType = ExpansionTileType.selectable;
-
   @override
   ZdsExpansionTileState createState() => ZdsExpansionTileState();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('initiallyExpanded', initiallyExpanded));
-    properties.add(DiagnosticsProperty<bool>('maintainState', maintainState));
-    properties.add(DiagnosticsProperty<EdgeInsets>('contentPadding', contentPadding));
-    properties.add(DiagnosticsProperty<EdgeInsets>('titlePadding', titlePadding));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onExpanded', onExpanded));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onCollapse', onCollapse));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onCollapsed', onCollapsed));
-    properties.add(DiagnosticsProperty<bool>('selected', selected));
-    properties.add(ObjectFlagProperty<void Function(bool p1)?>.has('onSelected', onSelected));
-    properties.add(DiagnosticsProperty<bool>('showDivider', showDivider));
-    properties.add(DiagnosticsProperty<bool>('expandWithIconOnly', expandWithIconOnly));
-    properties.add(DiagnosticsProperty<bool>('hideExpansionSemantics', hideExpansionSemantics));
-    properties.add(DiagnosticsProperty<bool>('isExpandable', isExpandable));
-    properties.add(EnumProperty<ExpansionTileType>('expansionTileType', expansionTileType));
-    properties.add(ColorProperty('titleColor', titleColor));
+    properties
+      ..add(DiagnosticsProperty<bool>('initiallyExpanded', initiallyExpanded))
+      ..add(DiagnosticsProperty<bool>('maintainState', maintainState))
+      ..add(DiagnosticsProperty<EdgeInsets>('contentPadding', contentPadding))
+      ..add(DiagnosticsProperty<EdgeInsets>('titlePadding', titlePadding))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onExpanded', onExpanded))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onCollapse', onCollapse))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onCollapsed', onCollapsed))
+      ..add(DiagnosticsProperty<bool>('selected', selected))
+      ..add(DiagnosticsProperty<bool>('showDivider', showDivider))
+      ..add(DiagnosticsProperty<bool>('expandWithIconOnly', expandWithIconOnly))
+      ..add(DiagnosticsProperty<bool>('hideExpansionSemantics', hideExpansionSemantics))
+      ..add(DiagnosticsProperty<bool>('isExpandable', isExpandable))
+      ..add(EnumProperty<ExpansionTileType>('expansionTileType', expansionTileType))
+      ..add(ColorProperty('titleColor', titleColor))
+      // ignore: avoid_positional_boolean_parameters
+      ..add(ObjectFlagProperty<void Function(bool p1)?>.has('onSelected', onSelected));
   }
 }
 
@@ -307,8 +309,8 @@ class ZdsExpansionTileState extends State<ZdsExpansionTile> with SingleTickerPro
     return AnimatedBuilder(
       animation: _controller.view,
       builder: (BuildContext context, Widget? child) {
-        final card = context.findAncestorWidgetOfExactType<ZdsCard>();
-        final chevronIcon = IconButton(
+        final ZdsCard? card = context.findAncestorWidgetOfExactType<ZdsCard>();
+        final IconButton chevronIcon = IconButton(
           onPressed: toggle,
           icon: RotationTransition(
             turns: _iconTurns,
@@ -322,10 +324,10 @@ class ZdsExpansionTileState extends State<ZdsExpansionTile> with SingleTickerPro
 
         return Stack(
           clipBehavior: Clip.none,
-          children: [
+          children: <Widget>[
             Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
+              children: <Widget>[
                 Material(
                   color: widget.titleColor,
                   child: Semantics(
@@ -337,13 +339,13 @@ class ZdsExpansionTileState extends State<ZdsExpansionTile> with SingleTickerPro
                               ? _toggleSelect
                               : toggle,
                       child: Column(
-                        children: [
+                        children: <Widget>[
                           Padding(
                             padding: widget.expansionTileType == ExpansionTileType.selectable
                                 ? const EdgeInsets.fromLTRB(8, 4, 20, 4)
                                 : widget.titlePadding,
                             child: Row(
-                              children: [
+                              children: <Widget>[
                                 if (widget.expansionTileType == ExpansionTileType.selectable)
                                   Semantics(
                                     onTapHint: _isExpanded
@@ -354,17 +356,17 @@ class ZdsExpansionTileState extends State<ZdsExpansionTile> with SingleTickerPro
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
+                                    children: <Widget>[
                                       DefaultTextStyle(
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyMedium!
+                                            .bodyLarge!
                                             .copyWith(color: ZetaColors.of(context).textDefault),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         child: widget.title,
                                       ),
-                                      if (widget.subtitle != null) ...[
+                                      if (widget.subtitle != null) ...<Widget>[
                                         const SizedBox(height: 5),
                                         DefaultTextStyle(
                                           style: Theme.of(context).textTheme.bodySmall!.copyWith(

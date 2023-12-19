@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:zds_flutter/zds_flutter.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 class ButtonDemo extends StatefulWidget {
   const ButtonDemo({Key? key}) : super(key: key);
@@ -115,32 +116,32 @@ class _ButtonDemoState extends State<ButtonDemo> {
                 child: const Text('Muted'),
               ),
             ],
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: SingleChildScrollView(
-            //         scrollDirection: Axis.horizontal,
-            //         child: Row(
-            //           children: [
-            //             const SizedBox(width: 24),
-            //             ...ZetaColors.of(context)
-            //                 .rainbow
-            //                 .map(
-            //                   (e) => ZdsButton.filled(
-            //                     onTap: () {},
-            //                     color: e,
-            //                     child: const Text('Button'),
-            //                   ),
-            //                 )
-            //                 .divide(const SizedBox(width: 16))
-            //                 .toList(),
-            //             const SizedBox(width: 24),
-            //           ],
-            //         ),
-            //       ),
-            //     )
-            //   ],
-            // ).paddingInsets(const EdgeInsets.symmetric(vertical: 24)),
+            Row(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 24),
+                        ...ZetaColors.of(context)
+                            .rainbow
+                            .map(
+                              (e) => ZdsButton.filled(
+                                onTap: () {},
+                                customColor: e,
+                                child: const Text('Button'),
+                              ),
+                            )
+                            .divide(const SizedBox(width: 16))
+                            .toList(),
+                        const SizedBox(width: 24),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ).paddingInsets(const EdgeInsets.symmetric(vertical: 24)),
             Align(
               alignment: Alignment.centerRight,
               child: ZdsPopupMenu(
@@ -199,7 +200,6 @@ class _ButtonDemoState extends State<ButtonDemo> {
                       onTap: () => setState(() => isButtonSelected = !isButtonSelected),
                       leadingIcon: const Icon(ZdsIcons.person_info),
                       onClose: () {},
-                      // color: ZetaColorBase.green,
                     ),
                     ZdsSelectionPill(
                       selected: !isButtonSelected,

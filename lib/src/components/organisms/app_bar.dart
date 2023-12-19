@@ -2,9 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// An app bar with Zds styling.
 ///
@@ -29,6 +28,19 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsPopupMenu], typically used in [actions] to display a kebab menu for further actions that would pollute
 ///    the appbar if they were all shown.
 class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
+  /// Creates an appbar that is typically shown at the top of the screen.
+  const ZdsAppBar({
+    super.key,
+    this.leading,
+    this.title,
+    this.actions,
+    this.subtitle,
+    this.icon,
+    this.bottom,
+    this.systemUiOverlayStyle,
+    this.color = ZdsTabBarColor.primary,
+  });
+
   /// The widget shown at the start of the appbar. Typically an [IconButton].
   ///
   /// If null and the [Navigator]'s stack can pop, a back button will be shown by default.
@@ -66,26 +78,12 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// See [ZdsTabBarColor].
   final ZdsTabBarColor color;
 
-  /// Creates an appbar that is typically shown at the top of the screen.
-  const ZdsAppBar({
-    super.key,
-    this.leading,
-    this.title,
-    this.actions,
-    this.subtitle,
-    this.icon,
-    this.bottom,
-    this.systemUiOverlayStyle,
-    this.color = ZdsTabBarColor.primary,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final ZetaColors colors = ZetaColors.of(context);
-    final AppBarTheme appBarTheme = Theme.of(context).buildAppBarTheme(colors)[color]!;
+    final ThemeData theme = Theme.of(context);
+    final AppBarTheme appBarTheme = Theme.of(context).buildAppBarTheme()[color]!;
 
-    return AnnotatedRegion(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
       value: systemUiOverlayStyle ?? appBarTheme.systemOverlayStyle ?? SystemUiOverlayStyle.dark,
       sized: false,
       child: Material(
@@ -93,7 +91,7 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: SafeArea(
           bottom: false,
           child: Column(
-            children: [
+            children: <Widget>[
               SizedBox(
                 height: _toolbarHeight,
                 child: IconTheme(
@@ -101,7 +99,7 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: icon == null ? 24 : 12),
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         Semantics(
                           sortKey: const OrdinalSortKey(2),
                           child: _resolvedLeading(context),
@@ -119,7 +117,7 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
+                                  children: <Widget>[
                                     if (title != null) title!,
                                     if (title != null && subtitle != null) const SizedBox(height: 4),
                                     if (subtitle != null)
@@ -170,7 +168,8 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<SystemUiOverlayStyle?>('systemUiOverlayStyle', systemUiOverlayStyle));
-    properties.add(EnumProperty<ZdsTabBarColor>('color', color));
+    properties
+      ..add(DiagnosticsProperty<SystemUiOverlayStyle?>('systemUiOverlayStyle', systemUiOverlayStyle))
+      ..add(EnumProperty<ZdsTabBarColor>('color', color));
   }
 }

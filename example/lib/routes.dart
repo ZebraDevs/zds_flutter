@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'home.dart';
-import 'pages/components/app_bar.dart';
 import 'pages/assets/animations.dart';
 import 'pages/assets/icons.dart';
 import 'pages/assets/images.dart';
+import 'pages/components/app_bar.dart';
 import 'pages/components/big_toggle_button.dart';
 import 'pages/components/block_table.dart';
 import 'pages/components/bottom_bar.dart';
@@ -13,8 +13,8 @@ import 'pages/components/bottom_tab_bar.dart';
 import 'pages/components/bottom_tab_scaffold.dart';
 import 'pages/components/button.dart';
 import 'pages/components/calendar.dart';
-import 'pages/components/card.dart';
 import 'pages/components/card_actions.dart';
+import 'pages/components/card.dart';
 import 'pages/components/date_picker.dart';
 import 'pages/components/day_picker_demo.dart';
 import 'pages/components/empty_list_view.dart';
@@ -22,18 +22,20 @@ import 'pages/components/empty_view.dart';
 import 'pages/components/expandable.dart';
 import 'pages/components/expansion_tile.dart';
 import 'pages/components/file_picker.dart';
+import 'pages/components/html_view.dart';
 import 'pages/components/icon_text_button.dart';
 import 'pages/components/image_picker.dart';
 import 'pages/components/index.dart';
 import 'pages/components/infinite_list.dart';
 import 'pages/components/information_bar.dart';
-import 'pages/components/list.dart';
 import 'pages/components/list_tile.dart';
+import 'pages/components/list.dart';
 import 'pages/components/modal.dart';
 import 'pages/components/navigation_menu.dart';
 import 'pages/components/popover.dart';
 import 'pages/components/profile.dart';
 import 'pages/components/properties_list.dart';
+import 'pages/components/quill_editor_demo.dart';
 import 'pages/components/radio_list.dart';
 import 'pages/components/search.dart';
 import 'pages/components/shake_example.dart';
@@ -42,15 +44,15 @@ import 'pages/components/slidable_list_tile.dart';
 import 'pages/components/split_navigator.dart';
 import 'pages/components/stats_card.dart';
 import 'pages/components/tab_bar.dart';
-import 'pages/components/tag.dart';
 import 'pages/components/tag_list.dart';
+import 'pages/components/tag.dart';
 import 'pages/components/text_field.dart';
-import 'pages/theme/colors.dart';
-import 'pages/theme/text.dart';
 import 'pages/components/toast.dart';
 import 'pages/components/toolbar.dart';
-import 'pages/utils/color_utils.dart';
 import 'pages/components/vertical_nav.dart';
+import 'pages/theme/colors.dart';
+import 'pages/theme/text.dart';
+import 'pages/utils/color_utils.dart';
 
 final kRoutes = {
   'Components': [
@@ -218,26 +220,26 @@ final kRoutes = {
     const DemoRoute(title: 'Sheet Headers', child: SheetHeaderDemo()),
     const DemoRoute(title: 'Vertical Navigation', child: VerticalNavDemo()),
     const DemoRoute(wrapper: false, title: 'Split Navigation', child: SplitNavigatorDemo()),
+    const DemoRoute(wrapper: false, title: 'Quill Editor', child: QuillEditorDemo()),
+    const DemoRoute(title: 'Html Preview', wrapper: false, child: HtmlPreview()),
+    const DemoRoute(title: 'Shake Animation', child: ShakeExample()),
   ],
   'Theme': [
     const DemoRoute(title: 'Text', child: TextDemo()),
     const DemoRoute(title: 'Colors', child: ColorsDemo()),
+    const DemoRoute(title: 'Colors generator', child: ColorUtilsDemo()),
   ],
   'Assets': [
     const DemoRoute(title: 'Animations', child: AnimationsDemo()),
     const DemoRoute(title: 'Images', child: ImagesDemo()),
     const DemoRoute(title: 'Icons', child: IconsDemo())
   ],
-  'Utils': [
-    const DemoRoute(title: 'Colors', child: ColorUtilsDemo()),
-    const DemoRoute(title: 'Shake Animation', child: ShakeExample()),
-  ],
 };
 
 final kFlattRoutes = kRoutes.keys.expand<DemoRoute>((key) => kRoutes[key]!).toList();
 
 const kHomeRoute = DemoRoute(
-  title: 'zds_flutter Demo',
+  title: 'ZDS Flutter Demo',
   routeName: Navigator.defaultRouteName,
   wrapper: false,
   child: HomePage(),

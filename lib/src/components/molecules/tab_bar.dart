@@ -1,32 +1,34 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Theme colors for [ZdsTabBar].
 enum ZdsTabBarColor {
-  /// * Background color: `ZetaColors.primary`.
-  /// * Foreground color: `ZetaColors.onPrimary`.
-  /// * Unselected foreground color: `ZetaColors.cool.40`.
-  /// * Indicator color: `ZetaColors.primary.20`.
+  /// Primary background color, onPrimary foreground color.
   primary,
 
-  /// * Background color: `ZetaColors.cool.90`.
-  /// * Foreground color: `ZetaColors.cool.20`.
-  /// * Unselected foreground color: `ZetaColors.cool.40`.
-  /// * Indicator color: `ZetaColors.primary`.
+  /// Either dark (Zeta) or ThemeData.background color for background, with respective foreground variants.
   basic,
 
-  /// * Background color: `ZetaColors.surface`.
-  /// * Foreground color: `ZetaColors.onSurface`.
-  /// * Unselected foreground color: `ZetaColors.cool.70`.
-  /// * Indicator color: `ZetaColors.primary`.
+  /// Surface background color, onSurface foreground color, primary indicator color.
   surface,
 }
 
 /// Returns a [TabBar] with Zds styling. However, this widget has a number of issues that make it less useful in
 /// varying screen sizes and resizable screens. It's recommended to instead use [ZdsResponsiveTabBar].
 class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
+  /// Makes a [TabBar] with Zds styling applied. It's recommended to instead use [ZdsResponsiveTabBar].
+  const ZdsTabBar({
+    this.tabs = const <ZdsTab>[],
+    super.key,
+    this.color = ZdsTabBarColor.basic,
+    this.controller,
+    this.isScrollable = false,
+    this.labelPadding = kTabLabelPadding,
+    this.labelStyle,
+  });
+
   /// Sets the color scheme for each of the tabs and the tab bar itself.
   ///
   /// Defaults to [ZdsTabBarColor.basic].
@@ -56,26 +58,15 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
   /// Text style for the labels of the tabs.
   final TextStyle? labelStyle;
 
-  /// Makes a [TabBar] with Zds styling applied. It's recommended to instead use [ZdsResponsiveTabBar].
-  const ZdsTabBar({
-    required this.tabs,
-    super.key,
-    this.color = ZdsTabBarColor.primary,
-    this.controller,
-    this.isScrollable = false,
-    this.labelPadding = kTabLabelPadding,
-    this.labelStyle,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final appBar = context.findAncestorWidgetOfExactType<ZdsAppBar>();
+    final ZdsAppBar? appBar = context.findAncestorWidgetOfExactType<ZdsAppBar>();
 
-    final customThemeContainer = Theme.of(context).zdsTabBarThemeData(
+    final ZdsTabBarStyleContainer customThemeContainer = Theme.of(context).zdsTabBarThemeData(
       context,
       hasIcons: hasIcons(tabs),
     )[appBar != null ? appBar.color : color]!;
-    final customTheme = customThemeContainer.customTheme;
+    final ZdsTabBarThemeData customTheme = customThemeContainer.customTheme;
 
     return Container(
       color: (customThemeContainer.customTheme.decoration as BoxDecoration).color,
@@ -93,8 +84,8 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
               labelStyle: labelStyle,
               tabs: tabs
                   .map(
-                    (item) => Builder(
-                      builder: (context) => IconTheme(
+                    (ZdsTab item) => Builder(
+                      builder: (BuildContext context) => IconTheme(
                         data: IconTheme.of(context).copyWith(
                           size: customTheme.iconSize,
                         ),
@@ -118,10 +109,11 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(EnumProperty<ZdsTabBarColor>('color', color));
-    properties.add(DiagnosticsProperty<TabController?>('controller', controller));
-    properties.add(DiagnosticsProperty<bool>('isScrollable', isScrollable));
-    properties.add(DiagnosticsProperty<EdgeInsets>('labelPadding', labelPadding));
-    properties.add(DiagnosticsProperty<TextStyle?>('labelStyle', labelStyle));
+    properties
+      ..add(EnumProperty<ZdsTabBarColor>('color', color))
+      ..add(DiagnosticsProperty<TabController?>('controller', controller))
+      ..add(DiagnosticsProperty<bool>('isScrollable', isScrollable))
+      ..add(DiagnosticsProperty<EdgeInsets>('labelPadding', labelPadding))
+      ..add(DiagnosticsProperty<TextStyle?>('labelStyle', labelStyle));
   }
 }

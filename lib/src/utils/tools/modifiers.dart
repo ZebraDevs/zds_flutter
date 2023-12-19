@@ -117,7 +117,7 @@ extension LayoutModifiers on Widget {
         child: this,
       );
     }
-    final box = ConstrainedBox(
+    final ConstrainedBox box = ConstrainedBox(
       constraints: BoxConstraints(
         minWidth: minWidth,
         maxWidth: maxWidth,
@@ -368,7 +368,7 @@ extension TextModifiers on Text {
 extension StatusBar on Scaffold {
   /// Changes this Scaffold's [SystemUiOverlayStyle].
   Widget statusBar(SystemUiOverlayStyle style) {
-    return AnnotatedRegion(value: style, child: this);
+    return AnnotatedRegion<SystemUiOverlayStyle>(value: style, child: this);
   }
 }
 
@@ -428,10 +428,10 @@ extension RowLayout on Row {
       textDirection: textDirection,
       verticalDirection: verticalDirection,
       textBaseline: textBaseline,
-      children: children.map((child) {
+      children: children.map((Widget child) {
         return Expanded(
           child: Row(
-            children: [
+            children: <Widget>[
               const Spacer(),
               child,
               const Spacer(),
@@ -451,7 +451,6 @@ extension TextThemeExtension on TextTheme {
   }
 
   /// TextStyle tabitem2
-
   TextStyle get tabItem2 {
     return bodyMedium!;
   }

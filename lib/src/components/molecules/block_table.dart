@@ -1,27 +1,33 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Defines a header for a [ZdsBlockTable]
 class ZdsBlockTableHeader {
-  /// The text displayed on the header
-  final String text;
-
-  /// The color of the text
-  final Color? textColor;
-
   /// Creates a new [ZdsBlockTableHeader]
   ZdsBlockTableHeader({
     required this.text,
     this.textColor,
   });
+
+  /// The text displayed on the header
+  final String text;
+
+  /// The color of the text
+  final Color? textColor;
 }
 
 /// Defines a row in a [ZdsBlockTable]
 class ZdsBlockTableRow {
+  /// Creates a new [ZdsBlockTableRow]
+  ZdsBlockTableRow({
+    required this.data,
+    required this.titleCell,
+    this.header,
+  });
+
   /// The header text displayed above the row
   final String? header;
 
@@ -30,17 +36,21 @@ class ZdsBlockTableRow {
 
   /// The data displayed in the table
   final List<ZdsBlockTableCellData> data;
-
-  /// Creates a new [ZdsBlockTableRow]
-  ZdsBlockTableRow({
-    required this.data,
-    required this.titleCell,
-    this.header,
-  });
 }
 
 /// Defines a cell in a [ZdsBlockTable]
 class ZdsBlockTableCellData {
+  /// Creates a new [ZdsBlockTableCellData]
+  ZdsBlockTableCellData({
+    this.text,
+    this.child,
+    this.textColor,
+    this.backgroundColor,
+    this.textStyle,
+    this.isSelected,
+    this.onTap,
+  });
+
   /// The child of the cell. Cannot be set if [text] is defined
   final Widget? child;
 
@@ -61,21 +71,21 @@ class ZdsBlockTableCellData {
 
   /// If set to true, gives the cell a highlight background and border
   bool? isSelected;
-
-  /// Creates a new [ZdsBlockTableCellData]
-  ZdsBlockTableCellData({
-    this.text,
-    this.child,
-    this.textColor,
-    this.backgroundColor,
-    this.textStyle,
-    this.isSelected,
-    this.onTap,
-  });
 }
 
 /// A scrollable table with floating headers
 class ZdsBlockTable extends StatefulWidget {
+  /// Creates a new [ZdsBlockTable]
+  const ZdsBlockTable({
+    required this.headers,
+    required this.rows,
+    this.columnWidth = 80,
+    this.cellHeight = 34,
+    this.cellPadding = 18,
+    this.rowHeaderHeight = 24,
+    super.key,
+  });
+
   /// The table headers
   final List<ZdsBlockTableHeader> headers;
 
@@ -94,28 +104,18 @@ class ZdsBlockTable extends StatefulWidget {
   /// The multiple for height of row header
   final double rowHeaderHeight;
 
-  /// Creates a new [ZdsBlockTable]
-  const ZdsBlockTable({
-    required this.headers,
-    required this.rows,
-    this.columnWidth = 80,
-    this.cellHeight = 34,
-    this.cellPadding = 18,
-    this.rowHeaderHeight = 24,
-    super.key,
-  });
-
   @override
   State<ZdsBlockTable> createState() => _BlockTable();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<ZdsBlockTableHeader>('headers', headers));
-    properties.add(IterableProperty<ZdsBlockTableRow>('rows', rows));
-    properties.add(DoubleProperty('columnWidth', columnWidth));
-    properties.add(DoubleProperty('cellHeight', cellHeight));
-    properties.add(DoubleProperty('cellPadding', cellPadding));
-    properties.add(DoubleProperty('rowHeaderHeight', rowHeaderHeight));
+    properties
+      ..add(IterableProperty<ZdsBlockTableHeader>('headers', headers))
+      ..add(IterableProperty<ZdsBlockTableRow>('rows', rows))
+      ..add(DoubleProperty('columnWidth', columnWidth))
+      ..add(DoubleProperty('cellHeight', cellHeight))
+      ..add(DoubleProperty('cellPadding', cellPadding))
+      ..add(DoubleProperty('rowHeaderHeight', rowHeaderHeight));
   }
 }
 
@@ -127,9 +127,9 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   late ScrollController _tableBody;
 
   Widget zeroCellWidget = const SizedBox();
-  List<Widget> headerCellsWidgets = [];
-  List<Widget> firstColumnCellsWidgets = [];
-  List<Widget> bodyCellsWidgets = [];
+  List<Widget> headerCellsWidgets = <Widget>[];
+  List<Widget> firstColumnCellsWidgets = <Widget>[];
+  List<Widget> bodyCellsWidgets = <Widget>[];
 
   @override
   void initState() {
@@ -137,7 +137,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     _tableHeader = _controllers.addAndGet();
     _tableBody = _controllers.addAndGet();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
       headerHeight = widget.rowHeaderHeight * MediaQuery.of(context).textScaleFactor;
       buildTable();
     });
@@ -147,7 +147,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
 
   @override
   void didChangeMetrics() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
       buildTable();
     });
   }
@@ -172,7 +172,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
           children: <Widget>[
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 zeroCellWidget,
                 Flexible(
                   flex: 3,
@@ -220,10 +220,10 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   }
 
   List<Widget> _buildHeaderCells(List<ZdsBlockTableHeader> items) {
-    return List.generate(
+    return List<Widget>.generate(
       items.length,
-      (index) => Row(
-        children: [
+      (int index) => Row(
+        children: <Widget>[
           Container(
             alignment: Alignment.center,
             width: _getDayColumnWidth(),
@@ -246,22 +246,22 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   }
 
   List<Widget> _buildFirstColumnCells(List<ZdsBlockTableRow> rows) {
-    return List.generate(
+    return List<Widget>.generate(
       rows.length,
-      (index) {
-        final row = rows[index];
-        final cellItem = row.titleCell;
+      (int index) {
+        final ZdsBlockTableRow row = rows[index];
+        final ZdsBlockTableCellData cellItem = row.titleCell;
         return Row(
-          children: [
+          children: <Widget>[
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 if (row.header != null)
                   Container(
                     height: headerHeight,
                     width: _getAssocColumnWidth(),
                     decoration: BoxDecoration(
-                      color: ZetaColors.of(context).warm.shade10,
+                      color: Theme.of(context).greySwatch[100],
                       border: Border(
                         bottom: BorderSide(
                           color: ZdsColors.lightGrey,
@@ -309,19 +309,19 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   }
 
   List<Widget> _buildRowElements(int index) {
-    final List<Widget> cells = [];
+    final List<Widget> cells = <Widget>[];
     final List<ZdsBlockTableRow> rows = widget.rows;
     final double cellHeight = widget.cellHeight + widget.cellPadding;
 
     for (int j = 0; j < rows[index].data.length; j++) {
-      final List<Widget> columnWidgets = [];
+      final List<Widget> columnWidgets = <Widget>[];
 
       if (rows[index].header != null) {
         columnWidgets.add(
           Container(
             height: headerHeight,
             decoration: BoxDecoration(
-              color: ZetaColors.of(context).warm.shade10,
+              color: Theme.of(context).greySwatch[100],
               border: Border(
                 bottom: BorderSide(color: ZdsColors.lightGrey),
               ),
@@ -329,8 +329,8 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
           ),
         );
       }
-      final tableCell = rows[index].data[j];
-      final isSelected = tableCell.isSelected != null && tableCell.isSelected!;
+      final ZdsBlockTableCellData tableCell = rows[index].data[j];
+      final bool isSelected = tableCell.isSelected != null && tableCell.isSelected!;
 
       columnWidgets.add(
         Expanded(
@@ -377,10 +377,10 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
       cells.add(cell);
     }
 
-    return List.generate(
+    return List<Widget>.generate(
       cells.length,
-      (indx) => Row(
-        children: [
+      (int indx) => Row(
+        children: <Widget>[
           Container(
             alignment: Alignment.center,
             width: _getDayColumnWidth(),
@@ -397,9 +397,9 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   }
 
   List<Widget> _buildBodyRows() {
-    return List.generate(
+    return List<Widget>.generate(
       widget.rows.length,
-      (index) {
+      (int index) {
         return Row(
           children: _buildRowElements(index),
         ).paddingOnly(bottom: 1);

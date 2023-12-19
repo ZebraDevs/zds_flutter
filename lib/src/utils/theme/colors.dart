@@ -5,7 +5,6 @@ import '../../../zds_flutter.dart';
 import '../tools/app.dart';
 import 'theme_loader.dart';
 
-ZetaColors get _zetaColors => appZetaColors ?? ZetaColors();
 late ColorScheme? _colorScheme;
 
 /// Utility extensions on Color.
@@ -22,12 +21,12 @@ extension ColorUtils on Color {
   /// We can use the Hue-Saturation-Value (HSV) representation of the color.
   /// A color is generally considered warm if its hue lies between 0 and 180 degrees.
   bool get isWarm {
-    final hsvColor = HSVColor.fromColor(this);
+    final HSVColor hsvColor = HSVColor.fromColor(this);
     return hsvColor.hue >= 0 && hsvColor.hue <= 180;
   }
 }
 
-/// Class that defines all colors to be used in the ZdsComponents
+/// Class that defines all colors to be used in Zds.
 ///
 ///
 /// [greySwatch], [primarySwatch] and [secondarySwatch] all require a context be passed in that is a child of [ZdsApp],
@@ -43,53 +42,73 @@ extension ColorUtils on Color {
 class ZdsColors {
   ZdsColors._();
 
-  /// Green color.
+  /// Green color
   ///
   /// Typically used to show success.
-  static final green = _zetaColors.green.primary;
+  ///
+  /// Defaults to #00B400, if not overridden by [ZetaColors].
+  static final Color green = appZetaColors?.green ?? const Color(0xff00B400);
 
-  /// Yellow color.
+  /// Yellow color
   ///
   /// Typically used to show warning.
-  static final yellow = _zetaColors.yellow.primary;
+  ///
+  /// Defaults to #FFD200c
+  static final Color yellow = appZetaColors?.yellow ?? const Color(0xffFFD200);
 
-  ///Orange color.
-  static final orange = _zetaColors.orange.primary;
+  /// Orange color
+  ///
+  /// Defaults to #FF8000, unless overridden by [ZetaColors].
+  static final Color orange = appZetaColors?.orange ?? const Color(0xffFF8000);
 
-  /// Red color.
+  /// Red color
   ///
   /// Typically used to show an error.
-  static final red = _zetaColors.red.primary;
-
-  /// Purple color.
-  static final purple = _zetaColors.purple.primary;
-
-  /// Blue color.
-  static final blue = _zetaColors.blue.primary;
-
-  /// Teal color.
-  static final teal = _zetaColors.teal.primary;
-
-  /// Black color.
   ///
-  /// Default text color.
-  static final black = _zetaColors.textDefault;
+  /// Defaults to #ED1C24, unless overridden by [ZetaColors].
+  static final Color red = appZetaColors?.red ?? const Color(0xffED1C24);
+
+  /// Purple color
+  ///
+  /// Defaults to #6400D6, unless overridden by [ZetaColors].
+  static final Color purple = appZetaColors?.purple ?? const Color(0xff6400D6);
+
+  /// Blue color
+  ///
+  /// Defaults to #0073E6, unless overridden by [ZetaColors].
+  static final Color blue = appZetaColors?.blue ?? const Color(0xff0073E6);
+
+  /// Teal color
+  ///
+  /// Defaults to #017474, unless overridden by [ZetaColors].
+  static final Color teal = appZetaColors?.teal ?? const Color(0xff017474);
+
+  /// Black color
+  ///
+  /// Typically used for text as this is not total black, but easier on the eyes.
+  ///
+  /// Defaults to #171717, unless overridden by [ZetaColors].
+  static final Color black = appZetaColors?.black ?? const Color(0xff171717);
 
   ///Dark-grey color
   ///
-  /// Subtle text color.
-  static final darkGrey = _zetaColors.textSubtle;
+  /// #4C4C4C, unless overridden by [ZetaColors].
+  static final Color darkGrey = appZetaColors?.cool.shade70 ?? const Color(0xff4c4c4c);
 
   /// Blue-grey color
-  static final blueGrey = _zetaColors.cool.shade60;
+  ///
+  /// #616976, unless overridden by [ZetaColors].
+  static final Color blueGrey = appZetaColors?.cool.shade60 ?? const Color(0xff616976);
 
   /// Light-grey color
-  static final lightGrey = _zetaColors.cool.shade40;
+  ///
+  /// #D1D5DC, unless overridden by [ZetaColors].
+  static final Color lightGrey = appZetaColors?.cool.shade40 ?? const Color(0xffD1D5DC);
 
   /// White color
   ///
-  /// #FFFFFF
-  static final white = _zetaColors.white;
+  /// #FFFFFF, unless overridden by [ZetaColors].
+  static final Color white = appZetaColors?.white ?? const Color(0xffFFFFFF);
 
   /// Transparent color
   ///
@@ -101,47 +120,59 @@ class ZdsColors {
   /// Typically used for inkwell splash color
   ///
   /// #171717 with 10% opacity
-  static final splashColor = _zetaColors.black.withOpacity(0.1);
+  static final Color splashColor = ZdsColors.black.withOpacity(0.1);
 
   /// Shadow color.
   ///
   /// Used on cards and tiles to create the shadow.
-  static final shadowColor = _zetaColors.shadow;
+  static final Color shadowColor = appZetaColors?.shadow ?? const Color(0x1A49505E);
 
   /// Barrier color.
   ///
   /// Used as a background scrim for modals.
-  static const barrierColor = Color(0x80000000);
+  static const Color barrierColor = Color(0x80000000);
 
   /// Shadow color with 100% opacity.
   ///
   /// Typically used with a level of opacity, i.e. `shadowColor100.withOpacity(0.4`
   ///
   /// Used on cards and tiles to create the shadow.
-  static const shadowColor100 = Color(0xFF49505E);
+  static const Color shadowColor100 = Color(0xFF49505E);
 
   /// Hover color
   ///
   /// Typically used to show what the user has hovered on.
-  static final hoverColor = _zetaColors.isDarkMode ? _zetaColors.black : _zetaColors.surfaceHovered;
+  ///
+  /// [ZdsColors.darkGrey] with 1.5% opacity
+  static final Color hoverColor = ZdsColors.darkGrey.withOpacity(0.015);
 
   /// Swatch of green colors.
-
-  static final ColorSwatch<String> greenSwatch = ColorSwatch(_zetaColors.green.shade60.value, {
-    'light': _zetaColors.green.shade30,
-    'medium': _zetaColors.green.shade60,
-    'dark': _zetaColors.green.shade80,
+  ///
+  /// * Light - #EBFDDE
+  /// * Medium - #00B400
+  /// * Dark - #006F00
+  static final ColorSwatch<String> greenSwatch =
+      ColorSwatch<String>(appZetaColors?.green.shade60.value ?? 0xff00B400, <String, Color>{
+    'light': appZetaColors?.green.shade30 ?? const Color(0xffEBFDDE),
+    'medium': appZetaColors?.green.shade60 ?? green,
+    'dark': appZetaColors?.green.shade80 ?? const Color(0xff006F00),
   });
 
   /// Swatch of red colors.
-  static final ColorSwatch<String> redSwatch = ColorSwatch(_zetaColors.red.shade60.value, {
-    'fair': _zetaColors.red.shade10,
-    'light': _zetaColors.red.shade30,
-    'medium': _zetaColors.red.shade60,
-    'dark': _zetaColors.red.shade80,
+  ///
+  /// * Fair - #f5E8E8
+  /// * Light - #DDB8B8
+  /// * Medium - fED1C24
+  /// * Dark - #C81C00
+  static final ColorSwatch<String> redSwatch =
+      ColorSwatch<String>(appZetaColors?.red.shade60.value ?? 0xffED1C24, <String, Color>{
+    'fair': appZetaColors?.red.shade10 ?? const Color(0xfff5E8E8),
+    'light': appZetaColors?.red.shade30 ?? const Color(0xffDDB8B8),
+    'medium': appZetaColors?.red.shade60 ?? red,
+    'dark': appZetaColors?.red.shade80 ?? const Color(0xffC81C00),
   });
 
-  /// Requires that a [BuildContext] that is a child of  [ZdsApp]  is passed. Can be called using:
+  /// Requires that a [BuildContext] that contains Zds is passed. Can be called using:
   /// ```dart
   /// Container(color: ZdsColors.greySwatch(context)[500])
   /// ```
@@ -151,13 +182,13 @@ class ZdsColors {
   }
 
   /// Gets MaterialColor swatch for shades of the primary color.
-  /// Requires that a [BuildContext] that is a child of  [ZdsApp]  is passed. Can be called using:
+  /// Requires that a [BuildContext] that contains Zds is passed. Can be called using:
   /// ```dart
   /// Container(color: ZdsColors.primarySwatch(context)[500])
   /// ```
   static MaterialColor primarySwatch(BuildContext context) {
     final Color primary = Theme.of(context).colorScheme.primary;
-    return MaterialColor(primary.value, {
+    return MaterialColor(primary.value, <int, Color>{
       50: getShadedColor(primary, 0.05),
       100: getShadedColor(primary, 0.1),
       200: getShadedColor(primary, 0.2),
@@ -179,7 +210,7 @@ class ZdsColors {
   /// ```
   static MaterialColor secondarySwatch(BuildContext context) {
     final Color secondary = Theme.of(context).colorScheme.secondary;
-    return MaterialColor(secondary.value, {
+    return MaterialColor(secondary.value, <int, Color>{
       50: getShadedColor(secondary, 0.05),
       100: getShadedColor(secondary, 0.1),
       200: getShadedColor(secondary, 0.2),
@@ -194,45 +225,42 @@ class ZdsColors {
   }
 
   /// Swatch of cool grey colors to be used with a cool theme.
-  static final MaterialColor greyCoolSwatch = MaterialColor(_zetaColors.cool.shade60.value, {
-    50: _zetaColors.cool.shade10,
-    100: _zetaColors.cool.shade10,
-    200: _zetaColors.cool.shade20,
-    300: _zetaColors.cool.shade30,
-    400: _zetaColors.cool.shade40,
-    500: _zetaColors.cool.shade50,
-    600: _zetaColors.cool.shade60,
-    700: _zetaColors.cool.shade70,
-    800: _zetaColors.cool.shade80,
-    900: _zetaColors.cool.shade90,
-    1000: _zetaColors.cool.shade100,
-    1100: _zetaColors.cool.shade100,
-    1200: _zetaColors.cool.shade100,
+  static MaterialColor greyCoolSwatch = MaterialColor(appZetaColors?.cool.shade60.value ?? 0xFF616976, <int, Color>{
+    50: appZetaColors?.cool.shade10 ?? const Color(0xffE6EDFA),
+    100: appZetaColors?.cool.shade10 ?? const Color(0xffE0E8F5),
+    200: appZetaColors?.cool.shade20 ?? const Color(0xffD6DEEB),
+    300: appZetaColors?.cool.shade30 ?? const Color(0xffCCD4E0),
+    400: appZetaColors?.cool.shade40 ?? const Color(0xffC2C9D6),
+    500: appZetaColors?.cool.shade50 ?? const Color(0xffB8BFCC),
+    600: appZetaColors?.cool.shade60 ?? const Color(0xffA8B0BD),
+    700: appZetaColors?.cool.shade70 ?? const Color(0xff9199A6),
+    800: appZetaColors?.cool.shade80 ?? const Color(0xff7A828F),
+    900: appZetaColors?.cool.shade90 ?? const Color(0xff616976),
+    1000: appZetaColors?.cool.shade100 ?? const Color(0xff4F5763),
+    1100: appZetaColors?.cool.shade100 ?? const Color(0xff38404D),
+    1200: appZetaColors?.cool.shade100 ?? const Color(0xff1A212E),
   });
 
   /// Swatch of warm grey colors to be used with a warm theme.
-  ///
-  /// NOTE: Colors come from zeta, and so 50,1100 and 1200 no longer exist and will be their nearest values.
-  static final MaterialColor greyWarmSwatch = MaterialColor(_zetaColors.warm.shade60.value, {
-    50: _zetaColors.warm.shade10,
-    100: _zetaColors.warm.shade10,
-    200: _zetaColors.warm.shade20,
-    300: _zetaColors.warm.shade30,
-    400: _zetaColors.warm.shade40,
-    500: _zetaColors.warm.shade50,
-    600: _zetaColors.warm.shade60,
-    700: _zetaColors.warm.shade70,
-    800: _zetaColors.warm.shade80,
-    900: _zetaColors.warm.shade90,
-    1000: _zetaColors.warm.shade100,
-    1100: _zetaColors.warm.shade100,
-    1200: _zetaColors.warm.shade100,
+  static MaterialColor greyWarmSwatch = MaterialColor(appZetaColors?.warm.shade60.value ?? 0xFF4C4C4C, <int, Color>{
+    50: appZetaColors?.warm.shade10 ?? const Color(0xffFAFAFA),
+    100: appZetaColors?.warm.shade10 ?? const Color(0xffF5F5F5),
+    200: appZetaColors?.warm.shade20 ?? const Color(0xffEBEBEB),
+    300: appZetaColors?.warm.shade30 ?? const Color(0xffE1E1E1),
+    400: appZetaColors?.warm.shade40 ?? const Color(0xffD7D7D7),
+    500: appZetaColors?.warm.shade50 ?? const Color(0xffCDCDCD),
+    600: appZetaColors?.warm.shade60 ?? const Color(0xffBDBDBD),
+    700: appZetaColors?.warm.shade70 ?? const Color(0xffA6A6A6),
+    800: appZetaColors?.warm.shade80 ?? const Color(0xff8E8E8E),
+    900: appZetaColors?.warm.shade90 ?? const Color(0xff757575),
+    1000: appZetaColors?.warm.shade100 ?? const Color(0xff636363),
+    1100: appZetaColors?.warm.shade100 ?? const Color(0xff4C4C4C),
+    1200: appZetaColors?.warm.shade100 ?? const Color(0xff2E2E2E),
   });
 
   /// Const definition needed for input border.
-  // TODO(colors): replace this with reference to Zeta.
   static const Color inputBorderColor = Color(0xFFBDBDBD);
-
+  // TODO(colors): replace this with reference to Zeta.
   static const Color _defaultPrimary = Color(0xFF1C3760);
   static const Color _defaultPrimaryContainer = Color(0xFF2A526F);
   static const Color _defaultSecondary = Color(0xFF007ABA);
@@ -251,12 +279,6 @@ class BrandColors {
     required this.dark,
   });
 
-  /// Color Scheme to use in light mode.
-  final ColorScheme light;
-
-  ///Color scheme to use in dark mode.
-  final ColorScheme dark;
-
   /// Default color scheme containing Zds theme colors.
   BrandColors.zdsDefault()
       : light = ZdsColorScheme.light(),
@@ -269,6 +291,12 @@ class BrandColors {
       dark: ZdsColorScheme.darkFromJson(json['dark'] as Map<dynamic, dynamic>),
     );
   }
+
+  /// Color Scheme to use in light mode.
+  final ColorScheme light;
+
+  ///Color scheme to use in dark mode.
+  final ColorScheme dark;
 
   @override
   bool operator ==(Object other) =>

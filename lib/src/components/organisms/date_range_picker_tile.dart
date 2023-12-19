@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 const double _screenColumnBreakpoint = 240;
 const double _padding = 20;
@@ -16,14 +16,19 @@ const double _fontLineHeight = 26;
 /// See also:
 /// * [DateTimeRange]
 class ZdsDateTimeRange {
+  /// Constructor for [ZdsDateTimeRange].
+  const ZdsDateTimeRange({this.start, this.end});
+
+  /// Constructs a [ZdsDateTimeRange] from a [DateTimeRange].
+  ZdsDateTimeRange.fromDateTimeRange(DateTimeRange dateTimeRange)
+      : start = dateTimeRange.start,
+        end = dateTimeRange.end;
+
   /// The start of the range of dates.
   final DateTime? start;
 
   /// The end of the range of dates.
   final DateTime? end;
-
-  /// Constructor for [ZdsDateTimeRange].
-  const ZdsDateTimeRange({this.start, this.end});
 
   /// Creates a new [ZdsDateTimeRange] from this one by updating individual properties.
   ZdsDateTimeRange copyWith({DateTime? start, DateTime? end}) {
@@ -35,11 +40,6 @@ class ZdsDateTimeRange {
 
   /// Checks if either start or end is not set.
   bool get isIncomplete => start == null || end == null;
-
-  /// Constructs a [ZdsDateTimeRange] from a [DateTimeRange].
-  ZdsDateTimeRange.fromDateTimeRange(DateTimeRange dateTimeRange)
-      : start = dateTimeRange.start,
-        end = dateTimeRange.end;
 
   /// Constructs a [DateTimeRange] from an instance of [ZdsDateTimeRange] only if [isValid].
   DateTimeRange? get toDateTimeRange {
@@ -82,36 +82,36 @@ class ZdsDateRangePickerTileForm extends FormField<ZdsDateTimeRange> {
           },
           initialValue: initialValue,
           autovalidateMode: autovalidateMode,
-          onSaved: (d) {
+          onSaved: (ZdsDateTimeRange? d) {
             if (d != null && onSaved != null) onSaved(d);
           },
           builder: (FormFieldState<ZdsDateTimeRange> state) {
             return Builder(
-              builder: (context) {
+              builder: (BuildContext context) {
                 return ZdsCard(
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 18),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       Row(
-                        children: [
+                        children: <Widget>[
                           Expanded(
                             child: LayoutBuilder(
-                              builder: (context, constraints) {
+                              builder: (BuildContext context, BoxConstraints constraints) {
                                 final double scale = MediaQuery.of(context).textScaleFactor;
                                 final double width = _calculateWidth(constraints, scale);
                                 final bool isColumn = constraints.maxWidth <= _screenColumnBreakpoint * scale;
-                                final List<Widget> fields = [
+                                final List<Widget> fields = <Widget>[
                                   _DateField(
                                     date: state.value?.start ?? initialValue.start,
                                     format: format,
                                     initialSelectableDate: earliestSelectableDate,
                                     finalSelectableDate: latestSelectableDate,
                                     helpText: initialHelpText,
-                                    updateDate: (newValue) {
+                                    updateDate: (DateTime? newValue) {
                                       state.didChange((state.value ?? initialValue).copyWith(start: newValue));
                                     },
-                                    validator: (value) => state.hasError ? '' : null,
+                                    validator: (DateTime? value) => state.hasError ? '' : null,
                                     isInitialDate: true,
                                     width: width,
                                     scale: scale,
@@ -125,9 +125,9 @@ class ZdsDateRangePickerTileForm extends FormField<ZdsDateTimeRange> {
                                     format: format,
                                     initialSelectableDate: earliestSelectableDate,
                                     finalSelectableDate: latestSelectableDate,
-                                    validator: (value) => state.hasError ? '' : null,
+                                    validator: (DateTime? value) => state.hasError ? '' : null,
                                     helpText: finalHelpText,
-                                    updateDate: (newValue) {
+                                    updateDate: (DateTime? newValue) {
                                       state.didChange((state.value ?? initialValue).copyWith(end: newValue));
                                     },
                                     width: width,
@@ -175,6 +175,31 @@ class ZdsDateRangePickerTileForm extends FormField<ZdsDateTimeRange> {
 ///  * [ZdsDateTimePicker], which allows to select a day and hour together or separately
 ///  * [showDatePicker] to show a date picker directly
 class ZdsDateRangePickerTile extends StatefulWidget {
+  /// A DateRangePicker that allows to pick the "From" and "To" dates separately.
+  ///
+  /// If both are set, [earliestSelectableDate] must be on or before [latestSelectableDate].
+  ZdsDateRangePickerTile({
+    super.key,
+    this.initialDate,
+    this.finalDate,
+    this.onInitialDateChanged,
+    this.onFinalDateChanged,
+    this.earliestSelectableDate,
+    this.latestSelectableDate,
+    this.initialDateController,
+    this.finalDateController,
+    this.format = 'dd/MM/yyyy',
+    this.initialHelpText,
+    this.finalHelpText,
+    this.errorMessage = '',
+    this.formKey,
+  }) : assert(
+          (earliestSelectableDate != null && latestSelectableDate != null)
+              ? earliestSelectableDate.isBefore(latestSelectableDate)
+              : earliestSelectableDate == null,
+          'Earliest selectable date must be before latest selectable date',
+        );
+
   /// The DateTime selected in the "From" field. Set this if you want pre-initialized dates.
   ///
   /// If no date is selected, the field will be blank.
@@ -226,49 +251,25 @@ class ZdsDateRangePickerTile extends StatefulWidget {
   /// The key attached to the form within the picker that can be used to check the validation of the inputs.
   final GlobalKey<FormState>? formKey;
 
-  /// A DateRangePicker that allows to pick the "From" and "To" dates separately.
-  ///
-  /// If both are set, [earliestSelectableDate] must be on or before [latestSelectableDate].
-  ZdsDateRangePickerTile({
-    super.key,
-    this.initialDate,
-    this.finalDate,
-    this.onInitialDateChanged,
-    this.onFinalDateChanged,
-    this.earliestSelectableDate,
-    this.latestSelectableDate,
-    this.initialDateController,
-    this.finalDateController,
-    this.format = 'dd/MM/yyyy',
-    this.initialHelpText,
-    this.finalHelpText,
-    this.errorMessage = '',
-    this.formKey,
-  }) : assert(
-          (earliestSelectableDate != null && latestSelectableDate != null)
-              ? earliestSelectableDate.isBefore(latestSelectableDate)
-              : earliestSelectableDate == null,
-          'Earliest selectable date must be before latest selectable date',
-        );
-
   @override
   State<ZdsDateRangePickerTile> createState() => _ZdsDateRangePickerTileState();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<DateTime?>('initialDate', initialDate));
-    properties.add(DiagnosticsProperty<DateTime?>('finalDate', finalDate));
-    properties.add(StringProperty('initialHelpText', initialHelpText));
-    properties.add(StringProperty('finalHelpText', finalHelpText));
-    properties.add(ObjectFlagProperty<void Function(DateTime? p1)?>.has('onInitialDateChanged', onInitialDateChanged));
-    properties.add(ObjectFlagProperty<void Function(DateTime? p1)?>.has('onFinalDateChanged', onFinalDateChanged));
-    properties.add(DiagnosticsProperty<DateTime?>('earliestSelectableDate', earliestSelectableDate));
-    properties.add(DiagnosticsProperty<DateTime?>('latestSelectableDate', latestSelectableDate));
-    properties.add(DiagnosticsProperty<ZdsValueController<DateTime>?>('initialDateController', initialDateController));
-    properties.add(DiagnosticsProperty<ZdsValueController<DateTime>?>('finalDateController', finalDateController));
-    properties.add(StringProperty('format', format));
-    properties.add(StringProperty('errorMessage', errorMessage));
-    properties.add(DiagnosticsProperty<GlobalKey<FormState>?>('formKey', formKey));
+    properties
+      ..add(DiagnosticsProperty<DateTime?>('initialDate', initialDate))
+      ..add(DiagnosticsProperty<DateTime?>('finalDate', finalDate))
+      ..add(StringProperty('initialHelpText', initialHelpText))
+      ..add(StringProperty('finalHelpText', finalHelpText))
+      ..add(ObjectFlagProperty<void Function(DateTime? p1)?>.has('onInitialDateChanged', onInitialDateChanged))
+      ..add(ObjectFlagProperty<void Function(DateTime? p1)?>.has('onFinalDateChanged', onFinalDateChanged))
+      ..add(DiagnosticsProperty<DateTime?>('earliestSelectableDate', earliestSelectableDate))
+      ..add(DiagnosticsProperty<DateTime?>('latestSelectableDate', latestSelectableDate))
+      ..add(DiagnosticsProperty<ZdsValueController<DateTime>?>('initialDateController', initialDateController))
+      ..add(DiagnosticsProperty<ZdsValueController<DateTime>?>('finalDateController', finalDateController))
+      ..add(StringProperty('format', format))
+      ..add(StringProperty('errorMessage', errorMessage))
+      ..add(DiagnosticsProperty<GlobalKey<FormState>?>('formKey', formKey));
   }
 }
 
@@ -296,13 +297,13 @@ class _ZdsDateRangePickerTileState extends State<ZdsDateRangePickerTile> {
         widget.initialDate ?? (widget.initialDateController != null ? widget.initialDateController!.value : null);
     finalDate = widget.finalDate ?? (widget.finalDateController != null ? widget.finalDateController!.value : null);
 
-    widget.initialDateController?.updateListener = (value) {
+    widget.initialDateController?.updateListener = (DateTime? value) {
       setState(() {
         initialDate = value;
       });
       widget.initialDateController?.notifyListeners(value);
     };
-    widget.finalDateController?.updateListener = (value) {
+    widget.finalDateController?.updateListener = (DateTime? value) {
       setState(() {
         finalDate = value;
       });
@@ -318,19 +319,19 @@ class _ZdsDateRangePickerTileState extends State<ZdsDateRangePickerTile> {
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Row(
-            children: [
+            children: <Widget>[
               Expanded(
                 child: Form(
                   key: formKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: LayoutBuilder(
-                    builder: (context, constraints) {
+                    builder: (BuildContext context, BoxConstraints constraints) {
                       final double scale = MediaQuery.of(context).textScaleFactor;
                       final double width = _calculateWidth(constraints, scale);
                       final bool isColumn = constraints.maxWidth <= _screenColumnBreakpoint * scale;
-                      final List<Widget> fields = [
+                      final List<Widget> fields = <Widget>[
                         _DateField(
                           date: initialDate,
                           format: widget.format,
@@ -338,11 +339,11 @@ class _ZdsDateRangePickerTileState extends State<ZdsDateRangePickerTile> {
                           initialSelectableDate: widget.earliestSelectableDate,
                           finalSelectableDate: widget.latestSelectableDate,
                           helpText: widget.initialHelpText,
-                          updateDate: (newValue) {
+                          updateDate: (DateTime? newValue) {
                             setState(() => initialDate = newValue);
                             widget.initialDateController?.notifyListeners(newValue);
                           },
-                          validator: (value) {
+                          validator: (DateTime? value) {
                             if (value != null && (finalDate != null && value.isAfter(finalDate!))) {
                               return widget.errorMessage;
                             }
@@ -363,11 +364,11 @@ class _ZdsDateRangePickerTileState extends State<ZdsDateRangePickerTile> {
                           initialSelectableDate: widget.earliestSelectableDate,
                           finalSelectableDate: widget.latestSelectableDate,
                           helpText: widget.finalHelpText,
-                          updateDate: (newValue) {
+                          updateDate: (DateTime? newValue) {
                             setState(() => finalDate = newValue);
                             widget.finalDateController?.notifyListeners(newValue);
                           },
-                          validator: (value) {
+                          validator: (DateTime? value) {
                             if (value != null && (initialDate != null && value.isBefore(initialDate!))) {
                               return widget.errorMessage;
                             }
@@ -406,25 +407,14 @@ class _ZdsDateRangePickerTileState extends State<ZdsDateRangePickerTile> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<DateTime?>('initialDate', initialDate));
-    properties.add(DiagnosticsProperty<DateTime?>('finalDate', finalDate));
-    properties.add(DiagnosticsProperty<GlobalKey<FormState>>('formKey', formKey));
+    properties
+      ..add(DiagnosticsProperty<DateTime?>('initialDate', initialDate))
+      ..add(DiagnosticsProperty<DateTime?>('finalDate', finalDate))
+      ..add(DiagnosticsProperty<GlobalKey<FormState>>('formKey', formKey));
   }
 }
 
 class _DateField extends StatelessWidget {
-  final DateTime? date;
-  final DateTime? initialSelectableDate;
-  final DateTime? finalSelectableDate;
-  final bool isInitialDate;
-  final void Function(DateTime?)? onDateChanged;
-  final void Function(DateTime?) updateDate;
-  final String format;
-  final String? helpText;
-  final double width;
-  final double scale;
-  final String? Function(DateTime?)? validator;
-
   const _DateField({
     required this.updateDate,
     required this.date,
@@ -438,13 +428,24 @@ class _DateField extends StatelessWidget {
     this.onDateChanged,
     this.isInitialDate = false,
   });
+  final DateTime? date;
+  final DateTime? initialSelectableDate;
+  final DateTime? finalSelectableDate;
+  final bool isInitialDate;
+  final void Function(DateTime?)? onDateChanged;
+  final void Function(DateTime?) updateDate;
+  final String format;
+  final String? helpText;
+  final double width;
+  final double scale;
+  final String? Function(DateTime?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return FormField<DateTime>(
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      builder: (state) => Container(
+      builder: (FormFieldState<DateTime> state) => Container(
         width: width,
         decoration: BoxDecoration(
           border: Border(
@@ -456,7 +457,7 @@ class _DateField extends StatelessWidget {
         child: MergeSemantics(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Text(
                 isInitialDate
                     ? ComponentStrings.of(context).get('FROM', 'From')
@@ -484,7 +485,7 @@ class _DateField extends StatelessWidget {
                     lastDate: finalSelectableDate ?? DateTime.now().add(const Duration(days: 365 * 10)),
                     initialEntryMode: DatePickerEntryMode.calendarOnly,
                     helpText: helpText,
-                    builder: (context, child) {
+                    builder: (BuildContext context, Widget? child) {
                       return Theme(
                         data: Theme.of(context).zdsDateTimePickerTheme,
                         child: child!,
@@ -497,7 +498,7 @@ class _DateField extends StatelessWidget {
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     SizedBox(
                       height: _fontLineHeight * scale,
                       child: date != null
@@ -528,16 +529,17 @@ class _DateField extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<DateTime?>('date', date));
-    properties.add(DiagnosticsProperty<DateTime?>('initialSelectableDate', initialSelectableDate));
-    properties.add(DiagnosticsProperty<DateTime?>('finalSelectableDate', finalSelectableDate));
-    properties.add(DiagnosticsProperty<bool>('isInitialDate', isInitialDate));
-    properties.add(ObjectFlagProperty<void Function(DateTime? p1)?>.has('onDateChanged', onDateChanged));
-    properties.add(ObjectFlagProperty<void Function(DateTime? p1)>.has('updateDate', updateDate));
-    properties.add(StringProperty('format', format));
-    properties.add(StringProperty('helpText', helpText));
-    properties.add(DoubleProperty('width', width));
-    properties.add(DoubleProperty('scale', scale));
-    properties.add(ObjectFlagProperty<String? Function(DateTime? p1)?>.has('validator', validator));
+    properties
+      ..add(DiagnosticsProperty<DateTime?>('date', date))
+      ..add(DiagnosticsProperty<DateTime?>('initialSelectableDate', initialSelectableDate))
+      ..add(DiagnosticsProperty<DateTime?>('finalSelectableDate', finalSelectableDate))
+      ..add(DiagnosticsProperty<bool>('isInitialDate', isInitialDate))
+      ..add(ObjectFlagProperty<void Function(DateTime? p1)?>.has('onDateChanged', onDateChanged))
+      ..add(ObjectFlagProperty<void Function(DateTime? p1)>.has('updateDate', updateDate))
+      ..add(StringProperty('format', format))
+      ..add(StringProperty('helpText', helpText))
+      ..add(DoubleProperty('width', width))
+      ..add(DoubleProperty('scale', scale))
+      ..add(ObjectFlagProperty<String? Function(DateTime? p1)?>.has('validator', validator));
   }
 }

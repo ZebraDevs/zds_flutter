@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A widget used to create header in a [ZdsCard].
 ///
@@ -12,6 +12,16 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsCard] where this widget is typically used.
 ///  * [ZdsCardWithActions], a [ZdsCard] variant with a bottom status/information bar.
 class ZdsCardHeader extends StatelessWidget {
+  /// Creates a card header.
+  ///
+  /// [child] can't be null.
+  const ZdsCardHeader({
+    required this.child,
+    super.key,
+    this.leading,
+    this.trailing,
+  });
+
   /// An optional widget that will be placed before [child].
   ///
   /// Typically an [Icon].
@@ -27,27 +37,17 @@ class ZdsCardHeader extends StatelessWidget {
   /// Typically a [Text]. If [leading] and [trailing] are not null, this widget will be set between them.
   final Widget child;
 
-  /// Creates a card header.
-  ///
-  /// [child] can't be null.
-  const ZdsCardHeader({
-    required this.child,
-    super.key,
-    this.leading,
-    this.trailing,
-  });
-
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 16, top: 20, bottom: 8),
           child: Row(
-            children: [
-              ...[
+            children: <Widget>[
+              ...<Widget>[
                 if (leading != null) leading!,
-                child.textStyle(Theme.of(context).textTheme.titleLarge),
+                child.textStyle(Theme.of(context).textTheme.headlineMedium),
               ].divide(const SizedBox(width: 8)),
               const Spacer(),
             ],

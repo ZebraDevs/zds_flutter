@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../../zds_flutter.dart';
+import '../tools/app.dart';
 import 'text.dart';
 
 /// Builds a theme that can be consumed by Zds components
@@ -12,21 +13,21 @@ import 'text.dart';
 /// [colorScheme] sets all colors within the library.
 ThemeData buildTheme(ThemeData baseTheme, ColorScheme colorScheme) {
   // Primary text theme. Used for texts drawn on primary color. e.g app-bar title
-  final primaryTextTheme = buildZdsTextTheme(
+  final TextTheme primaryTextTheme = buildZdsTextTheme(
     baseTheme.primaryTextTheme.apply(
       bodyColor: colorScheme.onPrimary,
       displayColor: colorScheme.onPrimary,
     ),
   );
 
-  final bodyTextTheme = buildZdsTextTheme(
+  final TextTheme bodyTextTheme = buildZdsTextTheme(
     baseTheme.textTheme.apply(
       bodyColor: colorScheme.onSurface,
       displayColor: colorScheme.onSurface,
     ),
   );
 
-  final baseButtonStyle = _buildBaseButtonStyle(primaryTextTheme, colorScheme);
+  final ButtonStyle baseButtonStyle = _buildBaseButtonStyle(primaryTextTheme, colorScheme);
 
   final bool isWarm = colorScheme.background != ZdsColors.greyCoolSwatch[50];
 
@@ -103,7 +104,7 @@ ThemeData buildTheme(ThemeData baseTheme, ColorScheme colorScheme) {
 ZdsBottomBarThemeData buildZdsBottomBarThemeData(BuildContext context) {
   return ZdsBottomBarThemeData(
     height: kBottomBarHeight,
-    shadows: [
+    shadows: <BoxShadow>[
       BoxShadow(
         offset: const Offset(0, -1),
         color: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
@@ -119,6 +120,15 @@ ZdsBottomBarThemeData buildZdsBottomBarThemeData(BuildContext context) {
 ///
 /// See [ZdsListTile].
 class ZdsListTileTheme {
+  /// Constructs a [ZdsListTileTheme]
+  const ZdsListTileTheme({
+    required this.iconSize,
+    required this.contentPadding,
+    required this.tileMargin,
+    required this.labelAdditionalMargin,
+    required this.subtitleColor,
+  });
+
   /// Interior padding on the tile.
   final EdgeInsets contentPadding;
 
@@ -135,31 +145,30 @@ class ZdsListTileTheme {
 
   /// Additional margin to be added to the tile after the leading widget but before the rest of the content.
   final double labelAdditionalMargin;
-
-  /// Constructs a [ZdsListTileTheme]
-  const ZdsListTileTheme({
-    required this.iconSize,
-    required this.contentPadding,
-    required this.tileMargin,
-    required this.labelAdditionalMargin,
-    required this.subtitleColor,
-  });
 }
 
 /// Applies style to any child of type [ZdsTabBar].
 class ZdsTabBarStyleContainer {
+  /// Constructs a [ZdsTabBarStyleContainer]
+  ZdsTabBarStyleContainer({required this.theme, required this.customTheme});
+
   ///Base theme.
   final ThemeData theme;
 
   /// Custom theme for tab bar specifically.
   final ZdsTabBarThemeData customTheme;
-
-  /// Constructs a [ZdsTabBarStyleContainer]
-  ZdsTabBarStyleContainer({required this.theme, required this.customTheme});
 }
 
 /// Applies style to any child of type [ZdsBottomBar].
 class ZdsBottomBarThemeData {
+  /// Constructs a [ZdsBottomBarThemeData].
+  ZdsBottomBarThemeData({
+    required this.height,
+    required this.shadows,
+    required this.backgroundColor,
+    required this.contentPadding,
+  });
+
   /// Height of the bottom bar.
   final double height;
 
@@ -171,14 +180,6 @@ class ZdsBottomBarThemeData {
 
   /// Interior content padding of the bottom bar.
   final EdgeInsets contentPadding;
-
-  /// Constructs a [ZdsBottomBarThemeData].
-  ZdsBottomBarThemeData({
-    required this.height,
-    required this.shadows,
-    required this.backgroundColor,
-    required this.contentPadding,
-  });
 
   /// Creates a copy of this ZdsBottomBarThemeData, but with the given fields replaced wih the new values.
   ZdsBottomBarThemeData copyWith({
@@ -198,15 +199,15 @@ class ZdsBottomBarThemeData {
 
 /// Theme for ZdsBottomBar.
 class ZdsBottomBarTheme extends InheritedWidget {
-  /// Theme data to be applied.
-  final ZdsBottomBarThemeData data;
-
   /// Constructs a [ZdsBottomBarTheme].
   const ZdsBottomBarTheme({
     required super.child,
     required this.data,
     super.key,
   });
+
+  /// Theme data to be applied.
+  final ZdsBottomBarThemeData data;
 
   /// Returns the [ZdsBottomBarThemeData] object of the given type for the widget tree that corresponds to the given context.
   static ZdsBottomBarThemeData of(BuildContext context) {
@@ -227,6 +228,9 @@ class ZdsBottomBarTheme extends InheritedWidget {
 
 /// Theme container for [ZdsTabBar].
 class ZdsTabBarThemeData {
+  /// Constructor for [ZdsTabBarThemeData].
+  const ZdsTabBarThemeData({required this.decoration, required this.height, this.iconSize = 16});
+
   /// Decoration for [ZdsTabBar].
   ///
   /// Typically [BoxDecoration].
@@ -237,22 +241,26 @@ class ZdsTabBarThemeData {
 
   /// Size of icon. Defaults to 16.
   final double iconSize;
-
-  /// Constructor for [ZdsTabBarThemeData].
-  const ZdsTabBarThemeData({required this.decoration, required this.height, this.iconSize = 16});
 }
 
 /// Theme data for [ZdsToolbar].
 class ZdsToolbarThemeData {
-  /// Interior content padding for the toolbar.
-  final EdgeInsets contentPadding;
-
   /// Constructs a [ZdsToolbarThemeData].
   const ZdsToolbarThemeData({required this.contentPadding});
+
+  /// Interior content padding for the toolbar.
+  final EdgeInsets contentPadding;
 }
 
 /// Border used for input components, such as [TextField] to apply a Zds style.
 class ZdsInputBorder extends InputBorder {
+  /// Constructs a [ZdsInputBorder].
+  const ZdsInputBorder({
+    super.borderSide = const BorderSide(color: ZdsColors.inputBorderColor),
+    this.space = kSpace,
+    this.borderRadius = const BorderRadius.all(Radius.circular(12)),
+  });
+
   /// The space between the border and the interior content.
   ///
   /// Defaults to 6
@@ -262,13 +270,6 @@ class ZdsInputBorder extends InputBorder {
   ///
   /// Defaults to `BorderRadius.all(Radius.circular(12))`.
   final BorderRadius borderRadius;
-
-  /// Constructs a [ZdsInputBorder].
-  const ZdsInputBorder({
-    super.borderSide = const BorderSide(color: ZdsColors.inputBorderColor),
-    this.space = kSpace,
-    this.borderRadius = const BorderRadius.all(Radius.circular(12)),
-  });
 
   static bool _cornersAreCircular(BorderRadius borderRadius) {
     return borderRadius.topLeft.x == borderRadius.topLeft.y &&
@@ -403,7 +404,7 @@ extension ThemeExtension on ThemeData {
 
   /// Gets default theme data for [ZdsSearchField]
   Map<ZdsSearchFieldVariant, ThemeData> get zdsSearchThemeData {
-    final border = OutlineInputBorder(
+    final OutlineInputBorder border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(kSearchBorderRadius),
       borderSide: const BorderSide(
         style: BorderStyle.none,
@@ -420,14 +421,14 @@ extension ThemeExtension on ThemeData {
           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         );
 
-    final cardTheme = this.cardTheme.copyWith(
+    final CardTheme cardTheme = this.cardTheme.copyWith(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kSearchBorderRadius),
           ),
           shadowColor: ZdsColors.blueGrey.withOpacity(0.1),
         );
 
-    return Map<ZdsSearchFieldVariant, ThemeData>.from({
+    return Map<ZdsSearchFieldVariant, ThemeData>.from(<ZdsSearchFieldVariant, ThemeData>{
       ZdsSearchFieldVariant.outlined: ThemeData(
         inputDecorationTheme: inputDecorationTheme(
           border.copyWith(
@@ -471,11 +472,11 @@ extension ThemeExtension on ThemeData {
     Color? unselectedText,
     Color? indicator,
   }) {
-    final height = hasIcons ? 56.0 : 48.0;
+    final double height = hasIcons ? 56.0 : 48.0;
     final ThemeData theme = Theme.of(context);
     final ZetaColors colors = ZetaColors.of(context);
-    final tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
-    final labelStyle = hasIcons ? theme.textTheme.bodyXSmall : theme.textTheme.bodyLarge;
+    final TabBarTheme tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
+    final TextStyle? labelStyle = hasIcons ? theme.textTheme.bodyXSmall : theme.textTheme.bodyLarge;
     if (colors.isDarkMode) return _tabBarDark(context, hasIcons);
 
     return ZdsTabBarStyleContainer(
@@ -501,11 +502,11 @@ extension ThemeExtension on ThemeData {
   }
 
   ZdsTabBarStyleContainer _tabBarDark(BuildContext context, bool hasIcons) {
-    final height = hasIcons ? 56.0 : 48.0;
+    final double height = hasIcons ? 56.0 : 48.0;
     final ThemeData theme = Theme.of(context);
     final ZetaColors colors = ZetaColors.of(context);
-    final tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
-    final labelStyle = hasIcons ? theme.textTheme.bodySmall : theme.textTheme.bodyLarge;
+    final TabBarTheme tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
+    final TextStyle? labelStyle = hasIcons ? theme.textTheme.bodySmall : theme.textTheme.bodyLarge;
     return ZdsTabBarStyleContainer(
       customTheme: ZdsTabBarThemeData(
         decoration: BoxDecoration(color: colors.cool.shade10),
@@ -534,23 +535,29 @@ extension ThemeExtension on ThemeData {
     required bool hasIcons,
     Color? indicatorColor,
   }) {
-    final ZetaColors colors = ZetaColors.of(context);
-    return {
-      ZdsTabBarColor.primary: _tabbarStyle(context, hasIcons),
+    return <ZdsTabBarColor, ZdsTabBarStyleContainer>{
+      ZdsTabBarColor.primary: _tabbarStyle(
+        context,
+        hasIcons,
+        background: colorScheme.primary,
+        selectedText: colorScheme.onPrimary,
+        indicator: colorScheme.onPrimary,
+      ),
       ZdsTabBarColor.basic: _tabbarStyle(
         context,
         hasIcons,
-        background: colors.cool.shade90,
-        selectedText: colors.cool.shade20,
-        indicator: colors.primary.primary,
+        background: appZetaColors?.cool.shade90 ?? colorScheme.background,
+        selectedText: appZetaColors?.cool.shade20 ?? colorScheme.onBackground,
+        unselectedText: appZetaColors != null ? null : colorScheme.onBackground.withOpacity(0.7),
+        indicator: colorScheme.primary,
       ),
       ZdsTabBarColor.surface: _tabbarStyle(
         context,
         hasIcons,
-        background: colors.surface,
-        selectedText: colors.onSurface,
-        indicator: colors.primary.primary,
-        unselectedText: colors.cool.shade70,
+        background: colorScheme.surface,
+        selectedText: colorScheme.onSurface,
+        indicator: colorScheme.primary,
+        unselectedText: appZetaColors?.cool.shade70 ?? colorScheme.onSurface.withOpacity(0.7),
       ),
     };
   }
@@ -559,19 +566,30 @@ extension ThemeExtension on ThemeData {
   ///
   /// See also
   /// * [ZdsTabBarColor].
-  Map<ZdsTabBarColor, AppBarTheme> buildAppBarTheme(ZetaColors colors) {
-    final Map<ZdsTabBarColor, Color> foreground = {};
-    final Map<ZdsTabBarColor, Color> background = {};
+  Map<ZdsTabBarColor, AppBarTheme> buildAppBarTheme() {
+    final Map<ZdsTabBarColor, Color> foreground = <ZdsTabBarColor, Color>{};
+    final Map<ZdsTabBarColor, Color> background = <ZdsTabBarColor, Color>{};
 
-    foreground[ZdsTabBarColor.basic] = colors.isDarkMode ? colors.cool.shade90 : colors.cool.shade10;
-    foreground[ZdsTabBarColor.primary] = colors.isDarkMode ? colors.cool.shade90 : colors.onPrimary;
-    foreground[ZdsTabBarColor.surface] = colors.isDarkMode ? colors.cool.shade90 : colors.onSurface;
+    final ZetaColors? colors = appZetaColors;
+    if (colors != null) {
+      foreground[ZdsTabBarColor.basic] = colors.isDarkMode ? colors.cool.shade90 : colors.cool.shade10;
+      foreground[ZdsTabBarColor.primary] = colors.isDarkMode ? colors.cool.shade90 : colors.onPrimary;
+      foreground[ZdsTabBarColor.surface] = colors.isDarkMode ? colors.cool.shade90 : colors.onSurface;
 
-    background[ZdsTabBarColor.basic] = colors.isDarkMode ? colors.cool.shade10 : colors.cool.shade90;
-    background[ZdsTabBarColor.primary] = colors.isDarkMode ? colors.cool.shade10 : colors.primary;
-    background[ZdsTabBarColor.surface] = colors.isDarkMode ? colors.cool.shade10 : colors.surface;
+      background[ZdsTabBarColor.basic] = colors.isDarkMode ? colors.cool.shade10 : colors.cool.shade90;
+      background[ZdsTabBarColor.primary] = colors.isDarkMode ? colors.cool.shade10 : colors.primary;
+      background[ZdsTabBarColor.surface] = colors.isDarkMode ? colors.cool.shade10 : colors.surface;
+    } else {
+      foreground[ZdsTabBarColor.basic] = colorScheme.onBackground;
+      foreground[ZdsTabBarColor.primary] = colorScheme.onPrimary;
+      foreground[ZdsTabBarColor.surface] = colorScheme.onSurface;
 
-    return {
+      background[ZdsTabBarColor.basic] = colorScheme.background;
+      background[ZdsTabBarColor.primary] = colorScheme.primary;
+      background[ZdsTabBarColor.surface] = colorScheme.surface;
+    }
+
+    return <ZdsTabBarColor, AppBarTheme>{
       ZdsTabBarColor.primary: AppBarTheme(
         systemOverlayStyle: computeSystemOverlayStyle(background[ZdsTabBarColor.primary]!),
         backgroundColor: background[ZdsTabBarColor.primary],
@@ -651,8 +669,10 @@ BottomNavigationBarThemeData _buildBottomNavigationBarTheme(
   TextTheme textTheme,
   ColorScheme colorScheme,
 ) {
-  final Color unselectedColor =
-      colorScheme.brightness == Brightness.dark ? ZdsColors.greyWarmSwatch.shade400 : ZdsColors.greyWarmSwatch.shade900;
+  final Color unselectedColor = appZetaColors?.textSubtle ??
+      (colorScheme.brightness == Brightness.dark
+          ? ZdsColors.greyWarmSwatch.shade400
+          : ZdsColors.greyCoolSwatch.shade500);
 
   return base.copyWith(
     type: BottomNavigationBarType.fixed,
@@ -689,7 +709,7 @@ SwitchThemeData _buildSwitchTheme(SwitchThemeData base, ColorScheme colorScheme,
 
   return base.copyWith(
     thumbColor: MaterialStateProperty.resolveWith(getColor),
-    trackColor: MaterialStateProperty.resolveWith((states) => getColor(states).withOpacity(0.2)),
+    trackColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) => getColor(states).withOpacity(0.2)),
   );
 }
 

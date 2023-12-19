@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_editor_plus/image_editor_plus.dart';
 import 'package:path/path.dart' as path;
 
-import '../../../../zds_flutter.dart';
+import '../../../../../zds_flutter.dart';
 import '../temp_directory/resolver.dart';
 
 /// Editors used to edit only image files & to launch other types of files
@@ -30,12 +30,12 @@ class ZdsFileEditPostProcessor implements ZdsFilePostProcessor {
     if (kIsWeb) return file;
 
     if (file.isImage() && file.content != null) {
-      final originalFile = File(file.xFilePath);
+      final File originalFile = File(file.xFilePath);
       ImageEditor.i18n(ComponentStrings.of(buildContext.call()).getAll());
-      final bytes = await Navigator.push<Uint8List>(
+      final Uint8List? bytes = await Navigator.push<Uint8List?>(
         buildContext.call(),
-        MaterialPageRoute(
-          builder: (context) {
+        MaterialPageRoute<Uint8List?>(
+          builder: (BuildContext context) {
             return SingleImageEditor(
               image: originalFile.readAsBytesSync(),
             );
@@ -44,9 +44,9 @@ class ZdsFileEditPostProcessor implements ZdsFilePostProcessor {
       );
 
       if (bytes != null) {
-        final dir = await zdsTempDirectory('edited');
+        final String dir = await zdsTempDirectory('edited');
         await originalFile.delete(recursive: true);
-        final result = File(path.join(dir, path.basename(originalFile.absolute.path)));
+        final File result = File(path.join(dir, path.basename(originalFile.absolute.path)));
         await result.writeAsBytes(bytes);
         return FileWrapper(file.type, ZdsXFile.fromFile(result));
       }

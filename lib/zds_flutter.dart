@@ -8,3 +8,6 @@ export 'src/utils/assets.dart';
 export 'src/utils/localizations.dart';
 export 'src/utils/theme.dart';
 export 'src/utils/tools.dart';
+
+/// Name of package
+const String packageName = 'zds_flutter';

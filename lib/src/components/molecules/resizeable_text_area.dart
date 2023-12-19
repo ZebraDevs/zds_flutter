@@ -1,10 +1,30 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A text input area with handle icon in the bottom right corner that can be used to resize the typing input area.
 class ZdsResizableTextArea extends StatefulWidget {
+  /// Constructs a [ZdsResizableTextArea].
+  const ZdsResizableTextArea({
+    super.key,
+    this.textInputAction = TextInputAction.none,
+    this.hintText,
+    this.label,
+    this.maxLines,
+    this.height = 100,
+    this.maxHeight = double.infinity,
+    this.minHeight = 48,
+    this.textStyle,
+    this.controller,
+    this.onChanged,
+    this.focusNode,
+    this.enabled = true,
+    this.footerText,
+    this.decoration,
+    this.semanticLabel,
+  });
+
   /// The [textInputAction]'s input action button of keyboard of the text field/box
   ///
   /// Defaults to [TextInputAction.none].
@@ -60,46 +80,27 @@ class ZdsResizableTextArea extends StatefulWidget {
   /// Input decoration used for underlying TextField.
   final InputDecoration? decoration;
 
-  /// Constructs a [ZdsResizableTextArea].
-  const ZdsResizableTextArea({
-    super.key,
-    this.textInputAction = TextInputAction.none,
-    this.hintText,
-    this.label,
-    this.maxLines,
-    this.height = 100,
-    this.maxHeight = double.infinity,
-    this.minHeight = 48,
-    this.textStyle,
-    this.controller,
-    this.onChanged,
-    this.focusNode,
-    this.enabled = true,
-    this.footerText,
-    this.decoration,
-    this.semanticLabel,
-  });
-
   @override
   State<ZdsResizableTextArea> createState() => _ZdsResizableTextAreaState();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(EnumProperty<TextInputAction>('textInputAction', textInputAction));
-    properties.add(DoubleProperty('height', height));
-    properties.add(DoubleProperty('maxHeight', maxHeight));
-    properties.add(DoubleProperty('minHeight', minHeight));
-    properties.add(StringProperty('hintText', hintText));
-    properties.add(StringProperty('label', label));
-    properties.add(StringProperty('semanticLabel', semanticLabel));
-    properties.add(IntProperty('maxLines', maxLines));
-    properties.add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle));
-    properties.add(DiagnosticsProperty<TextEditingController?>('controller', controller));
-    properties.add(ObjectFlagProperty<ValueChanged<String>?>.has('onChanged', onChanged));
-    properties.add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode));
-    properties.add(DiagnosticsProperty<bool>('enabled', enabled));
-    properties.add(StringProperty('footerText', footerText));
-    properties.add(DiagnosticsProperty<InputDecoration?>('decoration', decoration));
+    properties
+      ..add(EnumProperty<TextInputAction>('textInputAction', textInputAction))
+      ..add(DoubleProperty('height', height))
+      ..add(DoubleProperty('maxHeight', maxHeight))
+      ..add(DoubleProperty('minHeight', minHeight))
+      ..add(StringProperty('hintText', hintText))
+      ..add(StringProperty('label', label))
+      ..add(StringProperty('semanticLabel', semanticLabel))
+      ..add(IntProperty('maxLines', maxLines))
+      ..add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle))
+      ..add(DiagnosticsProperty<TextEditingController?>('controller', controller))
+      ..add(ObjectFlagProperty<ValueChanged<String>?>.has('onChanged', onChanged))
+      ..add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode))
+      ..add(DiagnosticsProperty<bool>('enabled', enabled))
+      ..add(StringProperty('footerText', footerText))
+      ..add(DiagnosticsProperty<InputDecoration?>('decoration', decoration));
   }
 }
 
@@ -134,9 +135,9 @@ class _ZdsResizableTextAreaState extends State<ZdsResizableTextArea> {
       label: '${widget.label ?? widget.semanticLabel} ${textEditingController.text}',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Stack(
-            children: [
+            children: <Widget>[
               SizedBox(
                 height: _height,
                 child: TextField(
@@ -171,12 +172,12 @@ class _ZdsResizableTextAreaState extends State<ZdsResizableTextArea> {
                       color: ZdsColors.greySwatch(context).shade800,
                     ).padding(4),
                   ),
-                  onVerticalDragUpdate: (details) {
+                  onVerticalDragUpdate: (DragUpdateDetails details) {
                     setState(() {
                       _height += details.delta.dy;
                       // prevent overflow if height is more/less than available space
                       // Min height is 1 line
-                      final minLimit = (widget.minHeight / 2) * MediaQuery.of(context).devicePixelRatio + 24;
+                      final double minLimit = (widget.minHeight / 2) * MediaQuery.of(context).devicePixelRatio + 24;
                       if (_height > widget.maxHeight) {
                         _height = widget.maxHeight;
                       } else if (_height < minLimit) {
@@ -206,7 +207,8 @@ class _ZdsResizableTextAreaState extends State<ZdsResizableTextArea> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<GlobalKey<State<StatefulWidget>>>('key', key));
-    properties.add(DiagnosticsProperty<TextEditingController>('textEditingController', textEditingController));
+    properties
+      ..add(DiagnosticsProperty<GlobalKey<State<StatefulWidget>>>('key', key))
+      ..add(DiagnosticsProperty<TextEditingController>('textEditingController', textEditingController));
   }
 }

@@ -11,9 +11,9 @@ class ThemeLoader {
   ///   * [BrandColors]
   static Future<BrandColors> fromAssets(String path) async {
     try {
-      final jsonString = await rootBundle.loadString(path);
+      final String jsonString = await rootBundle.loadString(path);
 
-      final json = jsonDecode(jsonString);
+      final dynamic json = jsonDecode(jsonString);
 
       return BrandColors.fromJson(json as Map<String, dynamic>);
     } catch (e) {

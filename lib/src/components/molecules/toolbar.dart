@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A toolbar, used for additional actions that do not fit in the app bar.
 ///
@@ -20,6 +19,16 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [ZdsAppBar], which allows to put a widget below it.
 class ZdsToolbar extends StatelessWidget {
+  /// A toolbar which can be used for additional actions that do not fit in the app bar.
+  const ZdsToolbar({
+    super.key,
+    this.title,
+    this.subtitle,
+    this.actions,
+    this.child,
+    this.backgroundColor,
+  });
+
   /// The toolbar's title or main widget.
   ///
   /// Typically a [Text].
@@ -41,26 +50,16 @@ class ZdsToolbar extends StatelessWidget {
   /// The background color for this ToolBar. Defaults to [ColorScheme.primary]
   final Color? backgroundColor;
 
-  /// A toolbar which can be used for additional actions that do not fit in the app bar.
-  const ZdsToolbar({
-    super.key,
-    this.title,
-    this.subtitle,
-    this.actions,
-    this.child,
-    this.backgroundColor,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return IconTheme(
       data: theme.primaryIconTheme,
       child: Material(
         color: backgroundColor ?? theme.colorScheme.primary,
         child: SafeArea(
           child: Column(
-            children: [
+            children: <Widget>[
               Container(
                 constraints: const BoxConstraints(minHeight: 56),
                 alignment: Alignment.center,
@@ -70,7 +69,7 @@ class ZdsToolbar extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: _getCrossAxisAlignment,
                   textBaseline: TextBaseline.alphabetic,
-                  children: [
+                  children: <Widget>[
                     Expanded(
                       child: Container(
                         padding: _resolvedContentPadding(context),
@@ -79,19 +78,19 @@ class ZdsToolbar extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
-                            children: [
+                            children: <Widget>[
                               if (title != null)
                                 Container(
                                   constraints: const BoxConstraints(minHeight: 43),
                                   alignment: Alignment.bottomLeft,
                                   child: DefaultTextStyle(
-                                    style: theme.primaryTextTheme.titleLarge!,
+                                    style: theme.primaryTextTheme.headlineMedium!,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     child: title!,
                                   ),
                                 ),
-                              if (subtitle != null) ...[
+                              if (subtitle != null) ...<Widget>[
                                 const SizedBox(height: 8),
                                 Container(
                                   constraints: const BoxConstraints(minHeight: 43),
@@ -101,7 +100,7 @@ class ZdsToolbar extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: () {
                                       return theme.primaryTextTheme.titleSmall!.copyWith(
-                                        color: ZetaColors.of(context).onPrimary.withOpacity(0.8),
+                                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
                                       );
                                     }(),
                                     child: subtitle!,
@@ -135,7 +134,7 @@ class ZdsToolbar extends StatelessWidget {
   }
 
   EdgeInsets _resolvedContentPadding(BuildContext context) {
-    final contentPadding = Theme.of(context).zdsToolbarThemeData.contentPadding;
+    final EdgeInsets contentPadding = Theme.of(context).zdsToolbarThemeData.contentPadding;
 
     return EdgeInsets.only(
       left: title is DateRange ? 0 : contentPadding.left,

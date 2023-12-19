@@ -2,13 +2,36 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 // TODO(colors): Fix colors on track.
 
 /// A SlidableButton with pre-applied Zds styling.
 /// This grows to the width of its container.
 class ZdsSlidableButton extends StatefulWidget {
+  /// A button slider with a [ZdsSlidableWidget] as a child, the [ZdsSlidableWidget] is the slidable element.
+  const ZdsSlidableButton({
+    this.buttonText,
+    this.buttonIcon,
+    this.buttonSliderColor,
+    this.buttonColor,
+    this.onTapDown,
+    this.onSlideComplete,
+    this.animate = true,
+    this.indicatorColor = const AlwaysStoppedAnimation<Color>(Colors.white),
+    this.buttonSliderColorEnd,
+    this.buttonColorEnd,
+    this.buttonTextEnd,
+    this.buttonIconEnd,
+    this.stayCompleted = false,
+    this.disabledMessage,
+    this.completedDisplayDuration = const Duration(seconds: 2),
+    this.handleWidth = 160,
+    this.height = 64,
+    this.colors,
+    super.key,
+  });
+
   /// The future that is called when the button has been slid.
   /// While it is being awaited, a loading indicator will show.
   /// If the future returns true, the text and colors will be switched out for their 'end' equivalents
@@ -72,53 +95,31 @@ class ZdsSlidableButton extends StatefulWidget {
   /// Base color used for button.
   final ZetaColorSwatch? colors;
 
-  /// A button slider with a [ZdsSlidableWidget] as a child, the [ZdsSlidableWidget] is the slidable element.
-  const ZdsSlidableButton({
-    this.buttonText,
-    this.buttonIcon,
-    this.buttonSliderColor,
-    this.buttonColor,
-    this.onTapDown,
-    this.onSlideComplete,
-    this.animate = true,
-    this.indicatorColor = const AlwaysStoppedAnimation<Color>(Colors.white),
-    this.buttonSliderColorEnd,
-    this.buttonColorEnd,
-    this.buttonTextEnd,
-    this.buttonIconEnd,
-    this.stayCompleted = false,
-    this.disabledMessage,
-    this.completedDisplayDuration = const Duration(seconds: 2),
-    this.handleWidth = 160,
-    this.height = 64,
-    this.colors,
-    super.key,
-  });
-
   @override
   ZdsSlidableButtonState createState() => ZdsSlidableButtonState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<Future<bool> Function()?>.has('onSlideComplete', onSlideComplete));
-    properties.add(DiagnosticsProperty<Function?>('onTapDown', onTapDown));
-    properties.add(ColorProperty('buttonSliderColor', buttonSliderColor));
-    properties.add(ColorProperty('buttonColor', buttonColor));
-    properties.add(StringProperty('buttonText', buttonText));
-    properties.add(DiagnosticsProperty<IconData>('buttonIcon', buttonIcon));
-    properties.add(ColorProperty('buttonSliderColorEnd', buttonSliderColorEnd));
-    properties.add(ColorProperty('buttonColorEnd', buttonColorEnd));
-    properties.add(StringProperty('buttonTextEnd', buttonTextEnd));
-    properties.add(DiagnosticsProperty<IconData?>('buttonIconEnd', buttonIconEnd));
-    properties.add(DiagnosticsProperty<bool>('animate', animate));
-    properties.add(DiagnosticsProperty<Animation<Color?>?>('indicatorColor', indicatorColor));
-    properties.add(DiagnosticsProperty<bool>('stayCompleted', stayCompleted));
-    properties.add(DiagnosticsProperty<Duration>('completedDisplayDuration', completedDisplayDuration));
-    properties.add(StringProperty('disabledMessage', disabledMessage));
-    properties.add(DoubleProperty('height', height));
-    properties.add(DoubleProperty('handleWidth', handleWidth));
-    properties.add(ColorProperty('colors', colors));
+    properties
+      ..add(ObjectFlagProperty<Future<bool> Function()?>.has('onSlideComplete', onSlideComplete))
+      ..add(DiagnosticsProperty<Function?>('onTapDown', onTapDown))
+      ..add(ColorProperty('buttonSliderColor', buttonSliderColor))
+      ..add(ColorProperty('buttonColor', buttonColor))
+      ..add(StringProperty('buttonText', buttonText))
+      ..add(DiagnosticsProperty<IconData>('buttonIcon', buttonIcon))
+      ..add(ColorProperty('buttonSliderColorEnd', buttonSliderColorEnd))
+      ..add(ColorProperty('buttonColorEnd', buttonColorEnd))
+      ..add(StringProperty('buttonTextEnd', buttonTextEnd))
+      ..add(DiagnosticsProperty<IconData?>('buttonIconEnd', buttonIconEnd))
+      ..add(DiagnosticsProperty<bool>('animate', animate))
+      ..add(DiagnosticsProperty<Animation<Color?>?>('indicatorColor', indicatorColor))
+      ..add(DiagnosticsProperty<bool>('stayCompleted', stayCompleted))
+      ..add(DiagnosticsProperty<Duration>('completedDisplayDuration', completedDisplayDuration))
+      ..add(StringProperty('disabledMessage', disabledMessage))
+      ..add(DoubleProperty('height', height))
+      ..add(DoubleProperty('handleWidth', handleWidth))
+      ..add(ColorProperty('colors', colors));
   }
 }
 
@@ -140,7 +141,7 @@ class ZdsSlidableButtonState extends State<ZdsSlidableButton> {
       setState(() {
         _isLoading = true;
       });
-      final isSuccessful = await widget.onSlideComplete!.call();
+      final bool isSuccessful = await widget.onSlideComplete!.call();
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -161,7 +162,7 @@ class ZdsSlidableButtonState extends State<ZdsSlidableButton> {
 
   /// Resets the slider.
   void reset() {
-    if (_slideableKey.currentWidget is ZdsSlidableWidgetState) {
+    if (mounted) {
       (_slideableKey.currentState! as ZdsSlidableWidgetState).reset();
       setState(() {
         _isTapedDown = false;
@@ -172,16 +173,9 @@ class ZdsSlidableButtonState extends State<ZdsSlidableButton> {
 
   @override
   Widget build(BuildContext context) {
-    final ZetaColorSwatch colors = widget.colors ?? ZetaColors.of(context).primary;
-
-    final Color buttonSliderColorEnd = widget.buttonSliderColorEnd ?? colors.shade20;
-    final Color buttonSliderColor = widget.buttonSliderColorEnd ?? colors.shade20;
-    final Color buttonColor = widget.buttonColor ?? colors.primary;
-    final Color buttonColorComplete = widget.buttonColor?.withOpacity(0.5) ?? colors.subtle;
-
-    final showDisabledMessage = widget.disabledMessage != null && widget.onSlideComplete == null;
+    final bool showDisabledMessage = widget.disabledMessage != null && widget.onSlideComplete == null;
     return Wrap(
-      children: [
+      children: <Widget>[
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           height: widget.height,
@@ -189,12 +183,12 @@ class ZdsSlidableButtonState extends State<ZdsSlidableButton> {
             color: showDisabledMessage
                 ? null
                 : widget.buttonSliderColorEnd != null && _isComplete
-                    ? buttonSliderColorEnd
-                    : buttonSliderColor,
+                    ? widget.buttonSliderColorEnd
+                    : widget.buttonSliderColor ?? Theme.of(context).colorScheme.primary.withOpacity(0.2),
             borderRadius: BorderRadius.circular(widget.height),
           ),
           child: Stack(
-            children: [
+            children: <Widget>[
               ZdsSlidableWidget(
                 key: _slideableKey,
                 animate: widget.animate,
@@ -231,15 +225,15 @@ class ZdsSlidableButtonState extends State<ZdsSlidableButton> {
                                     widget.buttonColorEnd != null
                                 ? widget.buttonColorEnd
                                 : widget.onSlideComplete != null
-                                    ? buttonColor
-                                    : buttonColorComplete,
+                                    ? widget.buttonColor ?? Theme.of(context).colorScheme.primary
+                                    : (widget.buttonColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.5),
                             borderRadius: BorderRadius.all(Radius.circular(widget.height)),
                           ),
                           height: widget.height,
                           width: widget.handleWidth,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.only(right: 8),
                                 child: _isLoading
@@ -269,7 +263,7 @@ class ZdsSlidableButtonState extends State<ZdsSlidableButton> {
                                       color: () {
                                         return widget.buttonColor != null
                                             ? computeForeground(widget.buttonColor!)
-                                            : colors.on;
+                                            : Theme.of(context).colorScheme.onPrimary;
                                       }(),
                                     ),
                               ),
@@ -287,7 +281,7 @@ class ZdsSlidableButtonState extends State<ZdsSlidableButton> {
                   child: SizedBox(
                     width: 320 - widget.handleWidth,
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         Expanded(
                           child: Text(
                             widget.disabledMessage!,

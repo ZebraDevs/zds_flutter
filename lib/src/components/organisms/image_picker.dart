@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A button that can be used to select an image and show its preview.
 ///
@@ -17,6 +17,18 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [ZdsFilePicker], used to select a variety of files.
 class ImagePicker extends StatefulWidget {
+  /// A button that can be used to select an image and show its preview.
+  const ImagePicker({
+    required this.backgroundColor,
+    required this.icon,
+    super.key,
+    this.size = 64,
+    this.onChange,
+    this.showBorder = true,
+    this.image,
+    this.onPermissionDenied,
+  });
+
   /// The side dimension of this component.
   ///
   /// Defaults to 64.
@@ -43,18 +55,6 @@ class ImagePicker extends StatefulWidget {
 
   /// An optional default image to this image picker.
   final Image? image;
-
-  /// A button that can be used to select an image and show its preview.
-  const ImagePicker({
-    required this.backgroundColor,
-    required this.icon,
-    super.key,
-    this.size = 64,
-    this.onChange,
-    this.showBorder = true,
-    this.image,
-    this.onPermissionDenied,
-  });
 
   @override
   ImagePickerState createState() => ImagePickerState();
@@ -131,9 +131,8 @@ class ImagePickerState extends State<ImagePicker> {
 }
 
 class _ImageContainer extends StatelessWidget {
-  final Image image;
-
   const _ImageContainer(this.image);
+  final Image image;
 
   @override
   Widget build(BuildContext context) {

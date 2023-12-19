@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Wrapper around a ListView.builder with Zds styling and functions for fetching new items when the user scrolls to the bottom of the list.
 ///
@@ -45,6 +45,37 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsList], A List with Zds styling.
 ///  * [ListView],  A scrollable list of widgets arranged linearly.
 class ZdsInfiniteListView extends StatefulWidget {
+  /// Creates a [ZdsInfiniteListView].
+  const ZdsInfiniteListView({
+    required this.itemBuilder,
+    required this.itemCount,
+    super.key,
+    this.childKey,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.controller,
+    this.primary,
+    this.physics,
+    this.shrinkWrap = false,
+    this.padding = EdgeInsets.zero,
+    this.cacheExtent,
+    this.restorationId,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.clipBehavior = Clip.hardEdge,
+    this.showEmpty = false,
+    this.loadingBuilder,
+    this.onLoadMore,
+    this.hasMore = false,
+    this.compact = false,
+  }) : assert(
+          onLoadMore != null ? hasMore : true && (hasMore ? onLoadMore != null : onLoadMore == null),
+          'If hasMore is true, onLoadMore must not be null; if hasMore is false, onLoadMore must be null.',
+        );
+
   /// Key passed to [ZdsList.builder].
   final Key? childKey;
 
@@ -146,37 +177,6 @@ class ZdsInfiniteListView extends StatefulWidget {
   /// Whether the list items should be close together, or separated.
   final bool compact;
 
-  /// Creates a [ZdsInfiniteListView].
-  const ZdsInfiniteListView({
-    required this.itemBuilder,
-    required this.itemCount,
-    super.key,
-    this.childKey,
-    this.reverse = false,
-    this.scrollDirection = Axis.vertical,
-    this.controller,
-    this.primary,
-    this.physics,
-    this.shrinkWrap = false,
-    this.padding = EdgeInsets.zero,
-    this.cacheExtent,
-    this.restorationId,
-    this.addAutomaticKeepAlives = true,
-    this.addRepaintBoundaries = true,
-    this.addSemanticIndexes = true,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-    this.clipBehavior = Clip.hardEdge,
-    this.showEmpty = false,
-    this.loadingBuilder,
-    this.onLoadMore,
-    this.hasMore = false,
-    this.compact = false,
-  }) : assert(
-          onLoadMore != null ? hasMore : true && (hasMore ? onLoadMore != null : onLoadMore == null),
-          'If hasMore is true, onLoadMore must not be null; if hasMore is false, onLoadMore must be null.',
-        );
-
   @override
   ZdsInfiniteListViewState createState() => ZdsInfiniteListViewState();
   @override
@@ -234,7 +234,7 @@ class ZdsInfiniteListViewState extends State<ZdsInfiniteListView> {
       clipBehavior: widget.clipBehavior,
       showEmpty: widget.showEmpty,
       itemCount: widget.itemCount + (widget.hasMore ? 1 : 0),
-      itemBuilder: (context, index) {
+      itemBuilder: (BuildContext context, int index) {
         if (widget.hasMore && index >= widget.itemCount) {
           if (widget.loadingBuilder != null) {
             return widget.loadingBuilder!.call(context);
@@ -255,7 +255,7 @@ class ZdsInfiniteListViewState extends State<ZdsInfiniteListView> {
       },
     );
     return NotificationListener<ScrollEndNotification>(
-      onNotification: (scrollInfo) {
+      onNotification: (ScrollEndNotification scrollInfo) {
         if (!widget.hasMore) return true;
         if (scrollInfo.metrics.axisDirection != AxisDirection.down) return true;
         if (widget.onLoadMore == null || _loadingMore) return true;
@@ -265,7 +265,7 @@ class ZdsInfiniteListViewState extends State<ZdsInfiniteListView> {
             widget.onLoadMore
                 ?.call()
                 .whenComplete(() => _loadingMore = false)
-                .onError((error, stackTrace) => _loadingMore = false),
+                .onError((Object? error, StackTrace stackTrace) => _loadingMore = false),
           );
         }
         return true;

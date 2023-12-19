@@ -10,6 +10,9 @@ ZetaColors? appZetaColors;
 
 /// A wrapper around MaterialApp that adds Zds styling and other properties.
 ///
+/// To apple [Zeta] colors and themes, you must provide a [ZetaColors] object.
+/// This is to prevent issues during transition to Zeta.
+///
 /// Should be used in the same way as MaterialApp.
 ///
 /// ```dart
@@ -20,12 +23,32 @@ ZetaColors? appZetaColors;
 ///   Widget build(BuildContext context) {
 ///     return ZdsApp(
 ///       title: 'App',
+///       zetaColors: ZetaColors(),
 ///       routes: [...],
 ///     );
 ///   }
 /// }
 /// ```
 class ZdsApp extends StatelessWidget {
+  /// Creates a ZdsApp
+  const ZdsApp({
+    required this.title,
+    super.key,
+    this.home,
+    this.theme,
+    this.routes = const <String, WidgetBuilder>{},
+    this.localizationsDelegates,
+    this.localeOverride,
+    this.colors,
+    this.zetaColors,
+    this.onGenerateRoute,
+    this.initialRoute,
+    this.onGenerateInitialRoutes,
+    this.onUnknownRoute,
+    this.navigatorKey,
+    this.debugShowCheckedModeBanner,
+  });
+
   /// A one line description of the application.
   /// {@macro flutter.widgets.widgetsApp.title}
   final String title;
@@ -75,44 +98,30 @@ class ZdsApp extends StatelessWidget {
   /// {@macro flutter.widgets.widgetsApp.navigatorKey}
   final GlobalKey<NavigatorState>? navigatorKey;
 
-  /// ZetaColors object for app color theme.
+  /// ZetaColors object for app color theme. Applies Zeta theming to whole app.
+  ///
+  /// If provided, this will override [BrandColors].
   final ZetaColors? zetaColors;
 
   /// {@macro flutter.widgets.widgetsApp.debugShowCheckedModeBanner}
   final bool? debugShowCheckedModeBanner;
 
-  /// Creates a ZdsApp
-  const ZdsApp({
-    required this.title,
-    super.key,
-    this.home,
-    this.theme,
-    this.routes = const <String, WidgetBuilder>{},
-    this.localizationsDelegates,
-    this.localeOverride,
-    this.colors,
-    this.zetaColors,
-    this.onGenerateRoute,
-    this.initialRoute,
-    this.onGenerateInitialRoutes,
-    this.onUnknownRoute,
-    this.navigatorKey,
-    this.debugShowCheckedModeBanner,
-  });
-
   @override
   Widget build(BuildContext context) {
-    appZetaColors = zetaColors ?? ZetaColors();
+    final bool useZeta = zetaColors != null;
+    final ZetaThemeData? zetaThemeData = useZeta ? null : const ZetaThemeData(fontFamily: 'Roboto');
+    appZetaColors = useZeta ? zetaColors : null;
     return Zeta(
       colors: zetaColors,
+      theme: zetaThemeData,
       builder: (BuildContext context, ThemeData zetaThemeData, ZetaColors zetaColors) {
         return ComponentLocalisation(
           child: Builder(
-            builder: (context) {
-              if (colors != null) {
+            builder: (BuildContext context) {
+              if (!useZeta) {
                 /// Use BrandColors
                 return ThemeProvider(
-                  colors: colors!,
+                  colors: colors ?? BrandColors.zdsDefault(),
                   builder: (BuildContext context, BrandColors brandColors, bool isDarkTheme) => _AppWrapper(
                     title,
                     localeOverride,
@@ -124,7 +133,7 @@ class ZdsApp extends StatelessWidget {
                     onUnknownRoute,
                     initialRoute,
                     navigatorKey,
-                    isDarkTheme ? ThemeData.dark() : ThemeData.light(),
+                    zetaThemeData,
                     isDarkTheme ? brandColors.dark : brandColors.light,
                     debugShowCheckedModeBanner ?? false,
                   ),
@@ -157,26 +166,25 @@ class ZdsApp extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('title', title));
-    properties.add(DiagnosticsProperty<ThemeData?>('theme', theme));
-    properties.add(DiagnosticsProperty<Map<String, WidgetBuilder>>('routes', routes));
-    properties.add(IterableProperty<LocalizationsDelegate<dynamic>>('localizationsDelegates', localizationsDelegates));
-    properties.add(DiagnosticsProperty<Locale?>('localeOverride', localeOverride));
-    properties.add(DiagnosticsProperty<BrandColors?>('colors', colors));
     properties
-        .add(ObjectFlagProperty<Route<dynamic>? Function(RouteSettings p1)?>.has('onGenerateRoute', onGenerateRoute));
-    properties.add(StringProperty('initialRoute', initialRoute));
-    properties.add(
-      ObjectFlagProperty<List<Route<dynamic>> Function(String p1)?>.has(
-        'onGenerateInitialRoutes',
-        onGenerateInitialRoutes,
-      ),
-    );
-    properties
-        .add(ObjectFlagProperty<Route<dynamic>? Function(RouteSettings p1)?>.has('onUnknownRoute', onUnknownRoute));
-    properties.add(DiagnosticsProperty<GlobalKey<NavigatorState>?>('navigatorKey', navigatorKey));
-    properties.add(DiagnosticsProperty<ZetaColors?>('zetaColors', zetaColors));
-    properties.add(DiagnosticsProperty<bool?>('debugShowCheckedModeBanner', debugShowCheckedModeBanner));
+      ..add(StringProperty('title', title))
+      ..add(DiagnosticsProperty<ThemeData?>('theme', theme))
+      ..add(DiagnosticsProperty<Map<String, WidgetBuilder>>('routes', routes))
+      ..add(IterableProperty<LocalizationsDelegate<dynamic>>('localizationsDelegates', localizationsDelegates))
+      ..add(DiagnosticsProperty<Locale?>('localeOverride', localeOverride))
+      ..add(DiagnosticsProperty<BrandColors?>('colors', colors))
+      ..add(ObjectFlagProperty<Route<dynamic>? Function(RouteSettings p1)?>.has('onGenerateRoute', onGenerateRoute))
+      ..add(StringProperty('initialRoute', initialRoute))
+      ..add(
+        ObjectFlagProperty<List<Route<dynamic>> Function(String p1)?>.has(
+          'onGenerateInitialRoutes',
+          onGenerateInitialRoutes,
+        ),
+      )
+      ..add(ObjectFlagProperty<Route<dynamic>? Function(RouteSettings p1)?>.has('onUnknownRoute', onUnknownRoute))
+      ..add(DiagnosticsProperty<GlobalKey<NavigatorState>?>('navigatorKey', navigatorKey))
+      ..add(DiagnosticsProperty<ZetaColors?>('zetaColors', zetaColors))
+      ..add(DiagnosticsProperty<bool?>('debugShowCheckedModeBanner', debugShowCheckedModeBanner));
   }
 }
 
@@ -194,6 +202,7 @@ class _AppWrapper extends StatelessWidget {
     this.navigatorKey,
     this.theme,
     this.colorScheme,
+    // ignore: avoid_positional_boolean_parameters
     this.debugShowCheckedModeBanner,
   );
 
@@ -216,19 +225,19 @@ class _AppWrapper extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: debugShowCheckedModeBanner,
       title: title,
-      localeResolutionCallback: (deviceLocale, supportedLocales) {
-        final locale = localeOverride ?? deviceLocale;
+      localeResolutionCallback: (Locale? deviceLocale, Iterable<Locale> supportedLocales) {
+        final Locale? locale = localeOverride ?? deviceLocale;
         return ComponentStrings.delegate.isSupported(locale!) ? locale : ComponentStrings.defaultLocale;
       },
       locale: localeOverride,
-      builder: (context, child) {
+      builder: (BuildContext context, Widget? child) {
         return ZdsBottomBarTheme(
           data: buildZdsBottomBarThemeData(context),
           child: child ?? const SizedBox(),
         );
       },
       localizationsDelegates: localizationsDelegates ??
-          [
+          <LocalizationsDelegate<dynamic>>[
             GlobalMaterialLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
@@ -248,24 +257,23 @@ class _AppWrapper extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('title', title));
-    properties.add(DiagnosticsProperty<Locale?>('localeOverride', localeOverride));
-    properties.add(IterableProperty<LocalizationsDelegate<dynamic>>('localizationsDelegates', localizationsDelegates));
-    properties.add(DiagnosticsProperty<Map<String, WidgetBuilder>>('routes', routes));
     properties
-        .add(ObjectFlagProperty<Route<dynamic>? Function(RouteSettings p1)?>.has('onGenerateRoute', onGenerateRoute));
-    properties.add(
-      ObjectFlagProperty<List<Route<dynamic>> Function(String p1)?>.has(
-        'onGenerateInitialRoutes',
-        onGenerateInitialRoutes,
-      ),
-    );
-    properties
-        .add(ObjectFlagProperty<Route<dynamic>? Function(RouteSettings p1)?>.has('onUnknownRoute', onUnknownRoute));
-    properties.add(StringProperty('initialRoute', initialRoute));
-    properties.add(DiagnosticsProperty<GlobalKey<NavigatorState>?>('navigatorKey', navigatorKey));
-    properties.add(DiagnosticsProperty<ThemeData>('theme', theme));
-    properties.add(DiagnosticsProperty<ColorScheme>('colorScheme', colorScheme));
-    properties.add(DiagnosticsProperty<bool>('debugShowCheckedModeBanner', debugShowCheckedModeBanner));
+      ..add(StringProperty('title', title))
+      ..add(DiagnosticsProperty<Locale?>('localeOverride', localeOverride))
+      ..add(IterableProperty<LocalizationsDelegate<dynamic>>('localizationsDelegates', localizationsDelegates))
+      ..add(DiagnosticsProperty<Map<String, WidgetBuilder>>('routes', routes))
+      ..add(ObjectFlagProperty<Route<dynamic>? Function(RouteSettings p1)?>.has('onGenerateRoute', onGenerateRoute))
+      ..add(
+        ObjectFlagProperty<List<Route<dynamic>> Function(String p1)?>.has(
+          'onGenerateInitialRoutes',
+          onGenerateInitialRoutes,
+        ),
+      )
+      ..add(ObjectFlagProperty<Route<dynamic>? Function(RouteSettings p1)?>.has('onUnknownRoute', onUnknownRoute))
+      ..add(StringProperty('initialRoute', initialRoute))
+      ..add(DiagnosticsProperty<GlobalKey<NavigatorState>?>('navigatorKey', navigatorKey))
+      ..add(DiagnosticsProperty<ThemeData>('theme', theme))
+      ..add(DiagnosticsProperty<ColorScheme>('colorScheme', colorScheme))
+      ..add(DiagnosticsProperty<bool>('debugShowCheckedModeBanner', debugShowCheckedModeBanner));
   }
 }

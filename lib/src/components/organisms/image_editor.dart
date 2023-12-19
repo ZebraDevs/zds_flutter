@@ -7,7 +7,7 @@ import 'package:image_editor_plus/image_editor_plus.dart';
 import 'package:path/path.dart' as path;
 import './temp_directory/resolver.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A full-screen image editor that allows to edit an image, including cropping and orientation. Returns a [Scaffold],
 /// so it's highly recommended to push a new page when using this component
@@ -25,6 +25,14 @@ import '../../../zds_flutter.dart';
 /// });
 /// ```
 class ZdsImageEditor extends StatefulWidget {
+  /// Creates an image editor that allows to crop and rotate an image.
+  /// Recommended to push a new page as this returns a [Scaffold].
+  const ZdsImageEditor({
+    required this.image,
+    this.initialCropAspectRatio = ZdsAspectRatio.original,
+    super.key,
+  });
+
   /// The image to be edited
   final File image;
 
@@ -33,14 +41,6 @@ class ZdsImageEditor extends StatefulWidget {
   ///
   /// The argument only affects the initial aspect ratio.
   final ZdsAspectRatio initialCropAspectRatio;
-
-  /// Creates an image editor that allows to crop and rotate an image.
-  /// Recommended to push a new page as this returns a [Scaffold].
-  const ZdsImageEditor({
-    required this.image,
-    this.initialCropAspectRatio = ZdsAspectRatio.original,
-    super.key,
-  });
 
   @override
   ZdsImageEditorState createState() => ZdsImageEditorState();
@@ -64,19 +64,19 @@ class ZdsImageEditor extends StatefulWidget {
   /// there is, the [originalFile] is deleted, and a new File with the same
   /// path is created with the edited image data.
   static Future<void> editFile(BuildContext context, File originalFile) async {
-    final translations = ComponentStrings.of(context).getAll();
+    final Map<String, String> translations = ComponentStrings.of(context).getAll();
     ImageEditor.i18n(translations);
-    final Uint8List? value = await Navigator.push(
+    final dynamic value = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) {
+      MaterialPageRoute<Uint8List?>(
+        builder: (BuildContext context) {
           return SingleImageEditor(
             image: originalFile.readAsBytesSync(),
           );
         },
       ),
     );
-    if (value != null) {
+    if (value != null && value is Uint8List) {
       await originalFile.delete(recursive: true);
       await File(originalFile.path).writeAsBytes(value);
     }
@@ -85,8 +85,9 @@ class ZdsImageEditor extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<File>('image', image));
-    properties.add(EnumProperty<ZdsAspectRatio>('initialCropAspectRatio', initialCropAspectRatio));
+    properties
+      ..add(DiagnosticsProperty<File>('image', image))
+      ..add(EnumProperty<ZdsAspectRatio>('initialCropAspectRatio', initialCropAspectRatio));
   }
 }
 
@@ -138,7 +139,8 @@ extension _ZdsAspectRatioToDouble on ZdsAspectRatio {
 
 /// State for [ZdsImageEditor].
 class ZdsImageEditorState extends State<ZdsImageEditor> with FrameCallbackMixin {
-  final _editorKey = GlobalKey<image_editor.ExtendedImageEditorState>();
+  final GlobalKey<image_editor.ExtendedImageEditorState> _editorKey =
+      GlobalKey<image_editor.ExtendedImageEditorState>();
 
   late final List<_AspectRatioItem> _aspectRatios = <_AspectRatioItem>[
     _AspectRatioItem(
@@ -188,7 +190,7 @@ class ZdsImageEditorState extends State<ZdsImageEditor> with FrameCallbackMixin 
 
   @override
   Widget build(BuildContext context) {
-    const color = Colors.white;
+    const Color color = Colors.white;
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -223,13 +225,13 @@ class ZdsImageEditorState extends State<ZdsImageEditor> with FrameCallbackMixin 
         cacheRawData: true,
         mode: image_editor.ExtendedImageMode.editor,
         extendedImageEditorKey: _editorKey,
-        initEditorConfigHandler: (state) {
+        initEditorConfigHandler: (image_editor.ExtendedImageState? state) {
           return image_editor.EditorConfig(
             maxScale: 8,
             initialCropAspectRatio: widget.initialCropAspectRatio.toValue(),
             cropAspectRatio: _aspectRatio,
             cornerColor: Colors.white,
-            editorMaskColorHandler: (context, editing) {
+            editorMaskColorHandler: (BuildContext context, bool editing) {
               if (editing) {
                 return Colors.black26;
               } else {
@@ -292,7 +294,7 @@ class ZdsImageEditorState extends State<ZdsImageEditor> with FrameCallbackMixin 
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: _aspectRatios.length,
-        itemBuilder: (context, index) {
+        itemBuilder: (BuildContext context, int index) {
           final _AspectRatioItem item = _aspectRatios[index];
 
           void onTap() {
@@ -304,7 +306,7 @@ class ZdsImageEditorState extends State<ZdsImageEditor> with FrameCallbackMixin 
 
           if (item.value == _aspectRatio) {
             return Builder(
-              builder: (context) {
+              builder: (BuildContext context) {
                 atLast(() async => Scrollable.ensureVisible(context, alignment: 0.5));
                 return Center(
                   child: ZdsButton.filled(
@@ -334,21 +336,21 @@ class ZdsImageEditorState extends State<ZdsImageEditor> with FrameCallbackMixin 
     if (saving) return;
 
     try {
-      final currentState = _editorKey.currentState;
+      final image_editor.ExtendedImageEditorState? currentState = _editorKey.currentState;
 
       if (currentState == null) return;
 
       saving = true;
 
-      final fileData = await cropImageDataWithNativeLibrary(state: currentState);
+      final Uint8List? fileData = await cropImageDataWithNativeLibrary(state: currentState);
 
       if (fileData == null) return;
 
-      final appDir = await zdsTempDirectory('edited');
-      final fileName = path.basename(widget.image.path);
+      final String appDir = await zdsTempDirectory('edited');
+      final String fileName = path.basename(widget.image.path);
 
       //save image to tem file
-      final tempFile = File(path.join(appDir, 'edit.tmp'));
+      final File tempFile = File(path.join(appDir, 'edit.tmp'));
       if (tempFile.existsSync()) {
         await tempFile.delete();
       }
@@ -356,7 +358,7 @@ class ZdsImageEditorState extends State<ZdsImageEditor> with FrameCallbackMixin 
       await tempFile.writeAsBytes(fileData);
 
       // delete fileName file if already exist
-      final editedFile = File(path.join(appDir, fileName));
+      final File editedFile = File(path.join(appDir, fileName));
       if (editedFile.existsSync()) {
         await editedFile.delete();
       }
@@ -389,8 +391,9 @@ class ZdsImageEditorState extends State<ZdsImageEditor> with FrameCallbackMixin 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('saving', saving));
-    properties.add(DiagnosticsProperty<bool>('cropping', cropping));
+    properties
+      ..add(DiagnosticsProperty<bool>('saving', saving))
+      ..add(DiagnosticsProperty<bool>('cropping', cropping));
   }
 }
 

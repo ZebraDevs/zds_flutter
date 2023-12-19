@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// List tile with Zds styling.
 ///
@@ -14,6 +14,24 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsList]
 ///  * [ZdsListGroup].
 class ZdsListTile extends StatelessWidget {
+  /// Constructs a [ZdsListTile].
+  const ZdsListTile({
+    super.key,
+    this.leading,
+    this.title,
+    this.subtitle,
+    this.trailing,
+    this.bottom,
+    this.onTap,
+    this.shrinkWrap,
+    this.contentPadding,
+    this.backgroundColor,
+    this.margin,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.cardVariant = ZdsCardVariant.elevated,
+    this.semanticLabel,
+  });
+
   /// A widget to display before the title.
   ///
   /// Typically an [Icon] or a [CircleAvatar] widget.
@@ -76,24 +94,6 @@ class ZdsListTile extends StatelessWidget {
   /// for semantics of list tile
   final String? semanticLabel;
 
-  /// Constructs a [ZdsListTile].
-  const ZdsListTile({
-    super.key,
-    this.leading,
-    this.title,
-    this.subtitle,
-    this.trailing,
-    this.bottom,
-    this.onTap,
-    this.shrinkWrap,
-    this.contentPadding,
-    this.backgroundColor,
-    this.margin,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.cardVariant = ZdsCardVariant.elevated,
-    this.semanticLabel,
-  });
-
   bool _isAction(Widget? widget) => widget is IconButton || widget is Switch;
 
   EdgeInsets _resolveInsets(EdgeInsets padding) {
@@ -111,10 +111,10 @@ class ZdsListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).zdsListTileThemeData;
-    final padding = contentPadding ?? theme.contentPadding;
+    final ZdsListTileTheme theme = Theme.of(context).zdsListTileThemeData;
+    final EdgeInsets padding = contentPadding ?? theme.contentPadding;
 
-    final leadingWrapper = leading != null
+    final IconTheme? leadingWrapper = leading != null
         ? IconTheme(
             data: Theme.of(context)
                 .iconTheme
@@ -122,9 +122,9 @@ class ZdsListTile extends StatelessWidget {
             child: leading!,
           )
         : null;
-    final titleStyle = Theme.of(context).textTheme.bodyMedium!;
-    final subtitleColor = theme.subtitleColor;
-    final trailingWrapper = trailing != null
+    final TextStyle titleStyle = Theme.of(context).textTheme.bodyMedium!;
+    final Color subtitleColor = theme.subtitleColor;
+    final DefaultTextStyle? trailingWrapper = trailing != null
         ? DefaultTextStyle(
             style: titleStyle.copyWith(color: subtitleColor),
             child: IconTheme(
@@ -137,11 +137,11 @@ class ZdsListTile extends StatelessWidget {
           )
         : null;
 
-    final insets = _resolveInsets(padding);
+    final EdgeInsets insets = _resolveInsets(padding);
 
-    final setBackgroundColor = backgroundColor ??
+    final Color setBackgroundColor = backgroundColor ??
         (context.findAncestorWidgetOfExactType<ZdsListGroup>() != null
-            ? Colors.transparent
+            ? ZdsColors.transparent
             : Theme.of(context).colorScheme.surface);
     Widget tile = Container(
       padding: insets,
@@ -150,8 +150,8 @@ class ZdsListTile extends StatelessWidget {
       color: setBackgroundColor,
       child: Row(
         crossAxisAlignment: crossAxisAlignment,
-        children: [
-          if (leadingWrapper != null) ...[
+        children: <Widget>[
+          if (leadingWrapper != null) ...<Widget>[
             leadingWrapper,
             SizedBox(width: _isAction(leading) ? 2 : 6),
           ],
@@ -160,9 +160,9 @@ class ZdsListTile extends StatelessWidget {
               padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   if (title != null) DefaultTextStyle(style: titleStyle, child: title!),
-                  if (subtitle != null) ...[
+                  if (subtitle != null) ...<Widget>[
                     const SizedBox(height: 5),
                     DefaultTextStyle(
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: subtitleColor),
@@ -198,7 +198,7 @@ class ZdsListTile extends StatelessWidget {
       hoverColor: ZetaColors.of(context).isDarkMode ? ZetaColors.of(context).warm.shade10 : ZdsColors.hoverColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           tile,
           if (bottom != null) bottom!,
         ],
@@ -229,22 +229,20 @@ class ZdsListTile extends StatelessWidget {
         ),
       );
     }
-    return Material(
-      color: Colors.transparent,
-      child: tile,
-    );
+    return Material(color: ZdsColors.transparent, child: tile);
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool?>('shrinkWrap', shrinkWrap));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('contentPadding', contentPadding));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(EnumProperty<CrossAxisAlignment>('crossAxisAlignment', crossAxisAlignment));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('margin', margin));
-    properties.add(EnumProperty<ZdsCardVariant?>('cardVariant', cardVariant));
-    properties.add(StringProperty('semanticLabel', semanticLabel));
+    properties
+      ..add(DiagnosticsProperty<bool?>('shrinkWrap', shrinkWrap))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(DiagnosticsProperty<EdgeInsets?>('contentPadding', contentPadding))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(EnumProperty<CrossAxisAlignment>('crossAxisAlignment', crossAxisAlignment))
+      ..add(DiagnosticsProperty<EdgeInsets?>('margin', margin))
+      ..add(EnumProperty<ZdsCardVariant?>('cardVariant', cardVariant))
+      ..add(StringProperty('semanticLabel', semanticLabel));
   }
 }

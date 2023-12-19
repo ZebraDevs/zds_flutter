@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A component that groups together items in a ZdsList so that they have no padding between items.
 ///
@@ -9,6 +9,21 @@ import '../../../zds_flutter.dart';
 ///
 /// You can not have both a child and items.
 class ZdsListGroup extends StatelessWidget {
+  /// Constructs a [ZdsListGroup].
+  const ZdsListGroup({
+    super.key,
+    this.items,
+    this.itemsBackgroundColor,
+    this.child,
+    this.headerLabel,
+    this.headerActions,
+    this.cardVariant = ZdsCardVariant.elevated,
+    this.padding,
+  }) : assert(
+          (items != null && child == null) || (items == null && child != null),
+          'Provide only 1 of either items or child',
+        );
+
   /// A label that goes in the header of this component above the list aligned to the start.
   final Text? headerLabel;
 
@@ -40,28 +55,13 @@ class ZdsListGroup extends StatelessWidget {
   /// Defaults to `[ColorScheme.surface].
   final Color? itemsBackgroundColor;
 
-  /// Constructs a [ZdsListGroup].
-  const ZdsListGroup({
-    super.key,
-    this.items,
-    this.itemsBackgroundColor,
-    this.child,
-    this.headerLabel,
-    this.headerActions,
-    this.cardVariant = ZdsCardVariant.elevated,
-    this.padding,
-  }) : assert(
-          (items != null && child == null) || (items == null && child != null),
-          'Provide only 1 of either items or child',
-        );
-
   @override
   Widget build(BuildContext context) {
-    final cardMargin = Theme.of(context).cardTheme.margin as EdgeInsets? ?? EdgeInsets.zero;
-    final tileTheme = Theme.of(context).zdsListTileThemeData;
-    final labelDistance = cardMargin.top + tileTheme.tileMargin;
-    final hasHeader = headerLabel != null;
-    final additionalMargin = hasHeader ? tileTheme.labelAdditionalMargin : 0;
+    final EdgeInsets cardMargin = Theme.of(context).cardTheme.margin as EdgeInsets? ?? EdgeInsets.zero;
+    final ZdsListTileTheme tileTheme = Theme.of(context).zdsListTileThemeData;
+    final double labelDistance = cardMargin.top + tileTheme.tileMargin;
+    final bool hasHeader = headerLabel != null;
+    final num additionalMargin = hasHeader ? tileTheme.labelAdditionalMargin : 0;
 
     return Padding(
       padding: padding ??
@@ -72,12 +72,12 @@ class ZdsListGroup extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           if (hasHeader)
             Padding(
               padding: EdgeInsets.only(left: cardMargin.left, right: cardMargin.right),
               child: Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: DefaultTextStyle(
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(color: ZdsColors.blueGrey),
@@ -116,15 +116,14 @@ class ZdsListGroup extends StatelessWidget {
               ),
             )
           else
-            // ZdsCard(
-            // variant: cardVariant,
-            // backgroundColor: itemsBackgroundColor ?? Theme.of(context).colorScheme.surface,
-            // padding: EdgeInsets.zero,
-            // child:
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: items!.divide(const Divider()).toList(),
-              // ),
+            ZdsCard(
+              variant: cardVariant,
+              backgroundColor: itemsBackgroundColor ?? Theme.of(context).colorScheme.surface,
+              padding: EdgeInsets.zero,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: items!.divide(const Divider()).toList(),
+              ),
             ),
         ],
       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../zds_flutter.dart';
 
 /// An extension of [InputDecoration] that applies Zds styling.
@@ -64,7 +63,7 @@ class ZdsInputDecoration extends InputDecoration {
           label: (labelText?.isNotEmpty ?? false)
               ? (mandatory ?? false)
                   ? Row(
-                      children: [
+                      children: <Widget>[
                         Text(
                           labelText ?? '',
                           style: labelStyle,

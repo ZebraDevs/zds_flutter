@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:zds_flutter/zds_flutter.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class CalendarDemo extends StatefulWidget {
   const CalendarDemo({Key? key}) : super(key: key);
@@ -20,13 +20,12 @@ class _CalendarDemoState extends State<CalendarDemo> {
         child: Column(
           children: [
             TextButton(
-              onPressed: () {
-                setState(() {
-                  focusedDate = focusedDate.add(const Duration(days: 1));
-                });
-              },
-              child: const Text('increase day'),
-            ),
+                onPressed: () {
+                  setState(() {
+                    focusedDate = focusedDate.add(const Duration(days: 1));
+                  });
+                },
+                child: const Text('increase day')),
             ZdsCalendar(
               selectedDay: focusedDate,
               events: [
@@ -100,7 +99,7 @@ class _CalendarDemoState extends State<CalendarDemo> {
                 return DateTime(DateTime.now().year, index + 1, 10);
               }),
               isGridShown: true,
-              singleMarkerBuilder: (context, date, _) {
+              singleMarkerBuilder: (BuildContext context, DateTime date, dynamic _) {
                 return Container(
                   decoration: BoxDecoration(
                       color: date.isAfter(DateTime.now()) ? ZdsColors.red : ZdsColors.green, shape: BoxShape.circle),

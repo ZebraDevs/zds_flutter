@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Variants of ZdsButton.
-enum _ZdsButtonVariant {
+enum ZdsButtonVariant {
   /// Filled button where the background is the defined color.
   filled,
 
@@ -36,6 +36,108 @@ enum _ZdsButtonVariant {
 ///
 /// The other parameters act the same way as the ones in [ElevatedButton].
 class ZdsButton extends StatelessWidget {
+  /// Creates a filled ZdsButton. (Primary button). Use [ZdsButton.filled] until old buttons are fully removed.
+  /// Currently, this acts as a backward compatible constructor for the old buttons.
+  ///
+  /// The [child] argument, usually a [Text], must not be null.
+  const ZdsButton({
+    required this.child,
+    super.key,
+    this.onTap,
+    this.isDangerButton = false,
+    this.autofocus = false,
+    this.clipBehavior = Clip.none,
+    this.focusNode,
+    this.onLongPress,
+    this.onHover,
+    this.onFocusChange,
+    this.textPadding,
+    this.semanticLabel,
+  })  : _variant = ZdsButtonVariant.filled,
+        isOnDarkBackground = false,
+        customColor = null;
+
+  /// Creates a filled ZdsButton. (Primary button). Will be removed when old button versions are fully removed.
+  /// Will be replaced with [ZdsButton] constructor.
+  ///
+  /// The [child] argument, usually a [Text], must not be null.
+  const ZdsButton.filled({
+    required this.child,
+    super.key,
+    this.onTap,
+    this.isDangerButton = false,
+    this.autofocus = false,
+    this.clipBehavior = Clip.none,
+    this.focusNode,
+    this.onLongPress,
+    this.onHover,
+    this.onFocusChange,
+    this.textPadding,
+    this.customColor,
+    this.semanticLabel,
+  })  : _variant = ZdsButtonVariant.filled,
+        isOnDarkBackground = false;
+
+  /// Creates an outlined ZdsButton. (Secondary button)
+  ///
+  /// The [child] argument, usually a [Text], must not be null.
+  const ZdsButton.outlined({
+    required this.child,
+    super.key,
+    this.onTap,
+    this.isDangerButton = false,
+    this.autofocus = false,
+    this.clipBehavior = Clip.none,
+    this.focusNode,
+    this.onLongPress,
+    this.onHover,
+    this.onFocusChange,
+    this.textPadding,
+    this.customColor,
+    this.semanticLabel,
+  })  : _variant = ZdsButtonVariant.outlined,
+        isOnDarkBackground = false;
+
+  /// Creates a ZdsButton that behaves as a TextButton. (Tertiary button)
+  ///
+  /// The [child] argument must not be null.
+  const ZdsButton.text({
+    required this.child,
+    super.key,
+    this.isOnDarkBackground = false,
+    this.onTap,
+    this.autofocus = false,
+    this.clipBehavior = Clip.none,
+    this.focusNode,
+    this.onLongPress,
+    this.onHover,
+    this.onFocusChange,
+    this.textPadding,
+    this.customColor,
+    this.semanticLabel,
+  })  : _variant = ZdsButtonVariant.text,
+        isDangerButton = false;
+
+  /// Constructs a muted ZdsButton. (Quaternary button)
+  ///
+  /// The [child] argument must not be null.
+  const ZdsButton.muted({
+    required this.child,
+    super.key,
+    this.onTap,
+    this.autofocus = false,
+    this.clipBehavior = Clip.none,
+    this.focusNode,
+    this.onLongPress,
+    this.onHover,
+    this.onFocusChange,
+    this.textPadding,
+    this.customColor,
+    this.semanticLabel,
+  })  : _variant = ZdsButtonVariant.muted,
+        isOnDarkBackground = false,
+        isDangerButton = false;
+
   /// The Widget that will go inside the button, typically a [Text] with style [Theme.textTheme.titleMedium].
   ///
   /// Must not be null.
@@ -92,113 +194,11 @@ class ZdsButton extends StatelessWidget {
   /// This is for talkback text on child.
   final String? semanticLabel;
 
-  final _ZdsButtonVariant _variant;
-
-  /// Creates a filled ZdsButton. (Primary button). Use [ZdsButton.filled] until old buttons are fully removed.
-  /// Currently, this acts as a backward compatible constructor for the old buttons.
-  ///
-  /// The [child] argument, usually a [Text], must not be null.
-  const ZdsButton({
-    required this.child,
-    super.key,
-    this.onTap,
-    this.isDangerButton = false,
-    this.autofocus = false,
-    this.clipBehavior = Clip.none,
-    this.focusNode,
-    this.onLongPress,
-    this.onHover,
-    this.onFocusChange,
-    this.textPadding,
-    this.semanticLabel,
-  })  : _variant = _ZdsButtonVariant.filled,
-        isOnDarkBackground = false,
-        customColor = null;
-
-  /// Creates a filled ZdsButton. (Primary button). Will be removed when old button versions are fully removed.
-  /// Will be replaced with [ZdsButton] constructor.
-  ///
-  /// The [child] argument, usually a [Text], must not be null.
-  const ZdsButton.filled({
-    required this.child,
-    super.key,
-    this.onTap,
-    this.isDangerButton = false,
-    this.autofocus = false,
-    this.clipBehavior = Clip.none,
-    this.focusNode,
-    this.onLongPress,
-    this.onHover,
-    this.onFocusChange,
-    this.textPadding,
-    this.customColor,
-    this.semanticLabel,
-  })  : _variant = _ZdsButtonVariant.filled,
-        isOnDarkBackground = false;
-
-  /// Creates an outlined ZdsButton. (Secondary button)
-  ///
-  /// The [child] argument, usually a [Text], must not be null.
-  const ZdsButton.outlined({
-    required this.child,
-    super.key,
-    this.onTap,
-    this.isDangerButton = false,
-    this.autofocus = false,
-    this.clipBehavior = Clip.none,
-    this.focusNode,
-    this.onLongPress,
-    this.onHover,
-    this.onFocusChange,
-    this.textPadding,
-    this.customColor,
-    this.semanticLabel,
-  })  : _variant = _ZdsButtonVariant.outlined,
-        isOnDarkBackground = false;
-
-  /// Creates a ZdsButton that behaves as a TextButton. (Tertiary button)
-  ///
-  /// The [child] argument must not be null.
-  const ZdsButton.text({
-    required this.child,
-    super.key,
-    this.isOnDarkBackground = false,
-    this.onTap,
-    this.autofocus = false,
-    this.clipBehavior = Clip.none,
-    this.focusNode,
-    this.onLongPress,
-    this.onHover,
-    this.onFocusChange,
-    this.textPadding,
-    this.customColor,
-    this.semanticLabel,
-  })  : _variant = _ZdsButtonVariant.text,
-        isDangerButton = false;
-
-  /// Constructs a muted ZdsButton. (Quaternary button)
-  ///
-  /// The [child] argument must not be null.
-  const ZdsButton.muted({
-    required this.child,
-    super.key,
-    this.onTap,
-    this.autofocus = false,
-    this.clipBehavior = Clip.none,
-    this.focusNode,
-    this.onLongPress,
-    this.onHover,
-    this.onFocusChange,
-    this.textPadding,
-    this.customColor,
-    this.semanticLabel,
-  })  : _variant = _ZdsButtonVariant.muted,
-        isOnDarkBackground = false,
-        isDangerButton = false;
+  final ZdsButtonVariant _variant;
 
   @override
   Widget build(BuildContext context) {
-    final isChildText = child is Text;
+    final bool isChildText = child is Text;
     return Semantics(
       label: semanticLabel ?? (isChildText ? (child as Text).data : ''),
       button: true,
@@ -221,18 +221,20 @@ class ZdsButton extends StatelessWidget {
   }
 
   ButtonStyle _getStyle(BuildContext context, EdgeInsetsGeometry? tp) {
-    final textPadding = tp ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 6);
+    final EdgeInsetsGeometry textPadding = tp ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 6);
 
-    const highlightBlueColor = Color(0xffB7DBFF); // TODO(colors): replace with theme color
-    final errorColor = Theme.of(context).colorScheme.error;
-    final onErrorColor = Theme.of(context).colorScheme.onError;
-    final defaultBackgroundColor = Theme.of(context).elevatedButtonTheme.style!.backgroundColor!.resolve({})!;
+    const Color highlightBlueColor = Color(0xffB7DBFF); // TODO(colors): replace with theme color
+    final Color errorColor = Theme.of(context).colorScheme.error;
+    final Color onErrorColor = Theme.of(context).colorScheme.onError;
+    final Color defaultBackgroundColor =
+        customColor ?? Theme.of(context).elevatedButtonTheme.style!.backgroundColor!.resolve(<MaterialState>{})!;
     switch (_variant) {
-      case _ZdsButtonVariant.filled:
+      case ZdsButtonVariant.filled:
         return ButtonStyle(
           padding: MaterialStateProperty.all(textPadding),
           textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-            (states) => Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
+            (Set<MaterialState> states) =>
+                Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
           ),
           foregroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
             return isDangerButton ? onErrorColor : computeForeground(defaultBackgroundColor);
@@ -268,11 +270,11 @@ class ZdsButton extends StatelessWidget {
             return null;
           }),
         );
-      case _ZdsButtonVariant.outlined:
+      case ZdsButtonVariant.outlined:
         return ButtonStyle(
           padding: MaterialStateProperty.all(textPadding),
           textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-            (states) => Theme.of(context).textTheme.titleMedium!.copyWith(
+            (Set<MaterialState> states) => Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w500,
                   color: customColor,
                 ),
@@ -318,14 +320,15 @@ class ZdsButton extends StatelessWidget {
             },
           ),
         );
-      case _ZdsButtonVariant.text:
+      case ZdsButtonVariant.text:
         return ButtonStyle(
           padding: MaterialStateProperty.all(textPadding),
           textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-            (states) => Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+            (Set<MaterialState> states) =>
+                Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
           ),
           foregroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-            final foregroundColor = isOnDarkBackground ? ZdsColors.white : defaultBackgroundColor;
+            final Color foregroundColor = isOnDarkBackground ? ZdsColors.white : defaultBackgroundColor;
             if (customColor != null) {
               return customColor;
             }
@@ -354,11 +357,12 @@ class ZdsButton extends StatelessWidget {
             return null;
           }),
         );
-      case _ZdsButtonVariant.muted:
+      case ZdsButtonVariant.muted:
         return ButtonStyle(
           padding: MaterialStateProperty.all(textPadding),
           textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-            (states) => Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+            (Set<MaterialState> states) =>
+                Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
           ),
           foregroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
             if (states.contains(MaterialState.disabled)) {
@@ -391,17 +395,18 @@ class ZdsButton extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('isDangerButton', isDangerButton));
-    properties.add(DiagnosticsProperty<bool>('isOnDarkBackground', isOnDarkBackground));
-    properties.add(DiagnosticsProperty<bool>('autofocus', autofocus));
-    properties.add(EnumProperty<Clip>('clipBehavior', clipBehavior));
-    properties.add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onLongPress', onLongPress));
-    properties.add(ObjectFlagProperty<ValueChanged<bool>?>.has('onHover', onHover));
-    properties.add(ObjectFlagProperty<ValueChanged<bool>?>.has('onFocusChange', onFocusChange));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('textPadding', textPadding));
-    properties.add(ColorProperty('customColor', customColor));
-    properties.add(StringProperty('semanticLabel', semanticLabel));
+    properties
+      ..add(DiagnosticsProperty<bool>('isDangerButton', isDangerButton))
+      ..add(DiagnosticsProperty<bool>('isOnDarkBackground', isOnDarkBackground))
+      ..add(DiagnosticsProperty<bool>('autofocus', autofocus))
+      ..add(EnumProperty<Clip>('clipBehavior', clipBehavior))
+      ..add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onLongPress', onLongPress))
+      ..add(ObjectFlagProperty<ValueChanged<bool>?>.has('onHover', onHover))
+      ..add(ObjectFlagProperty<ValueChanged<bool>?>.has('onFocusChange', onFocusChange))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(DiagnosticsProperty<EdgeInsets?>('textPadding', textPadding))
+      ..add(ColorProperty('customColor', customColor))
+      ..add(StringProperty('semanticLabel', semanticLabel));
   }
 }

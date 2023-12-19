@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class SlidableListTileDemo extends StatelessWidget {
@@ -15,13 +16,15 @@ class SlidableListTileDemo extends StatelessWidget {
               onTap: () => debugPrint('Main tile tap'),
               width: MediaQuery.of(context).size.width,
               actions: [
-                ZdsSlidableAction(label: 'More'),
                 ZdsSlidableAction(
-                  icon: ZdsIcons.sign_out,
-                  label: 'Exit',
-                  onPressed: (_) => debugPrint('Exit'),
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                )
+                  label: 'More',
+                ),
+                ZdsSlidableAction(
+                    icon: ZdsIcons.sign_out,
+                    label: 'Exit',
+                    onPressed: (_) => debugPrint('Exit'),
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                    foregroundColor: Theme.of(context).colorScheme.onError)
               ],
               child: const _ExampleContent(
                 leading: CircleAvatar(child: Text('JC')),
@@ -37,11 +40,10 @@ class SlidableListTileDemo extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               leadingActions: [
                 ZdsSlidableAction(
-                  icon: Icons.restaurant,
-                  label: 'Kadabra',
-                  backgroundColor: const Color(0xFF6D534E),
-                  foregroundColor: Colors.white,
-                ),
+                    icon: Icons.restaurant,
+                    label: 'Kadabra',
+                    backgroundColor: const Color(0xFF6D534E),
+                    foregroundColor: Colors.white),
                 ZdsSlidableAction(
                   icon: Icons.flatware,
                   label: 'Alakazam',
@@ -50,11 +52,10 @@ class SlidableListTileDemo extends StatelessWidget {
               ],
               actions: [
                 ZdsSlidableAction(
-                  icon: Icons.restaurant,
-                  label: 'Kadabra',
-                  backgroundColor: const Color(0xFF6D534E),
-                  foregroundColor: Colors.white,
-                ),
+                    icon: Icons.restaurant,
+                    label: 'Kadabra',
+                    backgroundColor: const Color(0xFF6D534E),
+                    foregroundColor: Colors.white),
                 ZdsSlidableAction(
                   icon: Icons.flatware,
                   label: 'Alakazam',
@@ -86,11 +87,10 @@ class SlidableListTileDemo extends StatelessWidget {
                 ],
                 actions: [
                   ZdsSlidableAction(
-                    icon: Icons.restaurant,
-                    label: 'Kadabra',
-                    backgroundColor: const Color(0xFF6D534E),
-                    foregroundColor: Colors.white,
-                  ),
+                      icon: Icons.restaurant,
+                      label: 'Kadabra',
+                      backgroundColor: const Color(0xFF6D534E),
+                      foregroundColor: Colors.white),
                   ZdsSlidableAction(
                     icon: Icons.flatware,
                     label: 'Alakazam',
@@ -123,11 +123,10 @@ class SlidableListTileDemo extends StatelessWidget {
                     foregroundColor: ZdsColors.white,
                   ),
                   ZdsSlidableAction(
-                    label: 'Swap with anyone',
-                    backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                    foregroundColor: ZdsColors.white,
-                    textOverflow: TextOverflow.visible,
-                  )
+                      label: 'Swap with anyone',
+                      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                      foregroundColor: ZdsColors.white,
+                      textOverflow: TextOverflow.visible)
                 ],
                 child: const Center(child: Text('A list tile with 3 slidable action buttons')),
               ),

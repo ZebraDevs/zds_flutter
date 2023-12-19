@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 enum _ZdsCalendarVariant { switchable, monthly, weekly }
 
@@ -25,6 +25,100 @@ enum _ZdsCalendarVariant { switchable, monthly, weekly }
 /// Several callback functions are available to sync other widgets with this one. These are [onDaySelected],
 /// [onRangeSelected], and [onPageChanged].
 class ZdsCalendar extends StatefulWidget {
+  /// Calendar widget that allows to switch between a monthly and weekly format. As such, the calendar header will
+  /// always be shown. To not show the calendar header and use a monthly format, use [ZdsCalendar.monthly] instead.
+  const ZdsCalendar({
+    required this.events,
+    super.key,
+    this.showAllButton = false,
+    this.onAllSelected,
+    this.firstDay,
+    this.lastDay,
+    this.initialSelectedDay,
+    this.selectedDay,
+    this.startingDayOfWeek,
+    this.initialSelectedWeek,
+    this.weekIcons,
+    this.isRangeSelectable = false,
+    this.isGridShown = false,
+    this.onDaySelected,
+    this.onRangeSelected,
+    this.onPageChanged,
+    this.onFormatChanged,
+    this.headerPadding = const EdgeInsets.fromLTRB(4, 8, 8, 8),
+    this.singleMarkerBuilder,
+    this.availableGestures = AvailableGestures.horizontalSwipe,
+    this.enabled = true,
+    this.calendarHeaderIconColor,
+    this.calendarHeaderTextColor,
+    this.calendarTextColor,
+    this.holidayEvents = const <DateTime>[],
+    this.allCustomLabel,
+  })  : _variant = _ZdsCalendarVariant.switchable,
+        hasHeader = true;
+
+  /// Shows a calendar in a fixed monthly format.
+  const ZdsCalendar.monthly({
+    required this.events,
+    super.key,
+    this.showAllButton = false,
+    this.onAllSelected,
+    this.firstDay,
+    this.lastDay,
+    this.initialSelectedDay,
+    this.selectedDay,
+    this.startingDayOfWeek,
+    this.initialSelectedWeek,
+    this.hasHeader = true,
+    this.weekIcons,
+    this.isRangeSelectable = false,
+    this.isGridShown = false,
+    this.onDaySelected,
+    this.onRangeSelected,
+    this.onPageChanged,
+    this.onFormatChanged,
+    this.headerPadding = const EdgeInsets.fromLTRB(4, 8, 8, 8),
+    this.singleMarkerBuilder,
+    this.availableGestures = AvailableGestures.horizontalSwipe,
+    this.enabled = true,
+    this.calendarHeaderIconColor,
+    this.calendarHeaderTextColor,
+    this.calendarTextColor,
+    this.holidayEvents = const <DateTime>[],
+    this.allCustomLabel,
+  }) : _variant = _ZdsCalendarVariant.monthly;
+
+  /// Shows a calendar in a fixed weekly format.
+  const ZdsCalendar.weekly({
+    required this.events,
+    super.key,
+    this.showAllButton = false,
+    this.onAllSelected,
+    this.firstDay,
+    this.lastDay,
+    this.initialSelectedDay,
+    this.selectedDay,
+    this.startingDayOfWeek,
+    this.initialSelectedWeek,
+    this.isRangeSelectable = false,
+    this.isGridShown = false,
+    this.weekIcons,
+    this.onDaySelected,
+    this.onRangeSelected,
+    this.onPageChanged,
+    this.onFormatChanged,
+    this.headerPadding = const EdgeInsets.fromLTRB(4, 8, 8, 8),
+    this.singleMarkerBuilder,
+    this.availableGestures = AvailableGestures.horizontalSwipe,
+    this.enabled = true,
+    this.calendarHeaderIconColor,
+    this.calendarHeaderTextColor,
+    this.calendarTextColor,
+    this.holidayEvents = const <DateTime>[],
+    this.allCustomLabel,
+  })  : _variant = _ZdsCalendarVariant.weekly,
+        hasHeader = false;
+
   /// The earliest date that will be shown on the calendar.
   final DateTime? firstDay;
 
@@ -94,7 +188,7 @@ class ZdsCalendar extends StatefulWidget {
   /// Function that creates a single event marker for a given `day`
   ///
   /// If this is null, the default marker is used
-  final Widget? Function(BuildContext, DateTime, dynamic)? singleMarkerBuilder;
+  final Widget Function(BuildContext, DateTime, dynamic)? singleMarkerBuilder;
 
   /// Specifies swipe gestures available to `TableCalendar`.
   ///
@@ -131,146 +225,50 @@ class ZdsCalendar extends StatefulWidget {
   /// Defaults to 'All'.
   final String? allCustomLabel;
 
-  /// Calendar widget that allows to switch between a monthly and weekly format. As such, the calendar header will
-  /// always be shown. To not show the calendar header and use a monthly format, use [ZdsCalendar.monthly] instead.
-  const ZdsCalendar({
-    required this.events,
-    super.key,
-    this.showAllButton = false,
-    this.onAllSelected,
-    this.firstDay,
-    this.lastDay,
-    this.initialSelectedDay,
-    this.selectedDay,
-    this.startingDayOfWeek,
-    this.initialSelectedWeek,
-    this.weekIcons,
-    this.isRangeSelectable = false,
-    this.isGridShown = false,
-    this.onDaySelected,
-    this.onRangeSelected,
-    this.onPageChanged,
-    this.onFormatChanged,
-    this.headerPadding = const EdgeInsets.fromLTRB(4, 8, 8, 8),
-    this.singleMarkerBuilder,
-    this.availableGestures = AvailableGestures.horizontalSwipe,
-    this.enabled = true,
-    this.calendarHeaderIconColor,
-    this.calendarHeaderTextColor,
-    this.calendarTextColor,
-    this.holidayEvents = const [],
-    this.allCustomLabel,
-  })  : _variant = _ZdsCalendarVariant.switchable,
-        hasHeader = true;
-
-  /// Shows a calendar in a fixed monthly format.
-  const ZdsCalendar.monthly({
-    required this.events,
-    super.key,
-    this.showAllButton = false,
-    this.onAllSelected,
-    this.firstDay,
-    this.lastDay,
-    this.initialSelectedDay,
-    this.selectedDay,
-    this.startingDayOfWeek,
-    this.initialSelectedWeek,
-    this.hasHeader = true,
-    this.weekIcons,
-    this.isRangeSelectable = false,
-    this.isGridShown = false,
-    this.onDaySelected,
-    this.onRangeSelected,
-    this.onPageChanged,
-    this.onFormatChanged,
-    this.headerPadding = const EdgeInsets.fromLTRB(4, 8, 8, 8),
-    this.singleMarkerBuilder,
-    this.availableGestures = AvailableGestures.horizontalSwipe,
-    this.enabled = true,
-    this.calendarHeaderIconColor,
-    this.calendarHeaderTextColor,
-    this.calendarTextColor,
-    this.holidayEvents = const [],
-    this.allCustomLabel,
-  }) : _variant = _ZdsCalendarVariant.monthly;
-
-  /// Shows a calendar in a fixed weekly format.
-  const ZdsCalendar.weekly({
-    required this.events,
-    super.key,
-    this.showAllButton = false,
-    this.onAllSelected,
-    this.firstDay,
-    this.lastDay,
-    this.initialSelectedDay,
-    this.selectedDay,
-    this.startingDayOfWeek,
-    this.initialSelectedWeek,
-    this.isRangeSelectable = false,
-    this.isGridShown = false,
-    this.weekIcons,
-    this.onDaySelected,
-    this.onRangeSelected,
-    this.onPageChanged,
-    this.onFormatChanged,
-    this.headerPadding = const EdgeInsets.fromLTRB(4, 8, 8, 8),
-    this.singleMarkerBuilder,
-    this.availableGestures = AvailableGestures.horizontalSwipe,
-    this.enabled = true,
-    this.calendarHeaderIconColor,
-    this.calendarHeaderTextColor,
-    this.calendarTextColor,
-    this.holidayEvents = const [],
-    this.allCustomLabel,
-  })  : _variant = _ZdsCalendarVariant.weekly,
-        hasHeader = false;
-
   @override
   State<ZdsCalendar> createState() => _ZdsCalendarState();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<DateTime?>('firstDay', firstDay));
-    properties.add(DiagnosticsProperty<DateTime?>('lastDay', lastDay));
-    properties.add(DiagnosticsProperty<DateTime?>('initialSelectedDay', initialSelectedDay));
-    properties.add(DiagnosticsProperty<DateTime?>('selectedDay', selectedDay));
-    properties.add(EnumProperty<StartingDayOfWeek?>('startingDayOfWeek', startingDayOfWeek));
-    properties.add(DiagnosticsProperty<DateTime?>('initialSelectedWeek', initialSelectedWeek));
-    properties.add(DiagnosticsProperty<bool>('showAllButton', showAllButton));
-    properties.add(DiagnosticsProperty<bool>('isRangeSelectable', isRangeSelectable));
-    properties.add(IterableProperty<CalendarEvent>('events', events));
-    properties.add(DiagnosticsProperty<bool>('hasHeader', hasHeader));
-    properties.add(IterableProperty<WeekIcon>('weekIcons', weekIcons));
-    properties.add(DiagnosticsProperty<bool>('isGridShown', isGridShown));
-    properties.add(ObjectFlagProperty<void Function(DateTime p1, DateTime p2)?>.has('onDaySelected', onDaySelected));
-    properties.add(
-      ObjectFlagProperty<void Function(DateTime? p1, DateTime? p2, DateTime p3)?>.has(
-        'onRangeSelected',
-        onRangeSelected,
-      ),
-    );
-    properties.add(ObjectFlagProperty<void Function(DateTime p1)?>.has('onPageChanged', onPageChanged));
-    properties.add(
-      ObjectFlagProperty<void Function(DateTime? p1, DateTime? p2, DateTime p3)?>.has(
-        'onAllSelected',
-        onAllSelected,
-      ),
-    );
-    properties.add(ObjectFlagProperty<void Function(CalendarFormat p1)?>.has('onFormatChanged', onFormatChanged));
-    properties.add(DiagnosticsProperty<EdgeInsets>('headerPadding', headerPadding));
-    properties.add(
-      ObjectFlagProperty<Widget? Function(BuildContext p1, DateTime p2, dynamic p3)?>.has(
-        'singleMarkerBuilder',
-        singleMarkerBuilder,
-      ),
-    );
-    properties.add(EnumProperty<AvailableGestures>('availableGestures', availableGestures));
-    properties.add(DiagnosticsProperty<bool>('enabled', enabled));
-    properties.add(ColorProperty('calendarHeaderIconColor', calendarHeaderIconColor));
-    properties.add(ColorProperty('calendarHeaderTextColor', calendarHeaderTextColor));
-    properties.add(ColorProperty('calendarTextColor', calendarTextColor));
-    properties.add(IterableProperty<DateTime>('holidayEvents', holidayEvents));
-    properties.add(StringProperty('allCustomLabel', allCustomLabel));
+    properties
+      ..add(DiagnosticsProperty<DateTime?>('firstDay', firstDay))
+      ..add(DiagnosticsProperty<DateTime?>('lastDay', lastDay))
+      ..add(DiagnosticsProperty<DateTime?>('initialSelectedDay', initialSelectedDay))
+      ..add(DiagnosticsProperty<DateTime?>('selectedDay', selectedDay))
+      ..add(EnumProperty<StartingDayOfWeek?>('startingDayOfWeek', startingDayOfWeek))
+      ..add(DiagnosticsProperty<DateTime?>('initialSelectedWeek', initialSelectedWeek))
+      ..add(DiagnosticsProperty<bool>('showAllButton', showAllButton))
+      ..add(DiagnosticsProperty<bool>('isRangeSelectable', isRangeSelectable))
+      ..add(IterableProperty<CalendarEvent>('events', events))
+      ..add(DiagnosticsProperty<bool>('hasHeader', hasHeader))
+      ..add(IterableProperty<WeekIcon>('weekIcons', weekIcons))
+      ..add(DiagnosticsProperty<bool>('isGridShown', isGridShown))
+      ..add(ObjectFlagProperty<void Function(DateTime p1, DateTime p2)?>.has('onDaySelected', onDaySelected))
+      ..add(
+        ObjectFlagProperty<void Function(DateTime? p1, DateTime? p2, DateTime p3)?>.has(
+          'onRangeSelected',
+          onRangeSelected,
+        ),
+      )
+      ..add(ObjectFlagProperty<void Function(DateTime p1)?>.has('onPageChanged', onPageChanged))
+      ..add(
+        ObjectFlagProperty<void Function(DateTime? p1, DateTime? p2, DateTime p3)?>.has('onAllSelected', onAllSelected),
+      )
+      ..add(ObjectFlagProperty<void Function(CalendarFormat p1)?>.has('onFormatChanged', onFormatChanged))
+      ..add(DiagnosticsProperty<EdgeInsets>('headerPadding', headerPadding))
+      ..add(
+        ObjectFlagProperty<Widget? Function(BuildContext p1, DateTime p2, dynamic p3)?>.has(
+          'singleMarkerBuilder',
+          singleMarkerBuilder,
+        ),
+      )
+      ..add(EnumProperty<AvailableGestures>('availableGestures', availableGestures))
+      ..add(DiagnosticsProperty<bool>('enabled', enabled))
+      ..add(ColorProperty('calendarHeaderIconColor', calendarHeaderIconColor))
+      ..add(ColorProperty('calendarHeaderTextColor', calendarHeaderTextColor))
+      ..add(ColorProperty('calendarTextColor', calendarTextColor))
+      ..add(IterableProperty<DateTime>('holidayEvents', holidayEvents))
+      ..add(StringProperty('allCustomLabel', allCustomLabel));
   }
 }
 
@@ -304,14 +302,14 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    final languageCode = Localizations.localeOf(context).languageCode;
-    final textTheme = Theme.of(context)
+    final String languageCode = Localizations.localeOf(context).languageCode;
+    final TextStyle textTheme = Theme.of(context)
         .textTheme
         .titleSmall!
         .copyWith(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.w500);
 
     final StartingDayOfWeek startingDayOfWeek = widget.startingDayOfWeek ?? StartingDayOfWeek.sunday;
-    final calendar = TableCalendar(
+    final Widget calendar = TableCalendar<dynamic>(
       startingDayOfWeek: startingDayOfWeek,
       availableGestures: widget.availableGestures,
       rowHeight: calendarRowHeight,
@@ -327,12 +325,12 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
 
       // Use `selectedDayPredicate` to determine which day is currently selected.
       // If this returns true, then `day` will be marked as selected.
-      selectedDayPredicate: (day) {
+      selectedDayPredicate: (DateTime day) {
         // Using `isSameDay` is recommended to disregard
         // the time-part of compared DateTime objects.
         return isSameDay(_selectedDay, day);
       },
-      onDaySelected: (selectedDay, focusedDay) {
+      onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
         if (!isSameDay(_selectedDay, selectedDay)) {
           setState(() {
             _selectedDay = selectedDay;
@@ -341,7 +339,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
         }
         widget.onDaySelected?.call(selectedDay, focusedDay);
       },
-      onRangeSelected: (start, end, focusedDay) {
+      onRangeSelected: (DateTime? start, DateTime? end, DateTime focusedDay) {
         setState(() {
           _focusedDay = focusedDay;
           _rangeStart = start;
@@ -351,14 +349,14 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
       },
       // TODO(calendar): Figure out why this onFormatChanged function doesn't seem to be called when changing the format
       // Currently, a workaround is being used.
-      onFormatChanged: (format) {
+      onFormatChanged: (CalendarFormat format) {
         if (_calendarFormat != format) {
           setState(() {
             _calendarFormat = format;
           });
         }
       },
-      onPageChanged: (focusedDay) {
+      onPageChanged: (DateTime focusedDay) {
         setState(() {
           _focusedDay = focusedDay;
           if (!widget.isRangeSelectable && !widget.showAllButton) {
@@ -371,9 +369,9 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
       eventLoader: _getEventsForDay,
       holidayPredicate: _getHoliday,
       daysOfWeekHeight: widget._variant == _ZdsCalendarVariant.weekly ? 24 : calendarDaysOfWeekHeight,
-      calendarBuilders: CalendarBuilders(
-        dowBuilder: (context, day) {
-          final text = DateFormat.E(languageCode).format(day)[0];
+      calendarBuilders: CalendarBuilders<dynamic>(
+        dowBuilder: (BuildContext context, DateTime day) {
+          final String text = DateFormat.E(languageCode).format(day)[0];
           return ExcludeSemantics(
             child: Padding(
               padding: const EdgeInsets.only(top: 4),
@@ -462,12 +460,12 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
         )
         .backgroundColor(Theme.of(context).colorScheme.surface);
 
-    final calendarHeader = Container(
+    final Container calendarHeader = Container(
       color: Theme.of(context).colorScheme.surface,
       padding: widget.headerPadding,
       child: Material(
         child: Row(
-          children: [
+          children: <Widget>[
             IconButton(
               icon: const Icon(Icons.chevron_left),
               color: widget.calendarHeaderIconColor ?? Theme.of(context).colorScheme.onSurface,
@@ -479,10 +477,10 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                 ),
               ),
             ),
-            ZdsPopupMenu(
-              items: [
+            ZdsPopupMenu<int>(
+              items: <ZdsPopupMenuItem<int>>[
                 for (int i = 1; i <= 12; i++)
-                  ZdsPopupMenuItem(
+                  ZdsPopupMenuItem<int>(
                     value: i,
                     child: ListTile(
                       visualDensity: VisualDensity.compact,
@@ -492,7 +490,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                   ),
               ],
               onSelected: (int monthNumber) => setState(() => _focusedDay = DateTime(_focusedDay.year, monthNumber)),
-              builder: (_, open) => InkWell(
+              builder: (_, void Function() open) => InkWell(
                 onTap: open,
                 borderRadius: BorderRadius.circular(8),
                 child: ConstrainedBox(
@@ -505,7 +503,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                       button: true,
                       child: Text(
                         _focusedDay.format('MMMM yyyy', languageCode),
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                               color: widget.calendarHeaderTextColor ?? Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
@@ -523,7 +521,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
             ),
             const Spacer(),
             if (widget._variant == _ZdsCalendarVariant.switchable)
-              ZdsPopupMenu(
+              ZdsPopupMenu<CalendarFormat>(
                 onSelected: (CalendarFormat format) {
                   if (_calendarFormat != format) {
                     setState(() {
@@ -532,15 +530,15 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                     widget.onFormatChanged?.call(format);
                   }
                 },
-                items: [
-                  ZdsPopupMenuItem(
+                items: <ZdsPopupMenuItem<CalendarFormat>>[
+                  ZdsPopupMenuItem<CalendarFormat>(
                     value: CalendarFormat.month,
                     child: ListTile(
                       visualDensity: VisualDensity.compact,
                       title: Text(ComponentStrings.of(context).get('MONTH', 'Month')),
                     ),
                   ),
-                  ZdsPopupMenuItem(
+                  ZdsPopupMenuItem<CalendarFormat>(
                     value: CalendarFormat.week,
                     child: ListTile(
                       visualDensity: VisualDensity.compact,
@@ -548,13 +546,13 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                     ),
                   ),
                 ],
-                builder: (_, open) => InkWell(
+                builder: (_, void Function()? open) => InkWell(
                   onTap: open,
                   borderRadius: BorderRadius.circular(8),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 4),
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         Text(
                           _calendarFormat == CalendarFormat.week
                               ? ComponentStrings.of(context).get('WEEK', 'Week')
@@ -581,7 +579,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
     final List<int> weekNumbers = _focusedDay.getWeeksNumbersInMonth(startingDayOfWeek, _focusedDay);
     final List<DateTime> weekStartDays = () {
       DateTime firstDayOfWeeks = _focusedDay.startOfMonth.getFirstDayOfWeek();
-      final List<DateTime> startDays = [];
+      final List<DateTime> startDays = <DateTime>[];
       while (firstDayOfWeeks.month == _focusedDay.month || firstDayOfWeeks.month == _focusedDay.month - 1) {
         startDays.add(firstDayOfWeeks);
         firstDayOfWeeks = DateTime(firstDayOfWeeks.year, firstDayOfWeeks.month, firstDayOfWeeks.day + 7);
@@ -589,7 +587,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
       return startDays;
     }();
 
-    final allButtonBody = [
+    final List<Widget> allButtonBody = <Widget>[
       Container(
         alignment: Alignment.bottomCenter,
         height: context.isSmallScreen() ? 20 : calendarDaysOfWeekHeight - 3,
@@ -640,7 +638,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
       ),
     ];
 
-    final allButton = Semantics(
+    final Semantics allButton = Semantics(
       selected: _selectedDay == null,
       label: ComponentStrings.of(context).get('ALL', 'All'),
       excludeSemantics: true,
@@ -658,16 +656,16 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
       color: Theme.of(context).colorScheme.surface,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           if (widget.hasHeader) calendarHeader,
-          if (widget.showAllButton && context.isSmallScreen()) Row(children: [Expanded(child: allButton)]),
+          if (widget.showAllButton && context.isSmallScreen()) Row(children: <Widget>[Expanded(child: allButton)]),
           AbsorbPointer(
             absorbing: !widget.enabled,
             child: Opacity(
               opacity: widget.enabled ? 1.0 : 0.5,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   if (widget.weekIcons != null)
                     Container(
                       color: Theme.of(context).colorScheme.surface,
@@ -675,34 +673,37 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                       child: () {
                         if (widget.weekIcons != null) {
                           final bool isWeekNumber = widget.weekIcons!.every(
-                            (weekIcon) => weekIcon.weekNumber != null && weekIcon.year != null,
+                            (WeekIcon weekIcon) => weekIcon.weekNumber != null && weekIcon.year != null,
                           );
                           final bool isFirstDayOfWeek =
-                              widget.weekIcons!.every((weekIcon) => weekIcon.firstDayOfWeek != null);
+                              widget.weekIcons!.every((WeekIcon weekIcon) => weekIcon.firstDayOfWeek != null);
                           if (isWeekNumber || isFirstDayOfWeek) {
                             final List<dynamic> items = isWeekNumber ? weekNumbers : weekStartDays;
                             return Column(
-                              children: [
+                              children: <Widget>[
                                 const SizedBox(height: calendarDaysOfWeekHeight),
-                                for (final index in items)
+                                for (final dynamic index in items)
                                   SizedBox(
                                     height: calendarRowHeight,
                                     child: () {
                                       final WeekIcon? week = () {
                                         if (isWeekNumber) {
                                           if (widget.weekIcons!.any(
-                                            (weeks) => weeks.year == _focusedDay.year && weeks.weekNumber == index,
+                                            (WeekIcon weeks) =>
+                                                weeks.year == _focusedDay.year && weeks.weekNumber == index,
                                           )) {
                                             return widget.weekIcons!.firstWhere(
-                                              (weeks) => weeks.year == _focusedDay.year && weeks.weekNumber == index,
+                                              (WeekIcon weeks) =>
+                                                  weeks.year == _focusedDay.year && weeks.weekNumber == index,
                                             );
                                           }
                                         } else {
                                           if (index is DateTime &&
-                                              widget.weekIcons!
-                                                  .any((weeks) => weeks.firstDayOfWeek?.isSameDay(index) ?? false)) {
+                                              widget.weekIcons!.any(
+                                                (WeekIcon weeks) => weeks.firstDayOfWeek?.isSameDay(index) ?? false,
+                                              )) {
                                             return widget.weekIcons!
-                                                .firstWhere((weeks) => weeks.firstDayOfWeek == index);
+                                                .firstWhere((WeekIcon weeks) => weeks.firstDayOfWeek == index);
                                           }
                                         }
                                       }();
@@ -743,7 +744,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
   }
 
   String _getCurrentLocaleString(BuildContext context) {
-    var currentLocale = const Locale('en', 'US');
+    Locale currentLocale = const Locale('en', 'US');
     try {
       currentLocale = Localizations.localeOf(context);
     } catch (_) {
@@ -753,14 +754,14 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
   }
 
   List<CalendarEvent> _getEventsForDay(DateTime day) {
-    return widget.events.where((event) => isSameDay(event.date, day)).toList();
+    return widget.events.where((CalendarEvent event) => isSameDay(event.date, day)).toList();
   }
 
   bool _getHoliday(DateTime day) {
     if (widget.holidayEvents.isEmpty) {
       return false;
     } else {
-      final isHoliday = widget.holidayEvents.contains(DateUtils.dateOnly(day));
+      final bool isHoliday = widget.holidayEvents.contains(DateUtils.dateOnly(day));
       return isHoliday;
     }
   }
@@ -768,8 +769,9 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<DateTime?>('startOfweek', startOfweek));
-    properties.add(DiagnosticsProperty<DateTime?>('endOfweek', endOfweek));
+    properties
+      ..add(DiagnosticsProperty<DateTime?>('startOfweek', startOfweek))
+      ..add(DiagnosticsProperty<DateTime?>('endOfweek', endOfweek));
   }
 }
 
@@ -778,20 +780,32 @@ DateTime getDate(DateTime d) => DateTime(d.year, d.month, d.day);
 
 /// Calendar Event model.
 class CalendarEvent {
+  /// Constructs a [CalendarEvent].
+  const CalendarEvent({required this.id, required this.date});
+
   /// Id of the event.
   final String id;
 
   /// Date / Time of the event.
   final DateTime date;
-
-  /// Constructs a [CalendarEvent].
-  const CalendarEvent({required this.id, required this.date});
 }
 
 /// Model for weeks that should have leading icons.
 ///
 /// Should use either both `year` and `weekNumber` or `firstDayOfWeek`.
 class WeekIcon {
+  /// Constructs a [WeekIcon].
+  WeekIcon({
+    required this.child,
+    this.year,
+    this.weekNumber,
+    this.firstDayOfWeek,
+    this.semanticLabel,
+  }) : assert(
+          year != null && weekNumber != null || firstDayOfWeek != null,
+          'Should use either both year and weekNumber or firstDayOfWeek',
+        );
+
   /// Year of week.
   final int? year;
 
@@ -810,16 +824,4 @@ class WeekIcon {
 
   /// Semantic label for icon.
   final String? semanticLabel;
-
-  /// Constructs a [WeekIcon].
-  WeekIcon({
-    required this.child,
-    this.year,
-    this.weekNumber,
-    this.firstDayOfWeek,
-    this.semanticLabel,
-  }) : assert(
-          year != null && weekNumber != null || firstDayOfWeek != null,
-          'Should use either both year and weekNumber or firstDayOfWeek',
-        );
 }

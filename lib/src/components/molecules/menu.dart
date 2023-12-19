@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Creates a popup menu.
 ///
@@ -36,6 +36,15 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsPopupMenuItem], used to create the options that appear in this menu.
 ///  * [ZdsAppBar], where this component is used to show more actions that do not typically fit.
 class ZdsPopupMenu<T> extends StatefulWidget {
+  /// Creates a pop up menu.
+  const ZdsPopupMenu({
+    required this.builder,
+    required this.items,
+    super.key,
+    this.onCanceled,
+    this.onSelected,
+  }) : assert(items.length > 0, 'Must have at least 1 item');
+
   /// Defines how this component will appear on screen.
   ///
   /// Typically builds an [IconButton].
@@ -53,15 +62,6 @@ class ZdsPopupMenu<T> extends StatefulWidget {
 
   /// A function called whenever the user doesn't select an item and instead closes the menu.
   final PopupMenuCanceled? onCanceled;
-
-  /// Creates a pop up menu.
-  const ZdsPopupMenu({
-    required this.builder,
-    required this.items,
-    super.key,
-    this.onCanceled,
-    this.onSelected,
-  }) : assert(items.length > 0, 'Must have at least 1 item');
 
   @override
   ZdsPopupMenuState<T> createState() => ZdsPopupMenuState<T>();
@@ -132,7 +132,7 @@ class ZdsPopupMenuState<T> extends State<ZdsPopupMenu<T>> {
         color: Colors.transparent,
         child: Builder(
           key: _key,
-          builder: (context) => IconTheme(
+          builder: (BuildContext context) => IconTheme(
             data: Theme.of(context).primaryIconTheme,
             child: widget.builder(context, _showButtonMenu(context)),
           ),

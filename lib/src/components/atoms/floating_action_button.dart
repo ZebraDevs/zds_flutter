@@ -14,28 +14,6 @@ enum _FloatingActionButtonType { regular, extended }
 /// an example of how to shrink on scroll is given in the example button.dart page. I do not recommend doing this
 /// alternative method as, visually speaking, the result is not optimal (might be achievable with further fine tuning).
 class ZdsFloatingActionButton extends StatelessWidget {
-  /// An icon to show in the FAB.
-  ///
-  /// If using [ZdsFloatingActionButton] this is required.
-  final Widget? icon;
-
-  /// A function called whenever the user taps on the FAB.
-  final VoidCallback? onPressed;
-
-  /// Text that describes what will occur when the button is pressed, displayed when the user long-presses
-  /// on the button or is using Talkback or VoiceOver.
-  ///
-  /// For more information, see [Semantics].
-  final String? tooltip;
-
-  final Widget? _extendedLabel;
-
-  final double? _extendedIconLabelSpacing;
-
-  final EdgeInsetsGeometry? _extendedPadding;
-
-  final _FloatingActionButtonType _floatingActionButtonType;
-
   /// Creates a circular floating action button.
   ///
   /// The [icon] argument must not be null.
@@ -64,6 +42,28 @@ class ZdsFloatingActionButton extends StatelessWidget {
         _extendedLabel = label,
         _extendedIconLabelSpacing = extendedIconLabelSpacing,
         _extendedPadding = extendedPadding;
+
+  /// An icon to show in the FAB.
+  ///
+  /// If using [ZdsFloatingActionButton] this is required.
+  final Widget? icon;
+
+  /// A function called whenever the user taps on the FAB.
+  final VoidCallback? onPressed;
+
+  /// Text that describes what will occur when the button is pressed, displayed when the user long-presses
+  /// on the button or is using Talkback or VoiceOver.
+  ///
+  /// For more information, see [Semantics].
+  final String? tooltip;
+
+  final Widget? _extendedLabel;
+
+  final double? _extendedIconLabelSpacing;
+
+  final EdgeInsetsGeometry? _extendedPadding;
+
+  final _FloatingActionButtonType _floatingActionButtonType;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class CardActionsDemo extends StatelessWidget {
@@ -89,8 +90,8 @@ class CardActionsDemo extends StatelessWidget {
                       ),
                       ZdsTag(
                         rounded: true,
-                        color: ZdsTagColor.error,
                         prefix: Text('U'),
+                        color: ZdsTagColor.error,
                         child: Text('Urgent'),
                       ),
                     ],
