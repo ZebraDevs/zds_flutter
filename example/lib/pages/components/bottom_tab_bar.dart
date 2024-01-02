@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class BottomTabBarDemo extends StatefulWidget {
@@ -71,27 +72,24 @@ class _BottomTabBarDemoState extends State<BottomTabBarDemo> {
         onTap: (index) => setState(() => currentIndex = index),
         items: const [
           ZdsNavItem(
-            icon: IconWithBadge(
-              Icons.article_outlined,
-              unread: 4,
-              semanticsLabel: '4 unread forms',
-            ),
-            label: 'Forms',
-          ),
+              icon: IconWithBadge(
+                Icons.article_outlined,
+                unread: 4,
+                semanticsLabel: '4 unread forms',
+              ),
+              label: 'Forms'),
           ZdsNavItem(
-            icon: IconWithBadge(
-              Icons.search,
-            ),
-            label: 'Search',
-          ),
+              icon: IconWithBadge(
+                Icons.search,
+              ),
+              label: 'Search'),
           ZdsNavItem(
-            icon: IconWithBadge(
-              Icons.analytics_outlined,
-              unread: 50000,
-              maximumDigits: 4,
-            ),
-            label: 'Reports',
-          ),
+              icon: IconWithBadge(
+                Icons.analytics_outlined,
+                unread: 50000,
+                maximumDigits: 4,
+              ),
+              label: 'Reports'),
         ],
       ),
     );

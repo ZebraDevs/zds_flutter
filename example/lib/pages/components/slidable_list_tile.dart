@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class SlidableListTileDemo extends StatelessWidget {
@@ -6,6 +7,8 @@ class SlidableListTileDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var themeData = Theme.of(context);
+    var zetaColors = Zeta.of(context).colors;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -15,13 +18,15 @@ class SlidableListTileDemo extends StatelessWidget {
               onTap: () => debugPrint('Main tile tap'),
               width: MediaQuery.of(context).size.width,
               actions: [
-                ZdsSlidableAction(label: 'More'),
                 ZdsSlidableAction(
-                  icon: ZdsIcons.sign_out,
-                  label: 'Exit',
-                  onPressed: (_) => debugPrint('Exit'),
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                )
+                  label: 'More',
+                ),
+                ZdsSlidableAction(
+                    icon: ZdsIcons.sign_out,
+                    label: 'Exit',
+                    onPressed: (_) => debugPrint('Exit'),
+                    backgroundColor: themeData.colorScheme.error,
+                    foregroundColor: themeData.colorScheme.onError)
               ],
               child: const _ExampleContent(
                 leading: CircleAvatar(child: Text('JC')),
@@ -37,11 +42,10 @@ class SlidableListTileDemo extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               leadingActions: [
                 ZdsSlidableAction(
-                  icon: Icons.restaurant,
-                  label: 'Kadabra',
-                  backgroundColor: const Color(0xFF6D534E),
-                  foregroundColor: Colors.white,
-                ),
+                    icon: Icons.restaurant,
+                    label: 'Kadabra',
+                    backgroundColor: const Color(0xFF6D534E),
+                    foregroundColor: Colors.white),
                 ZdsSlidableAction(
                   icon: Icons.flatware,
                   label: 'Alakazam',
@@ -50,11 +54,10 @@ class SlidableListTileDemo extends StatelessWidget {
               ],
               actions: [
                 ZdsSlidableAction(
-                  icon: Icons.restaurant,
-                  label: 'Kadabra',
-                  backgroundColor: const Color(0xFF6D534E),
-                  foregroundColor: Colors.white,
-                ),
+                    icon: Icons.restaurant,
+                    label: 'Kadabra',
+                    backgroundColor: const Color(0xFF6D534E),
+                    foregroundColor: Colors.white),
                 ZdsSlidableAction(
                   icon: Icons.flatware,
                   label: 'Alakazam',
@@ -86,11 +89,10 @@ class SlidableListTileDemo extends StatelessWidget {
                 ],
                 actions: [
                   ZdsSlidableAction(
-                    icon: Icons.restaurant,
-                    label: 'Kadabra',
-                    backgroundColor: const Color(0xFF6D534E),
-                    foregroundColor: Colors.white,
-                  ),
+                      icon: Icons.restaurant,
+                      label: 'Kadabra',
+                      backgroundColor: const Color(0xFF6D534E),
+                      foregroundColor: Colors.white),
                   ZdsSlidableAction(
                     icon: Icons.flatware,
                     label: 'Alakazam',
@@ -109,25 +111,24 @@ class SlidableListTileDemo extends StatelessWidget {
               height: 60,
               child: ZdsSlidableListTile(
                 slideButtonWidth: 120,
-                backgroundColor: ZdsColors.red,
+                backgroundColor: zetaColors.red,
                 width: MediaQuery.of(context).size.width,
                 actions: [
                   ZdsSlidableAction(
                     label: 'Give away',
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    foregroundColor: ZdsColors.white,
+                    backgroundColor: themeData.colorScheme.secondary,
+                    foregroundColor: themeData.colorScheme.secondary.onColor,
                   ),
                   ZdsSlidableAction(
                     label: 'Direct swap',
-                    backgroundColor: const Color(0xff7D3CBC),
-                    foregroundColor: ZdsColors.white,
+                    backgroundColor: zetaColors.purple,
+                    foregroundColor: zetaColors.purple.onColor,
                   ),
                   ZdsSlidableAction(
-                    label: 'Swap with anyone',
-                    backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                    foregroundColor: ZdsColors.white,
-                    textOverflow: TextOverflow.visible,
-                  )
+                      label: 'Swap with anyone',
+                      backgroundColor: themeData.colorScheme.secondaryContainer,
+                      foregroundColor: themeData.colorScheme.secondaryContainer.onColor,
+                      textOverflow: TextOverflow.visible)
                 ],
                 child: const Center(child: Text('A list tile with 3 slidable action buttons')),
               ),

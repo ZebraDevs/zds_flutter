@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A component used to show a notification with read/unread message details.
 ///
@@ -16,6 +16,18 @@ import '../../../zds_flutter.dart';
 ///  ```
 
 class ZdsNotificationTile extends StatelessWidget {
+  /// Constructs a [ZdsNotificationTile].
+  const ZdsNotificationTile({
+    required this.dateLabel,
+    super.key,
+    this.content,
+    this.onTap,
+    this.isUnread = true,
+    this.leadingData,
+    this.leadingWidth = 12,
+    this.shrinkWrap = true,
+  }) : assert(dateLabel.length != 0, 'dateLabel must not be empty');
+
   /// The text that is header of the notification tile.
   ///
   final String dateLabel;
@@ -40,24 +52,12 @@ class ZdsNotificationTile extends StatelessWidget {
   /// Defaults to true
   ///
   /// It will be used in [ZdsListTile].
-  final bool? shrinkWrap;
+  final bool shrinkWrap;
 
   /// Width of leading widget.
   ///
   /// If set to null, leading widget will determine its own width.
   final double? leadingWidth;
-
-  /// Constructs a [ZdsNotificationTile].
-  const ZdsNotificationTile({
-    required this.dateLabel,
-    super.key,
-    this.content,
-    this.onTap,
-    this.isUnread = true,
-    this.leadingData,
-    this.leadingWidth = 12,
-    this.shrinkWrap = true,
-  }) : assert(dateLabel.length != 0, 'dateLabel must not be empty');
 
   @override
   Widget build(BuildContext context) {

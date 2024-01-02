@@ -13,6 +13,15 @@ import 'package:flutter/services.dart';
 
 import '../../../zds_flutter.dart';
 
+const Size _calendarPortraitDialogSize = Size(330, 518);
+const Size _calendarLandscapeDialogSize = Size(496, 346);
+const Size _inputPortraitDialogSize = Size(330, 270);
+const Size _inputLandscapeDialogSize = Size(496, 160);
+const Size _inputRangeLandscapeDialogSize = Size(496, 164);
+const Duration _dialogSizeAnimationDuration = Duration(milliseconds: 200);
+const double _inputFormPortraitHeight = 98;
+const double _inputFormLandscapeHeight = 108;
+
 /// A Material-style date picker dialog.
 ///
 /// It is used internally by [showDatePicker] or can be directly pushed
@@ -23,15 +32,6 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [showDatePicker], which is a way to display the date picker.
 class DatePickerDialog extends StatefulWidget {
-  static const Size _calendarPortraitDialogSize = Size(330, 518);
-  static const Size _calendarLandscapeDialogSize = Size(496, 346);
-  static const Size _inputPortraitDialogSize = Size(330, 270);
-  static const Size _inputLandscapeDialogSize = Size(496, 160);
-  static const Size _inputRangeLandscapeDialogSize = Size(496, 164);
-  static const Duration _dialogSizeAnimationDuration = Duration(milliseconds: 200);
-  static const double _inputFormPortraitHeight = 98;
-  static const double _inputFormLandscapeHeight = 108;
-
   /// A Material-style date picker dialog.
   DatePickerDialog({
     required DateTime initialDate,
@@ -144,6 +144,7 @@ class DatePickerDialog extends StatefulWidget {
 
   @override
   State<DatePickerDialog> createState() => _DatePickerDialogState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -229,17 +230,17 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
       case DatePickerEntryMode.calendarOnly:
         switch (orientation) {
           case Orientation.portrait:
-            return DatePickerDialog._calendarPortraitDialogSize;
+            return _calendarPortraitDialogSize;
           case Orientation.landscape:
-            return DatePickerDialog._calendarLandscapeDialogSize;
+            return _calendarLandscapeDialogSize;
         }
       case DatePickerEntryMode.input:
       case DatePickerEntryMode.inputOnly:
         switch (orientation) {
           case Orientation.portrait:
-            return DatePickerDialog._inputPortraitDialogSize;
+            return _inputPortraitDialogSize;
           case Orientation.landscape:
-            return DatePickerDialog._inputLandscapeDialogSize;
+            return _inputLandscapeDialogSize;
         }
     }
   }
@@ -304,9 +305,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
         key: _formKey,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          height: orientation == Orientation.portrait
-              ? DatePickerDialog._inputFormPortraitHeight
-              : DatePickerDialog._inputFormLandscapeHeight,
+          height: orientation == Orientation.portrait ? _inputFormPortraitHeight : _inputFormLandscapeHeight,
           child: Shortcuts(
             shortcuts: _formShortcutMap,
             child: Column(
@@ -379,7 +378,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
       child: AnimatedContainer(
         width: dialogSize.width,
         height: dialogSize.height,
-        duration: DatePickerDialog._dialogSizeAnimationDuration,
+        duration: _dialogSizeAnimationDuration,
         curve: Curves.easeIn,
         child: MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -460,7 +459,8 @@ class _RestorableDatePickerEntryMode extends RestorableValue<DatePickerEntryMode
 /// * Single Date picker with text input mode.
 /// * Date Range picker with text input mode.
 ///
-/// [helpText], [orientation], [titleStyle], [titleText] are required and must be non-null.
+/// [helpText], [orientation], [titleStyle], [titleText] are required and must be
+/// non-null.
 class _DatePickerHeader extends StatelessWidget {
   /// Creates a header for use in a date picker dialog.
   const _DatePickerHeader({
@@ -612,6 +612,67 @@ class _DatePickerHeader extends StatelessWidget {
   }
 }
 
+/// Use [showZdsDateRangePicker]
+@Deprecated('Use showZdsDateRangePicker')
+Future<DateTimeRange?> showRflxDateRangePicker({
+  required DateTime firstDate,
+  required DateTime lastDate,
+  required BuildContext context,
+  DateTimeRange? initialDateRange,
+  DateTime? currentDate,
+  DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
+  String? helpText,
+  String? cancelText,
+  String? confirmText,
+  String? saveText,
+  String? errorFormatText,
+  String? errorInvalidText,
+  String? errorInvalidRangeText,
+  String? fieldStartHintText,
+  String? fieldEndHintText,
+  String? fieldStartLabelText,
+  String? fieldEndLabelText,
+  String? clearButtonString,
+  String? applyButtonString,
+  Locale? locale,
+  bool useRootNavigator = true,
+  RouteSettings? routeSettings,
+  TextDirection? textDirection,
+  TransitionBuilder? builder,
+  List<Widget>? actions,
+  bool isWeekMode = false,
+  int startingDayOfWeek = 0,
+}) async =>
+    showZdsDateRangePicker(
+      firstDate: firstDate,
+      lastDate: lastDate,
+      context: context,
+      initialDateRange: initialDateRange,
+      currentDate: currentDate,
+      initialEntryMode: initialEntryMode,
+      helpText: helpText,
+      cancelText: cancelText,
+      confirmText: confirmText,
+      saveText: saveText,
+      errorFormatText: errorFormatText,
+      errorInvalidText: errorInvalidText,
+      errorInvalidRangeText: errorInvalidRangeText,
+      fieldStartHintText: fieldStartHintText,
+      fieldEndHintText: fieldEndHintText,
+      fieldStartLabelText: fieldStartLabelText,
+      fieldEndLabelText: fieldEndLabelText,
+      clearButtonString: clearButtonString,
+      applyButtonString: applyButtonString,
+      locale: locale,
+      useRootNavigator: useRootNavigator,
+      routeSettings: routeSettings,
+      textDirection: textDirection,
+      builder: builder,
+      actions: actions,
+      isWeekMode: isWeekMode,
+      startingDayOfWeek: startingDayOfWeek,
+    );
+
 /// Shows a full screen modal dialog containing a Material Design date range
 /// picker.
 ///
@@ -631,9 +692,14 @@ class _DatePickerHeader extends StatelessWidget {
 /// [lastDate]. For all of these [DateTime] values, only their dates are
 /// considered. Their time fields are ignored.
 ///
-/// The [currentDate] represents the current day (ie today). This
+/// The [currentDate] represents the current day (i.e. today). This
 /// date will be highlighted in the day grid. If null, the date of
 /// `DateTime.now()` will be used.
+///
+/// An optional [initialEntryMode] argument can be used to display the date
+/// picker in the [DatePickerEntryMode.calendar] (a scrollable calendar month
+/// grid) or [DatePickerEntryMode.input] (two text input fields) mode.
+/// It defaults to [DatePickerEntryMode.calendar] and must be non-null.
 ///
 /// The following optional string parameters allow you to override the default
 /// text used for various parts of the dialog:
@@ -648,7 +714,7 @@ class _DatePickerHeader extends StatelessWidget {
 ///   * [errorInvalidText], the message used when an input text isn't a
 ///     selectable date.
 ///   * [errorInvalidRangeText], the message used when the date range is
-///     invalid (eg start date is after end date).
+///     invalid (e.g. start date is after end date).
 ///   * [fieldStartHintText], the text used to prompt the user when no text has
 ///     been entered in the start field.
 ///   * [fieldEndHintText], the text used to prompt the user when no text has
@@ -771,6 +837,7 @@ class _DatePickerHeader extends StatelessWidget {
 ///  * [showDatePicker], which shows a material design date picker used to
 ///    select a single date.
 ///  * [DateTimeRange], which is used to describe a date range.
+///
 Future<DateTimeRange?> showZdsDateRangePicker({
   required DateTime firstDate,
   required DateTime lastDate,
@@ -799,6 +866,8 @@ Future<DateTimeRange?> showZdsDateRangePicker({
   List<Widget>? actions,
   bool isWeekMode = false,
   int startingDayOfWeek = 0,
+  String? shortMonthDayFormat,
+  String? shortDateFormat,
 }) async {
   assert(
     initialDateRange == null || !initialDateRange.start.isAfter(initialDateRange.end),
@@ -852,6 +921,8 @@ Future<DateTimeRange?> showZdsDateRangePicker({
     fieldEndLabelText: fieldEndLabelText,
     isWeekMode: isWeekMode,
     startDayOfWeek: startingDayOfWeek,
+    shortMonthDayFormat: shortMonthDayFormat,
+    shortDateFormat: shortDateFormat,
   );
 
   if (textDirection != null) {
@@ -885,12 +956,20 @@ Future<DateTimeRange?> showZdsDateRangePicker({
 /// is in the same year as the `endDate` then it will use the short month
 /// day format (i.e. 'Jan 21'). Otherwise it will return the short date format
 /// (i.e. 'Jan 21, 2020').
-String _formatRangeStartDate(MaterialLocalizations localizations, DateTime? startDate, DateTime? endDate) {
+String _formatRangeStartDate(
+  MaterialLocalizations localizations,
+  DateTime? startDate,
+  DateTime? endDate,
+  String? shortMonthDayFormat,
+  String? shortDateFormat,
+) {
   return startDate == null
       ? localizations.dateRangeStartLabel
       : (endDate == null || startDate.year == endDate.year)
-          ? localizations.formatShortMonthDay(startDate)
-          : localizations.formatShortDate(startDate);
+          ? (shortMonthDayFormat != null
+              ? startDate.format(shortMonthDayFormat)
+              : localizations.formatShortMonthDay(startDate))
+          : (shortDateFormat != null ? startDate.format(shortDateFormat) : localizations.formatShortDate(startDate));
 }
 
 /// Returns an locale-appropriate string to describe the end of a date range.
@@ -904,12 +983,16 @@ String _formatRangeEndDate(
   DateTime? startDate,
   DateTime? endDate,
   DateTime currentDate,
+  String? shortMonthDayFormat,
+  String? shortDateFormat,
 ) {
   return endDate == null
       ? localizations.dateRangeEndLabel
       : (startDate != null && startDate.year == endDate.year && startDate.year == currentDate.year)
-          ? localizations.formatShortMonthDay(endDate)
-          : localizations.formatShortDate(endDate);
+          ? (shortMonthDayFormat != null
+              ? endDate.format(shortMonthDayFormat)
+              : localizations.formatShortMonthDay(endDate))
+          : (shortDateFormat != null ? endDate.format(shortDateFormat) : localizations.formatShortDate(endDate));
 }
 
 /// A Material-style date range picker dialog.
@@ -946,9 +1029,11 @@ class ZdsDateRangePickerDialog extends StatefulWidget {
     this.clearButtonString,
     this.applyButtonString,
     this.isWeekMode = false,
-    this.startDayOfWeek = 0,
+    this.startDayOfWeek,
+    this.shortMonthDayFormat,
+    this.shortDateFormat,
   }) : assert(
-          !isWeekMode || (startDayOfWeek >= 0 && startDayOfWeek <= 6),
+          !isWeekMode || startDayOfWeek == null || (startDayOfWeek >= 0 && startDayOfWeek <= 6),
           'startingDayOfWeek must be an int between 0 and 6 inclusive',
         );
 
@@ -973,7 +1058,7 @@ class ZdsDateRangePickerDialog extends StatefulWidget {
   /// The latest allowable date on the date range.
   final DateTime lastDate;
 
-  /// The [currentDate] represents the current day (ie today).
+  /// The [currentDate] represents the current day (i.e. today).
   ///
   /// This date will be highlighted in the day grid.
   ///
@@ -1013,7 +1098,7 @@ class ZdsDateRangePickerDialog extends StatefulWidget {
   /// [MaterialLocalizations.dateRangePickerHelpText] is used.
   final String? helpText;
 
-  /// The message used when the date range is invalid (eg start date is after
+  /// The message used when the date range is invalid (e.g. start date is after
   /// end date).
   ///
   /// If null, the localized value of
@@ -1092,10 +1177,17 @@ class ZdsDateRangePickerDialog extends StatefulWidget {
   /// 0 indexed where Sunday is 0 and Saturday is 6
   ///
   /// Defaults to 0.
-  final int startDayOfWeek;
+  final int? startDayOfWeek;
+
+  /// This is month format that comes on picker header when dates selected are from same year this format should not contain year.
+  final String? shortMonthDayFormat;
+
+  /// This is complete date format that comes on picker header when dates selected are from two different year and it must contain year format.
+  final String? shortDateFormat;
 
   @override
   State<ZdsDateRangePickerDialog> createState() => _ZdsDateRangePickerDialogState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -1120,7 +1212,9 @@ class ZdsDateRangePickerDialog extends StatefulWidget {
       ..add(StringProperty('clearButtonString', clearButtonString))
       ..add(StringProperty('applyButtonString', applyButtonString))
       ..add(DiagnosticsProperty<bool>('isWeekMode', isWeekMode))
-      ..add(IntProperty('startDayOfWeek', startDayOfWeek));
+      ..add(IntProperty('startDayOfWeek', startDayOfWeek))
+      ..add(StringProperty('shortMonthDayFormat', shortMonthDayFormat))
+      ..add(StringProperty('shortDateFormat', shortDateFormat));
   }
 }
 
@@ -1242,7 +1336,7 @@ class _ZdsDateRangePickerDialogState extends State<ZdsDateRangePickerDialog> wit
           onCancel: _handleCancel,
           actions: widget.actions,
           isWeekMode: widget.isWeekMode,
-          startDayOfWeek: widget.startDayOfWeek,
+          startDayOfWeek: widget.startDayOfWeek ?? localizations.firstDayOfWeekIndex,
           entryModeButton: showEntryModeButton
               ? IconButton(
                   icon: const Icon(Icons.edit),
@@ -1254,6 +1348,8 @@ class _ZdsDateRangePickerDialogState extends State<ZdsDateRangePickerDialog> wit
               : null,
           confirmText: widget.saveText ?? localizations.saveButtonLabel,
           helpText: widget.helpText ?? localizations.dateRangePickerHelpText,
+          shortMonthDayFormat: widget.shortMonthDayFormat,
+          shortDateFormat: widget.shortDateFormat,
         );
         size = mediaQuery.size;
         insetPadding = EdgeInsets.zero;
@@ -1268,9 +1364,7 @@ class _ZdsDateRangePickerDialogState extends State<ZdsDateRangePickerDialog> wit
           currentDate: widget.currentDate,
           picker: Container(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            height: orientation == Orientation.portrait
-                ? DatePickerDialog._inputFormPortraitHeight
-                : DatePickerDialog._inputFormLandscapeHeight,
+            height: orientation == Orientation.portrait ? _inputFormPortraitHeight : _inputFormLandscapeHeight,
             child: Column(
               children: <Widget>[
                 const Spacer(),
@@ -1311,11 +1405,11 @@ class _ZdsDateRangePickerDialogState extends State<ZdsDateRangePickerDialog> wit
           confirmText: widget.confirmText ?? localizations.okButtonLabel,
           cancelText: widget.cancelText ?? localizations.cancelButtonLabel,
           helpText: widget.helpText ?? localizations.dateRangePickerHelpText,
+          shortMonthDayFormat: widget.shortMonthDayFormat,
+          shortDateFormat: widget.shortDateFormat,
         );
         final DialogTheme dialogTheme = Theme.of(context).dialogTheme;
-        size = orientation == Orientation.portrait
-            ? DatePickerDialog._inputPortraitDialogSize
-            : DatePickerDialog._inputRangeLandscapeDialogSize;
+        size = orientation == Orientation.portrait ? _inputPortraitDialogSize : _inputRangeLandscapeDialogSize;
         insetPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 24);
         shape = dialogTheme.shape;
         elevation = dialogTheme.elevation ?? 24;
@@ -1329,7 +1423,7 @@ class _ZdsDateRangePickerDialogState extends State<ZdsDateRangePickerDialog> wit
       child: AnimatedContainer(
         width: size.width,
         height: size.height,
-        duration: DatePickerDialog._dialogSizeAnimationDuration,
+        duration: _dialogSizeAnimationDuration,
         curve: Curves.easeIn,
         child: MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -1366,6 +1460,8 @@ class _CalendarRangePickerDialog extends StatelessWidget {
     this.applyButtonString,
     this.isWeekMode = false,
     this.startDayOfWeek = 0,
+    this.shortMonthDayFormat,
+    this.shortDateFormat,
   }) : assert(
           !isWeekMode || (startDayOfWeek >= 0 && startDayOfWeek <= 6),
           'startingDayOfWeek must be an int between 0 and 6 inclusive',
@@ -1388,26 +1484,47 @@ class _CalendarRangePickerDialog extends StatelessWidget {
   final String? applyButtonString;
   final bool isWeekMode;
   final int startDayOfWeek;
+  final String? shortMonthDayFormat;
+  final String? shortDateFormat;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final Orientation orientation = MediaQuery.of(context).orientation;
+    final zetaColors = Zeta.of(context).colors;
+
     final TextTheme textTheme = theme.textTheme;
-    final Color headerForeground = colorScheme.onPrimary;
-    final Color headerDisabledForeground = headerForeground.withOpacity(0.38);
-    final String startDateText = _formatRangeStartDate(localizations, selectedStartDate, selectedEndDate);
-    final String endDateText = _formatRangeEndDate(localizations, selectedStartDate, selectedEndDate, DateTime.now());
-    final TextStyle? headlineStyle = textTheme.headlineSmall;
+    final Color headerForeground = zetaColors.textDefault;
+    final Color headerDisabledForeground = zetaColors.textDisabled;
+
+    final String startDateText = _formatRangeStartDate(
+      localizations,
+      selectedStartDate,
+      selectedEndDate,
+      shortMonthDayFormat,
+      shortDateFormat,
+    );
+
+    final String endDateText = _formatRangeEndDate(
+      localizations,
+      selectedStartDate,
+      selectedEndDate,
+      DateTime.now(),
+      shortMonthDayFormat,
+      shortDateFormat,
+    );
+
+    final TextStyle? headlineStyle = textTheme.displaySmall;
     final TextStyle? startDateStyle = headlineStyle?.apply(
       color: selectedStartDate != null ? headerForeground : headerDisabledForeground,
     );
+
     final TextStyle? endDateStyle = headlineStyle?.apply(
       color: selectedEndDate != null ? headerForeground : headerDisabledForeground,
     );
-    final TextStyle saveButtonStyle = textTheme.labelLarge!.apply(
+
+    final TextStyle saveButtonStyle = safeTextStyle(textTheme.labelLarge).apply(
       color: onConfirm != null ? headerForeground : headerDisabledForeground,
     );
 
@@ -1442,7 +1559,10 @@ class _CalendarRangePickerDialog extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        Text(' - ', style: startDateStyle),
+                        Text(
+                          ' – ',
+                          style: startDateStyle,
+                        ),
                         Flexible(
                           child: Text(
                             endDateText,
@@ -1484,12 +1604,12 @@ class _CalendarRangePickerDialog extends StatelessWidget {
             const Spacer(),
             ZdsButton.outlined(
               onTap: onCancel,
-              child: Text(clearButtonString ?? ComponentStrings.of(context).get('CLEAR', 'Clear')),
+              child: Text(clearButtonString ?? 'Clear'),
             ),
             const SizedBox(width: 8),
             ZdsButton(
               onTap: onConfirm,
-              child: Text(applyButtonString ?? ComponentStrings.of(context).get('APPLY', 'Apply')),
+              child: Text(applyButtonString ?? 'Apply'),
             ),
           ],
         ),
@@ -1515,7 +1635,9 @@ class _CalendarRangePickerDialog extends StatelessWidget {
       ..add(StringProperty('clearButtonString', clearButtonString))
       ..add(StringProperty('applyButtonString', applyButtonString))
       ..add(DiagnosticsProperty<bool>('isWeekMode', isWeekMode))
-      ..add(IntProperty('startDayOfWeek', startDayOfWeek));
+      ..add(IntProperty('startDayOfWeek', startDayOfWeek))
+      ..add(StringProperty('shortMonthDayFormat', shortMonthDayFormat))
+      ..add(StringProperty('shortDateFormat', shortDateFormat));
   }
 }
 
@@ -1589,10 +1711,11 @@ class _CalendarDateRangePicker extends StatefulWidget {
   /// 0 indexed where Sunday is 0 and Saturday is 6
   ///
   /// Defaults to 0.
-  final int startDayOfWeek;
+  final int? startDayOfWeek;
 
   @override
   _CalendarDateRangePickerState createState() => _CalendarDateRangePickerState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -1697,13 +1820,21 @@ class _CalendarDateRangePickerState extends State<_CalendarDateRangePicker> {
       }
 
       if (widget.isWeekMode) {
-        widget.onStartDateChanged?.call(_startDate = date.getFirstDayOfWeek(weekStartDay: widget.startDayOfWeek));
-        widget.onEndDateChanged?.call(_endDate = date.getLastDayOfWeek(weekStartDay: widget.startDayOfWeek));
+        widget.onStartDateChanged?.call(
+          _startDate = date.getFirstDayOfWeek(
+            weekStartDay: widget.startDayOfWeek ?? MaterialLocalizations.of(context).firstDayOfWeekIndex,
+          ),
+        );
+        widget.onEndDateChanged?.call(
+          _endDate = date.getLastDayOfWeek(
+            weekStartDay: widget.startDayOfWeek ?? MaterialLocalizations.of(context).firstDayOfWeekIndex,
+          ),
+        );
       }
     });
   }
 
-  Widget _buildMonthItem(int index, bool beforeInitialMonth) {
+  Widget _buildMonthItem(BuildContext context, int index, bool beforeInitialMonth) {
     final int monthIndex = beforeInitialMonth ? _initialMonthIndex - index - 1 : _initialMonthIndex + index;
     final DateTime month = DateUtils.addMonthsToMonthDate(widget.firstDate, monthIndex);
     return MonthItem(
@@ -1712,6 +1843,7 @@ class _CalendarDateRangePickerState extends State<_CalendarDateRangePicker> {
       currentDate: widget.currentDate,
       firstDate: widget.firstDate,
       lastDate: widget.lastDate,
+      firstDayOfWeek: widget.startDayOfWeek,
       displayedMonth: month,
       onChanged: _updateSelection,
     );
@@ -1723,7 +1855,9 @@ class _CalendarDateRangePickerState extends State<_CalendarDateRangePicker> {
 
     return Column(
       children: <Widget>[
-        _DayHeaders(),
+        _DayHeaders(
+          firstDayOfWeek: widget.startDayOfWeek,
+        ),
         if (_showWeekBottomDivider) const Divider(height: 0),
         Expanded(
           child: _CalendarKeyboardNavigator(
@@ -1741,14 +1875,14 @@ class _CalendarDateRangePickerState extends State<_CalendarDateRangePicker> {
               slivers: <Widget>[
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) => _buildMonthItem(index, true),
+                    (BuildContext context, int index) => _buildMonthItem(context, index, true),
                     childCount: _initialMonthIndex,
                   ),
                 ),
                 SliverList(
                   key: sliverAfterKey,
                   delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) => _buildMonthItem(index, false),
+                    (BuildContext context, int index) => _buildMonthItem(context, index, false),
                     childCount: _numberOfMonths - _initialMonthIndex,
                   ),
                 ),
@@ -1776,6 +1910,7 @@ class _CalendarKeyboardNavigator extends StatefulWidget {
 
   @override
   _CalendarKeyboardNavigatorState createState() => _CalendarKeyboardNavigatorState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -1825,14 +1960,14 @@ class _CalendarKeyboardNavigatorState extends State<_CalendarKeyboardNavigator> 
   }
 
   /// Move focus to the next element after the day grid.
-  void _handleGridNextFocus(_) {
+  void _handleGridNextFocus(NextFocusIntent intent) {
     _dayGridFocus
       ..requestFocus()
       ..nextFocus();
   }
 
   /// Move focus to the previous element before the day grid.
-  void _handleGridPreviousFocus(_) {
+  void _handleGridPreviousFocus(PreviousFocusIntent intent) {
     _dayGridFocus
       ..requestFocus()
       ..previousFocus();
@@ -1866,16 +2001,16 @@ class _CalendarKeyboardNavigatorState extends State<_CalendarKeyboardNavigator> 
   };
 
   int _dayDirectionOffset(TraversalDirection traversalDirection, TextDirection textDirection) {
-    TraversalDirection td = traversalDirection;
     // Swap left and right if the text direction if RTL
+    TraversalDirection effectiveDirection = traversalDirection;
     if (textDirection == TextDirection.rtl) {
-      if (traversalDirection == TraversalDirection.left) {
-        td = TraversalDirection.right;
-      } else if (traversalDirection == TraversalDirection.right) {
-        td = TraversalDirection.left;
+      if (effectiveDirection == TraversalDirection.left) {
+        effectiveDirection = TraversalDirection.right;
+      } else if (effectiveDirection == TraversalDirection.right) {
+        effectiveDirection = TraversalDirection.left;
       }
     }
-    return _directionOffset[td] ?? 0;
+    return _directionOffset[effectiveDirection]!;
   }
 
   DateTime? _nextDateInDirection(DateTime date, TraversalDirection direction) {
@@ -1905,7 +2040,6 @@ class _CalendarKeyboardNavigatorState extends State<_CalendarKeyboardNavigator> 
 
 /// InheritedWidget indicating what the current focused date is for its children.
 ///
-/// This is used by the [MonthItem] to let its children know what the currently focused date (if any) should be.
 class _FocusedDate extends InheritedWidget {
   const _FocusedDate({
     required super.child,
@@ -1935,19 +2069,23 @@ class _FocusedDate extends InheritedWidget {
 }
 
 class _DayHeaders extends StatelessWidget {
+  const _DayHeaders({this.firstDayOfWeek});
+
+  final int? firstDayOfWeek;
+
   /// Builds widgets showing abbreviated days of week. The first widget in the
   /// returned list corresponds to the first day of week for the current locale.
   ///
   /// Examples:
   ///
   /// ```
-  /// ┌ Sunday is the first day of week in the US (en_US)
+  /// ┌ [firsDayOfWeek] is 0 then its point to Sunday which is the first day of week in the US (en_US)
   /// |
   /// S M T W T F S  <-- the returned list contains these widgets
   /// _ _ _ _ _ 1 2
   /// 3 4 5 6 7 8 9
   ///
-  /// ┌ But it's Monday in the UK (en_GB)
+  /// ┌ But if 1 then it's Monday in the UK (en_GB)
   /// |
   /// M T W T F S S  <-- the returned list contains these widgets
   /// _ _ _ _ 1 2 3
@@ -1955,17 +2093,14 @@ class _DayHeaders extends StatelessWidget {
   /// ```
   List<Widget> _getDayHeaders(TextStyle headerStyle, MaterialLocalizations localizations) {
     final List<Widget> result = <Widget>[];
-    bool foundFlag = false;
-    int iterator = localizations.firstDayOfWeekIndex;
-    while (!foundFlag) {
-      final String weekday = localizations.narrowWeekdays[iterator];
+    final fistDayNo = firstDayOfWeek ?? localizations.firstDayOfWeekIndex;
+    final weekNarrowList = rotateArrayLeft(localizations.narrowWeekdays, fistDayNo);
+    for (final weekDay in weekNarrowList) {
       result.add(
         ExcludeSemantics(
-          child: Center(child: Text(weekday, style: headerStyle)),
+          child: Center(child: Text(weekDay, style: headerStyle)),
         ),
       );
-      if (iterator == (localizations.firstDayOfWeekIndex - 1) % 7) foundFlag = true;
-      iterator = (iterator + 1) % 7;
     }
     return result;
   }
@@ -1999,6 +2134,12 @@ class _DayHeaders extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('firstDayOfWeek', firstDayOfWeek));
+  }
 }
 
 class _MonthItemGridDelegate extends SliverGridDelegate {
@@ -2006,7 +2147,7 @@ class _MonthItemGridDelegate extends SliverGridDelegate {
 
   @override
   SliverGridLayout getLayout(SliverConstraints constraints) {
-    final double tileWidth = (constraints.crossAxisExtent - _horizontalPadding * 2) / DateTime.daysPerWeek;
+    final double tileWidth = (constraints.crossAxisExtent - 2 * _horizontalPadding) / DateTime.daysPerWeek;
     return _MonthSliverGridLayout(
       crossAxisCount: DateTime.daysPerWeek + 2,
       dayChildWidth: tileWidth,
@@ -2081,7 +2222,7 @@ class _MonthSliverGridLayout extends SliverGridLayout {
 
   double _getCrossAxisOffset(double crossAxisStart, bool isPadding) {
     if (reverseCrossAxis) {
-      return ((crossAxisCount - 2) * dayChildWidth + edgeChildWidth * 2) -
+      return ((crossAxisCount - 2) * dayChildWidth + 2 * edgeChildWidth) -
           crossAxisStart -
           (isPadding ? edgeChildWidth : dayChildWidth);
     }
@@ -2127,6 +2268,7 @@ class MonthItem extends StatefulWidget {
     required this.displayedMonth,
     super.key,
     this.dragStartBehavior = DragStartBehavior.start,
+    this.firstDayOfWeek,
   })  : assert(!firstDate.isAfter(lastDate), 'firstDate must be before lastDate.'),
         assert(
           selectedDateStart == null || !selectedDateStart.isBefore(firstDate),
@@ -2148,6 +2290,9 @@ class MonthItem extends StatefulWidget {
           selectedDateStart == null || selectedDateEnd == null || !selectedDateStart.isAfter(selectedDateEnd),
           'selectedDateStart must be before selectedDateEnd.',
         );
+
+  /// first day of week
+  final int? firstDayOfWeek;
 
   /// The currently selected start date.
   ///
@@ -2189,15 +2334,20 @@ class MonthItem extends StatefulWidget {
   ///
   /// See also:
   ///
-  ///  * [DragStartBehavior], which gives an example for the different behaviors.
+  // ignore: comment_references
+  ///  * [DragGestureRecognizer.dragStartBehavior], which gives an example for
+  ///    the different behaviors.
   final DragStartBehavior dragStartBehavior;
 
   @override
   MonthItemState createState() => MonthItemState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
+
     properties
+      ..add(IntProperty('firstDayOfWeek', firstDayOfWeek))
       ..add(DiagnosticsProperty<DateTime?>('selectedDateStart', selectedDateStart))
       ..add(DiagnosticsProperty<DateTime?>('selectedDateEnd', selectedDateEnd))
       ..add(DiagnosticsProperty<DateTime>('currentDate', currentDate))
@@ -2255,7 +2405,6 @@ class MonthItemState extends State<MonthItem> {
           case TraversalDirection.up:
           case TraversalDirection.left:
             policy = ScrollPositionAlignmentPolicy.keepVisibleAtStart;
-
           case TraversalDirection.right:
           case TraversalDirection.down:
             policy = ScrollPositionAlignmentPolicy.keepVisibleAtEnd;
@@ -2271,7 +2420,7 @@ class MonthItemState extends State<MonthItem> {
     }
   }
 
-  Widget _buildDayItem(BuildContext context, DateTime dayToBuild) {
+  Widget _buildDayItem(BuildContext context, DateTime dayToBuild, int firstDayOffset, int daysInMonth) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final TextTheme textTheme = theme.textTheme;
@@ -2282,7 +2431,7 @@ class MonthItemState extends State<MonthItem> {
 
     final bool isDisabled = dayToBuild.isAfter(widget.lastDate) || dayToBuild.isBefore(widget.firstDate);
 
-    BoxDecoration decoration = const BoxDecoration();
+    BoxDecoration? decoration;
     TextStyle? itemStyle = textTheme.bodyMedium;
 
     final bool isRangeSelected = widget.selectedDateStart != null && widget.selectedDateEnd != null;
@@ -2328,7 +2477,7 @@ class MonthItemState extends State<MonthItem> {
       // border.
       itemStyle = textTheme.bodyMedium?.apply(color: colorScheme.secondary);
       decoration = BoxDecoration(
-        border: Border.fromBorderSide(BorderSide(color: colorScheme.secondary)),
+        border: Border.all(color: colorScheme.secondary),
         shape: BoxShape.circle,
       );
     }
@@ -2346,7 +2495,8 @@ class MonthItemState extends State<MonthItem> {
       semanticLabel = localizations.dateRangeEndDateSemanticLabel(semanticLabel);
     }
 
-    Widget dayWidget = DecoratedBox(
+    // ignore: use_decorated_box
+    Widget dayWidget = Container(
       decoration: decoration,
       child: Center(
         child: Semantics(
@@ -2384,6 +2534,23 @@ class MonthItemState extends State<MonthItem> {
     return Container(color: isHighlighted ? _highlightColor(context) : null);
   }
 
+  /// for firstDayOfWeek 0 points to sunday
+  static int _firstDayOffset(int year, int month, int? firstDayOfWeek, MaterialLocalizations localizations) {
+    // 0-based day of week for the month and year, with 0 representing Monday.
+    final int weekdayFromMonday = DateTime(year, month).weekday - 1;
+
+    // 0-based start of week depending on the locale, with 0 representing Sunday.
+    int firstDayOfWeekIndex = firstDayOfWeek ?? localizations.firstDayOfWeekIndex;
+
+    // firstDayOfWeekIndex recomputed to be Monday-based, in order to compare with
+    // weekdayFromMonday.
+    firstDayOfWeekIndex = (firstDayOfWeekIndex - 1) % 7;
+
+    // Number of days between the first day of week appearing on the calendar,
+    // and the day corresponding to the first of the month.
+    return (weekdayFromMonday - firstDayOfWeekIndex) % 7;
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -2392,7 +2559,7 @@ class MonthItemState extends State<MonthItem> {
     final int year = widget.displayedMonth.year;
     final int month = widget.displayedMonth.month;
     final int daysInMonth = DateUtils.getDaysInMonth(year, month);
-    final int dayOffset = DateUtils.firstDayOffset(year, month, localizations);
+    final int dayOffset = _firstDayOffset(year, month, widget.firstDayOfWeek, localizations);
     final int weeks = ((daysInMonth + dayOffset) / DateTime.daysPerWeek).ceil();
     final double gridHeight = weeks * _monthItemRowHeight + (weeks - 1) * _monthItemSpaceBetweenRows;
     final List<Widget> dayItems = <Widget>[];
@@ -2406,7 +2573,12 @@ class MonthItemState extends State<MonthItem> {
         dayItems.add(const SizedBox());
       } else {
         final DateTime dayToBuild = DateTime(year, month, day);
-        final Widget dayItem = _buildDayItem(context, dayToBuild);
+        final Widget dayItem = _buildDayItem(
+          context,
+          dayToBuild,
+          dayOffset,
+          daysInMonth,
+        );
         dayItems.add(dayItem);
       }
       iterator += 1;
@@ -2542,7 +2714,6 @@ class _HighlightPainter extends CustomPainter {
           textDirection == TextDirection.ltr ? rectLeft : rectRight,
           paint,
         );
-
       case _HighlightPainterStyle.highlightAll:
         canvas.drawRect(
           Rect.fromLTWH(0, 0, size.width, size.height),
@@ -2569,6 +2740,8 @@ class _InputDateRangePickerDialog extends StatelessWidget {
     required this.cancelText,
     required this.helpText,
     required this.entryModeButton,
+    this.shortMonthDayFormat,
+    this.shortDateFormat,
   });
 
   final DateTime? selectedStartDate;
@@ -2581,15 +2754,21 @@ class _InputDateRangePickerDialog extends StatelessWidget {
   final String? cancelText;
   final String? helpText;
   final Widget? entryModeButton;
+  final String? shortMonthDayFormat;
+  final String? shortDateFormat;
 
   String _formatDateRange(BuildContext context, DateTime? start, DateTime? end, DateTime now) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    final String startText = _formatRangeStartDate(localizations, start, end);
-    final String endText = _formatRangeEndDate(localizations, start, end, now);
+    final String startText = _formatRangeStartDate(localizations, start, end, shortMonthDayFormat, shortDateFormat);
+    final String endText = _formatRangeEndDate(localizations, start, end, now, shortMonthDayFormat, shortDateFormat);
     if (start == null || end == null) {
       return localizations.unspecifiedDateRange;
     }
-    return Directionality.of(context) == TextDirection.ltr ? '$startText - $endText' : '$endText - $startText';
+    if (Directionality.of(context) == TextDirection.ltr) {
+      return '$startText – $endText';
+    } else {
+      return '$endText – $startText';
+    }
   }
 
   @override
@@ -2607,7 +2786,7 @@ class _InputDateRangePickerDialog extends StatelessWidget {
         : textTheme.headlineMedium?.apply(color: onPrimarySurfaceColor);
     final String dateText = _formatDateRange(context, selectedStartDate, selectedEndDate, currentDate!);
     final String semanticDateText = selectedStartDate != null && selectedEndDate != null
-        ? '${localizations.formatMediumDate(selectedStartDate!)} - ${localizations.formatMediumDate(selectedEndDate!)}'
+        ? '${localizations.formatMediumDate(selectedStartDate!)} – ${localizations.formatMediumDate(selectedEndDate!)}'
         : '';
 
     final Widget header = _DatePickerHeader(
@@ -2683,7 +2862,9 @@ class _InputDateRangePickerDialog extends StatelessWidget {
       ..add(ObjectFlagProperty<VoidCallback>.has('onCancel', onCancel))
       ..add(StringProperty('confirmText', confirmText))
       ..add(StringProperty('cancelText', cancelText))
-      ..add(StringProperty('helpText', helpText));
+      ..add(StringProperty('helpText', helpText))
+      ..add(StringProperty('shortMonthDayFormat', shortMonthDayFormat))
+      ..add(StringProperty('shortDateFormat', shortDateFormat));
   }
 }
 
@@ -2746,7 +2927,7 @@ class _InputDateRangePicker extends StatefulWidget {
   final String? errorInvalidText;
 
   /// Error text used to indicate the dates given don't form a valid date
-  /// range (ie the start date is after the end date).
+  /// range (i.e. the start date is after the end date).
   final String? errorInvalidRangeText;
 
   /// Hint text shown when the start date field is empty.
@@ -2771,6 +2952,7 @@ class _InputDateRangePicker extends StatefulWidget {
 
   @override
   _InputDateRangePickerState createState() => _InputDateRangePickerState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

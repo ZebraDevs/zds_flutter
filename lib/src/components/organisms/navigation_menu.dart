@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A menu for navigation to other parts of the app or to other apps.
 ///
@@ -12,6 +12,15 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [ZdsMenuItem], typically used as the [children] of this widget.
 class ZdsNavigationMenu extends StatelessWidget {
+  /// Constructs a [ZdsNavigationMenu].
+  const ZdsNavigationMenu({
+    required this.children,
+    super.key,
+    this.label,
+    this.withDividers = false,
+    this.withSpacer = true,
+  });
+
   /// An optional label shown at the start of the menu describing its contents.
   ///
   /// Typically a [Text]
@@ -32,15 +41,6 @@ class ZdsNavigationMenu extends StatelessWidget {
   /// Defaults to true.
   final bool withSpacer;
 
-  /// Constructs a [ZdsNavigationMenu].
-  const ZdsNavigationMenu({
-    required this.children,
-    super.key,
-    this.label,
-    this.withDividers = false,
-    this.withSpacer = true,
-  });
-
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
@@ -48,7 +48,7 @@ class ZdsNavigationMenu extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+        children: <Widget>[
           if (label != null)
             ZdsNavigationMenuLabel(
               child: label!,
@@ -72,25 +72,26 @@ class ZdsNavigationMenu extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('withDividers', withDividers));
-    properties.add(DiagnosticsProperty<bool>('withSpacer', withSpacer));
+    properties
+      ..add(DiagnosticsProperty<bool>('withDividers', withDividers))
+      ..add(DiagnosticsProperty<bool>('withSpacer', withSpacer));
   }
 }
 
 //// Label used above a [ZdsNavigationMenu].
 class ZdsNavigationMenuLabel extends StatelessWidget {
+  /// Constructs a [ZdsNavigationMenuLabel].
+  const ZdsNavigationMenuLabel({required this.child, super.key});
+
   /// Label to be rendered.
   ///
   /// Typically a [Text].
   final Widget child;
 
-  /// Constructs a [ZdsNavigationMenuLabel].
-  const ZdsNavigationMenuLabel({required this.child, super.key});
-
   @override
   Widget build(BuildContext context) {
     return child.textStyle(
-      Theme.of(context).textTheme.titleSmall!.copyWith(color: ZdsColors.blueGrey),
+      Theme.of(context).textTheme.titleSmall?.copyWith(color: Zeta.of(context).colors.textSubtle),
     );
   }
 }

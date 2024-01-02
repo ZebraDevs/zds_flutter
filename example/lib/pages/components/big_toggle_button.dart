@@ -12,7 +12,7 @@ class _BigToggleButtonDemoState extends State<BigToggleButtonDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ZdsList(
         children: [
           ZdsToggleButton(
             values: const ['A', 'B', 'C', 'D'],

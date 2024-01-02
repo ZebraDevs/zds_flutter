@@ -1,116 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../../zds_flutter.dart';
-import 'text.dart';
-
-/// Builds a theme that can be consumed by Zds components
-///
-/// [bt](Base Theme) is optional ThemeData that acts as the base of the theme.
-///
-/// [colorScheme] sets all colors within the library.
-ThemeData buildTheme(ThemeData baseTheme, ColorScheme colorScheme) {
-  // Primary text theme. Used for texts drawn on primary color. e.g app-bar title
-  final primaryTextTheme = buildZdsTextTheme(
-    baseTheme.primaryTextTheme.apply(
-      bodyColor: colorScheme.onPrimary,
-      displayColor: colorScheme.onPrimary,
-    ),
-  );
-
-  final bodyTextTheme = buildZdsTextTheme(
-    baseTheme.textTheme.apply(
-      bodyColor: colorScheme.onSurface,
-      displayColor: colorScheme.onSurface,
-    ),
-  );
-
-  final baseButtonStyle = _buildBaseButtonStyle(primaryTextTheme, colorScheme);
-
-  final bool isWarm = colorScheme.background != ZdsColors.greyCoolSwatch[50];
-
-  return baseTheme.copyWith(
-    colorScheme: colorScheme,
-    canvasColor: colorScheme.surface,
-    brightness: colorScheme.brightness,
-    textTheme: bodyTextTheme,
-    primaryTextTheme: primaryTextTheme,
-    primaryColor: colorScheme.primary,
-    scaffoldBackgroundColor: colorScheme.background,
-    indicatorColor: colorScheme.secondary,
-    appBarTheme: _buildAppBarTheme(primaryTextTheme, colorScheme),
-    elevatedButtonTheme: _buildElevatedButtonTheme(baseButtonStyle),
-    textButtonTheme: _buildTextButtonTheme(baseButtonStyle, bodyTextTheme, colorScheme),
-    bottomSheetTheme: _buildBottomSheetTheme(),
-    iconTheme: _buildZdsIconTheme(baseTheme.iconTheme.copyWith(color: ZdsColors.white)),
-    primaryIconTheme: _buildZdsIconTheme(baseTheme.primaryIconTheme.copyWith(color: colorScheme.onPrimary)),
-    dividerTheme: _buildDividerTheme(baseTheme.dividerTheme),
-    inputDecorationTheme: _buildInputDecorationTheme(bodyTextTheme, colorScheme, isWarm),
-    bottomAppBarTheme: _buildBottomAppBarTheme(baseTheme.bottomAppBarTheme, colorScheme),
-    bottomNavigationBarTheme: _buildBottomNavigationBarTheme(
-      baseTheme.bottomNavigationBarTheme,
-      bodyTextTheme,
-      colorScheme,
-    ),
-    progressIndicatorTheme: ProgressIndicatorThemeData(color: colorScheme.secondary),
-    cardTheme: CardTheme(
-      margin: const EdgeInsets.all(3),
-      shadowColor: ZdsColors.shadowColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-    ),
-    popupMenuTheme: PopupMenuThemeData(
-      textStyle: bodyTextTheme.bodyMedium,
-      elevation: 5,
-      color: colorScheme.surface,
-    ),
-    textSelectionTheme: TextSelectionThemeData(
-      cursorColor: colorScheme.secondary,
-      selectionColor: colorScheme.secondary.withOpacity(0.4),
-      selectionHandleColor: colorScheme.secondary,
-    ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: baseButtonStyle.copyWith(textStyle: MaterialStateProperty.resolveWith((_) => bodyTextTheme.titleSmall)),
-    ),
-    checkboxTheme: baseTheme.checkboxTheme.copyWith(
-      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          return colorScheme.secondary;
-        }
-        return ZdsColors.blueGrey;
-      }),
-    ),
-    radioTheme: baseTheme.radioTheme.copyWith(
-      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          return colorScheme.secondary;
-        }
-        return ZdsColors.blueGrey;
-      }),
-    ),
-    switchTheme: _buildSwitchTheme(baseTheme.switchTheme, colorScheme, isWarm).copyWith(
-      thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          return colorScheme.secondary;
-        }
-        return ZdsColors.blueGrey;
-      }),
-    ),
-  );
-}
 
 /// Returns a [ZdsBottomBarThemeData].
 ZdsBottomBarThemeData buildZdsBottomBarThemeData(BuildContext context) {
+  final themeData = Theme.of(context);
   return ZdsBottomBarThemeData(
     height: kBottomBarHeight,
-    shadows: [
+    shadows: <BoxShadow>[
       BoxShadow(
         offset: const Offset(0, -1),
-        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+        color: themeData.colorScheme.onBackground.withOpacity(0.1),
         blurRadius: 2,
       ),
     ],
-    backgroundColor: Theme.of(context).colorScheme.surface,
+    backgroundColor: themeData.colorScheme.surface,
     contentPadding: const EdgeInsets.symmetric(horizontal: 8),
   );
 }
@@ -119,14 +24,19 @@ ZdsBottomBarThemeData buildZdsBottomBarThemeData(BuildContext context) {
 ///
 /// See [ZdsListTile].
 class ZdsListTileTheme {
+  /// Constructs a [ZdsListTileTheme]
+  const ZdsListTileTheme({
+    required this.iconSize,
+    required this.contentPadding,
+    required this.tileMargin,
+    required this.labelAdditionalMargin,
+  });
+
   /// Interior padding on the tile.
   final EdgeInsets contentPadding;
 
   /// Size of any icons used in the leading or trailing widget.
   final double iconSize;
-
-  /// Color of the subtitle text.
-  final Color subtitleColor;
 
   /// Exterior margin of the tile.
   ///
@@ -135,31 +45,30 @@ class ZdsListTileTheme {
 
   /// Additional margin to be added to the tile after the leading widget but before the rest of the content.
   final double labelAdditionalMargin;
-
-  /// Constructs a [ZdsListTileTheme]
-  const ZdsListTileTheme({
-    required this.iconSize,
-    required this.contentPadding,
-    required this.tileMargin,
-    required this.labelAdditionalMargin,
-    required this.subtitleColor,
-  });
 }
 
 /// Applies style to any child of type [ZdsTabBar].
 class ZdsTabBarStyleContainer {
+  /// Constructs a [ZdsTabBarStyleContainer]
+  ZdsTabBarStyleContainer({required this.theme, required this.customTheme});
+
   ///Base theme.
   final ThemeData theme;
 
   /// Custom theme for tab bar specifically.
   final ZdsTabBarThemeData customTheme;
-
-  /// Constructs a [ZdsTabBarStyleContainer]
-  ZdsTabBarStyleContainer({required this.theme, required this.customTheme});
 }
 
 /// Applies style to any child of type [ZdsBottomBar].
 class ZdsBottomBarThemeData {
+  /// Constructs a [ZdsBottomBarThemeData].
+  ZdsBottomBarThemeData({
+    required this.height,
+    required this.shadows,
+    required this.backgroundColor,
+    required this.contentPadding,
+  });
+
   /// Height of the bottom bar.
   final double height;
 
@@ -171,14 +80,6 @@ class ZdsBottomBarThemeData {
 
   /// Interior content padding of the bottom bar.
   final EdgeInsets contentPadding;
-
-  /// Constructs a [ZdsBottomBarThemeData].
-  ZdsBottomBarThemeData({
-    required this.height,
-    required this.shadows,
-    required this.backgroundColor,
-    required this.contentPadding,
-  });
 
   /// Creates a copy of this ZdsBottomBarThemeData, but with the given fields replaced wih the new values.
   ZdsBottomBarThemeData copyWith({
@@ -198,15 +99,15 @@ class ZdsBottomBarThemeData {
 
 /// Theme for ZdsBottomBar.
 class ZdsBottomBarTheme extends InheritedWidget {
-  /// Theme data to be applied.
-  final ZdsBottomBarThemeData data;
-
   /// Constructs a [ZdsBottomBarTheme].
   const ZdsBottomBarTheme({
     required super.child,
     required this.data,
     super.key,
   });
+
+  /// Theme data to be applied.
+  final ZdsBottomBarThemeData data;
 
   /// Returns the [ZdsBottomBarThemeData] object of the given type for the widget tree that corresponds to the given context.
   static ZdsBottomBarThemeData of(BuildContext context) {
@@ -227,32 +128,39 @@ class ZdsBottomBarTheme extends InheritedWidget {
 
 /// Theme container for [ZdsTabBar].
 class ZdsTabBarThemeData {
+  /// Constructor for [ZdsTabBarThemeData].
+  const ZdsTabBarThemeData({required this.decoration, required this.height, this.iconSize = 16});
+
   /// Decoration for [ZdsTabBar].
   ///
   /// Typically [BoxDecoration].
-  final Decoration decoration;
+  final BoxDecoration decoration;
 
   /// Height of [ZdsTabBar].
   final double height;
 
   /// Size of icon. Defaults to 16.
   final double iconSize;
-
-  /// Constructor for [ZdsTabBarThemeData].
-  const ZdsTabBarThemeData({required this.decoration, required this.height, this.iconSize = 16});
 }
 
 /// Theme data for [ZdsToolbar].
 class ZdsToolbarThemeData {
-  /// Interior content padding for the toolbar.
-  final EdgeInsets contentPadding;
-
   /// Constructs a [ZdsToolbarThemeData].
   const ZdsToolbarThemeData({required this.contentPadding});
+
+  /// Interior content padding for the toolbar.
+  final EdgeInsets contentPadding;
 }
 
 /// Border used for input components, such as [TextField] to apply a Zds style.
 class ZdsInputBorder extends InputBorder {
+  /// Constructs a [ZdsInputBorder].
+  const ZdsInputBorder({
+    super.borderSide,
+    this.space = kSpace,
+    this.borderRadius = const BorderRadius.all(Radius.circular(12)),
+  });
+
   /// The space between the border and the interior content.
   ///
   /// Defaults to 6
@@ -262,13 +170,6 @@ class ZdsInputBorder extends InputBorder {
   ///
   /// Defaults to `BorderRadius.all(Radius.circular(12))`.
   final BorderRadius borderRadius;
-
-  /// Constructs a [ZdsInputBorder].
-  const ZdsInputBorder({
-    super.borderSide = const BorderSide(color: ZdsColors.inputBorderColor),
-    this.space = kSpace,
-    this.borderRadius = const BorderRadius.all(Radius.circular(12)),
-  });
 
   static bool _cornersAreCircular(BorderRadius borderRadius) {
     return borderRadius.topLeft.x == borderRadius.topLeft.y &&
@@ -385,70 +286,69 @@ class ZdsInputBorder extends InputBorder {
 /// Extension of ThemeData.
 extension ThemeExtension on ThemeData {
   /// Gets prefix icon used for [ZdsSearchField].
-  Icon get prefixIcon => Icon(ZdsIcons.search, color: greySwatch[800]);
+  Widget get prefixIcon => Builder(
+        builder: (context) {
+          return Icon(ZdsIcons.search, color: Zeta.of(context).colors.iconSubtle);
+        },
+      );
 
   /// Gets default theme data for [ZdsListTile].
-  ZdsListTileTheme get zdsListTileThemeData => ZdsListTileTheme(
-        contentPadding: const EdgeInsets.only(left: 24, top: 18, bottom: 18, right: 24),
-        iconSize: 24,
-        subtitleColor: greySwatch.shade900,
-        tileMargin: 6,
-        labelAdditionalMargin: 10,
-      );
+  @Deprecated('Use kZdsListTileTheme instead')
+  ZdsListTileTheme get zdsListTileThemeData => kZdsListTileTheme;
 
   ///Gets default theme data for [ZdsToolbar].
-  ZdsToolbarThemeData get zdsToolbarThemeData => const ZdsToolbarThemeData(
-        contentPadding: EdgeInsets.all(24),
-      );
+  @Deprecated('Use kZdsToolbarTheme instead')
+  ZdsToolbarThemeData get zdsToolbarThemeData => kZdsToolbarTheme;
 
   /// Gets default theme data for [ZdsSearchField]
-  Map<ZdsSearchFieldVariant, ThemeData> get zdsSearchThemeData {
-    final border = OutlineInputBorder(
+  ThemeData zdsSearchThemeData(ThemeData baseTheme, ZdsSearchFieldVariant variant, ZetaColors zetaColors) {
+    final OutlineInputBorder border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(kSearchBorderRadius),
       borderSide: const BorderSide(
         style: BorderStyle.none,
       ),
     );
 
-    InputDecorationTheme inputDecorationTheme(OutlineInputBorder border) => InputDecorationTheme(
-          border: border,
-          focusedBorder: border,
-          errorBorder: border,
-          enabledBorder: border,
-          disabledBorder: border,
-          focusedErrorBorder: border,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        );
+    InputDecorationTheme inputDecorationTheme(OutlineInputBorder border) {
+      return InputDecorationTheme(
+        border: border,
+        focusedBorder: border,
+        errorBorder: border,
+        enabledBorder: border,
+        disabledBorder: border,
+        focusedErrorBorder: border,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      );
+    }
 
-    final cardTheme = this.cardTheme.copyWith(
+    final CardTheme cardTheme = this.cardTheme.copyWith(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kSearchBorderRadius),
           ),
-          shadowColor: ZdsColors.blueGrey.withOpacity(0.1),
         );
 
-    return Map<ZdsSearchFieldVariant, ThemeData>.from({
-      ZdsSearchFieldVariant.outlined: ThemeData(
-        inputDecorationTheme: inputDecorationTheme(
-          border.copyWith(
-            borderSide: BorderSide(
-              color: greySwatch[colorScheme.brightness == Brightness.dark ? 1000 : 500]!,
+    switch (variant) {
+      case ZdsSearchFieldVariant.outlined:
+        return baseTheme.copyWith(
+          inputDecorationTheme: inputDecorationTheme(
+            border.copyWith(
+              borderSide: BorderSide(color: zetaColors.borderSubtle),
             ),
           ),
-        ),
-        textSelectionTheme: TextSelectionThemeData(cursorColor: colorScheme.onSurface),
-        hintColor: colorScheme.onSurface.withOpacity(0.5),
-        cardTheme: cardTheme.copyWith(shadowColor: ZdsColors.transparent),
-      ),
-      ZdsSearchFieldVariant.elevated: ThemeData(
-        inputDecorationTheme: inputDecorationTheme(border),
-        textSelectionTheme: TextSelectionThemeData(
-          cursorColor: colorScheme.onSurface,
-        ),
-        cardTheme: cardTheme,
-        hintColor: colorScheme.onSurface.withOpacity(0.5),
-      ),
-    });
+          textSelectionTheme: TextSelectionThemeData(cursorColor: colorScheme.onSurface),
+          hintColor: colorScheme.onSurface.withOpacity(0.5),
+          cardTheme: cardTheme.copyWith(shadowColor: Colors.transparent),
+        );
+      case ZdsSearchFieldVariant.elevated:
+        return baseTheme.copyWith(
+          inputDecorationTheme: inputDecorationTheme(border),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: colorScheme.onSurface,
+          ),
+          cardTheme: cardTheme,
+          hintColor: colorScheme.onSurface.withOpacity(0.5),
+        );
+    }
   }
 
   /// Custom theme for [ZdsDateTimePicker].
@@ -462,147 +362,142 @@ extension ThemeExtension on ThemeData {
     );
   }
 
-  /// Builds [ZdsTabBarStyleContainer]. Defaults to primary color.
-  ZdsTabBarStyleContainer _tabbarStyle(
-    BuildContext context,
-    bool hasIcons, {
-    Color? selectedText,
-    Color? background,
-    Color? unselectedText,
-    Color? indicator,
-  }) {
-    final height = hasIcons ? 56.0 : 48.0;
-    final ThemeData theme = Theme.of(context);
-    final ZetaColors colors = ZetaColors.of(context);
-    final tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
-    final labelStyle = hasIcons ? theme.textTheme.bodyXSmall : theme.textTheme.bodyLarge;
-    if (colors.isDarkMode) return _tabBarDark(context, hasIcons);
-
-    return ZdsTabBarStyleContainer(
-      customTheme: ZdsTabBarThemeData(
-        decoration: BoxDecoration(color: background ?? colors.primary.primary),
-        height: height,
-      ),
-      theme: theme.copyWith(
-        tabBarTheme: tabBarTheme.copyWith(
-          labelStyle: labelStyle,
-          unselectedLabelStyle: labelStyle,
-          unselectedLabelColor: unselectedText ?? colors.cool.shade40,
-          labelColor: selectedText ?? colors.onPrimary,
-          indicator: UnderlineTabIndicator(
-            borderSide: BorderSide(
-              width: 5,
-              color: indicator ?? colors.primary.shade20,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  ZdsTabBarStyleContainer _tabBarDark(BuildContext context, bool hasIcons) {
-    final height = hasIcons ? 56.0 : 48.0;
-    final ThemeData theme = Theme.of(context);
-    final ZetaColors colors = ZetaColors.of(context);
-    final tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
-    final labelStyle = hasIcons ? theme.textTheme.bodySmall : theme.textTheme.bodyLarge;
-    return ZdsTabBarStyleContainer(
-      customTheme: ZdsTabBarThemeData(
-        decoration: BoxDecoration(color: colors.cool.shade10),
-        height: height,
-      ),
-      theme: theme.copyWith(
-        tabBarTheme: tabBarTheme.copyWith(
-          labelStyle: labelStyle,
-          unselectedLabelStyle: labelStyle,
-          unselectedLabelColor: colors.textDefault,
-          labelColor: colors.textSubtle,
-          indicator: UnderlineTabIndicator(
-            borderSide: BorderSide(
-              width: 5,
-              color: colors.primary,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   /// Generates theme for [ZdsTabBar].
-  Map<ZdsTabBarColor, ZdsTabBarStyleContainer> zdsTabBarThemeData(
+  @Deprecated('Use ZdsTabBar.buildTheme() instead')
+  ZdsTabBarStyleContainer zdsTabBarThemeData(
     BuildContext context, {
     required bool hasIcons,
+    required ZdsTabBarColor color,
     Color? indicatorColor,
   }) {
-    final ZetaColors colors = ZetaColors.of(context);
-    return {
-      ZdsTabBarColor.primary: _tabbarStyle(context, hasIcons),
-      ZdsTabBarColor.basic: _tabbarStyle(
-        context,
-        hasIcons,
-        background: colors.cool.shade90,
-        selectedText: colors.cool.shade20,
-        indicator: colors.primary.primary,
-      ),
-      ZdsTabBarColor.surface: _tabbarStyle(
-        context,
-        hasIcons,
-        background: colors.surface,
-        selectedText: colors.onSurface,
-        indicator: colors.primary.primary,
-        unselectedText: colors.cool.shade70,
-      ),
-    };
+    /// Builds [ZdsTabBarStyleContainer]. Defaults to primary color.
+    ZdsTabBarStyleContainer tabBarStyle(
+      BuildContext context, {
+      required bool hasIcons,
+      required Color selectedText,
+      required Color background,
+      required Color unselectedText,
+      required Color indicator,
+    }) {
+      final double height = hasIcons ? 56.0 : 48.0;
+      final ThemeData theme = Theme.of(context);
+
+      final TabBarTheme tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
+      final TextStyle? labelStyle = hasIcons ? theme.textTheme.bodyXSmall : theme.textTheme.bodyLarge;
+
+      return ZdsTabBarStyleContainer(
+        customTheme: ZdsTabBarThemeData(
+          decoration: BoxDecoration(color: background),
+          height: height,
+        ),
+        theme: theme.copyWith(
+          tabBarTheme: tabBarTheme.copyWith(
+            labelStyle: labelStyle,
+            unselectedLabelStyle: labelStyle,
+            unselectedLabelColor: unselectedText,
+            labelColor: selectedText,
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(
+                width: 3,
+                color: indicator,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    final zetaColors = Zeta.of(context).colors;
+    switch (color) {
+      case ZdsTabBarColor.primary:
+        return tabBarStyle(
+          context,
+          hasIcons: hasIcons,
+          background: zetaColors.primary,
+          indicator: zetaColors.primary.onColor,
+          selectedText: zetaColors.primary.onColor,
+          unselectedText: zetaColors.primary.onColor.withOpacity(0.5),
+        );
+      case ZdsTabBarColor.basic:
+        return tabBarStyle(
+          context,
+          hasIcons: hasIcons,
+          background: colorScheme.background,
+          indicator: zetaColors.primary,
+          selectedText: zetaColors.textDefault,
+          unselectedText: zetaColors.textSubtle,
+        );
+      case ZdsTabBarColor.surface:
+        return tabBarStyle(
+          context,
+          hasIcons: hasIcons,
+          background: zetaColors.surfacePrimary,
+          indicator: zetaColors.primary,
+          selectedText: zetaColors.textDefault,
+          unselectedText: zetaColors.textSubtle,
+        );
+      case ZdsTabBarColor.appBar:
+        final appBarTheme = Theme.of(context).appBarTheme;
+        return tabBarStyle(
+          context,
+          hasIcons: hasIcons,
+          background: appBarTheme.backgroundColor ?? zetaColors.surfacePrimary,
+          indicator: appBarTheme.foregroundColor ?? zetaColors.primary,
+          selectedText: appBarTheme.foregroundColor ?? zetaColors.textDefault,
+          unselectedText: appBarTheme.foregroundColor?.withOpacity(0.5) ?? zetaColors.textSubtle,
+        );
+    }
   }
 
   /// Builds theme variants for [ZdsAppBar].
   ///
   /// See also
   /// * [ZdsTabBarColor].
-  Map<ZdsTabBarColor, AppBarTheme> buildAppBarTheme(ZetaColors colors) {
-    final Map<ZdsTabBarColor, Color> foreground = {};
-    final Map<ZdsTabBarColor, Color> background = {};
-
-    foreground[ZdsTabBarColor.basic] = colors.isDarkMode ? colors.cool.shade90 : colors.cool.shade10;
-    foreground[ZdsTabBarColor.primary] = colors.isDarkMode ? colors.cool.shade90 : colors.onPrimary;
-    foreground[ZdsTabBarColor.surface] = colors.isDarkMode ? colors.cool.shade90 : colors.onSurface;
-
-    background[ZdsTabBarColor.basic] = colors.isDarkMode ? colors.cool.shade10 : colors.cool.shade90;
-    background[ZdsTabBarColor.primary] = colors.isDarkMode ? colors.cool.shade10 : colors.primary;
-    background[ZdsTabBarColor.surface] = colors.isDarkMode ? colors.cool.shade10 : colors.surface;
-
-    return {
-      ZdsTabBarColor.primary: AppBarTheme(
-        systemOverlayStyle: computeSystemOverlayStyle(background[ZdsTabBarColor.primary]!),
-        backgroundColor: background[ZdsTabBarColor.primary],
-        foregroundColor: foreground[ZdsTabBarColor.primary],
-        centerTitle: false,
-        titleSpacing: 0,
-        elevation: 0.5,
-        iconTheme: IconThemeData(color: foreground[ZdsTabBarColor.primary]),
-        actionsIconTheme: IconThemeData(color: foreground[ZdsTabBarColor.primary]),
-      ),
-      ZdsTabBarColor.basic: AppBarTheme(
-        systemOverlayStyle: computeSystemOverlayStyle(background[ZdsTabBarColor.basic]!),
-        backgroundColor: background[ZdsTabBarColor.basic],
-        foregroundColor: foreground[ZdsTabBarColor.basic],
-        centerTitle: false,
-        titleSpacing: 0,
-        elevation: 0.5,
-        iconTheme: IconThemeData(color: foreground[ZdsTabBarColor.basic]),
-        actionsIconTheme: IconThemeData(color: foreground[ZdsTabBarColor.basic]),
-      ),
-      ZdsTabBarColor.surface: AppBarTheme(
-        systemOverlayStyle: computeSystemOverlayStyle(background[ZdsTabBarColor.surface]!),
-        backgroundColor: background[ZdsTabBarColor.surface],
-        foregroundColor: foreground[ZdsTabBarColor.surface],
-        centerTitle: false,
-        titleSpacing: 0,
-        elevation: 0.5,
-        iconTheme: IconThemeData(color: foreground[ZdsTabBarColor.surface]),
-        actionsIconTheme: IconThemeData(color: foreground[ZdsTabBarColor.surface]),
-      ),
-    };
+  @Deprecated('Use ZdsAppBar.buildTheme() instead.')
+  AppBarTheme buildAppBarTheme(ZdsTabBarColor color) {
+    final isDarkMode = brightness == Brightness.dark;
+    switch (color) {
+      case ZdsTabBarColor.primary:
+      case ZdsTabBarColor.appBar:
+        final fgColor = isDarkMode ? colorScheme.cool.shade90 : colorScheme.onPrimary;
+        final bgColor = isDarkMode ? colorScheme.cool.shade10 : colorScheme.primary;
+        return AppBarTheme(
+          systemOverlayStyle: computeSystemOverlayStyle(bgColor),
+          backgroundColor: bgColor,
+          foregroundColor: fgColor,
+          centerTitle: false,
+          titleSpacing: 0,
+          elevation: 0.5,
+          iconTheme: IconThemeData(color: fgColor),
+          actionsIconTheme: IconThemeData(color: fgColor),
+        );
+      case ZdsTabBarColor.basic:
+        final fgColor = isDarkMode ? colorScheme.cool.shade90 : colorScheme.cool.shade10;
+        final bgColor = isDarkMode ? colorScheme.cool.shade10 : colorScheme.cool.shade90;
+        return AppBarTheme(
+          systemOverlayStyle: computeSystemOverlayStyle(bgColor),
+          backgroundColor: bgColor,
+          foregroundColor: fgColor,
+          centerTitle: false,
+          titleSpacing: 0,
+          elevation: 0.5,
+          iconTheme: IconThemeData(color: fgColor),
+          actionsIconTheme: IconThemeData(color: fgColor),
+        );
+      case ZdsTabBarColor.surface:
+        final fgColor = isDarkMode ? colorScheme.cool.shade90 : colorScheme.onSurface;
+        final bgColor = isDarkMode ? colorScheme.cool.shade10 : colorScheme.surface;
+        return AppBarTheme(
+          systemOverlayStyle: computeSystemOverlayStyle(bgColor),
+          backgroundColor: bgColor,
+          foregroundColor: fgColor,
+          centerTitle: false,
+          titleSpacing: 0,
+          elevation: 0.5,
+          iconTheme: IconThemeData(color: fgColor),
+          actionsIconTheme: IconThemeData(color: fgColor),
+        );
+    }
   }
 
   /// Theme data used to create compact buttons.
@@ -635,156 +530,4 @@ extension ThemeExtension on ThemeData {
       ),
     );
   }
-}
-
-/// Private functions
-DividerThemeData _buildDividerTheme(DividerThemeData base) {
-  return base.copyWith(thickness: 1, space: 1, color: ZdsColors.lightGrey.withOpacity(0.5));
-}
-
-IconThemeData _buildZdsIconTheme(IconThemeData base) {
-  return base.copyWith(size: 30);
-}
-
-BottomNavigationBarThemeData _buildBottomNavigationBarTheme(
-  BottomNavigationBarThemeData base,
-  TextTheme textTheme,
-  ColorScheme colorScheme,
-) {
-  final Color unselectedColor =
-      colorScheme.brightness == Brightness.dark ? ZdsColors.greyWarmSwatch.shade400 : ZdsColors.greyWarmSwatch.shade900;
-
-  return base.copyWith(
-    type: BottomNavigationBarType.fixed,
-    selectedLabelStyle: textTheme.bodySmall,
-    unselectedLabelStyle: textTheme.bodySmall,
-    unselectedItemColor: unselectedColor,
-    selectedItemColor: colorScheme.secondary,
-    selectedIconTheme: IconThemeData(size: 24, color: colorScheme.secondary),
-    unselectedIconTheme: IconThemeData(size: 24, color: unselectedColor),
-    elevation: 8,
-  );
-}
-
-BottomAppBarTheme _buildBottomAppBarTheme(BottomAppBarTheme base, ColorScheme colorScheme) {
-  return base.copyWith(
-    color: colorScheme.surface,
-    surfaceTintColor: colorScheme.onSurface,
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: kIsWeb ? 8 : 4),
-  );
-}
-
-SwitchThemeData _buildSwitchTheme(SwitchThemeData base, ColorScheme colorScheme, bool isWarm) {
-  Color getColor(Set<MaterialState> states) {
-    Color color = isWarm ? ZdsColors.greyWarmSwatch[900]! : ZdsColors.greyCoolSwatch[900]!;
-    if (states.contains(MaterialState.selected)) {
-      color = colorScheme.secondary;
-    }
-    if (states.contains(MaterialState.disabled)) {
-      color = color.withOpacity(0.5);
-    }
-
-    return color;
-  }
-
-  return base.copyWith(
-    thumbColor: MaterialStateProperty.resolveWith(getColor),
-    trackColor: MaterialStateProperty.resolveWith((states) => getColor(states).withOpacity(0.2)),
-  );
-}
-
-BottomSheetThemeData _buildBottomSheetTheme() {
-  return BottomSheetThemeData(
-    shape: _buildBottomSheetShapeBorder(),
-  );
-}
-
-ShapeBorder _buildBottomSheetShapeBorder() {
-  return const RoundedRectangleBorder(
-    borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(14),
-      topRight: Radius.circular(14),
-    ),
-  );
-}
-
-MaterialStateProperty<OutlinedBorder> _buildCircularShapeBorder() {
-  return MaterialStateProperty.all(
-    RoundedRectangleBorder(
-      borderRadius: _buildButtonBorderRadius(),
-    ),
-  );
-}
-
-ButtonStyle _buildBaseButtonStyle(TextTheme textTheme, ColorScheme colorScheme) {
-  return ButtonStyle(
-    backgroundColor: MaterialStateProperty.all<Color>(colorScheme.secondary),
-    textStyle: MaterialStateProperty.all<TextStyle?>(textTheme.headlineSmall?.copyWith(color: colorScheme.onSecondary)),
-    padding: MaterialStateProperty.all(_buildButtonPadding()),
-    shape: _buildCircularShapeBorder(),
-    side: _buildBaseButtonBorderSide(),
-    elevation: MaterialStateProperty.all(0),
-    visualDensity: VisualDensity.standard,
-  );
-}
-
-MaterialStateProperty<BorderSide> _buildBaseButtonBorderSide() {
-  return MaterialStateProperty.all(BorderSide.none);
-}
-
-ElevatedButtonThemeData _buildElevatedButtonTheme(ButtonStyle base) {
-  return ElevatedButtonThemeData(style: base);
-}
-
-TextButtonThemeData _buildTextButtonTheme(ButtonStyle baseButtonStyle, TextTheme textTheme, ColorScheme colorScheme) {
-  return TextButtonThemeData(
-    style: baseButtonStyle.copyWith(
-      textStyle: MaterialStateProperty.all<TextStyle?>(textTheme.titleMedium?.copyWith(color: colorScheme.secondary)),
-      backgroundColor: MaterialStateProperty.all<Color>(ZdsColors.transparent),
-    ),
-  );
-}
-
-EdgeInsets _buildButtonPadding() {
-  return const EdgeInsets.symmetric(horizontal: 24, vertical: 10);
-}
-
-BorderRadius _buildButtonBorderRadius() {
-  return const BorderRadius.all(Radius.circular(71));
-}
-
-AppBarTheme _buildAppBarTheme(TextTheme textTheme, ColorScheme colorScheme) {
-  return AppBarTheme(
-    systemOverlayStyle: computeSystemOverlayStyle(colorScheme.primary),
-    backgroundColor: colorScheme.primary,
-    foregroundColor: colorScheme.onPrimary,
-    centerTitle: false,
-    titleSpacing: 0,
-    elevation: 0.5,
-    titleTextStyle: textTheme.headlineLarge,
-  );
-}
-
-InputDecorationTheme _buildInputDecorationTheme(TextTheme textTheme, ColorScheme colorScheme, bool isWarm) {
-  return InputDecorationTheme(
-    contentPadding: const EdgeInsets.symmetric(vertical: 27),
-    floatingLabelBehavior: FloatingLabelBehavior.always,
-    border: const ZdsInputBorder(),
-    focusedBorder: const ZdsInputBorder(),
-    enabledBorder: const ZdsInputBorder(),
-    disabledBorder: const ZdsInputBorder(),
-    errorBorder: ZdsInputBorder(borderSide: BorderSide(color: colorScheme.error)),
-    focusedErrorBorder: ZdsInputBorder(borderSide: BorderSide(color: colorScheme.error)),
-    focusColor: isWarm ? ZdsColors.greyWarmSwatch[600] : ZdsColors.greyCoolSwatch[600],
-    labelStyle: TextStyle(
-      fontSize: 19,
-      fontWeight: FontWeight.w500,
-      color: ZdsColors.blueGrey,
-      height: 0,
-    ),
-    counterStyle: textTheme.bodyMedium?.copyWith(
-      height: 0.9,
-      color: ZdsColors.darkGrey,
-    ),
-  );
 }

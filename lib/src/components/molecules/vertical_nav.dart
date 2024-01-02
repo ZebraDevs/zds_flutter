@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../utils/assets/icons.dart';
+import '../organisms/bottom_tab_bar.dart';
 
 /// A [ZdsVerticalNav] used to switch between different views. Should primarily be used for tablet views and larger screens.
 ///
@@ -20,6 +22,22 @@ import '../../../zds_flutter.dart';
 /// )
 /// ```
 class ZdsVerticalNav extends StatefulWidget {
+  /// Creates a vertical navigation bar
+  ///
+  /// [items] can't be null. [currentIndex]'s value must be equal or greater than 0, and smaller than [items].length.
+  const ZdsVerticalNav({
+    required this.items,
+    required this.currentIndex,
+    this.actions,
+    this.barWidth = 48,
+    this.itemHeight = 53,
+    super.key,
+    this.onTap,
+  }) : assert(
+          0 <= currentIndex && currentIndex < items.length,
+          'currentIndex must not be greater than the number of items',
+        );
+
   /// The [ZdsNavItem] list that will be displayed at the **bottom** of the component. Each item should be linked to a separate view.
   final List<ZdsNavItem> items;
 
@@ -46,32 +64,18 @@ class ZdsVerticalNav extends StatefulWidget {
   /// Defaults to 53
   final double itemHeight;
 
-  /// Creates a vertical navigation bar
-  ///
-  /// [items] can't be null. [currentIndex]'s value must be equal or greater than 0, and smaller than [items].length.
-  const ZdsVerticalNav({
-    required this.items,
-    required this.currentIndex,
-    this.actions,
-    this.barWidth = 48,
-    this.itemHeight = 53,
-    super.key,
-    this.onTap,
-  }) : assert(
-          0 <= currentIndex && currentIndex < items.length,
-          'currentIndex must not be greater than the number of items',
-        );
-
   @override
   State<ZdsVerticalNav> createState() => _ZdsVerticalNavState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<ZdsNavItem>('items', items));
-    properties.add(IntProperty('currentIndex', currentIndex));
-    properties.add(ObjectFlagProperty<void Function(int p1)?>.has('onTap', onTap));
-    properties.add(DoubleProperty('barWidth', barWidth));
-    properties.add(DoubleProperty('itemHeight', itemHeight));
+    properties
+      ..add(IterableProperty<ZdsNavItem>('items', items))
+      ..add(IntProperty('currentIndex', currentIndex))
+      ..add(ObjectFlagProperty<void Function(int p1)?>.has('onTap', onTap))
+      ..add(DoubleProperty('barWidth', barWidth))
+      ..add(DoubleProperty('itemHeight', itemHeight));
   }
 }
 
@@ -80,8 +84,8 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
 
   @override
   Widget build(BuildContext context) {
-    final itemsWidget = Stack(
-      children: [
+    final Stack itemsWidget = Stack(
+      children: <Widget>[
         if (!isExpanded)
           AnimatedPositioned(
             curve: Curves.ease,
@@ -93,7 +97,7 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
           ),
         Column(
           children: widget.items.map(
-            (item) {
+            (ZdsNavItem item) {
               final bool selected = widget.currentIndex == widget.items.indexOf(item);
               return MergeSemantics(
                 child: Semantics(
@@ -117,7 +121,7 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
                             data: IconThemeData(
                               color: selected
                                   ? Theme.of(context).colorScheme.secondary
-                                  : ZdsColors.greySwatch(context)[1000],
+                                  : Zeta.of(context).colors.iconSubtle,
                               size: 24,
                             ),
                             child: item.icon,
@@ -135,23 +139,25 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
     );
 
     return LayoutBuilder(
-      builder: (context, constraints) {
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final actions = widget.actions;
         final bool isTooShort =
-            (((widget.actions?.length ?? 0) + widget.items.length) * widget.itemHeight) + (2 * widget.itemHeight) + 4 >=
+            (((actions?.length ?? 0) + widget.items.length) * widget.itemHeight) + (2 * widget.itemHeight) + 4 >=
                 (constraints.minHeight != 0 ? constraints.minHeight : constraints.maxHeight);
 
-        final actionsWidget = widget.actions != null
+        final themeData = Theme.of(context);
+        final Widget actionsWidget = actions != null
             ? IconTheme(
-                data: IconThemeData(color: Theme.of(context).colorScheme.secondary, size: 24),
+                data: IconThemeData(color: themeData.colorScheme.secondary, size: 24),
                 child: SingleChildScrollView(
                   child: Column(
-                    children: widget.actions!
+                    children: actions
                         .map(
-                          (action) => Column(
-                            children: [
+                          (Widget action) => Column(
+                            children: <Widget>[
                               action,
-                              if (widget.actions!.indexOf(action) != widget.actions!.length - 1)
-                                Divider(color: ZdsColors.greySwatch(context)[100]),
+                              if (actions.indexOf(action) != actions.length - 1)
+                                Divider(color: Zeta.of(context).colors.borderSubtle),
                             ],
                           ),
                         )
@@ -164,24 +170,24 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
         return Container(
           width: widget.barWidth,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            boxShadow: [
+            color: themeData.colorScheme.surface,
+            boxShadow: <BoxShadow>[
               BoxShadow(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.25),
-                blurRadius: 2,
-                offset: const Offset(-1, 0),
+                color: themeData.colorScheme.onSurface.withOpacity(0.25),
+                blurRadius: 1,
+                offset: const Offset(1, 0),
               ),
             ],
           ),
           padding: const EdgeInsets.only(bottom: 4),
           child: Material(
             child: Stack(
-              children: [
+              children: <Widget>[
                 if (isTooShort)
                   Positioned(
                     top: 0,
                     child: IconTheme(
-                      data: IconThemeData(color: Theme.of(context).colorScheme.secondary, size: 24),
+                      data: IconThemeData(color: themeData.colorScheme.secondary, size: 24),
                       child: IconButton(
                         onPressed: () => setState(() => isExpanded = !isExpanded),
                         icon: Icon(isExpanded ? ZdsIcons.back : ZdsIcons.more_vert),
@@ -218,13 +224,14 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
 }
 
 class _SelectedBackground extends StatelessWidget {
+  const _SelectedBackground({required this.width, required this.height});
+
   final double width;
   final double height;
 
-  const _SelectedBackground({required this.width, required this.height});
-
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return SizedBox(
       width: width,
       height: height,
@@ -233,17 +240,18 @@ class _SelectedBackground extends StatelessWidget {
         padding: const EdgeInsets.only(left: 1),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.surface],
+            colors: <Color>[themeData.colorScheme.background, themeData.colorScheme.surface],
           ),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(4),
             bottomLeft: Radius.circular(4),
           ),
-          boxShadow: [
+          boxShadow: <BoxShadow>[
             BoxShadow(
-              color: Colors.black.withOpacity(0.25),
-              blurRadius: 2,
-              offset: const Offset(-2, 1),
+              color: themeData.cardTheme.shadowColor ?? Colors.black.withOpacity(0.25),
+              blurRadius: 1,
+              spreadRadius: 1,
+              offset: const Offset(-1, 1),
             ),
           ],
         ),
@@ -254,7 +262,8 @@ class _SelectedBackground extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DoubleProperty('width', width));
-    properties.add(DoubleProperty('height', height));
+    properties
+      ..add(DoubleProperty('width', width))
+      ..add(DoubleProperty('height', height));
   }
 }

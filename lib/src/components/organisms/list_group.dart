@@ -1,14 +1,33 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
-/// A component that groups together items in a ZdsList so that they have no padding between items.
+/// A component that groups items within a ZdsList, eliminating padding between them.
 ///
-/// Can either be used with a list of items, or with a dynamic builder as child.
+/// This component can be utilized with a predefined list of items or with a dynamic builder for its children.
 ///
-/// You can not have both a child and items.
+/// It is not advisable to use this for lists whose length might change dynamically. This component attempts to
+/// construct all its children at once, which could degrade performance with a long list of children.
+/// For such cases, consider using a [ListView.builder] and enclosing each [ZdsListTile] within a [ZdsListTileWrapper].
+///
+/// Note: You cannot specify both a child and items simultaneously.
 class ZdsListGroup extends StatelessWidget {
+  /// Constructs a [ZdsListGroup].
+  const ZdsListGroup({
+    super.key,
+    this.items,
+    this.itemsBackgroundColor,
+    this.child,
+    this.headerLabel,
+    this.headerActions,
+    this.cardVariant = ZdsCardVariant.elevated,
+    this.padding,
+  }) : assert(
+          (items != null && child == null) || (items == null && child != null),
+          'Provide only 1 of either items or child',
+        );
+
   /// A label that goes in the header of this component above the list aligned to the start.
   final Text? headerLabel;
 
@@ -40,58 +59,41 @@ class ZdsListGroup extends StatelessWidget {
   /// Defaults to `[ColorScheme.surface].
   final Color? itemsBackgroundColor;
 
-  /// Constructs a [ZdsListGroup].
-  const ZdsListGroup({
-    super.key,
-    this.items,
-    this.itemsBackgroundColor,
-    this.child,
-    this.headerLabel,
-    this.headerActions,
-    this.cardVariant = ZdsCardVariant.elevated,
-    this.padding,
-  }) : assert(
-          (items != null && child == null) || (items == null && child != null),
-          'Provide only 1 of either items or child',
-        );
-
   @override
   Widget build(BuildContext context) {
-    final cardMargin = Theme.of(context).cardTheme.margin as EdgeInsets? ?? EdgeInsets.zero;
-    final tileTheme = Theme.of(context).zdsListTileThemeData;
-    final labelDistance = cardMargin.top + tileTheme.tileMargin;
+    final themeData = Theme.of(context);
+    final cardMargin = themeData.cardTheme.margin as EdgeInsets? ?? EdgeInsets.zero;
+    final labelDistance = cardMargin.top + kZdsListTileTheme.tileMargin;
     final hasHeader = headerLabel != null;
-    final additionalMargin = hasHeader ? tileTheme.labelAdditionalMargin : 0;
+    final additionalMargin = hasHeader ? kZdsListTileTheme.labelAdditionalMargin : 0;
+    final zetaColors = Zeta.of(context).colors;
 
     return Padding(
       padding: padding ??
           EdgeInsets.only(
-            bottom: tileTheme.tileMargin,
-            top: tileTheme.tileMargin + additionalMargin,
+            bottom: kZdsListTileTheme.tileMargin,
+            top: kZdsListTileTheme.tileMargin + additionalMargin,
           ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           if (hasHeader)
             Padding(
               padding: EdgeInsets.only(left: cardMargin.left, right: cardMargin.right),
               child: Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: DefaultTextStyle(
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(color: ZdsColors.blueGrey),
+                      style: safeTextStyle(themeData.textTheme.titleSmall).copyWith(color: zetaColors.textSubtle),
                       child: headerLabel != null ? headerLabel! : const SizedBox(),
                     ),
                   ),
-                  if (headerActions != null && headerActions!.isNotEmpty)
+                  if (headerActions?.isNotEmpty ?? false)
                     IconTheme.merge(
-                      data: IconThemeData(color: Theme.of(context).colorScheme.primaryContainer, size: 20),
+                      data: IconThemeData(color: zetaColors.secondary.icon, size: 20),
                       child: DefaultTextStyle(
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleSmall!
-                            .copyWith(color: Theme.of(context).colorScheme.primaryContainer),
+                        style: safeTextStyle(themeData.textTheme.titleSmall).copyWith(color: zetaColors.secondary.text),
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Row(
@@ -109,22 +111,21 @@ class ZdsListGroup extends StatelessWidget {
             Expanded(
               child: ZdsCard(
                 variant: cardVariant,
-                backgroundColor: itemsBackgroundColor ?? Theme.of(context).colorScheme.surface,
+                backgroundColor: itemsBackgroundColor ?? themeData.colorScheme.surface,
                 padding: EdgeInsets.zero,
                 margin: EdgeInsets.zero,
                 child: child,
               ),
             )
           else
-            // ZdsCard(
-            // variant: cardVariant,
-            // backgroundColor: itemsBackgroundColor ?? Theme.of(context).colorScheme.surface,
-            // padding: EdgeInsets.zero,
-            // child:
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: items!.divide(const Divider()).toList(),
-              // ),
+            ZdsCard(
+              variant: cardVariant,
+              backgroundColor: itemsBackgroundColor ?? themeData.colorScheme.surface,
+              padding: EdgeInsets.zero,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: (items ?? []).divide(const Divider()).toList(),
+              ),
             ),
         ],
       ),

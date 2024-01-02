@@ -2,9 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// An app bar with Zds styling.
 ///
@@ -29,12 +28,26 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsPopupMenu], typically used in [actions] to display a kebab menu for further actions that would pollute
 ///    the appbar if they were all shown.
 class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
+  /// Creates an appbar that is typically shown at the top of the screen.
+  const ZdsAppBar({
+    super.key,
+    this.leading,
+    this.title,
+    this.actions,
+    this.subtitle,
+    this.icon,
+    this.bottom,
+    this.systemUiOverlayStyle,
+    this.applyTopSafeArea = true,
+    this.color = ZdsTabBarColor.appBar,
+  });
+
   /// The widget shown at the start of the appbar. Typically an [IconButton].
   ///
   /// If null and the [Navigator]'s stack can pop, a back button will be shown by default.
   final Widget? leading;
 
-  /// The appbar's main text. Typically a [Text] widget, it is usually used to show the page's name.
+  /// The appBar's main text. Typically a [Text] widget, it is usually used to show the page's name.
   final Widget? title;
 
   /// The widget that will be shown below the [title]. Typically a [Text] widget, it is usually used to display
@@ -66,34 +79,35 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// See [ZdsTabBarColor].
   final ZdsTabBarColor color;
 
-  /// Creates an appbar that is typically shown at the top of the screen.
-  const ZdsAppBar({
-    super.key,
-    this.leading,
-    this.title,
-    this.actions,
-    this.subtitle,
-    this.icon,
-    this.bottom,
-    this.systemUiOverlayStyle,
-    this.color = ZdsTabBarColor.primary,
-  });
+  /// (`applyTopSafeArea`) Determines if the top safe area should be applied to the `ZdsAppBar` or not.
+  ///
+  ///  Set to `true` if you want your application to eliminate any disruptive
+  ///  elements present at the top of the screen like the notch on the iPhone X
+  ///  for the `ZdsAppBar`. It is recommended to leave this as `true` for better UI.
+  ///
+  ///  If set to `false`, disruptive elements at the top of the screen will not be
+  ///  accounted for and you might have some UI elements hidden behind those disruptions.
+  ///
+  ///  This is a final value, meaning that once set, it cannot be changed.
+  ///
+  /// Defaults to `true`
+  final bool applyTopSafeArea;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final ZetaColors colors = ZetaColors.of(context);
-    final AppBarTheme appBarTheme = Theme.of(context).buildAppBarTheme(colors)[color]!;
+    final ThemeData theme = Theme.of(context);
+    final AppBarTheme appBarTheme = buildTheme(context, color);
 
-    return AnnotatedRegion(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
       value: systemUiOverlayStyle ?? appBarTheme.systemOverlayStyle ?? SystemUiOverlayStyle.dark,
       sized: false,
       child: Material(
         color: appBarTheme.backgroundColor,
         child: SafeArea(
+          top: applyTopSafeArea,
           bottom: false,
           child: Column(
-            children: [
+            children: <Widget>[
               SizedBox(
                 height: _toolbarHeight,
                 child: IconTheme(
@@ -101,7 +115,7 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: icon == null ? 24 : 12),
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         Semantics(
                           sortKey: const OrdinalSortKey(2),
                           child: _resolvedLeading(context),
@@ -119,7 +133,7 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
+                                  children: <Widget>[
                                     if (title != null) title!,
                                     if (title != null && subtitle != null) const SizedBox(height: 4),
                                     if (subtitle != null)
@@ -156,7 +170,9 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(_toolbarHeight + _bottomHeight);
 
   double get _bottomHeight => bottom?.preferredSize.height ?? 0;
+
   double get _toolbarHeight => kZdsToolbarHeight;
+
   Widget _resolvedLeading(BuildContext context) {
     if (leading != null) return leading!;
 
@@ -170,7 +186,60 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<SystemUiOverlayStyle?>('systemUiOverlayStyle', systemUiOverlayStyle));
-    properties.add(EnumProperty<ZdsTabBarColor>('color', color));
+    properties
+      ..add(DiagnosticsProperty<SystemUiOverlayStyle?>('systemUiOverlayStyle', systemUiOverlayStyle))
+      ..add(EnumProperty<ZdsTabBarColor>('color', color))
+      ..add(DiagnosticsProperty<bool>('applyTopSafeArea', applyTopSafeArea));
+  }
+
+  /// Builds theme variants for [ZdsAppBar].
+  ///
+  /// See also
+  /// * [ZdsTabBarColor].
+  static AppBarTheme buildTheme(BuildContext context, ZdsTabBarColor color) {
+    final zetaColors = Zeta.of(context).colors;
+    switch (color) {
+      case ZdsTabBarColor.appBar:
+        return Theme.of(context).appBarTheme;
+      case ZdsTabBarColor.primary:
+        final fgColor = zetaColors.primary.onColor;
+        final bgColor = zetaColors.primary;
+        return AppBarTheme(
+          systemOverlayStyle: computeSystemOverlayStyle(bgColor),
+          backgroundColor: bgColor,
+          foregroundColor: fgColor,
+          centerTitle: false,
+          titleSpacing: 0,
+          elevation: 0.5,
+          iconTheme: IconThemeData(color: fgColor),
+          actionsIconTheme: IconThemeData(color: fgColor),
+        );
+      case ZdsTabBarColor.basic:
+        final fgColor = zetaColors.textDefault;
+        final bgColor = zetaColors.surfaceTertiary;
+        return AppBarTheme(
+          systemOverlayStyle: computeSystemOverlayStyle(bgColor),
+          backgroundColor: bgColor,
+          foregroundColor: fgColor,
+          centerTitle: false,
+          titleSpacing: 0,
+          elevation: 0.5,
+          iconTheme: IconThemeData(color: fgColor),
+          actionsIconTheme: IconThemeData(color: fgColor),
+        );
+      case ZdsTabBarColor.surface:
+        final fgColor = zetaColors.textDefault;
+        final bgColor = zetaColors.surfacePrimary;
+        return AppBarTheme(
+          systemOverlayStyle: computeSystemOverlayStyle(bgColor),
+          backgroundColor: bgColor,
+          foregroundColor: fgColor,
+          centerTitle: false,
+          titleSpacing: 0,
+          elevation: 0.5,
+          iconTheme: IconThemeData(color: fgColor),
+          actionsIconTheme: IconThemeData(color: fgColor),
+        );
+    }
   }
 }

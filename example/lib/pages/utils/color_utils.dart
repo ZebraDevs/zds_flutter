@@ -46,7 +46,7 @@ class _ColorUtilsDemoState extends State<ColorUtilsDemo> {
               child: Center(
                 child: Text(
                   '#${color.toString().split('0xff').last.replaceAll(')', '').toUpperCase()}',
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ZdsColors.white),
+                  style: Theme.of(context).textTheme.displayMedium?.copyWith(color: color.onColor),
                 ),
               ),
             ),

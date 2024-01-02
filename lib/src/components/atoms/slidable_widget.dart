@@ -1,9 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A [ZdsSlidableWidget] with pre-applied Zds styling. This widget is used specifically in [ZdsSlidableButton] to create a SlidableButton.
 class ZdsSlidableWidget extends StatefulWidget {
+  /// Displays button on the slidable button in [ZdsSlidableButton], responsible for detecting slide gestures and animating movement.
+  const ZdsSlidableWidget({
+    required this.child,
+    required this.height,
+    required this.handleWidth,
+    required this.onSlide,
+    this.onSlideValueCallback,
+    this.onTapDown,
+    this.onTapUp,
+    super.key,
+    this.isActive = true,
+    this.animate = false,
+    this.slidePercentageNeeded = 0.75,
+    this.stayCompleted = false,
+  });
+
   /// The `Widget` on which we want to detect the slide movement.
   final Widget child;
 
@@ -36,22 +52,6 @@ class ZdsSlidableWidget extends StatefulWidget {
 
   /// Keeps the toggle at one end after completion.
   final bool stayCompleted;
-
-  /// Displays button on the slidable button in [ZdsSlidableButton], responsible for detecting slide gestures and animating movement.
-  const ZdsSlidableWidget({
-    required this.child,
-    required this.height,
-    required this.handleWidth,
-    required this.onSlide,
-    this.onSlideValueCallback,
-    this.onTapDown,
-    this.onTapUp,
-    super.key,
-    this.isActive = true,
-    this.animate = false,
-    this.slidePercentageNeeded = 0.75,
-    this.stayCompleted = false,
-  });
 
   @override
   ZdsSlidableWidgetState createState() => ZdsSlidableWidgetState();
@@ -108,6 +108,28 @@ class ZdsSlidableWidgetState extends State<ZdsSlidableWidget> with SingleTickerP
     _isComplete = false;
   }
 
+  /// Completes the slider
+  void complete() {
+    final trackWidth = context.size!.width;
+
+    _controller.animateTo(
+      widget.handleWidth / trackWidth,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.fastOutSlowIn,
+    );
+    if (!widget.animate) {
+      _controller.animateTo(
+        trackWidth,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.fastOutSlowIn,
+      );
+    } else {
+      _isComplete = widget.stayCompleted;
+
+      widget.onSlide();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -115,7 +137,7 @@ class ZdsSlidableWidgetState extends State<ZdsSlidableWidget> with SingleTickerP
       onTap: () {
         if (widget.isActive && !_isComplete) {
           _controller.animateTo(0.6, duration: const Duration(milliseconds: 800), curve: Curves.fastOutSlowIn);
-          Future.delayed(const Duration(milliseconds: 500), () {
+          Future<void>.delayed(const Duration(milliseconds: 500), () {
             _controller.animateTo(1, duration: const Duration(milliseconds: 800), curve: Curves.fastOutSlowIn);
           });
         }
@@ -126,7 +148,7 @@ class ZdsSlidableWidgetState extends State<ZdsSlidableWidget> with SingleTickerP
         }
       },
       onTapUp: (_) => widget.onTapUp?.call(),
-      onPanStart: (details) {
+      onPanStart: (DragStartDetails details) {
         if (!_isComplete) {
           widget.onTapDown?.call();
           setState(() {
@@ -134,45 +156,30 @@ class ZdsSlidableWidgetState extends State<ZdsSlidableWidget> with SingleTickerP
           });
         }
       },
-      onPanUpdate: (details) {
+      onPanUpdate: (DragUpdateDetails details) {
         if (widget.isActive && !_isComplete) {
           setState(() {
             _dxEndsPosition = details.localPosition.dx - widget.handleWidth;
           });
 
-          final trackWidth = context.size!.width;
-          final slideValue = widget.handleWidth / trackWidth;
-          final val = 1 - (((details.localPosition.dx) / trackWidth) - slideValue / 2);
-          final isHandleAtEnd = val < slideValue;
+          final double trackWidth = context.size!.width;
+          final double slideValue = widget.handleWidth / trackWidth;
+          final double val = 1 - (((details.localPosition.dx) / trackWidth) - slideValue / 2);
+          final bool isHandleAtEnd = val < slideValue;
           _controller.value = isHandleAtEnd ? slideValue : val;
           widget.onSlideValueCallback?.call(_controller.value - slideValue);
         }
       },
-      onPanEnd: (details) {
+      onPanEnd: (DragEndDetails details) {
         widget.onTapUp?.call();
         if (widget.isActive && !_isComplete) {
-          final delta = _dxEndsPosition - _dxStartPosition;
-          final trackWidth = context.size!.width;
-          var deltaNeededToBeSlided = trackWidth * widget.slidePercentageNeeded;
+          final double delta = _dxEndsPosition - _dxStartPosition;
+          final double trackWidth = context.size!.width;
+          double deltaNeededToBeSlided = trackWidth * widget.slidePercentageNeeded;
           deltaNeededToBeSlided -= 80.0;
 
           if (delta > deltaNeededToBeSlided) {
-            _controller.animateTo(
-              widget.handleWidth / trackWidth,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.fastOutSlowIn,
-            );
-            if (!widget.animate) {
-              _controller.animateTo(
-                trackWidth,
-                duration: const Duration(milliseconds: 800),
-                curve: Curves.fastOutSlowIn,
-              );
-            } else {
-              _isComplete = widget.stayCompleted;
-
-              widget.onSlide();
-            }
+            complete();
           } else {
             _controller.animateTo(1, duration: const Duration(milliseconds: 800), curve: Curves.fastOutSlowIn);
             widget.onSlideValueCallback?.call(1);

@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 enum _ListElement { first, middle, last }
 
@@ -15,6 +15,16 @@ enum _ListElement { first, middle, last }
 ///
 ///  * [ZdsStat], used to define each statistic's properties.
 class ZdsStatCard extends StatelessWidget {
+  /// Displays a card with [ZdsStat] values.
+  const ZdsStatCard({
+    required this.stats,
+    this.subtitle,
+    super.key,
+    this.title,
+    this.isHorizontal,
+    this.cardVariant = ZdsCardVariant.elevated,
+  })  : assert(stats.length > 0 && stats.length < 5, 'Only 1 to 4 stats can be used.'),
+        assert(title?.length != 0, "Title can't be empty if not null.");
   static const double _padding = 16;
   static const double _dividerWidth = 0.5;
 
@@ -41,21 +51,10 @@ class ZdsStatCard extends StatelessWidget {
   /// {@macro card-variant}
   final ZdsCardVariant? cardVariant;
 
-  /// Displays a card with [ZdsStat] values.
-  const ZdsStatCard({
-    required this.stats,
-    this.subtitle,
-    super.key,
-    this.title,
-    this.isHorizontal,
-    this.cardVariant = ZdsCardVariant.elevated,
-  })  : assert(stats.length > 0 && stats.length < 5, 'Only 1 to 4 stats can be used.'),
-        assert(title?.length != 0, "Title can't be empty if not null.");
-
   bool _isVertical(BuildContext context, BoxConstraints constraints) {
-    final scale = MediaQuery.of(context).textScaleFactor;
-    final totalPadding = stats.length * 2 * _padding;
-    final totalDividers = _dividerWidth * 0.5 * (stats.length - 1);
+    final double scale = MediaQuery.of(context).textScaleFactor;
+    final double totalPadding = stats.length * 2 * _padding;
+    final double totalDividers = _dividerWidth * 0.5 * (stats.length - 1);
     final double width = ((totalDividers + totalPadding - constraints.maxWidth) / -stats.length) / scale;
     for (int i = 0; i < stats.length; i++) {
       final bool description = hasTextOverflow(stats[i].description, Theme.of(context).textTheme.bodySmall!, width);
@@ -72,7 +71,7 @@ class ZdsStatCard extends StatelessWidget {
   }
 
   double _columnWidth(BuildContext context) {
-    final List<double> counter = [];
+    final List<double> counter = <double>[];
     for (int i = 0; i < stats.length; i++) {
       counter.add(
         textWidth(stats[i]._valueString, Theme.of(context).textTheme.headlineSmall!.copyWith(fontSize: 28)),
@@ -83,23 +82,24 @@ class ZdsStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color textColor = Theme.of(context).colorScheme.onSurface;
+    final themeData = Theme.of(context);
+    final textColor = themeData.colorScheme.onSurface;
 
     return ZdsCard(
       variant: cardVariant ?? ZdsCardVariant.elevated,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           if (title != null || subtitle != null)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 if (title != null)
                   Expanded(
                     child: Text(
                       title ?? '',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: textColor),
+                      style: themeData.textTheme.displaySmall?.copyWith(color: textColor),
                     ),
                   )
                 else
@@ -111,9 +111,9 @@ class ZdsStatCard extends StatelessWidget {
                     child: Text(
                       subtitle ?? '',
                       textAlign: TextAlign.end,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: ZdsColors.greySwatch(context)[1000],
-                          ),
+                      style: themeData.textTheme.bodySmall?.copyWith(
+                        color: Zeta.of(context).colors.textSubtle,
+                      ),
                     ),
                   )
                 else
@@ -121,14 +121,16 @@ class ZdsStatCard extends StatelessWidget {
               ],
             ).paddingOnly(bottom: 18),
           LayoutBuilder(
-            builder: (context, constraints) {
+            builder: (BuildContext context, BoxConstraints constraints) {
               final bool horizontal = isHorizontal ?? !_isVertical(context, constraints);
               final double horWidth = !horizontal ? _columnWidth(context) : 0;
+              final zetaColors = Zeta.of(context).colors;
+
               return horizontal
                   ? Row(
                       children: stats
                           .mapIndexed(
-                            (index, stat) => _StatElement(
+                            (int index, ZdsStat stat) => _StatElement(
                               stat: stat,
                               width: (constraints.maxWidth / stats.length) - (_dividerWidth * (stats.length - 1)),
                               type: index == 0
@@ -139,16 +141,16 @@ class ZdsStatCard extends StatelessWidget {
                             ),
                           )
                           .toList()
-                          .divide(Container(color: ZdsColors.lightGrey, height: 43, width: _dividerWidth))
+                          .divide(Container(color: zetaColors.borderSubtle, height: 43, width: _dividerWidth))
                           .toList(),
                     )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: <Widget>[
                         Column(
                           children: stats
                               .map(
-                                (stat) => _HorizontalStatElement(statsList: stats, stat: stat, width: horWidth),
+                                (ZdsStat stat) => _HorizontalStatElement(statsList: stats, stat: stat, width: horWidth),
                               )
                               .toList(),
                         ),
@@ -164,35 +166,36 @@ class ZdsStatCard extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<ZdsStat>('stats', stats));
-    properties.add(StringProperty('title', title));
-    properties.add(StringProperty('subtitle', subtitle));
-    properties.add(DiagnosticsProperty<bool?>('isHorizontal', isHorizontal));
-    properties.add(DiagnosticsProperty<ZdsCardVariant?>('cardVariant', cardVariant));
+    properties
+      ..add(IterableProperty<ZdsStat>('stats', stats))
+      ..add(StringProperty('title', title))
+      ..add(StringProperty('subtitle', subtitle))
+      ..add(DiagnosticsProperty<bool?>('isHorizontal', isHorizontal))
+      ..add(DiagnosticsProperty<ZdsCardVariant?>('cardVariant', cardVariant));
   }
 }
 
 class _HorizontalStatElement extends StatelessWidget {
-  final ZdsStat stat;
-  final List<ZdsStat> statsList;
-  final double width;
-
   const _HorizontalStatElement({
     required this.statsList,
     required this.stat,
     required this.width,
   });
 
+  final ZdsStat stat;
+  final List<ZdsStat> statsList;
+  final double width;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
+      children: <Widget>[
         SizedBox(
           width: width,
           child: Text(
             stat._valueString,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontSize: 28,
                   color: stat.color ?? Theme.of(context).colorScheme.onSurface,
                 ),
@@ -218,9 +221,10 @@ class _HorizontalStatElement extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ZdsStat>('stat', stat));
-    properties.add(IterableProperty<ZdsStat>('statsList', statsList));
-    properties.add(DoubleProperty('width', width));
+    properties
+      ..add(DiagnosticsProperty<ZdsStat>('stat', stat))
+      ..add(IterableProperty<ZdsStat>('statsList', statsList))
+      ..add(DoubleProperty('width', width));
   }
 }
 
@@ -243,12 +247,12 @@ class _StatElement extends StatelessWidget {
             ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             stat._valueString,
             style: Theme.of(context)
                 .textTheme
-                .headlineMedium!
+                .headlineSmall!
                 .copyWith(fontSize: 28, color: stat.color ?? Theme.of(context).colorScheme.onSurface),
           ),
           const SizedBox(height: 2),
@@ -256,7 +260,7 @@ class _StatElement extends StatelessWidget {
             stat.description,
             style: Theme.of(context)
                 .textTheme
-                .titleSmall
+                .bodySmall
                 ?.copyWith(color: stat.color ?? Theme.of(context).colorScheme.onSurface),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -282,6 +286,9 @@ class _StatElement extends StatelessWidget {
 ///
 ///  * [ZdsStatCard], used to display multiple ZdsStat.
 class ZdsStat {
+  /// Creates a statistic to be used in [ZdsStatCard].
+  const ZdsStat({required this.value, required this.description, this.color});
+
   /// The color with which this stat's value will be displayed in a [ZdsStatCard].
   ///
   /// Defaults to [ColorScheme.onSurface].
@@ -294,9 +301,6 @@ class ZdsStat {
   ///
   /// If using in [ZdsStatCard], this description should be as concise as possible.
   final String description;
-
-  /// Creates a statistic to be used in [ZdsStatCard].
-  const ZdsStat({required this.value, required this.description, this.color});
 
   String get _valueString => value.toString().replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
 }

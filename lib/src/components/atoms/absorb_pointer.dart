@@ -62,7 +62,8 @@ class ZdsAbsorbPointer extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Duration>('duration', duration));
-    properties.add(DiagnosticsProperty<bool>('absorbing', absorbing));
+    properties
+      ..add(DiagnosticsProperty<Duration>('duration', duration))
+      ..add(DiagnosticsProperty<bool>('absorbing', absorbing));
   }
 }

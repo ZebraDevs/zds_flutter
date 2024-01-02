@@ -1,32 +1,44 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../utils/theme/theme.dart';
+import '../../utils/tools.dart';
+import '../atoms/tab.dart';
+import 'responsive_tab_bar.dart';
 
 /// Theme colors for [ZdsTabBar].
 enum ZdsTabBarColor {
-  /// * Background color: `ZetaColors.primary`.
-  /// * Foreground color: `ZetaColors.onPrimary`.
-  /// * Unselected foreground color: `ZetaColors.cool.40`.
-  /// * Indicator color: `ZetaColors.primary.20`.
+  /// Primary background color, onPrimary foreground color.
   primary,
 
-  /// * Background color: `ZetaColors.cool.90`.
-  /// * Foreground color: `ZetaColors.cool.20`.
-  /// * Unselected foreground color: `ZetaColors.cool.40`.
-  /// * Indicator color: `ZetaColors.primary`.
+  /// Either dark (Zeta) or ThemeData.background color for background, with respective foreground variants.
   basic,
 
-  /// * Background color: `ZetaColors.surface`.
-  /// * Foreground color: `ZetaColors.onSurface`.
-  /// * Unselected foreground color: `ZetaColors.cool.70`.
-  /// * Indicator color: `ZetaColors.primary`.
+  /// Surface background color, onSurface foreground color, primary indicator color.
   surface,
+
+  /// Color will be adaptive to the AppBar theme. Typically used when [ZdsTabBar] or [ZdsResponsiveTabBar] is used
+  /// as toolbar or bottom widget for any [AppBar]
+  appBar,
 }
 
 /// Returns a [TabBar] with Zds styling. However, this widget has a number of issues that make it less useful in
 /// varying screen sizes and resizable screens. It's recommended to instead use [ZdsResponsiveTabBar].
 class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
+  /// Makes a [TabBar] with Zds styling applied. It's recommended to instead use [ZdsResponsiveTabBar].
+  const ZdsTabBar({
+    this.tabs = const <ZdsTab>[],
+    super.key,
+    this.color = ZdsTabBarColor.basic,
+    this.controller,
+    this.isScrollable = false,
+    this.labelPadding = kTabLabelPadding,
+    this.labelStyle,
+    this.topSafeArea = true,
+    this.bottomSafeArea = false,
+  });
+
   /// Sets the color scheme for each of the tabs and the tab bar itself.
   ///
   /// Defaults to [ZdsTabBarColor.basic].
@@ -56,53 +68,46 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
   /// Text style for the labels of the tabs.
   final TextStyle? labelStyle;
 
-  /// Makes a [TabBar] with Zds styling applied. It's recommended to instead use [ZdsResponsiveTabBar].
-  const ZdsTabBar({
-    required this.tabs,
-    super.key,
-    this.color = ZdsTabBarColor.primary,
-    this.controller,
-    this.isScrollable = false,
-    this.labelPadding = kTabLabelPadding,
-    this.labelStyle,
-  });
+  /// Determine's whether component observes safe area at top of the screen.
+  ///
+  /// Defaults to true.
+  ///
+  /// See also:
+  /// * [SafeArea].
+  final bool topSafeArea;
+
+  /// Determine's whether component observes safe area at bottom of the screen.
+  ///
+  /// Defaults to false.
+  ///
+  /// See also:
+  /// * [SafeArea].
+  final bool bottomSafeArea;
 
   @override
   Widget build(BuildContext context) {
-    final appBar = context.findAncestorWidgetOfExactType<ZdsAppBar>();
+    final customThemeContainer = ZdsTabBar.buildTheme(context, color: color, hasIcons: hasIcons(tabs));
+    final ZdsTabBarThemeData customTheme = customThemeContainer.customTheme;
 
-    final customThemeContainer = Theme.of(context).zdsTabBarThemeData(
-      context,
-      hasIcons: hasIcons(tabs),
-    )[appBar != null ? appBar.color : color]!;
-    final customTheme = customThemeContainer.customTheme;
-
-    return Container(
-      color: (customThemeContainer.customTheme.decoration as BoxDecoration).color,
+    return DecoratedBox(
+      decoration: customTheme.decoration,
       child: SafeArea(
-        bottom: false,
-        child: Container(
-          height: customTheme.height,
-          decoration: customTheme.decoration,
-          child: Theme(
-            data: customThemeContainer.theme,
-            child: TabBar(
-              isScrollable: isScrollable,
-              controller: controller,
-              labelPadding: labelPadding,
-              labelStyle: labelStyle,
-              tabs: tabs
-                  .map(
-                    (item) => Builder(
-                      builder: (context) => IconTheme(
-                        data: IconTheme.of(context).copyWith(
-                          size: customTheme.iconSize,
-                        ),
-                        child: item,
-                      ),
-                    ),
-                  )
-                  .toList(),
+        top: topSafeArea,
+        bottom: bottomSafeArea,
+        child: Theme(
+          data: customThemeContainer.theme,
+          child: SizedBox(
+            height: customTheme.height,
+            child: IconTheme(
+              data: IconTheme.of(context).copyWith(size: customTheme.iconSize),
+              child: TabBar(
+                isScrollable: isScrollable,
+                indicatorWeight: 1,
+                controller: controller,
+                labelPadding: labelPadding,
+                labelStyle: labelStyle,
+                tabs: tabs,
+              ),
             ),
           ),
         ),
@@ -118,10 +123,99 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(EnumProperty<ZdsTabBarColor>('color', color));
-    properties.add(DiagnosticsProperty<TabController?>('controller', controller));
-    properties.add(DiagnosticsProperty<bool>('isScrollable', isScrollable));
-    properties.add(DiagnosticsProperty<EdgeInsets>('labelPadding', labelPadding));
-    properties.add(DiagnosticsProperty<TextStyle?>('labelStyle', labelStyle));
+    properties
+      ..add(EnumProperty<ZdsTabBarColor>('color', color))
+      ..add(DiagnosticsProperty<TabController?>('controller', controller))
+      ..add(DiagnosticsProperty<bool>('isScrollable', isScrollable))
+      ..add(DiagnosticsProperty<EdgeInsets>('labelPadding', labelPadding))
+      ..add(DiagnosticsProperty<TextStyle?>('labelStyle', labelStyle))
+      ..add(DiagnosticsProperty<bool>('topSafeArea', topSafeArea))
+      ..add(DiagnosticsProperty<bool>('bottomSafeArea', bottomSafeArea));
+  }
+
+  /// Generates theme for [ZdsTabBar].
+  static ZdsTabBarStyleContainer buildTheme(
+    BuildContext context, {
+    required bool hasIcons,
+    required ZdsTabBarColor color,
+    Color? indicatorColor,
+  }) {
+    final zetaColors = Zeta.of(context).colors;
+    switch (color) {
+      case ZdsTabBarColor.primary:
+        return _tabBarStyle(
+          context,
+          hasIcons,
+          background: zetaColors.primary,
+          indicator: zetaColors.primary.onColor,
+          selectedText: zetaColors.primary.onColor,
+          unselectedText: zetaColors.primary.onColor.withOpacity(0.7),
+        );
+      case ZdsTabBarColor.basic:
+        return _tabBarStyle(
+          context,
+          hasIcons,
+          background: zetaColors.surfaceTertiary,
+          indicator: zetaColors.primary,
+          selectedText: zetaColors.textDefault,
+          unselectedText: zetaColors.textSubtle,
+        );
+      case ZdsTabBarColor.surface:
+        return _tabBarStyle(
+          context,
+          hasIcons,
+          background: zetaColors.surfacePrimary,
+          indicator: zetaColors.primary,
+          selectedText: zetaColors.textDefault,
+          unselectedText: zetaColors.textSubtle,
+        );
+      case ZdsTabBarColor.appBar:
+        final appBarTheme = Theme.of(context).appBarTheme;
+        return _tabBarStyle(
+          context,
+          hasIcons,
+          background: appBarTheme.backgroundColor ?? zetaColors.surfacePrimary,
+          indicator: appBarTheme.foregroundColor ?? zetaColors.primary,
+          selectedText: appBarTheme.foregroundColor ?? zetaColors.textDefault,
+          unselectedText: appBarTheme.foregroundColor?.withOpacity(0.7) ?? zetaColors.textSubtle,
+        );
+    }
+  }
+
+  /// Builds [ZdsTabBarStyleContainer]. Defaults to primary color.
+  static ZdsTabBarStyleContainer _tabBarStyle(
+    BuildContext context,
+    bool hasIcons, {
+    required Color selectedText,
+    required Color background,
+    required Color unselectedText,
+    required Color indicator,
+  }) {
+    final double height = hasIcons ? 56.0 : 48.0;
+    final ThemeData theme = Theme.of(context);
+
+    final TabBarTheme tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
+    final TextStyle? labelStyle = hasIcons ? theme.textTheme.bodyXSmall : theme.textTheme.bodyLarge;
+
+    return ZdsTabBarStyleContainer(
+      customTheme: ZdsTabBarThemeData(
+        decoration: BoxDecoration(color: background),
+        height: height,
+      ),
+      theme: theme.copyWith(
+        tabBarTheme: tabBarTheme.copyWith(
+          labelStyle: labelStyle,
+          unselectedLabelStyle: labelStyle,
+          unselectedLabelColor: unselectedText,
+          labelColor: selectedText,
+          indicator: UnderlineTabIndicator(
+            borderSide: BorderSide(
+              width: 3,
+              color: indicator,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

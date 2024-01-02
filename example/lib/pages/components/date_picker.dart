@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class DatePickerDemo extends StatefulWidget {
@@ -44,6 +45,9 @@ class _DatePickerDemoState extends State<DatePickerDemo> {
             labelText: 'Date',
           ),
           onChange: (dateTime) {},
+          startDayOfWeek: 5,
+          okClickText: 'ok',
+          cancelClickText: 'cancel',
         ),
         ZdsDateTimePicker(
           emptyLabel: 'select date',
@@ -53,15 +57,23 @@ class _DatePickerDemoState extends State<DatePickerDemo> {
           controller: _controller,
           inputDecoration: ZdsInputDecoration(
             labelText: 'Optional Date',
-            suffixIcon: IconButton(
-              icon: const Icon(
-                ZdsIcons.close_circle,
-                size: 24,
-              ),
-              onPressed: () => _controller.value = null,
-            ),
+            suffixIcon: _controller.value != null
+                ? IconButton(
+                    icon: const Icon(
+                      ZdsIcons.close_circle,
+                      size: 24,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _controller.value = null;
+                      });
+                    },
+                  )
+                : null,
           ),
-          onChange: (dateTime) {},
+          onChange: (dateTime) {
+            setState(() {});
+          },
         ),
         ZdsDateTimePicker(
           emptyLabel: 'select time',
@@ -78,14 +90,17 @@ class _DatePickerDemoState extends State<DatePickerDemo> {
           mode: DateTimePickerMode.time,
           interval: 15,
         ),
-        ZdsListTile(
-          title: const Text('Build Time'),
-          trailing: ZdsDateTimePicker(
-            emptyLabel: 'select date & time',
-            format: 'MMM dd, yyyy hh:mm a',
-            textAlign: TextAlign.end,
-            minDate: DateTime.now(),
-            mode: DateTimePickerMode.dateAndTime,
+        ZdsCard(
+          padding: EdgeInsets.zero,
+          child: ZdsListTile(
+            title: const Text('Build Time'),
+            trailing: ZdsDateTimePicker(
+              emptyLabel: 'select date & time',
+              format: 'MMM dd, yyyy hh:mm a',
+              textAlign: TextAlign.end,
+              minDate: DateTime.now(),
+              mode: DateTimePickerMode.dateAndTime,
+            ),
           ),
         ),
         const Text('Example with controllers and custom validation:').paddingOnly(top: 8),

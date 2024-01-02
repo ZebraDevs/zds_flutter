@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class CardActionsDemo extends StatelessWidget {
@@ -6,6 +7,7 @@ class CardActionsDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -89,8 +91,8 @@ class CardActionsDemo extends StatelessWidget {
                       ),
                       ZdsTag(
                         rounded: true,
-                        color: ZdsTagColor.error,
                         prefix: Text('U'),
+                        color: ZdsTagColor.error,
                         child: Text('Urgent'),
                       ),
                     ],
@@ -112,17 +114,21 @@ class CardActionsDemo extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       'District Manager Monthly Walk',
-                      style: Theme.of(context).textTheme.bodyLarge,
+                      style: themeData.textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       '04/19/2021 03:35 PM',
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(color: ZdsColors.blueGrey),
+                      style: themeData.textTheme.titleSmall?.copyWith(
+                        color: Zeta.of(context).colors.textSubtle,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Text(
                       'SR-ROC-Rockford IL.00102',
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(color: ZdsColors.blueGrey),
+                      style: themeData.textTheme.titleSmall?.copyWith(
+                        color: Zeta.of(context).colors.textSubtle,
+                      ),
                     ),
                   ],
                 )
@@ -137,7 +143,7 @@ class CardActionsDemo extends StatelessWidget {
               children: [
                 Text(
                   'Lorem ipsum dolor sit amet consectetur adipiscing elit proin sagittis ipsum at velit bibendum non.',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: themeData.textTheme.bodyLarge,
                 ),
               ],
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 enum WalkDateRange {
@@ -27,6 +28,20 @@ class RadioListDemo extends StatelessWidget {
           children: [
             ZdsRadioList(
               initialValue: const WalkDate('Current Month', WalkDateRange.currentMonth),
+              items: const [
+                WalkDate('Current Week', WalkDateRange.currentWeek),
+                WalkDate('Last Week', WalkDateRange.lastWeek),
+                WalkDate('Current Month', WalkDateRange.currentMonth),
+                WalkDate('Last Month', WalkDateRange.lastMonth),
+                WalkDate('YTD', WalkDateRange.yearToDate),
+                WalkDate('Last X days', WalkDateRange.lastXDays),
+                WalkDate('Specific Dates', WalkDateRange.specificDates),
+              ],
+              onChange: (item) => debugPrint(item is WalkDate ? item.label : ''),
+            ).space(),
+            ZdsRadioList(
+              initialValue: const WalkDate('Current Month', WalkDateRange.currentMonth),
+              condensed: true,
               items: const [
                 WalkDate('Current Week', WalkDateRange.currentWeek),
                 WalkDate('Last Week', WalkDateRange.lastWeek),

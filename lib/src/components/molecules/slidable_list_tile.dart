@@ -88,9 +88,9 @@ class ZdsSlidableListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<CustomSemanticsAction, VoidCallback> semanticActions = {};
+    final Map<CustomSemanticsAction, VoidCallback> semanticActions = <CustomSemanticsAction, VoidCallback>{};
 
-    for (final action in [...?actions, ...?leadingActions]) {
+    for (final ZdsSlidableAction action in <ZdsSlidableAction>[...?actions, ...?leadingActions]) {
       semanticActions[CustomSemanticsAction(label: action.label)] = () {
         action.onPressed!(context);
       };
@@ -106,14 +106,16 @@ class ZdsSlidableListTile extends StatelessWidget {
             ? ActionPane(
                 motion: const DrawerMotion(),
                 extentRatio: (slideButtonWidth * leadingActions!.length) / width,
-                children: [for (final action in leadingActions!) _ActionBuilder(action: action)],
+                children: <Widget>[
+                  for (final ZdsSlidableAction action in leadingActions!) _ActionBuilder(action: action),
+                ],
               )
             : null,
         endActionPane: actions != null && actions!.isNotEmpty
             ? ActionPane(
                 motion: const DrawerMotion(),
                 extentRatio: (slideButtonWidth * (actions!.length)) / width,
-                children: [for (final action in actions!) _ActionBuilder(action: action)],
+                children: <Widget>[for (final ZdsSlidableAction action in actions!) _ActionBuilder(action: action)],
               )
             : null,
         child: Card(
@@ -136,15 +138,16 @@ class ZdsSlidableListTile extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DoubleProperty('width', width));
-    properties.add(IterableProperty<ZdsSlidableAction>('actions', actions));
-    properties.add(IterableProperty<ZdsSlidableAction>('leadingActions', leadingActions));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(DoubleProperty('slideButtonWidth', slideButtonWidth));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(DiagnosticsProperty<bool>('slideEnabled', slideEnabled));
-    properties.add(DoubleProperty('minHeight', minHeight));
-    properties.add(StringProperty('semanticDescription', semanticDescription));
+    properties
+      ..add(DoubleProperty('width', width))
+      ..add(IterableProperty<ZdsSlidableAction>('actions', actions))
+      ..add(IterableProperty<ZdsSlidableAction>('leadingActions', leadingActions))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(DoubleProperty('slideButtonWidth', slideButtonWidth))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(DiagnosticsProperty<bool>('slideEnabled', slideEnabled))
+      ..add(DoubleProperty('minHeight', minHeight))
+      ..add(StringProperty('semanticDescription', semanticDescription));
   }
 }
 
@@ -162,7 +165,7 @@ class _ActionBuilder extends StatefulWidget {
 }
 
 class _ActionBuilderState extends State<_ActionBuilder> {
-  final _key = GlobalKey();
+  final GlobalKey<State<StatefulWidget>> _key = GlobalKey();
 
   Size _size = Size.zero;
   Size get size => _size;
@@ -185,13 +188,14 @@ class _ActionBuilderState extends State<_ActionBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return FlutterSlidableAction(
       key: _key,
       onPressed: widget.action.onPressed,
       label: size.height < 60 && widget.action.icon != null ? null : widget.action.label,
       icon: widget.action.icon,
-      backgroundColor: widget.action.backgroundColor ?? Theme.of(context).colorScheme.background,
-      foregroundColor: widget.action.foregroundColor ?? Theme.of(context).colorScheme.onBackground,
+      backgroundColor: widget.action.backgroundColor ?? themeData.colorScheme.background,
+      foregroundColor: widget.action.foregroundColor ?? themeData.colorScheme.onBackground,
       autoClose: widget.action.autoclose,
       spacing: 16,
       padding: EdgeInsets.zero,
@@ -208,6 +212,20 @@ class _ActionBuilderState extends State<_ActionBuilder> {
 
 /// Defines an action that will be shown when sliding on a ZdsSlidableListTile.
 class ZdsSlidableAction {
+  /// Defines an action that will be shown when sliding on a ZdsSlidableListTile.
+  /// [label] must not be empty.
+  /// [backgroundColor], [foregroundColor], and [autoclose] must not be null
+  ZdsSlidableAction({
+    required this.label,
+    this.onPressed,
+    this.icon,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.autoclose = true,
+    this.padding = EdgeInsets.zero,
+    this.textOverflow,
+  }) : assert(label.isNotEmpty, 'Label must have content as it acts as the semantic button description');
+
   /// Function called on press of the widget.
   final void Function(BuildContext)? onPressed;
 
@@ -239,20 +257,6 @@ class ZdsSlidableAction {
   ///
   /// if null, the default value is [TextOverflow.ellipsis]
   final TextOverflow? textOverflow;
-
-  /// Defines an action that will be shown when sliding on a ZdsSlidableListTile.
-  /// [label] must not be empty.
-  /// [backgroundColor], [foregroundColor], and [autoclose] must not be null
-  ZdsSlidableAction({
-    required this.label,
-    this.onPressed,
-    this.icon,
-    this.backgroundColor,
-    this.foregroundColor,
-    this.autoclose = true,
-    this.padding = EdgeInsets.zero,
-    this.textOverflow,
-  }) : assert(label.isNotEmpty, 'Label must have content as it acts as the semantic button description');
 }
 
 // Modified version of SlidableAction from flutter_slidable package
@@ -339,7 +343,7 @@ class CustomSlidableAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveForegroundColor = foregroundColor ??
+    final Color effectiveForegroundColor = foregroundColor ??
         (ThemeData.estimateBrightnessForColor(backgroundColor) == Brightness.light ? Colors.black : Colors.white);
 
     return Expanded(
@@ -373,13 +377,14 @@ class CustomSlidableAction extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IntProperty('flex', flex));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(ColorProperty('foregroundColor', foregroundColor));
-    properties.add(DiagnosticsProperty<bool>('autoClose', autoClose));
-    properties.add(ObjectFlagProperty<SlidableActionCallback?>.has('onPressed', onPressed));
-    properties.add(DiagnosticsProperty<BorderRadius>('borderRadius', borderRadius));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('padding', padding));
+    properties
+      ..add(IntProperty('flex', flex))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(ColorProperty('foregroundColor', foregroundColor))
+      ..add(DiagnosticsProperty<bool>('autoClose', autoClose))
+      ..add(ObjectFlagProperty<SlidableActionCallback?>.has('onPressed', onPressed))
+      ..add(DiagnosticsProperty<BorderRadius>('borderRadius', borderRadius))
+      ..add(DiagnosticsProperty<EdgeInsets?>('padding', padding));
   }
 }
 
@@ -445,7 +450,7 @@ class FlutterSlidableAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final children = <Widget>[];
+    final List<Widget> children = <Widget>[];
 
     if (icon != null) {
       children.add(
@@ -469,13 +474,13 @@ class FlutterSlidableAction extends StatelessWidget {
       );
     }
 
-    final child = children.length == 1
+    final Widget child = children.length == 1
         ? children.first
         : Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               ...children.map(
-                (child) => Flexible(
+                (Widget child) => Flexible(
                   child: child,
                 ),
               ),
@@ -497,16 +502,17 @@ class FlutterSlidableAction extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IntProperty('flex', flex));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(ColorProperty('foregroundColor', foregroundColor));
-    properties.add(DiagnosticsProperty<bool>('autoClose', autoClose));
-    properties.add(ObjectFlagProperty<SlidableActionCallback?>.has('onPressed', onPressed));
-    properties.add(DiagnosticsProperty<IconData?>('icon', icon));
-    properties.add(DoubleProperty('spacing', spacing));
-    properties.add(StringProperty('label', label));
-    properties.add(DiagnosticsProperty<BorderRadius>('borderRadius', borderRadius));
-    properties.add(DiagnosticsProperty<EdgeInsets?>('padding', padding));
-    properties.add(EnumProperty<TextOverflow?>('textOverflow', textOverflow));
+    properties
+      ..add(IntProperty('flex', flex))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(ColorProperty('foregroundColor', foregroundColor))
+      ..add(DiagnosticsProperty<bool>('autoClose', autoClose))
+      ..add(ObjectFlagProperty<SlidableActionCallback?>.has('onPressed', onPressed))
+      ..add(DiagnosticsProperty<IconData?>('icon', icon))
+      ..add(DoubleProperty('spacing', spacing))
+      ..add(StringProperty('label', label))
+      ..add(DiagnosticsProperty<BorderRadius>('borderRadius', borderRadius))
+      ..add(DiagnosticsProperty<EdgeInsets?>('padding', padding))
+      ..add(EnumProperty<TextOverflow?>('textOverflow', textOverflow));
   }
 }

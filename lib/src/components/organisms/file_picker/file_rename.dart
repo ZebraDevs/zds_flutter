@@ -15,11 +15,11 @@ class ZdsFileRenamePostProcessor implements ZdsFilePostProcessor {
   @override
   Future<FileWrapper> process(FilePickerConfig config, FileWrapper file) async {
     if (kIsWeb || file.content is! XFile) return file;
-    final photoDir = path.dirname(file.xFilePath);
-    final epoch = DateFormat('yyyyMMdd_HHmmssSSS').format(DateTime.now());
-    final fileName = '${file.type.toPrefix()}_$epoch${path.extension(file.xFilePath)}';
-    final newPath = path.join(photoDir, fileName);
-    final photoFile = File(file.xFilePath).renameSync(newPath);
+    final String photoDir = path.dirname(file.xFilePath);
+    final String epoch = DateFormat('yyyyMMdd_HHmmssSSS').format(DateTime.now());
+    final String fileName = '${file.type.toPrefix()}_$epoch${path.extension(file.xFilePath)}';
+    final String newPath = path.join(photoDir, fileName);
+    final File photoFile = File(file.xFilePath).renameSync(newPath);
     return FileWrapper(file.type, ZdsXFile.fromFile(photoFile));
   }
 }

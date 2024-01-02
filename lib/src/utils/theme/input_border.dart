@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../zds_flutter.dart';
 
 /// An extension of [InputDecoration] that applies Zds styling.
@@ -13,68 +12,73 @@ import '../../../zds_flutter.dart';
 class ZdsInputDecoration extends InputDecoration {
   /// An extension of [InputDecoration] that applies Zds styling.
   ZdsInputDecoration({
-    super.icon,
+    bool? mandatory,
+    EdgeInsets prefixPadding = const EdgeInsets.only(right: 12),
+    EdgeInsets suffixPadding = const EdgeInsets.only(left: 12),
+    EdgeInsetsGeometry? contentPadding,
     String? labelText,
-    super.labelStyle,
-    super.helperText,
-    super.helperStyle,
-    super.helperMaxLines,
-    super.hintText,
-    super.hintStyle,
-    super.hintTextDirection,
-    super.hintMaxLines,
-    super.errorText,
-    super.errorStyle,
-    super.errorMaxLines,
-    super.floatingLabelBehavior,
-    super.isCollapsed,
-    super.isDense,
-    super.contentPadding,
-    super.prefixIcon,
-    super.prefixIconConstraints,
-    Widget? prefix,
-    super.prefixText,
-    super.prefixStyle,
-    Widget? suffixIcon,
-    Widget? suffix,
-    super.suffixText,
-    super.suffixStyle,
-    super.suffixIconConstraints,
+    String? semanticsLabel,
+    super.alignLabelWithHint,
+    super.border,
     super.counter,
-    super.counterText,
     super.counterStyle,
-    super.filled,
-    super.fillColor,
-    super.focusColor,
-    super.hoverColor,
+    super.counterText,
+    super.disabledBorder,
+    super.enabled,
+    super.enabledBorder,
     super.errorBorder,
+    super.errorMaxLines,
+    super.errorStyle,
+    super.errorText,
+    super.fillColor,
+    super.filled,
+    super.floatingLabelBehavior,
+    super.focusColor,
     super.focusedBorder,
     super.focusedErrorBorder,
-    super.disabledBorder,
-    super.enabledBorder,
-    super.border,
-    super.enabled,
+    super.helperMaxLines,
+    super.helperStyle,
+    super.helperText,
+    super.hintMaxLines,
+    super.hintStyle,
+    super.hintText,
+    super.hintTextDirection,
+    super.hoverColor,
+    super.icon,
+    super.isCollapsed,
+    super.isDense,
+    super.labelStyle,
+    super.prefixIcon,
+    super.prefixIconConstraints,
+    super.prefixStyle,
+    super.prefixText,
     super.semanticCounterText,
-    super.alignLabelWithHint,
-    bool? mandatory,
-    String? semanticsLabel,
-    EdgeInsets suffixPadding = const EdgeInsets.only(left: 16),
-    EdgeInsets prefixPadding = const EdgeInsets.only(right: 16),
+    super.suffixIconConstraints,
+    super.suffixStyle,
+    super.suffixText,
+    Widget? prefix,
+    Widget? suffix,
+    Widget? suffixIcon,
   }) : super(
+          contentPadding: contentPadding ?? const EdgeInsets.only(top: 27, bottom: 27),
           label: (labelText?.isNotEmpty ?? false)
               ? (mandatory ?? false)
-                  ? Row(
-                      children: [
-                        Text(
-                          labelText ?? '',
-                          style: labelStyle,
-                          semanticsLabel: semanticsLabel,
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(color: ZdsColors.red),
-                        ).excludeSemantics(),
-                      ],
+                  ? Builder(
+                      builder: (context) {
+                        return Row(
+                          children: <Widget>[
+                            Text(
+                              labelText ?? '',
+                              style: labelStyle,
+                              semanticsLabel: semanticsLabel,
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(color: Zeta.of(context).colors.error),
+                            ).excludeSemantics(),
+                          ],
+                        );
+                      },
                     )
                   : Text(
                       labelText ?? '',
@@ -130,8 +134,8 @@ class ZdsInputDecoration extends InputDecoration {
     String? semanticCounterText,
     bool? alignLabelWithHint,
     EdgeInsetsGeometry? contentPadding,
-    EdgeInsets suffixPadding = const EdgeInsets.only(left: 16),
-    EdgeInsets prefixPadding = const EdgeInsets.only(right: 16),
+    EdgeInsets suffixPadding = const EdgeInsets.only(left: 12),
+    EdgeInsets prefixPadding = const EdgeInsets.only(right: 12),
   }) {
     return ZdsInputDecoration(
       icon: icon,
@@ -170,39 +174,13 @@ class ZdsInputDecoration extends InputDecoration {
       enabled: enabled,
       semanticCounterText: semanticCounterText,
       alignLabelWithHint: alignLabelWithHint,
-      disabledBorder: disabledBorder ??
-          const ZdsInputBorder(
-            space: 2,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-      border: border ??
-          const ZdsInputBorder(
-            space: 2,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-      focusedBorder: focusedBorder ??
-          const ZdsInputBorder(
-            space: 2,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-      enabledBorder: enabledBorder ??
-          const ZdsInputBorder(
-            space: 2,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-      errorBorder: errorBorder ??
-          ZdsInputBorder(
-            space: 2,
-            borderSide: BorderSide(color: ZdsColors.red),
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-          ),
-      focusedErrorBorder: focusedErrorBorder ??
-          ZdsInputBorder(
-            space: 2,
-            borderSide: BorderSide(color: ZdsColors.red),
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-          ),
-      contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 19),
+      disabledBorder: disabledBorder,
+      border: border,
+      focusedBorder: focusedBorder,
+      enabledBorder: enabledBorder,
+      contentPadding: contentPadding ?? const EdgeInsets.only(top: 27, bottom: 27),
+      errorBorder: errorBorder,
+      focusedErrorBorder: focusedErrorBorder,
     );
   }
 }

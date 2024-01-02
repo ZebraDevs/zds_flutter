@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Use [showZdsBottomSheet] to display any bottom sheets instead of using this widget directly.
 ///
@@ -13,6 +13,20 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [showZdsBottomSheet], which uses this widget for its contents and is the recommended way to show bottom sheets
 class ZdsBottomSheet extends StatelessWidget {
+  /// Defines the contents of the bottom sheet. It's recommended to not use this widget directly and instead call
+  /// [showZdsBottomSheet]
+  ///
+  /// [child] must not be null.
+  const ZdsBottomSheet({
+    required this.child,
+    super.key,
+    this.header,
+    this.bottom,
+    this.backgroundColor,
+    this.maxHeight,
+    this.bottomInset,
+  }) : assert(maxHeight != null ? maxHeight > 0 : maxHeight == null, 'Max height must be greater than 0');
+
   /// The widget that contains the main content of this bottom sheet. If [header] and [bottom] are not null, it will be
   /// shown between those two widgets
   final Widget child;
@@ -39,30 +53,17 @@ class ZdsBottomSheet extends StatelessWidget {
   /// Defaults to `MediaQuery.viewPadding.bottom`
   final double? bottomInset;
 
-  /// Defines the contents of the bottom sheet. It's recommended to not use this widget directly and instead call
-  /// [showZdsBottomSheet]
-  ///
-  /// [child] must not be null.
-  const ZdsBottomSheet({
-    required this.child,
-    super.key,
-    this.header,
-    this.bottom,
-    this.backgroundColor,
-    this.maxHeight,
-    this.bottomInset,
-  }) : assert(maxHeight != null ? maxHeight > 0 : maxHeight == null, 'Max height must be greater than 0');
-
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final sheetBackgroundColor = backgroundColor ?? colorScheme.background;
-    final headerColor = header != null ? colorScheme.surface : sheetBackgroundColor;
-    final headerWidget = _BottomSheetHeader(bottom: header, backgroundColor: headerColor);
-    final media = MediaQuery.of(context);
-    final maxScreenHeight = media.size.height - media.viewPadding.top;
-    final height = maxHeight != null && (maxHeight! > 0 && maxHeight! < maxScreenHeight) ? maxHeight! : maxScreenHeight;
-    final setBottomInset = bottomInset ?? MediaQuery.of(context).viewPadding.bottom;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color sheetBackgroundColor = backgroundColor ?? colorScheme.background;
+    final Color headerColor = header != null ? colorScheme.surface : sheetBackgroundColor;
+    final _BottomSheetHeader headerWidget = _BottomSheetHeader(bottom: header, backgroundColor: headerColor);
+    final MediaQueryData media = MediaQuery.of(context);
+    final double maxScreenHeight = media.size.height - media.viewPadding.top;
+    final double height =
+        maxHeight != null && (maxHeight! > 0 && maxHeight! < maxScreenHeight) ? maxHeight! : maxScreenHeight;
+    final double setBottomInset = bottomInset ?? MediaQuery.of(context).viewPadding.bottom;
 
     return MediaQuery.removePadding(
       removeTop: true,
@@ -71,7 +72,7 @@ class ZdsBottomSheet extends StatelessWidget {
         constraints: BoxConstraints(maxHeight: height),
         color: sheetBackgroundColor,
         child: Stack(
-          children: [
+          children: <Widget>[
             Padding(
               padding: EdgeInsets.only(
                 top: headerWidget.preferredSize.height,
@@ -103,9 +104,10 @@ class ZdsBottomSheet extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(DoubleProperty('maxHeight', maxHeight));
-    properties.add(DoubleProperty('bottomInset', bottomInset));
+    properties
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(DoubleProperty('maxHeight', maxHeight))
+      ..add(DoubleProperty('bottomInset', bottomInset));
   }
 }
 
@@ -133,9 +135,9 @@ List<Widget> buildSheetBars({
   bool showClose = false,
 }) {
   final bool isTablet = context.isTablet();
-  final offset = isTablet ? 0 : MediaQuery.of(context).viewPadding.bottom;
+  final num offset = isTablet ? 0 : MediaQuery.of(context).viewPadding.bottom;
 
-  return [
+  return <Widget>[
     ZdsSheetHeader(
       headerText: title!,
       leading: isTablet && secondaryActionText.isNotEmpty
@@ -162,14 +164,14 @@ List<Widget> buildSheetBars({
       ZdsBottomBar(
         minHeight: kBottomBarHeight + offset,
         child: Row(
-          children: [
-            if (isTablet) ...[
+          children: <Widget>[
+            if (isTablet) ...<Widget>[
               if (ternaryActionText.isNotEmpty)
                 ZdsButton.text(
                   onTap: ternaryActionOnTap,
                   child: Text(ternaryActionText),
                 ),
-            ] else ...[
+            ] else ...<Widget>[
               if (ternaryActionText.isNotEmpty)
                 ZdsButton.text(
                   onTap: ternaryActionOnTap,
@@ -239,7 +241,7 @@ Future<T?> showZdsBottomSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   Color? backgroundColor,
-  Color? barrierColor = ZdsColors.barrierColor,
+  Color? barrierColor = Colors.black54,
   double? maxHeight,
   double? maxWidth,
   double? bottomInset,
@@ -263,10 +265,10 @@ Future<T?> showZdsBottomSheet<T>({
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
           ),
-          builder: (context) {
-            final header = headerBuilder?.call(context);
-            final bottom = bottomBuilder?.call(context);
-            final child = builder.call(context);
+          builder: (BuildContext context) {
+            final PreferredSizeWidget? header = headerBuilder?.call(context);
+            final PreferredSizeWidget? bottom = bottomBuilder?.call(context);
+            final Widget child = builder.call(context);
 
             return ZdsBottomSheet(
               header: header,
@@ -283,9 +285,9 @@ Future<T?> showZdsBottomSheet<T>({
           barrierColor: barrierColor,
           barrierDismissible: isDismissible,
           useRootNavigator: useRootNavigator,
-          builder: (context) {
-            final header = headerBuilder?.call(context);
-            final bottom = bottomBuilder?.call(context);
+          builder: (BuildContext context) {
+            final PreferredSizeWidget? header = headerBuilder?.call(context);
+            final PreferredSizeWidget? bottom = bottomBuilder?.call(context);
             Widget child = builder.call(context);
 
             if (contentPadding != null) {
@@ -295,7 +297,7 @@ Future<T?> showZdsBottomSheet<T>({
               );
             }
 
-            final shortestSide = MediaQuery.of(context).size.shortestSide;
+            final double shortestSide = MediaQuery.of(context).size.shortestSide;
 
             return Dialog(
               backgroundColor: backgroundColor,
@@ -308,7 +310,7 @@ Future<T?> showZdsBottomSheet<T>({
                   width: maxWidth ?? (shortestSide * 0.75),
                   height: maxHeight ?? (shortestSide * 0.70),
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       if (header != null) header,
                       Expanded(
                         child: child,
@@ -324,20 +326,21 @@ Future<T?> showZdsBottomSheet<T>({
 }
 
 class _BottomSheetHeader extends StatelessWidget implements PreferredSizeWidget {
+  const _BottomSheetHeader({this.bottom, this.backgroundColor});
+
   final PreferredSizeWidget? bottom;
   final Color? backgroundColor;
-
-  const _BottomSheetHeader({this.bottom, this.backgroundColor});
-  static const _dragAreaHeight = 20.0;
+  static const double _dragAreaHeight = 20;
 
   @override
   Widget build(BuildContext context) {
+    final zetaColors = Zeta.of(context).colors;
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: bottom != null ? Border(bottom: BorderSide(color: ZdsColors.lightGrey.withOpacity(0.5))) : null,
+        border: bottom != null ? Border(bottom: BorderSide(color: zetaColors.shadow)) : null,
       ),
       child: Column(
-        children: [
+        children: <Widget>[
           Container(
             width: double.infinity,
             height: _dragAreaHeight,
@@ -347,7 +350,7 @@ class _BottomSheetHeader extends StatelessWidget implements PreferredSizeWidget 
               width: 120,
               height: 4,
               decoration: BoxDecoration(
-                color: ZdsColors.lightGrey,
+                color: zetaColors.borderSubtle,
                 borderRadius: BorderRadius.circular(19),
               ),
             ),
@@ -362,6 +365,7 @@ class _BottomSheetHeader extends StatelessWidget implements PreferredSizeWidget 
   Size get preferredSize => Size.fromHeight(
         _dragAreaHeight + (bottom?.preferredSize.height ?? 0) + kHeaderBoarderSize,
       );
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

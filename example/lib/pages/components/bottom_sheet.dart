@@ -28,8 +28,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: ZdsList(
         children: [
           ZdsButton(
             onTap: bottomSheetUsingBuildSheetBars,
@@ -49,7 +48,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
           ),
           ZdsButton.muted(
             onTap: showBottomSheet3,
-            child: const Text('Show bottomsheet 5 items'),
+            child: const Text('Show bottom sheet 5 items'),
           ),
         ].divide(const SizedBox(height: 20)).toList(),
       ),
@@ -74,11 +73,14 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
               ),
             ],
           ),
-          ZdsListTile(
-            title: const Text('Favorite'),
-            trailing: Switch(
-              onChanged: (v) {},
-              value: true,
+          ZdsCard(
+            padding: EdgeInsets.zero,
+            child: ZdsListTile(
+              title: const Text('Favorite'),
+              trailing: Switch(
+                onChanged: (v) {},
+                value: true,
+              ),
             ),
           ),
           ZdsListGroup(
@@ -186,6 +188,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
     showZdsBottomSheet(
       context: context,
       headerBuilder: (context) => ZdsTabBar(
+        color: ZdsTabBarColor.surface,
         controller: controller,
         tabs: const [
           ZdsTab(
@@ -199,7 +202,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
       bottomBuilder: (context) => ZdsBottomBar(
         child: Row(
           children: [
-            ZdsButton.outlined(
+            ZdsButton.text(
               child: const Text('Save'),
               onTap: () {
                 Navigator.of(context).pop();
@@ -234,23 +237,23 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
     showZdsBottomSheet(
       enforceSheet: enforceSheet,
       context: context,
+      headerBuilder: (context) => ZdsSheetHeader(headerText: 'Select Priority'),
       builder: (context) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Select priority').textStyle(Theme.of(context).textTheme.headlineSmall).paddingOnly(bottom: 20),
             ZdsListTile(
-              leading: const Text('Urgent'),
+              leading: Text('Urgent'),
               trailing: ZdsIndex(
-                color: ZdsColors.red,
-                child: const Text('U'),
+                color: Zeta.of(context).colors.red,
+                child: Text('U'),
               ),
             ),
             ZdsListTile(
-              leading: const Text('Hight'),
+              leading: Text('Height'),
               trailing: ZdsIndex(
-                color: ZdsColors.orange,
-                child: const Text('1'),
+                color: Zeta.of(context).colors.orange,
+                child: Text('1'),
               ),
             ),
             ZdsListTile(
@@ -261,10 +264,10 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
               ),
             ),
             ZdsListTile(
-              leading: const Text('Low'),
+              leading: Text('Low'),
               trailing: ZdsIndex(
-                color: ZdsColors.green,
-                child: const Text('3'),
+                color: Zeta.of(context).colors.green,
+                child: Text('3'),
               ),
             ),
           ],
@@ -291,66 +294,70 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
     showZdsBottomSheet(
       context: context,
       bottomInset: 0,
-      builder: (context) => ListView(
-        shrinkWrap: true,
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ExcludeSemantics(
-                  child: Text(
-                    'Date range',
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(color: ZdsColors.greySwatch(context)[1000]),
-                  ).paddingOnly(left: 8),
-                ),
-                const SizedBox(height: 8),
-                ZdsDateRangePickerTile(
-                  initialDateController: fromDateController,
-                  finalDateController: toDateController,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    ExcludeSemantics(
-                      child: Text(
-                        'Type',
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              color: ZdsColors.greySwatch(context)[1000],
-                            ),
-                      ).paddingOnly(left: 8),
-                    ),
-                    const Spacer(),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                ZdsListGroup(
-                  padding: EdgeInsets.zero,
-                  items: [
-                    Semantics(
-                      checked: isDayOff,
-                      child: ZdsListTile(
-                        title: const Text('Day off'),
-                        onTap: () {},
-                        trailing: Icon(ZdsIcons.check, color: Theme.of(context).colorScheme.secondary),
+      builder: (context) {
+        final zetaColors = Zeta.of(context).colors;
+        final themeData = Theme.of(context);
+        return ListView(
+          shrinkWrap: true,
+          children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ExcludeSemantics(
+                    child: Text(
+                      'Date range',
+                      style: themeData.textTheme.titleSmall?.copyWith(color: zetaColors.textSubtle),
+                    ).paddingOnly(left: 8),
+                  ),
+                  const SizedBox(height: 8),
+                  ZdsDateRangePickerTile(
+                    initialDateController: fromDateController,
+                    finalDateController: toDateController,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      ExcludeSemantics(
+                        child: Text(
+                          'Type',
+                          style: themeData.textTheme.titleSmall?.copyWith(
+                            color: zetaColors.textSubtle,
+                          ),
+                        ).paddingOnly(left: 8),
                       ),
-                    ),
-                    Semantics(
-                      checked: isDayOff,
-                      child: ZdsListTile(
-                        title: const Text('Time off'),
-                        onTap: () {},
+                      const Spacer(),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  ZdsListGroup(
+                    padding: EdgeInsets.zero,
+                    items: [
+                      Semantics(
+                        checked: isDayOff,
+                        child: ZdsListTile(
+                          title: const Text('Day off'),
+                          onTap: () {},
+                          trailing: Icon(ZdsIcons.check, color: themeData.colorScheme.secondary),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ).paddingOnly(left: 16, right: 16, top: 12),
-          ),
-          const SizedBox(height: 16),
-        ],
-      ),
+                      Semantics(
+                        checked: isDayOff,
+                        child: ZdsListTile(
+                          title: const Text('Time off'),
+                          onTap: () {},
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ).paddingOnly(left: 16, right: 16, top: 12),
+            ),
+            const SizedBox(height: 16),
+          ],
+        );
+      },
       headerBuilder: (context) => sheetBarWidgets[0] as PreferredSizeWidget,
       bottomBuilder: (context) =>
           sheetBarWidgets.asMap().containsKey(1) ? sheetBarWidgets[1] as PreferredSizeWidget : null,
@@ -368,6 +375,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
       ternaryActionOnTap: () {},
       showClose: true,
     );
+
     final ZdsValueController<DateTime> fromDateController = ZdsValueController<DateTime>();
     final ZdsValueController<DateTime> toDateController = ZdsValueController<DateTime>();
     const bool isDayOff = false;
@@ -376,11 +384,12 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
       context: context,
       bottomInset: 0,
       maxHeight: 440,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       builder: (context) => Column(
         children: [
           sheetBarWidgets[0],
           Expanded(
-            child: Center(
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -388,8 +397,9 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
                   ExcludeSemantics(
                     child: Text(
                       'Date range',
-                      style:
-                          Theme.of(context).textTheme.titleSmall!.copyWith(color: ZdsColors.greySwatch(context)[1000]),
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: Zeta.of(context).colors.textSubtle,
+                          ),
                     ).paddingOnly(left: 10),
                   ),
                   const SizedBox(height: 8),
@@ -403,8 +413,8 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
                       ExcludeSemantics(
                         child: Text(
                           'Type',
-                          style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                                color: ZdsColors.greySwatch(context)[1000],
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                color: Zeta.of(context).colors.textSubtle,
                               ),
                         ).paddingOnly(left: 10),
                       ),
