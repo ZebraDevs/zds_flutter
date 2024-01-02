@@ -1,10 +1,30 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A text input area with handle icon in the bottom right corner that can be used to resize the typing input area.
 class ZdsResizableTextArea extends StatefulWidget {
+  /// Constructs a [ZdsResizableTextArea].
+  const ZdsResizableTextArea({
+    super.key,
+    this.textInputAction = TextInputAction.none,
+    this.hintText,
+    this.label,
+    this.maxLines,
+    this.height = 100,
+    this.maxHeight = double.infinity,
+    this.minHeight = 48,
+    this.textStyle,
+    this.controller,
+    this.onChanged,
+    this.focusNode,
+    this.enabled = true,
+    this.footerText,
+    this.decoration,
+    this.semanticLabel,
+  });
+
   /// The [textInputAction]'s input action button of keyboard of the text field/box
   ///
   /// Defaults to [TextInputAction.none].
@@ -60,46 +80,28 @@ class ZdsResizableTextArea extends StatefulWidget {
   /// Input decoration used for underlying TextField.
   final InputDecoration? decoration;
 
-  /// Constructs a [ZdsResizableTextArea].
-  const ZdsResizableTextArea({
-    super.key,
-    this.textInputAction = TextInputAction.none,
-    this.hintText,
-    this.label,
-    this.maxLines,
-    this.height = 100,
-    this.maxHeight = double.infinity,
-    this.minHeight = 48,
-    this.textStyle,
-    this.controller,
-    this.onChanged,
-    this.focusNode,
-    this.enabled = true,
-    this.footerText,
-    this.decoration,
-    this.semanticLabel,
-  });
-
   @override
   State<ZdsResizableTextArea> createState() => _ZdsResizableTextAreaState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(EnumProperty<TextInputAction>('textInputAction', textInputAction));
-    properties.add(DoubleProperty('height', height));
-    properties.add(DoubleProperty('maxHeight', maxHeight));
-    properties.add(DoubleProperty('minHeight', minHeight));
-    properties.add(StringProperty('hintText', hintText));
-    properties.add(StringProperty('label', label));
-    properties.add(StringProperty('semanticLabel', semanticLabel));
-    properties.add(IntProperty('maxLines', maxLines));
-    properties.add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle));
-    properties.add(DiagnosticsProperty<TextEditingController?>('controller', controller));
-    properties.add(ObjectFlagProperty<ValueChanged<String>?>.has('onChanged', onChanged));
-    properties.add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode));
-    properties.add(DiagnosticsProperty<bool>('enabled', enabled));
-    properties.add(StringProperty('footerText', footerText));
-    properties.add(DiagnosticsProperty<InputDecoration?>('decoration', decoration));
+    properties
+      ..add(EnumProperty<TextInputAction>('textInputAction', textInputAction))
+      ..add(DoubleProperty('height', height))
+      ..add(DoubleProperty('maxHeight', maxHeight))
+      ..add(DoubleProperty('minHeight', minHeight))
+      ..add(StringProperty('hintText', hintText))
+      ..add(StringProperty('label', label))
+      ..add(StringProperty('semanticLabel', semanticLabel))
+      ..add(IntProperty('maxLines', maxLines))
+      ..add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle))
+      ..add(DiagnosticsProperty<TextEditingController?>('controller', controller))
+      ..add(ObjectFlagProperty<ValueChanged<String>?>.has('onChanged', onChanged))
+      ..add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode))
+      ..add(DiagnosticsProperty<bool>('enabled', enabled))
+      ..add(StringProperty('footerText', footerText))
+      ..add(DiagnosticsProperty<InputDecoration?>('decoration', decoration));
   }
 }
 
@@ -126,19 +128,22 @@ class _ZdsResizableTextAreaState extends State<ZdsResizableTextArea> {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      textField: true,
-      readOnly: !widget.enabled,
-      onTap: () => widget.focusNode?.requestFocus(),
-      excludeSemantics: true,
-      label: '${widget.label ?? widget.semanticLabel} ${textEditingController.text}',
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              SizedBox(
-                height: _height,
+    final zetaColors = Zeta.of(context).colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            SizedBox(
+              height: _height,
+              child: Semantics(
+                excludeSemantics: true,
+                enabled: widget.enabled,
+                onSetText: (value) => {
+                  textEditingController.text = value,
+                  widget.onChanged?.call(value),
+                },
+                label: '${widget.label ?? widget.semanticLabel} ${textEditingController.text}',
                 child: TextField(
                   textInputAction: widget.textInputAction,
                   style: widget.textStyle ?? Theme.of(context).textTheme.bodyMedium,
@@ -146,7 +151,7 @@ class _ZdsResizableTextAreaState extends State<ZdsResizableTextArea> {
                       ZdsInputDecoration(
                         labelText: widget.label,
                         hintText: widget.hintText,
-                        fillColor: !widget.enabled ? ZdsColors.greySwatch(context).shade300 : null,
+                        fillColor: !widget.enabled ? zetaColors.surfaceDisabled : null,
                         filled: !widget.enabled,
                       ),
                   maxLines: widget.maxLines,
@@ -157,56 +162,57 @@ class _ZdsResizableTextAreaState extends State<ZdsResizableTextArea> {
                   key: key,
                 ),
               ),
-              Positioned(
-                bottom: 12,
-                right: 4,
-                child: GestureDetector(
-                  child: Container(
-                    alignment: Alignment.bottomRight,
-                    height: 48,
-                    width: 48,
-                    child: Icon(
-                      ZdsIcons.expand,
-                      size: 18,
-                      color: ZdsColors.greySwatch(context).shade800,
-                    ).padding(4),
-                  ),
-                  onVerticalDragUpdate: (details) {
-                    setState(() {
-                      _height += details.delta.dy;
-                      // prevent overflow if height is more/less than available space
-                      // Min height is 1 line
-                      final minLimit = (widget.minHeight / 2) * MediaQuery.of(context).devicePixelRatio + 24;
-                      if (_height > widget.maxHeight) {
-                        _height = widget.maxHeight;
-                      } else if (_height < minLimit) {
-                        _height = minLimit;
-                      }
-                    });
-                  },
+            ),
+            Positioned(
+              bottom: 12,
+              right: 4,
+              child: GestureDetector(
+                child: Container(
+                  alignment: Alignment.bottomRight,
+                  height: 48,
+                  width: 48,
+                  child: Icon(
+                    ZdsIcons.expand,
+                    size: 18,
+                    color: zetaColors.iconSubtle,
+                  ).padding(4),
                 ),
-              ),
-            ],
-          ),
-          if (widget.footerText != null)
-            Transform.translate(
-              offset: const Offset(0, -8),
-              child: Text(
-                widget.footerText!,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ZdsColors.greySwatch(context)[1000]),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
+                onVerticalDragUpdate: (DragUpdateDetails details) {
+                  setState(() {
+                    _height += details.delta.dy;
+                    // prevent overflow if height is more/less than available space
+                    // Min height is 1 line
+                    final double minLimit = (widget.minHeight / 2) * MediaQuery.of(context).devicePixelRatio + 24;
+                    if (_height > widget.maxHeight) {
+                      _height = widget.maxHeight;
+                    } else if (_height < minLimit) {
+                      _height = minLimit;
+                    }
+                  });
+                },
               ),
             ),
-        ],
-      ),
+          ],
+        ),
+        if (widget.footerText != null)
+          Transform.translate(
+            offset: const Offset(0, -8),
+            child: Text(
+              widget.footerText!,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: zetaColors.textDisabled),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
+          ),
+      ],
     );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<GlobalKey<State<StatefulWidget>>>('key', key));
-    properties.add(DiagnosticsProperty<TextEditingController>('textEditingController', textEditingController));
+    properties
+      ..add(DiagnosticsProperty<GlobalKey<State<StatefulWidget>>>('key', key))
+      ..add(DiagnosticsProperty<TextEditingController>('textEditingController', textEditingController));
   }
 }

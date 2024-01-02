@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:zds_flutter/zds_flutter.dart';
 
 class VerticalNavDemo extends StatefulWidget {
@@ -75,11 +76,14 @@ class _VerticalNavDemoState extends State<VerticalNavDemo> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           verticalNav,
-          SizedBox(
-            height: 500,
-            child: verticalNav,
+          Expanded(
+            child: Center(
+              child: SizedBox(
+                height: 500,
+                child: verticalNav,
+              ),
+            ),
           ),
-          const SizedBox(),
         ],
       ),
     );

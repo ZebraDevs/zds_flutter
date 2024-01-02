@@ -2,25 +2,39 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Defines an item to be used in a [ZdsDropdownList]
 class ZdsDropdownListItem<T> {
-  /// The value of the item
-  final T value;
-
-  /// The name of the item
-  final String name;
-
   /// Creates a new [ZdsDropdownListItem]
   ZdsDropdownListItem({
     required this.value,
     required this.name,
   });
+
+  /// The value of the item
+  final T value;
+
+  /// The name of the item
+  final String name;
 }
 
 /// A [DropdownButtonFormField] with Zds style and behavior.
 class ZdsDropdownList<T> extends StatefulWidget {
+  /// Constructs a [ZdsDropdownList].
+  const ZdsDropdownList({
+    this.onChange,
+    this.onReset,
+    this.value,
+    this.label,
+    this.onTap,
+    this.hint,
+    this.labelStyle,
+    this.borderColor,
+    this.options = const <ZdsDropdownListItem<Never>>[],
+    super.key,
+  });
+
   /// The label that will be shown above the dropdown.
   final String? label;
 
@@ -56,34 +70,22 @@ class ZdsDropdownList<T> extends StatefulWidget {
   /// The border color of the dropdown.
   final Color? borderColor;
 
-  /// Constructs a [ZdsDropdownList].
-  const ZdsDropdownList({
-    this.onChange,
-    this.onReset,
-    this.value,
-    this.label,
-    this.onTap,
-    this.hint,
-    this.labelStyle,
-    this.borderColor,
-    this.options = const [],
-    super.key,
-  });
-
   @override
   ZdsDropdownListState<T> createState() => ZdsDropdownListState<T>();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('label', label));
-    properties.add(ObjectFlagProperty<void Function(T selectedValue)?>.has('onChange', onChange));
-    properties.add(ObjectFlagProperty<void Function()?>.has('onReset', onReset));
-    properties.add(ObjectFlagProperty<void Function()?>.has('onTap', onTap));
-    properties.add(IterableProperty<ZdsDropdownListItem<T>>('options', options));
-    properties.add(DiagnosticsProperty<T?>('value', value));
-    properties.add(DiagnosticsProperty<TextStyle?>('labelStyle', labelStyle));
-    properties.add(StringProperty('hint', hint));
-    properties.add(ColorProperty('borderColor', borderColor));
+    properties
+      ..add(StringProperty('label', label))
+      ..add(ObjectFlagProperty<void Function(T selectedValue)?>.has('onChange', onChange))
+      ..add(ObjectFlagProperty<void Function()?>.has('onReset', onReset))
+      ..add(ObjectFlagProperty<void Function()?>.has('onTap', onTap))
+      ..add(IterableProperty<ZdsDropdownListItem<T>>('options', options))
+      ..add(DiagnosticsProperty<T?>('value', value))
+      ..add(DiagnosticsProperty<TextStyle?>('labelStyle', labelStyle))
+      ..add(StringProperty('hint', hint))
+      ..add(ColorProperty('borderColor', borderColor));
   }
 }
 
@@ -101,7 +103,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
 
   void _setValue() {
     try {
-      _selectedItem = widget.options.where((element) => element.value == widget.value).first;
+      _selectedItem = widget.options.where((ZdsDropdownListItem<T> element) => element.value == widget.value).first;
       _formFieldController.text = _selectedItem?.name ?? '';
     } catch (e) {
       _selectedItem = null;
@@ -132,7 +134,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final border = widget.borderColor != null
+    final ZdsInputBorder? border = widget.borderColor != null
         ? ZdsInputBorder(
             borderSide: BorderSide(color: widget.borderColor!),
             space: 2,
@@ -140,16 +142,19 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
           )
         : null;
 
+    final themeData = Theme.of(context);
+    final zetaColors = Zeta.of(context).colors;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.label != null) ...[
+      children: <Widget>[
+        if (widget.label != null) ...<Widget>[
           Text(
             widget.label!,
             style: widget.labelStyle ??
-                Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      color: ZdsColors.greySwatch(context)[900],
-                    ),
+                themeData.textTheme.headlineSmall?.copyWith(
+                  color: zetaColors.textSubtle,
+                ),
           ),
           const SizedBox(height: 4),
         ],
@@ -163,7 +168,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
             onTap: () => widget.onTap?.call(),
             child: DropdownButton2<T>(
               value: _selectedItem?.value,
-              onMenuStateChange: (isOpen) => setState(() {
+              onMenuStateChange: (bool isOpen) => setState(() {
                 _isOpen = isOpen;
               }),
               customButton: TextFormField(
@@ -172,7 +177,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
                   suffixPadding: const EdgeInsets.only(right: 8),
                   suffixIcon: Icon(
                     _isOpen ? ZdsIcons.chevron_up : ZdsIcons.chevron_down,
-                    color: ZdsColors.greySwatch(context)[700],
+                    color: zetaColors.iconSubtle,
                   ),
                   border: border,
                   errorBorder: border,
@@ -185,7 +190,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
               underline: const SizedBox(),
               items: widget.onTap == null
                   ? widget.options.map(
-                      (item) {
+                      (ZdsDropdownListItem<T> item) {
                         return DropdownMenuItem<T>(
                           value: item.value,
                           child: Text(
@@ -195,11 +200,11 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
                         );
                       },
                     ).toList()
-                  : [],
+                  : <DropdownMenuItem<T>>[],
               menuItemStyleData: MenuItemStyleData(
-                selectedMenuItemBuilder: (context, child) {
+                selectedMenuItemBuilder: (BuildContext context, Widget child) {
                   return ColoredBox(
-                    color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                    color: themeData.colorScheme.secondary.withOpacity(0.1),
                     child: child,
                   );
                 },
@@ -211,7 +216,8 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
                   widget.onReset?.call();
                 } else if (value != null) {
                   setState(() {
-                    _selectedItem = widget.options.firstWhere((element) => element.value == value);
+                    _selectedItem =
+                        widget.options.firstWhere((ZdsDropdownListItem<T> element) => element.value == value);
                   });
                   _formFieldController.text = _selectedItem?.name ?? '';
                   widget.onChange?.call(value);

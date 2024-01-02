@@ -1,11 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../utils/localizations/translation.dart';
+import '../../utils/tools/modifiers.dart';
+import '../../utils/tools/utils.dart';
+import '../atoms/button.dart';
+import '../atoms/card.dart';
+import '../atoms/selection_pills.dart';
 
 /// Model for  days used in [ZdsDayPicker].
 class DayDetails {
+  /// Constructs a [DayDetails].
+  DayDetails({
+    required this.date,
+    required this.dayText,
+    required this.isDisabled,
+    this.isChecked = false,
+  });
+
   /// Index for the day.
   final DateTime date;
 
@@ -17,18 +31,27 @@ class DayDetails {
 
   /// Selected or unselected.
   bool isChecked;
-
-  /// Constructs a [DayDetails].
-  DayDetails({
-    required this.date,
-    required this.dayText,
-    required this.isDisabled,
-    this.isChecked = false,
-  });
 }
 
 /// A widget that allow to select days.
 class ZdsDayPicker extends StatefulWidget {
+  /// Constructs a [ZdsDayPicker].
+  const ZdsDayPicker({
+    required this.startingWeekDate,
+    this.initialSelectedDates,
+    this.header,
+    this.allText,
+    this.disableDaysList = const <int>[],
+    this.onDaySelected,
+    this.allowMultiSelect = false,
+    this.showInCard = true,
+    this.enabled = true,
+    super.key,
+  }) : assert(
+          (initialSelectedDates?.length ?? 0) <= 1 || allowMultiSelect,
+          'Wrong configuration allowMultiSelect=false and initialSelectedDates has multiple dates',
+        );
+
   /// Starting date of the week.
   final DateTime startingWeekDate;
 
@@ -66,25 +89,9 @@ class ZdsDayPicker extends StatefulWidget {
   /// Defaults to true.
   final bool enabled;
 
-  /// Constructs a [ZdsDayPicker].
-  const ZdsDayPicker({
-    required this.startingWeekDate,
-    this.initialSelectedDates,
-    this.header,
-    this.allText,
-    this.disableDaysList = const [],
-    this.onDaySelected,
-    this.allowMultiSelect = false,
-    this.showInCard = true,
-    this.enabled = true,
-    super.key,
-  }) : assert(
-          (initialSelectedDates?.length ?? 0) <= 1 || allowMultiSelect,
-          'Wrong configuration allowMultiSelect=false and initialSelectedDates has multiple dates',
-        );
-
   @override
   State<ZdsDayPicker> createState() => _ZdsDayPickerState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -102,11 +109,11 @@ class ZdsDayPicker extends StatefulWidget {
 }
 
 class _ZdsDayPickerState extends State<ZdsDayPicker> {
-  List<DayDetails> weekDays = [];
+  List<DayDetails> weekDays = <DayDetails>[];
   int disabledCount = 0;
   bool isSelectedAllDay = false;
-  List<DateTime> selectedDates = [];
-  final dayPickerController = TextEditingController();
+  List<DateTime> selectedDates = <DateTime>[];
+  final TextEditingController dayPickerController = TextEditingController();
 
   @override
   void initState() {
@@ -133,16 +140,16 @@ class _ZdsDayPickerState extends State<ZdsDayPicker> {
   }
 
   void _updateDayController(List<DateTime> selectedDates) {
-    selectedDates.sort((first, next) => first.compareTo(next));
-    final List<String> dayBuffer = [];
-    for (final date in selectedDates) {
+    selectedDates.sort((DateTime first, DateTime next) => first.compareTo(next));
+    final List<String> dayBuffer = <String>[];
+    for (final DateTime date in selectedDates) {
       dayBuffer.add(DateFormat('EEE').format(date));
     }
     dayPickerController.value = dayPickerController.value.copyWith(text: dayBuffer.join(', '));
   }
 
   void _computeWeekDaysDetails() {
-    weekDays = [];
+    weekDays = <DayDetails>[];
     disabledCount = widget.disableDaysList.isEmpty ? 0 : widget.disableDaysList.length;
 
     for (int index = 0; index < 7; index++) {
@@ -168,7 +175,7 @@ class _ZdsDayPickerState extends State<ZdsDayPicker> {
       } else {
         if (selectedDayDetail.isChecked) {
           if (selectedDates.length == 1) {
-            for (final dayDetail in weekDays) {
+            for (final DayDetails dayDetail in weekDays) {
               if (selectedDayDetail.dayText != dayDetail.dayText && dayDetail.isChecked) {
                 dayDetail.isChecked = false;
                 selectedDates
@@ -182,7 +189,7 @@ class _ZdsDayPickerState extends State<ZdsDayPicker> {
           }
         } else {
           if (selectedDates.length > 1) {
-            for (final dayDetail in weekDays) {
+            for (final DayDetails dayDetail in weekDays) {
               if (selectedDayDetail.dayText != dayDetail.dayText) {
                 dayDetail.isChecked = false;
                 selectedDates.remove(DateUtils.dateOnly(dayDetail.date));
@@ -203,15 +210,15 @@ class _ZdsDayPickerState extends State<ZdsDayPicker> {
   void selectAll() {
     setState(() {
       if ((selectedDates.length + widget.disableDaysList.length) == 7) {
-        selectedDates = [];
-        for (final dayDetail in weekDays) {
+        selectedDates = <DateTime>[];
+        for (final DayDetails dayDetail in weekDays) {
           if (!dayDetail.isDisabled) {
             dayDetail.isChecked = false;
           }
         }
       } else {
-        selectedDates = [];
-        for (final dayDetail in weekDays) {
+        selectedDates = <DateTime>[];
+        for (final DayDetails dayDetail in weekDays) {
           if (!dayDetail.isDisabled) {
             dayDetail.isChecked = true;
             selectedDates.add(dayDetail.date);
@@ -226,22 +233,22 @@ class _ZdsDayPickerState extends State<ZdsDayPicker> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (context, constraints) {
+      builder: (BuildContext context, BoxConstraints constraints) {
         final double pillWidth = 68 * MediaQuery.of(context).textScaleFactor;
-        const pillSpacing = 4;
+        const int pillSpacing = 4;
         const double horizontalPadding = 12;
 
-        final totalLength = (weekDays.length * (pillWidth + pillSpacing)) + (horizontalPadding * 2);
-        final isWrapping = totalLength > constraints.maxWidth;
+        final double totalLength = (weekDays.length * (pillWidth + pillSpacing)) + (horizontalPadding * 2);
+        final bool isWrapping = totalLength > constraints.maxWidth;
 
-        final body = Row(
-          children: [
+        final Row body = Row(
+          children: <Widget>[
             Expanded(
               child: Wrap(
                 alignment: isWrapping ? WrapAlignment.start : WrapAlignment.center,
-                children: [
+                children: <Widget>[
                   ...weekDays.map(
-                    (dayDetail) {
+                    (DayDetails dayDetail) {
                       return SizedBox(
                         width: pillWidth,
                         child: ZdsSelectionPill(
@@ -262,14 +269,14 @@ class _ZdsDayPickerState extends State<ZdsDayPicker> {
         );
 
         return Column(
-          children: [
+          children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 if (widget.header != null)
                   Text(
                     widget.header!,
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Zeta.of(context).colors.textDefault),
                   ).paddingOnly(left: 6),
                 if (widget.allowMultiSelect)
                   SizedBox(
@@ -309,8 +316,8 @@ class _ZdsDayPickerState extends State<ZdsDayPicker> {
   }
 
   List<DateTime> getDatesOnly(List<DateTime> dateList) {
-    final List<DateTime> returnList = [];
-    for (final completeDate in dateList) {
+    final List<DateTime> returnList = <DateTime>[];
+    for (final DateTime completeDate in dateList) {
       returnList.add(DateUtils.dateOnly(completeDate));
     }
     return returnList;

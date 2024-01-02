@@ -3,8 +3,10 @@
 export 'atoms/absorb_pointer.dart';
 export 'atoms/avatar.dart';
 export 'atoms/back_button.dart';
+export 'atoms/border_clipper.dart';
 export 'atoms/button.dart';
 export 'atoms/card.dart';
+export 'atoms/conditional_wrapper.dart';
 export 'atoms/dashed_line.dart';
 export 'atoms/expandable.dart';
 export 'atoms/floating_action_button.dart';
@@ -19,3 +21,4 @@ export 'atoms/slidable_widget.dart';
 export 'atoms/tab.dart';
 export 'atoms/toggle_button.dart';
 export 'atoms/unread_badge_widget.dart';
+export 'atoms/ximage.dart';

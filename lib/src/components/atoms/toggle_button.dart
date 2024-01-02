@@ -2,10 +2,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
-import '../../../zds_flutter.dart';
+import '../../utils/theme.dart';
 
 /// A large text button that can toggle between multiple values with Zds style.
-class ZdsToggleButton extends StatefulWidget {
+class ZdsToggleButton extends StatefulWidget with Diagnosticable {
+  /// Constructs a ZdsToggleButton.
+  const ZdsToggleButton({
+    required this.values,
+    required this.onToggleCallback,
+    super.key,
+    this.backgroundColor,
+    this.initialValue = 0,
+    this.margin = const EdgeInsets.all(kBigTogglePadding),
+    this.foregroundColor,
+  });
+
   /// The name of the option that will be displayed on the toggle.
   ///
   /// It is recommended that this does not exceed 4 as the toggle would be very small.
@@ -32,28 +43,19 @@ class ZdsToggleButton extends StatefulWidget {
   /// Defaults to EdgeInsets.all(18).
   final EdgeInsets margin;
 
-  /// Constructs a ZdsToggleButton.
-  const ZdsToggleButton({
-    required this.values,
-    required this.onToggleCallback,
-    super.key,
-    this.backgroundColor,
-    this.initialValue = 0,
-    this.margin = const EdgeInsets.all(kBigTogglePadding),
-    this.foregroundColor,
-  });
-
   @override
   ZdsToggleButtonState createState() => ZdsToggleButtonState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<String>('values', values));
-    properties.add(ObjectFlagProperty<ValueChanged<int>>.has('onToggleCallback', onToggleCallback));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(ColorProperty('foregroundColor', foregroundColor));
-    properties.add(IntProperty('initialValue', initialValue));
-    properties.add(DiagnosticsProperty<EdgeInsets>('margin', margin));
+    properties
+      ..add(IterableProperty<String>('values', values))
+      ..add(ObjectFlagProperty<ValueChanged<int>>.has('onToggleCallback', onToggleCallback))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(ColorProperty('foregroundColor', foregroundColor))
+      ..add(IntProperty('initialValue', initialValue))
+      ..add(DiagnosticsProperty<EdgeInsets>('margin', margin));
   }
 }
 
@@ -84,8 +86,8 @@ class ZdsToggleButtonState extends State<ZdsToggleButton> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth - kBigTogglePadding * 2;
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final double width = constraints.maxWidth - kBigTogglePadding * 2;
         return Container(
           margin: widget.margin,
           height: kBigToggleHeight,
@@ -93,13 +95,11 @@ class ZdsToggleButtonState extends State<ZdsToggleButton> {
             onTapDown: (TapDownDetails details) => _setSelectedValueFromGesture(details.localPosition.dx, width),
             onPanUpdate: (DragUpdateDetails details) => _setSelectedValueFromGesture(details.localPosition.dx, width),
             child: Stack(
-              children: [
+              children: <Widget>[
                 Container(
                   height: kBigToggleHeight,
                   decoration: ShapeDecoration(
-                    color: ZdsColors.greySwatch(
-                      context,
-                    )[Theme.of(context).colorScheme.brightness == Brightness.dark ? 1100 : 200],
+                    color: Zeta.of(context).colors.warm.shade30,
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(28))),
                   ),
                 ),
@@ -122,9 +122,9 @@ class ZdsToggleButtonState extends State<ZdsToggleButton> {
                 SizedBox(
                   height: kBigToggleHeight,
                   child: Row(
-                    children: List.generate(
+                    children: List<Widget>.generate(
                       widget.values.length,
-                      (index) => Expanded(
+                      (int index) => Expanded(
                         child: Center(
                           child: AnimatedDefaultTextStyle(
                             curve: Curves.ease,
@@ -134,9 +134,7 @@ class ZdsToggleButtonState extends State<ZdsToggleButton> {
                               fontWeight: FontWeight.w500,
                               color: (index == _selectedValue)
                                   ? widget.foregroundColor ??
-                                      ZetaColors.computeForeground(
-                                        input: widget.backgroundColor ?? Theme.of(context).colorScheme.primary,
-                                      )
+                                      (widget.backgroundColor ?? Theme.of(context).colorScheme.primary).onColor
                                   : Theme.of(context).colorScheme.onBackground,
                             ),
                             child: Text(widget.values[index]),

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A circular container used to display a user's profile picture fetched from the internet.
 ///
@@ -15,6 +15,21 @@ import '../../../zds_flutter.dart';
 ///  * [ZdsAvatar], an avatar used to display an image that is stored locally, or just the initials.
 ///  * [CachedNetworkImage], which this avatar uses to not have to download the image every time.
 class ZdsNetworkAvatar extends StatelessWidget implements PreferredSizeWidget {
+  /// An avatar that gets its image from an URL.
+  const ZdsNetworkAvatar({
+    required this.initials,
+    this.url = '',
+    this.onTap,
+    this.size,
+    this.textStyle,
+    this.backgroundColor,
+    this.semanticLabelAvatarDescription,
+    this.imgCacheKey,
+    this.headers,
+    this.fit,
+    super.key,
+  }) : assert(size != null ? size >= 0 : size == null, 'Size must be greater than 0');
+
   /// The URL from which to fetch the image.
   final String url;
 
@@ -53,31 +68,17 @@ class ZdsNetworkAvatar extends StatelessWidget implements PreferredSizeWidget {
   /// How to inscribe the image into the space allocated during layout.
   final BoxFit? fit;
 
-  /// An avatar that gets its image from an URL.
-  const ZdsNetworkAvatar({
-    required this.initials,
-    this.url = '',
-    this.onTap,
-    this.size,
-    this.textStyle,
-    this.backgroundColor,
-    this.semanticLabelAvatarDescription,
-    this.imgCacheKey,
-    this.headers,
-    this.fit,
-    super.key,
-  }) : assert(size != null ? size >= 0 : size == null, 'Size must be greater than 0');
-
   @override
   Widget build(BuildContext context) {
-    final initialsWidget = Center(
+    final themeData = Theme.of(context);
+    final Center initialsWidget = Center(
       child: Text(
         initials,
         textScaleFactor: 1,
         style: textStyle ??
-            Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: calculateTextColor(backgroundColor ?? Theme.of(context).colorScheme.secondary),
-                ),
+            themeData.textTheme.displaySmall?.copyWith(
+              color: (backgroundColor ?? themeData.colorScheme.secondary).onColor,
+            ),
       ),
     );
 
@@ -87,7 +88,7 @@ class ZdsNetworkAvatar extends StatelessWidget implements PreferredSizeWidget {
         height: size ?? preferredSize.height,
         width: size ?? preferredSize.width,
         decoration: BoxDecoration(
-          color: backgroundColor ?? Theme.of(context).colorScheme.secondary,
+          color: backgroundColor ?? themeData.colorScheme.secondary,
           shape: BoxShape.circle,
         ),
         child: Semantics(
@@ -96,7 +97,7 @@ class ZdsNetworkAvatar extends StatelessWidget implements PreferredSizeWidget {
             child: Uri.tryParse(url)?.hasAbsolutePath ?? false
                 ? CachedNetworkImage(
                     cacheKey: imgCacheKey,
-                    imageBuilder: (context, imageProvider) {
+                    imageBuilder: (BuildContext context, ImageProvider<Object> imageProvider) {
                       return Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -106,8 +107,8 @@ class ZdsNetworkAvatar extends StatelessWidget implements PreferredSizeWidget {
                     },
                     imageUrl: url,
                     httpHeaders: headers,
-                    placeholder: (context, _) => initialsWidget,
-                    errorWidget: (context, _, error) => initialsWidget,
+                    placeholder: (BuildContext context, _) => initialsWidget,
+                    errorWidget: (BuildContext context, _, Object error) => initialsWidget,
                   )
                 : initialsWidget,
           ),
@@ -119,23 +120,19 @@ class ZdsNetworkAvatar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size(48, 48);
 
-  /// Sets the default text color based on the background color.
-  Color calculateTextColor(Color background) {
-    return ThemeData.estimateBrightnessForColor(background) == Brightness.light ? ZdsColors.darkGrey : ZdsColors.white;
-  }
-
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('url', url));
-    properties.add(StringProperty('initials', initials));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(DoubleProperty('size', size));
-    properties.add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(StringProperty('semanticLabelAvatarDescription', semanticLabelAvatarDescription));
-    properties.add(StringProperty('imgCacheKey', imgCacheKey));
-    properties.add(DiagnosticsProperty<Map<String, String>?>('headers', headers));
-    properties.add(EnumProperty<BoxFit?>('fit', fit));
+    properties
+      ..add(StringProperty('url', url))
+      ..add(StringProperty('initials', initials))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(DoubleProperty('size', size))
+      ..add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(StringProperty('semanticLabelAvatarDescription', semanticLabelAvatarDescription))
+      ..add(StringProperty('imgCacheKey', imgCacheKey))
+      ..add(DiagnosticsProperty<Map<String, String>?>('headers', headers))
+      ..add(EnumProperty<BoxFit?>('fit', fit));
   }
 }

@@ -1,21 +1,31 @@
 import 'dart:async';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:giphy_get/giphy_get.dart';
 
-import '../../../../zds_flutter.dart';
+import '../../../utils/assets/icons.dart';
+import '../../../utils/localizations/translation.dart';
+import '../../../utils/tools/utils.dart';
+import '../../molecules/empty.dart';
+import '../../molecules/search.dart';
 
-/// See [ZdsFilePicker].
+/// A widget to pick Giphy images.
+///
+/// Displays a collection of Giphy images based on the query provided
+/// by the user. The user can select a GIF from the displayed collection.
+
 class ZdsGiphyPicker extends StatefulWidget {
+  /// Creates a [ZdsGiphyPicker] widget.
+  ///
+  /// The [key] parameter is optional and is used to control the framework's
+  /// widget replacement and state synchronization mechanisms.
+  const ZdsGiphyPicker({super.key, required this.apiKey});
+
   /// API Key, required to use giphy service.
   ///
-  /// See https://developers.giphy.com/
+  /// See [Giphy Developers](https://developers.giphy.com/).
   final String apiKey;
-
-  /// See [ZdsFilePicker].
-  const ZdsGiphyPicker({super.key, required this.apiKey});
 
   @override
   State<ZdsGiphyPicker> createState() => _ZdsGiphyPickerState();
@@ -30,26 +40,31 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
   // is Loading gifs
   bool _isLoading = false;
 
-  // Collection
+  /// Represents a collection of Giphy GIFs.
   GiphyCollection? _collection;
 
+  /// Text for querying GIFs.
   String _queryText = '';
 
-  // List of gifs
-  final List<GiphyGif> _list = [];
+  /// Contains the list of fetched GIFs.
+  final List<GiphyGif> _list = <GiphyGif>[];
 
-  // Limit of query
+  /// Maximum number of GIFs to query at once.
   late int _limit;
 
-  // Offset
+  /// The next GIF in the collection to retrieve.
   int offset = 0;
 
+  /// Controller to manage scroll behavior.
   ScrollController scrollController = ScrollController();
+
+  /// Controller to manage the search text.
   final TextEditingController _searchController = TextEditingController();
 
-  bool _hasText = false;
-
+  /// Timer used to debounce search queries.
   Timer? _debounce;
+
+  /// Delay before the debounce effect takes place.
   late Duration debounceDelay;
 
   @override
@@ -57,9 +72,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
     super.initState();
 
     _searchController.addListener(() {
-      setState(() {
-        _hasText = _searchController.text.isNotEmpty;
-      });
+      setState(() {});
     });
 
     scrollController.addListener(_loadMore);
@@ -70,12 +83,6 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
     super.didChangeDependencies();
 
     const double gifWidth = 80;
-
-    _searchController.addListener(() {
-      setState(() {
-        _hasText = _searchController.text.isNotEmpty;
-      });
-    });
 
     scrollController.addListener(_loadMore);
 
@@ -102,9 +109,9 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final clearButton = _hasText
+    final IconButton? clearButton = _searchController.text.isNotEmpty
         ? IconButton(
-            icon: Icon(ZdsIcons.close_circle, color: ZdsColors.greySwatch(context)[800]),
+            icon: const Icon(ZdsIcons.close_circle),
             onPressed: () {
               _searchController.clear();
               _queryText = '';
@@ -116,69 +123,73 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
     return Scaffold(
       appBar: AppBar(title: Text(ComponentStrings.of(context).get('PICK_GIF', 'Pick a Gif'))),
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Column(
-        children: [
-          ZdsSearchField(
-            hintText: ComponentStrings.of(context).get('SEARCH_GIF', 'Search all the GIFs'),
-            suffixIcon: clearButton,
-            controller: _searchController,
-            onChange: (value) {
-              if (_debounce?.isActive ?? false) _debounce?.cancel();
-              _debounce = Timer(const Duration(milliseconds: 500), () async {
-                setState(() {
-                  _queryText = value;
-                  _listenerQuery();
-                });
-              });
-            },
-          ),
-          if (_isLoading && _list.isEmpty)
-            const Expanded(child: Center(child: CircularProgressIndicator()))
-          else if (_list.isNotEmpty)
-            Expanded(
-              child: GridView.builder(
-                itemCount: _list.length,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                controller: scrollController,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  crossAxisSpacing: 2,
-                  mainAxisSpacing: 2,
-                ),
-                itemBuilder: (ctx, idx) {
-                  return _item(ctx, _list[idx]);
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints box) {
+          return Column(
+            children: <Widget>[
+              ZdsSearchField(
+                hintText: ComponentStrings.of(context).get('SEARCH_GIF', 'Search all the GIFs'),
+                suffixIcon: clearButton,
+                controller: _searchController,
+                onChange: (String value) {
+                  if (_debounce?.isActive ?? false) _debounce?.cancel();
+                  _debounce = Timer(const Duration(milliseconds: 500), () async {
+                    setState(() {
+                      _queryText = value;
+                      _listenerQuery();
+                    });
+                  });
                 },
               ),
-            )
-          else
-            const ZdsEmpty(),
-        ],
+              if (_isLoading && _list.isEmpty)
+                const Expanded(child: Center(child: CircularProgressIndicator()))
+              else if (_list.isNotEmpty)
+                Expanded(
+                  child: GridView.builder(
+                    itemCount: _list.length,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    controller: scrollController,
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: box.maxWidth > 500 ? 200 : 100,
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
+                    ),
+                    itemBuilder: (BuildContext ctx, int idx) => _item(ctx, _list[idx]),
+                  ),
+                )
+              else
+                const ZdsEmpty(),
+            ],
+          );
+        },
       ),
     );
   }
 
   Widget _item(BuildContext context, GiphyGif gif) {
+    final String? url = gif.images?.previewWebp?.url;
     return InkWell(
       onTap: () => Navigator.pop(context, gif),
-      child: gif.images == null || gif.images?.fixedWidth.webp == null
+      child: url == null
           ? Container()
           : ExtendedImage.network(
-              gif.images!.fixedWidth.webp!,
+              url,
               semanticLabel: gif.title,
               gaplessPlayback: true,
-              headers: const {'accept': 'image/*'},
-              loadStateChanged: (state) => AnimatedSwitcher(
+              fit: BoxFit.fill,
+              headers: const <String, String>{'accept': 'image/*'},
+              loadStateChanged: (ExtendedImageState state) => AnimatedSwitcher(
                 duration: const Duration(milliseconds: 350),
                 child: gif.images == null
                     ? Container()
-                    : {
+                    : <LoadState, AspectRatio>{
                         LoadState.loading: AspectRatio(
                           aspectRatio: 1,
                           child: Container(color: Theme.of(context).cardColor),
                         ),
                         LoadState.completed: AspectRatio(
                           aspectRatio: 1,
-                          child: ExtendedRawImage(fit: BoxFit.contain, image: state.extendedImageInfo?.image),
+                          child: ExtendedRawImage(fit: BoxFit.fill, image: state.extendedImageInfo?.image),
                         ),
                         LoadState.failed: AspectRatio(
                           aspectRatio: 1,
@@ -186,7 +197,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
                         ),
                       }.get(
                         state.extendedImageLoadState,
-                        orDefault: AspectRatio(
+                        fallback: AspectRatio(
                           aspectRatio: 1,
                           child: Container(
                             color: Theme.of(context).cardColor,
@@ -255,8 +266,9 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IntProperty('offset', offset));
-    properties.add(DiagnosticsProperty<ScrollController>('scrollController', scrollController));
-    properties.add(DiagnosticsProperty<Duration>('debounceDelay', debounceDelay));
+    properties
+      ..add(DiagnosticsProperty<Duration>('debounceDelay', debounceDelay))
+      ..add(IntProperty('offset', offset))
+      ..add(DiagnosticsProperty<ScrollController>('scrollController', scrollController));
   }
 }

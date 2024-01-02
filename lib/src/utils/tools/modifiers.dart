@@ -117,7 +117,7 @@ extension LayoutModifiers on Widget {
         child: this,
       );
     }
-    final box = ConstrainedBox(
+    final ConstrainedBox box = ConstrainedBox(
       constraints: BoxConstraints(
         minWidth: minWidth,
         maxWidth: maxWidth,
@@ -368,7 +368,7 @@ extension TextModifiers on Text {
 extension StatusBar on Scaffold {
   /// Changes this Scaffold's [SystemUiOverlayStyle].
   Widget statusBar(SystemUiOverlayStyle style) {
-    return AnnotatedRegion(value: style, child: this);
+    return AnnotatedRegion<SystemUiOverlayStyle>(value: style, child: this);
   }
 }
 
@@ -428,10 +428,10 @@ extension RowLayout on Row {
       textDirection: textDirection,
       verticalDirection: verticalDirection,
       textBaseline: textBaseline,
-      children: children.map((child) {
+      children: children.map((Widget child) {
         return Expanded(
           child: Row(
-            children: [
+            children: <Widget>[
               const Spacer(),
               child,
               const Spacer(),
@@ -443,17 +443,24 @@ extension RowLayout on Row {
   }
 }
 
-/// A selection of modifiers on TextTheme for [tabItem1], [tabItem2].
+/// A selection of modifiers on TextTheme.
 extension TextThemeExtension on TextTheme {
   /// TextStyle for tab item 1
+  @Deprecated('Use bodyTextLarge, or bodyTextMedium if tab has icons.')
   TextStyle get tabItem1 {
     return bodyLarge!.copyWith(letterSpacing: 0.2);
   }
 
   /// TextStyle tabitem2
-
+  @Deprecated('Use bodyTextLarge, or bodyTextMedium if tab has icons.')
   TextStyle get tabItem2 {
     return bodyMedium!;
+  }
+
+  /// TextStyle bodyText3
+  @Deprecated('Use bodyTextSmall')
+  TextStyle get bodyText3 {
+    return titleLarge!.copyWith(fontWeight: FontWeight.w400);
   }
 }
 

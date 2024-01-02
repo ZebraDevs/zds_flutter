@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 import '../../utils/tools/measure.dart';
 
 const Duration _kFadeDuration = Duration(milliseconds: 200);
@@ -17,6 +17,16 @@ const Duration _kFadeDuration = Duration(milliseconds: 200);
 ///
 ///  * [readMore], an alternative way of making a collapsible widget.
 class ZdsExpandable extends StatelessWidget {
+  /// A widget that can be collapsed and expanded.
+  const ZdsExpandable({
+    required this.child,
+    super.key,
+    this.collapsedButtonText = '',
+    this.expandedButtonText = '',
+    this.minHeight = 60,
+    this.color,
+  });
+
   /// The text to show in the button when the [child] is collapsed.
   final String collapsedButtonText;
 
@@ -37,16 +47,6 @@ class ZdsExpandable extends StatelessWidget {
   ///
   /// Defaults to [ColorScheme.background].
   final Color? color;
-
-  /// A widget that can be collapsed and expanded.
-  const ZdsExpandable({
-    required this.child,
-    super.key,
-    this.collapsedButtonText = '',
-    this.expandedButtonText = '',
-    this.minHeight = 60,
-    this.color,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +70,6 @@ class ZdsExpandable extends StatelessWidget {
 }
 
 class _ExpandableContainer extends StatefulWidget {
-  final String collapsedButtonText;
-  final String expandedButtonText;
-  final double minHeight;
-  final Widget child;
-  final Color color;
-
   const _ExpandableContainer({
     required this.collapsedButtonText,
     required this.expandedButtonText,
@@ -83,6 +77,11 @@ class _ExpandableContainer extends StatefulWidget {
     required this.child,
     required this.color,
   });
+  final String collapsedButtonText;
+  final String expandedButtonText;
+  final double minHeight;
+  final Widget child;
+  final Color color;
 
   @override
   _ExpandableContainerState createState() => _ExpandableContainerState();
@@ -102,7 +101,7 @@ class _ExpandableContainerState extends State<_ExpandableContainer> with SingleT
   double _textHeight = 0;
   Animation<double>? _sizeAnimation;
   late AnimationController _controller;
-  final _keyText = GlobalKey();
+  final GlobalKey<State<StatefulWidget>> _keyText = GlobalKey();
 
   @override
   void initState() {
@@ -138,7 +137,7 @@ class _ExpandableContainerState extends State<_ExpandableContainer> with SingleT
       contentKey: _keyText,
       button: TextButton(
         style: TextButton.styleFrom(
-          foregroundColor: Theme.of(context).elevatedButtonTheme.style!.backgroundColor!.resolve({}),
+          foregroundColor: Theme.of(context).elevatedButtonTheme.style!.backgroundColor!.resolve(<MaterialState>{}),
           backgroundColor: Colors.transparent,
         ),
         onPressed: isExpanded ? collapse : expand,
@@ -171,19 +170,13 @@ class _ExpandableContainerState extends State<_ExpandableContainer> with SingleT
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('isExpanded', isExpanded));
-    properties.add(DoubleProperty('textHeight', textHeight));
+    properties
+      ..add(DiagnosticsProperty<bool>('isExpanded', isExpanded))
+      ..add(DoubleProperty('textHeight', textHeight));
   }
 }
 
 class _ExpandableClip extends StatelessWidget {
-  final Widget child;
-  final Widget button;
-  final double height;
-  final bool isExpanded;
-  final Color color;
-  final Key? contentKey;
-
   const _ExpandableClip({
     required this.height,
     required this.button,
@@ -192,11 +185,17 @@ class _ExpandableClip extends StatelessWidget {
     this.contentKey,
     this.isExpanded = false,
   });
+  final Widget child;
+  final Widget button;
+  final double height;
+  final bool isExpanded;
+  final Color color;
+  final Key? contentKey;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         ClipRect(
           child: SizedOverflowBox(
             // this is so that I can measure the real height
@@ -214,7 +213,7 @@ class _ExpandableClip extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             clipBehavior: Clip.none,
-            children: [
+            children: <Widget>[
               Positioned(
                 top: -55,
                 height: 55,
@@ -246,9 +245,8 @@ class _ExpandableClip extends StatelessWidget {
 }
 
 class _FadeOpacity extends StatelessWidget {
-  final Color color;
-
   const _FadeOpacity({required this.color});
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -257,8 +255,8 @@ class _FadeOpacity extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          stops: const [0.0, 1.0],
-          colors: [
+          stops: const <double>[0, 1],
+          colors: <Color>[
             color,
             color.withOpacity(0),
           ],
@@ -305,7 +303,7 @@ extension ExpandableTextExtension on Widget {
   }) {
     return MeasureSize(
       child: this,
-      builder: (context, size) {
+      builder: (BuildContext context, Size size) {
         final ComponentStrings strings = ComponentStrings.of(context);
         if (size.height < minHeight) {
           return Padding(padding: const EdgeInsets.only(bottom: 16), child: this);

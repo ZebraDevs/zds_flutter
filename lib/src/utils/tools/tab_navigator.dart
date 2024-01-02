@@ -1,6 +1,5 @@
 import 'dart:math' show min;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +13,22 @@ import '../../../zds_flutter.dart';
 ///
 
 class ZdsSplitNavigator extends StatefulWidget {
+  /// Creates a split navigator.
+  const ZdsSplitNavigator({
+    required this.primaryWidget,
+    required this.emptyBuilder,
+    required this.shouldSplit,
+    this.widthRatio = 0.4,
+    this.onGenerateRoute,
+    this.maxPrimaryWidth,
+    this.splitNavigatorKey,
+    this.boxShadowDivider = true,
+    this.alwaysSplit = false,
+    super.key,
+  });
+
   /// String used for empty detail routes.
-  static const emptyRoute = 'Zds-empty-route';
+  static const String emptyRoute = 'Zds-empty-route';
 
   /// Flag used to decide whether split navigator should be used or not.
   ///
@@ -63,20 +76,6 @@ class ZdsSplitNavigator extends StatefulWidget {
   /// This key will be used on only in split mode.
   final GlobalKey<NavigatorState>? splitNavigatorKey;
 
-  /// Creates a split navigator.
-  const ZdsSplitNavigator({
-    required this.primaryWidget,
-    required this.emptyBuilder,
-    required this.shouldSplit,
-    this.widthRatio = 0.4,
-    this.onGenerateRoute,
-    this.maxPrimaryWidth,
-    this.splitNavigatorKey,
-    this.boxShadowDivider = true,
-    this.alwaysSplit = false,
-    super.key,
-  });
-
   /// Retrieves the nearest [ZdsSplitNavigatorState] ancestor from the given [BuildContext].
   ///
   /// This method searches up the widget tree starting from the given [BuildContext],
@@ -93,7 +92,7 @@ class ZdsSplitNavigator extends StatefulWidget {
   ///
   /// Returns: The nearest [ZdsSplitNavigatorState] ancestor found.
   static ZdsSplitNavigatorState of(BuildContext context) {
-    final state = context.findAncestorStateOfType<ZdsSplitNavigatorState>();
+    final ZdsSplitNavigatorState? state = context.findAncestorStateOfType<ZdsSplitNavigatorState>();
     if (state == null) throw FlutterError('Ancestor state of type ZdsSplitNavigatorState not found');
     return state;
   }
@@ -120,7 +119,7 @@ class ZdsSplitNavigator extends StatefulWidget {
     required Future<T?> Function(NavigatorState state) splitNavigatorAction,
     required Future<T?> Function(NavigatorState state) regularNavigatorAction,
   }) {
-    final state = _safeState(context);
+    final ZdsSplitNavigatorState? state = _safeState(context);
     return !rootNavigator &&
             state != null &&
             state.mounted &&
@@ -143,10 +142,10 @@ class ZdsSplitNavigator extends StatefulWidget {
     return _handleNavigation(
       context: context,
       rootNavigator: rootNavigator,
-      regularNavigatorAction: (state) {
+      regularNavigatorAction: (NavigatorState state) {
         return state.push(route);
       },
-      splitNavigatorAction: (state) {
+      splitNavigatorAction: (NavigatorState state) {
         return state.push(route);
       },
     );
@@ -165,10 +164,10 @@ class ZdsSplitNavigator extends StatefulWidget {
     return _handleNavigation(
       context: context,
       rootNavigator: rootNavigator,
-      regularNavigatorAction: (state) {
+      regularNavigatorAction: (NavigatorState state) {
         return state.push(route);
       },
-      splitNavigatorAction: (state) {
+      splitNavigatorAction: (NavigatorState state) {
         return state.pushAndRemoveUntil(route, ModalRoute.withName(ZdsSplitNavigator.emptyRoute));
       },
     );
@@ -189,10 +188,10 @@ class ZdsSplitNavigator extends StatefulWidget {
     return _handleNavigation(
       context: context,
       rootNavigator: rootNavigator,
-      regularNavigatorAction: (state) {
+      regularNavigatorAction: (NavigatorState state) {
         return state.pushNamed(routeName, arguments: arguments);
       },
-      splitNavigatorAction: (state) {
+      splitNavigatorAction: (NavigatorState state) {
         return state.pushNamedAndRemoveUntil(
           routeName,
           ModalRoute.withName(ZdsSplitNavigator.emptyRoute),
@@ -206,7 +205,7 @@ class ZdsSplitNavigator extends StatefulWidget {
   ///
   /// [context] is the BuildContext of the current widget tree.
   static void popUntilRoot(BuildContext context) {
-    final state = _safeState(context);
+    final ZdsSplitNavigatorState? state = _safeState(context);
     if (state != null && state.mounted && state.widget.shouldSplit) {
       state.navigatorKey.currentState?.popUntil(ModalRoute.withName(ZdsSplitNavigator.emptyRoute));
     }
@@ -243,11 +242,11 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
 
   /// A ValueNotifier<String> that holds the current route's name. By default, it is initialized
   /// with ZdsSplitNavigator.emptyRoute.
-  final currentRoute = ValueNotifier(ZdsSplitNavigator.emptyRoute);
+  final ValueNotifier<String> currentRoute = ValueNotifier<String>(ZdsSplitNavigator.emptyRoute);
 
   void _setCurrentRoute() {
     String? newCurrentRoute;
-    navigatorKey.currentState?.popUntil((route) {
+    navigatorKey.currentState?.popUntil((Route<dynamic> route) {
       newCurrentRoute = route.settings.name;
       return true;
     });
@@ -259,12 +258,6 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
     navigatorKey = widget.splitNavigatorKey ?? GlobalKey<NavigatorState>();
     super.initState();
   }
-
-  @override
-  void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {}
-
-  @override
-  void didStopUserGesture() {}
 
   @override
   NavigatorState? get navigator => null;
@@ -303,7 +296,7 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
     if (widget.shouldSplit) {
       final bool shouldSplit = widget.alwaysSplit || (context.isTablet() && context.isLandscape());
       return LayoutBuilder(
-        builder: (context, layout) {
+        builder: (BuildContext context, BoxConstraints layout) {
           double maxWidth = layout.maxWidth;
 
           maxWidth = shouldSplit
@@ -314,7 +307,7 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
                   ? 0
                   : layout.maxWidth;
 
-          final splitContent = _SplitContent(
+          final _SplitContent splitContent = _SplitContent(
             navigatorKey: navigatorKey,
             observer: this,
             boxShadowDivider: widget.boxShadowDivider,
@@ -323,7 +316,7 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
           );
 
           return Stack(
-            children: [
+            children: <Widget>[
               SizedBox(
                 width: shouldSplit ? maxWidth : layout.maxWidth,
                 child: widget.primaryWidget,
@@ -340,6 +333,12 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
       return widget.primaryWidget;
     }
   }
+
+  @override
+  void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {}
+
+  @override
+  void didStopUserGesture() {}
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -367,10 +366,12 @@ class _SplitContent extends StatelessWidget {
   final WidgetBuilder emptyBuilder;
 
   Route<dynamic> _initialRoute() {
-    return PageRouteBuilder(
+    return PageRouteBuilder<dynamic>(
       settings: const RouteSettings(name: ZdsSplitNavigator.emptyRoute),
-      pageBuilder: (context, animation, secondaryAnimation) => emptyBuilder(context),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>
+          emptyBuilder(context),
+      transitionsBuilder:
+          (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
         return FadeTransition(
           opacity: Tween<double>(begin: 0, end: 1).animate(animation),
           child: child,
@@ -381,10 +382,10 @@ class _SplitContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
+    final ThemeData themeData = Theme.of(context);
 
-    final boxShadow = boxShadowDivider
-        ? [
+    final List<BoxShadow>? boxShadow = boxShadowDivider
+        ? <BoxShadow>[
             BoxShadow(
               color: themeData.colorScheme.onSurface.withOpacity(0.1),
               blurRadius: 2,
@@ -393,7 +394,7 @@ class _SplitContent extends StatelessWidget {
           ]
         : null;
 
-    final borderSide = boxShadowDivider ? null : Border(left: BorderSide(color: themeData.dividerColor));
+    final Border? borderSide = boxShadowDivider ? null : Border(left: BorderSide(color: themeData.dividerColor));
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -403,13 +404,13 @@ class _SplitContent extends StatelessWidget {
       child: ClipRRect(
         child: Navigator(
           key: navigatorKey,
-          observers: [observer],
+          observers: <NavigatorObserver>[observer],
           initialRoute: ZdsSplitNavigator.emptyRoute,
           onGenerateRoute: onGenerateRoute,
           onGenerateInitialRoutes: (_, __) {
-            return [_initialRoute()];
+            return <Route<dynamic>>[_initialRoute()];
           },
-          onPopPage: (route, result) {
+          onPopPage: (Route<dynamic> route, dynamic result) {
             if (!Navigator.of(context).canPop()) {
               Navigator.of(context).pop(result);
               return false;
@@ -437,14 +438,14 @@ class _SplitContent extends StatelessWidget {
 ///
 /// The `ZdsSplitPageRouteBuilder` provides a smooth slide transition animation for the new route.
 class ZdsSplitPageRouteBuilder<T> extends PageRouteBuilder<T> {
-  /// The builder function that returns the widget to display for the new route.
-  final Widget Function(BuildContext) builder;
-
   /// Constructs a `ZdsSplitPageRouteBuilder` with the given `builder` function and optional `settings`.
   ///
   /// The `settings` parameter can be used to provide route settings such as route name and arguments.
-  ZdsSplitPageRouteBuilder({required this.builder, super.settings})
-      : super(
+  ZdsSplitPageRouteBuilder({
+    required this.builder,
+    super.settings,
+    super.fullscreenDialog,
+  }) : super(
           pageBuilder: (context, _, __) => builder(context),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1, 0);
@@ -459,20 +460,23 @@ class ZdsSplitPageRouteBuilder<T> extends PageRouteBuilder<T> {
             );
           },
         );
+
+  /// The builder function that returns the widget to display for the new route.
+  final Widget Function(BuildContext) builder;
 }
 
 /// A custom `PageRouteBuilder` class that creates a new route with a specified builder function.
 ///
 /// The `ZdsFadePageRouteBuilder` provides a fade transition animation for the new route.
 class ZdsFadePageRouteBuilder<T> extends PageRouteBuilder<T> {
-  /// The builder function that returns the widget to display for the new route.
-  final Widget Function(BuildContext) builder;
-
   /// Constructs a `ZdsFadePageRouteBuilder` with the given `builder` function and optional `settings`.
   ///
   /// The `settings` parameter can be used to provide route settings such as route name and arguments.
-  ZdsFadePageRouteBuilder({required this.builder, super.settings})
-      : super(
+  ZdsFadePageRouteBuilder({
+    required this.builder,
+    super.settings,
+    super.fullscreenDialog,
+  }) : super(
           pageBuilder: (context, _, __) => builder(context),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             // Fade transition is used for the new route.
@@ -482,19 +486,19 @@ class ZdsFadePageRouteBuilder<T> extends PageRouteBuilder<T> {
             );
           },
         );
+
+  /// The builder function that returns the widget to display for the new route.
+  final Widget Function(BuildContext) builder;
 }
 
 /// A custom `PageRouteBuilder` class that creates a new route with a specified builder function.
 ///
 /// The `ZdsNoAnimationPageRouteBuilder` provides no animation for the new route.
 class ZdsNoAnimationPageRouteBuilder<T> extends PageRouteBuilder<T> {
-  /// The builder function that returns the widget to display for the new route.
-  final Widget Function(BuildContext) builder;
-
   /// Constructs a `ZdsNoAnimationPageRouteBuilder` with the given `builder` function and optional `settings`.
   ///
   /// The `settings` parameter can be used to provide route settings such as route name and arguments.
-  ZdsNoAnimationPageRouteBuilder({required this.builder, super.settings})
+  ZdsNoAnimationPageRouteBuilder({required this.builder, super.settings, super.fullscreenDialog})
       : super(
           pageBuilder: (context, _, __) => builder(context),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -502,6 +506,9 @@ class ZdsNoAnimationPageRouteBuilder<T> extends PageRouteBuilder<T> {
             return child;
           },
         );
+
+  /// The builder function that returns the widget to display for the new route.
+  final Widget Function(BuildContext) builder;
 }
 
 /// [ZdsAdaptiveTransitionPageRouteBuilder] is a custom route builder that
@@ -510,28 +517,38 @@ class ZdsNoAnimationPageRouteBuilder<T> extends PageRouteBuilder<T> {
 /// In landscape mode, it doesn't apply any transition. In other orientations,
 /// it applies a slide transition for the new route.
 class ZdsAdaptiveTransitionPageRouteBuilder<T> extends PageRouteBuilder<T> {
+  /// Constructs a [ZdsAdaptiveTransitionPageRouteBuilder] instance.
+  ///
+  /// [builder] is the required function that takes a [BuildContext] and returns a [Widget].
+  /// [settings] is an optional [RouteSettings] object to configure the route.
+  ZdsAdaptiveTransitionPageRouteBuilder({
+    required this.builder,
+    required this.animate,
+    super.settings,
+    super.fullscreenDialog,
+  }) : super(
+          pageBuilder: (context, _, __) => builder(context),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            if (animate) {
+              const begin = Offset(1, 0);
+              const end = Offset.zero;
+              const curve = Curves.ease;
+              final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              // Slide transition is used for the new route.
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            } else {
+              return child;
+            }
+          },
+        );
+
   /// The builder function for creating the widget.
   final Widget Function(BuildContext) builder;
 
   /// Flag to enable for disable the animation.
   final bool animate;
-
-  /// Constructs a [ZdsAdaptiveTransitionPageRouteBuilder] instance.
-  ///
-  /// [builder] is the required function that takes a [BuildContext] and returns a [Widget].
-  /// [settings] is an optional [RouteSettings] object to configure the route.
-  ZdsAdaptiveTransitionPageRouteBuilder({required this.builder, required this.animate, super.settings})
-      : super(
-          pageBuilder: (context, _, __) => builder(context),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return animate
-                ? CupertinoPageTransition(
-                    primaryRouteAnimation: animation,
-                    secondaryRouteAnimation: secondaryAnimation,
-                    linearTransition: true,
-                    child: child,
-                  )
-                : child;
-          },
-        );
 }

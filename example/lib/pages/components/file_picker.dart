@@ -43,6 +43,25 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
           visualDensity: VisualDensity.compact,
           optionDisplay: ZdsOptionDisplay.plain,
           displayStyle: ZdsFilePickerDisplayStyle.horizontal,
+          postProcessors: [
+            ZdsImageCropPostProcessor(() => context),
+            const ZdsFileCompressPostProcessor(),
+            const ZdsFileRenamePostProcessor(),
+          ],
+          onChange: (files) {
+            debugPrint('files: $files');
+          },
+        ),
+        ZdsFilePicker(
+          useCard: false,
+          config: pickerConfig,
+          controller: controller,
+          postProcessors: [
+            ZdsFileEditPostProcessor(() => context),
+            const ZdsFileCompressPostProcessor(),
+            const ZdsFileRenamePostProcessor(),
+          ],
+          visualDensity: VisualDensity.compact,
           onChange: (files) {
             debugPrint('files: $files');
           },
@@ -52,15 +71,6 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
           controller: controller,
           optionDisplay: ZdsOptionDisplay.plain,
           displayStyle: ZdsFilePickerDisplayStyle.horizontal,
-          onChange: (files) {
-            debugPrint('files: $files');
-          },
-        ),
-        ZdsFilePicker(
-          useCard: false,
-          config: pickerConfig,
-          controller: controller,
-          visualDensity: VisualDensity.compact,
           onChange: (files) {
             debugPrint('files: $files');
           },

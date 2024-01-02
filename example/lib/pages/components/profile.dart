@@ -23,7 +23,7 @@ class ProfileDemo extends StatelessWidget {
               image: Image.network(
                 'https://www.zebra.com/content/dam/zebra_dam/global/graphics/logos/zebra-logo-black-stacked.png',
               ),
-              backgroundColor: ZdsColors.white,
+              backgroundColor: Theme.of(context).colorScheme.surface,
             ),
             nameText: const Text('Jason Davis'),
             jobTitleText: const Text('Store Manager'),

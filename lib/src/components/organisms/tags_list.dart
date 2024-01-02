@@ -1,12 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Creates a list to show multiple [ZdsTag].
 ///
 /// If [direction] is [Axis.horizontal], the items will wrap around if they don't fit.
 class ZdsTagsList extends StatelessWidget {
+  /// Creates a list of [ZdsTag].
+  const ZdsTagsList({
+    super.key,
+    this.items,
+    this.direction = Axis.vertical,
+    this.horizontalSpace = 8,
+    this.verticalSpace = 6,
+  });
+
   /// This list's items.
   final List<ZdsTag>? items;
 
@@ -27,15 +36,6 @@ class ZdsTagsList extends StatelessWidget {
   /// Defaults to 6.
   final double verticalSpace;
 
-  /// Creates a list of [ZdsTag].
-  const ZdsTagsList({
-    super.key,
-    this.items,
-    this.direction = Axis.vertical,
-    this.horizontalSpace = 8,
-    this.verticalSpace = 6,
-  });
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -46,7 +46,7 @@ class ZdsTagsList extends StatelessWidget {
           direction: direction,
           spacing: direction == Axis.vertical ? verticalSpace : horizontalSpace,
           runSpacing: direction == Axis.vertical ? horizontalSpace : verticalSpace,
-          children: items ?? [],
+          children: items ?? <Widget>[],
         ),
       ),
     );

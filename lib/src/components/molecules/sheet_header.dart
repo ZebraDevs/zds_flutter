@@ -2,11 +2,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Creates the header component for a bottom sheet with Zds style.
 class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
-  static const _kSheetHeight = 54.0;
+  /// Constructs a [ZdsSheetHeader].
+  const ZdsSheetHeader({
+    required this.headerText,
+    super.key,
+    this.leading,
+    this.trailing,
+    this.busy = false,
+    this.headerTextStyle,
+  });
+  static const double _kSheetHeight = 54;
 
   /// Sheet header title of type [String].
   final String headerText;
@@ -27,21 +36,12 @@ class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
   /// Defaults to [TextTheme.headlineMedium].
   final TextStyle? headerTextStyle;
 
-  /// Constructs a [ZdsSheetHeader].
-  const ZdsSheetHeader({
-    required this.headerText,
-    super.key,
-    this.leading,
-    this.trailing,
-    this.busy = false,
-    this.headerTextStyle,
-  });
-
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return Semantics(
       child: Container(
-        color: Theme.of(context).colorScheme.surface,
+        color: themeData.colorScheme.surface,
         height: _kSheetHeight,
         width: double.infinity,
         child: Material(
@@ -50,18 +50,19 @@ class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
             top: false,
             bottom: false,
             child: Stack(
-              children: [
+              children: <Widget>[
                 Center(
                   child: Text(
                     headerText,
-                    style: headerTextStyle ?? Theme.of(context).textTheme.titleLarge,
+                    style: headerTextStyle ?? themeData.textTheme.headlineMedium,
                     overflow: TextOverflow.ellipsis,
                     textScaleFactor: MediaQuery.of(context).textScaleFactor > 2 ? 2 : null,
                   ),
                 ).paddingOnly(bottom: 5),
                 if (leading != null)
-                  leading.runtimeType == IconButton
-                      ? Padding(
+                  leading is IconButton || leading is Icon
+                      ? Container(
+                          height: _kSheetHeight,
                           padding: EdgeInsets.only(left: context.isTablet() ? 0 : 16),
                           child: Material(
                             shape: const CircleBorder(),
@@ -70,10 +71,10 @@ class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
                             child: Semantics(
                               sortKey: const OrdinalSortKey(1),
                               child: IconTheme(
-                                data: Theme.of(context).iconTheme.copyWith(
-                                      color: ZdsColors.greySwatch(context)[1000],
-                                      size: 24,
-                                    ),
+                                data: themeData.iconTheme.copyWith(
+                                  color: Zeta.of(context).colors.iconSubtle,
+                                  size: 24,
+                                ),
                                 child: leading!,
                               ),
                             ),
@@ -104,8 +105,9 @@ class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('headerText', headerText));
-    properties.add(DiagnosticsProperty<bool>('busy', busy));
-    properties.add(DiagnosticsProperty<TextStyle?>('headerTextStyle', headerTextStyle));
+    properties
+      ..add(StringProperty('headerText', headerText))
+      ..add(DiagnosticsProperty<bool>('busy', busy))
+      ..add(DiagnosticsProperty<TextStyle?>('headerTextStyle', headerTextStyle));
   }
 }

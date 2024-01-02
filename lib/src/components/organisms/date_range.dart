@@ -2,7 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
+
+/// A date range selector that also allows to quickly change the range selected by jumping to the next or
+/// previous set of dates.
+@Deprecated('Use ZdsDateRange instead')
+typedef DateRange = ZdsDateRange;
 
 /// A date range selector that also allows to quickly change the range selected by jumping to the next or
 /// previous set of dates.
@@ -35,8 +40,31 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [ZdsDateRangePickerTile], which allows to select a date range's start and end time separately.
 ///  * [ZdsDateTimePicker], a widget that allow to select a single date, a single time, or both.
-class DateRange extends StatefulWidget {
-  static const _kYearsFromNow = 20;
+class ZdsDateRange extends StatefulWidget {
+  /// Creates a date range selector.
+  const ZdsDateRange({
+    super.key,
+    this.firstDate,
+    this.lastDate,
+    this.initialDateRange,
+    this.onChange,
+    this.actions,
+    this.emptyLabel = '',
+    this.textStyle,
+    this.clearButtonString,
+    this.applyButtonString,
+    this.isSelectable = true,
+    this.dateRangeSeparator = '-',
+    this.nextTooltip,
+    this.previousTooltip,
+    this.isWeekMode = false,
+    this.startDayOfWeek = 0,
+    this.dateFormat,
+  }) : assert(
+          !isWeekMode || (startDayOfWeek >= 0 && startDayOfWeek <= 6),
+          'startingDayOfWeek must be an int between 0 and 6',
+        );
+  static const int _kYearsFromNow = 20;
 
   /// The earliest date that can be chosen for the range.
   ///
@@ -112,32 +140,9 @@ class DateRange extends StatefulWidget {
   /// to change date format of date range
   final String? dateFormat;
 
-  /// Creates a date range selector.
-  const DateRange({
-    super.key,
-    this.firstDate,
-    this.lastDate,
-    this.initialDateRange,
-    this.onChange,
-    this.actions,
-    this.emptyLabel = '',
-    this.textStyle,
-    this.clearButtonString,
-    this.applyButtonString,
-    this.isSelectable = true,
-    this.dateRangeSeparator = '-',
-    this.nextTooltip,
-    this.previousTooltip,
-    this.isWeekMode = false,
-    this.startDayOfWeek = 0,
-    this.dateFormat,
-  }) : assert(
-          !isWeekMode || (startDayOfWeek >= 0 && startDayOfWeek <= 6),
-          'startingDayOfWeek must be an int between 0 and 6',
-        );
-
   @override
-  DateRangeState createState() => DateRangeState();
+  ZdsDateRangeState createState() => ZdsDateRangeState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -155,18 +160,18 @@ class DateRange extends StatefulWidget {
       ..add(StringProperty('previousTooltip', previousTooltip))
       ..add(StringProperty('nextTooltip', nextTooltip))
       ..add(DiagnosticsProperty<bool>('isWeekMode', isWeekMode))
-      ..add(IntProperty('startDayOfWeek', startDayOfWeek));
-    properties.add(StringProperty('dateFormat', dateFormat));
+      ..add(IntProperty('startDayOfWeek', startDayOfWeek))
+      ..add(StringProperty('dateFormat', dateFormat));
   }
 }
 
-/// State for [DateRange].
-class DateRangeState extends State<DateRange> {
+/// State for [ZdsDateRange].
+class ZdsDateRangeState extends State<ZdsDateRange> {
   DateTimeRange? _selectedDateRange;
   Duration? _diff;
 
   @override
-  void didUpdateWidget(DateRange oldWidget) {
+  void didUpdateWidget(ZdsDateRange oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (widget.initialDateRange != null && widget.initialDateRange != oldWidget.initialDateRange) {
@@ -190,18 +195,20 @@ class DateRangeState extends State<DateRange> {
   }
 
   Future<void> _showDateSelector(BuildContext context) async {
-    final range = await showZdsDateRangePicker(
+    final DateTimeRange? range = await showZdsDateRangePicker(
       context: context,
       actions: widget.actions,
       initialDateRange: _selectedDateRange,
       useRootNavigator: false,
       firstDate: widget.firstDate ?? DateTime(1999),
-      lastDate: widget.lastDate ?? DateTime(DateTime.now().year + DateRange._kYearsFromNow),
+      lastDate: widget.lastDate ?? DateTime(DateTime.now().year + ZdsDateRange._kYearsFromNow),
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       clearButtonString: widget.clearButtonString,
       applyButtonString: widget.applyButtonString,
       isWeekMode: widget.isWeekMode,
       startingDayOfWeek: widget.startDayOfWeek,
+      shortDateFormat: widget.dateFormat,
+      shortMonthDayFormat: widget.dateFormat,
     );
     if (mounted) {
       setState(() {
@@ -224,7 +231,7 @@ class DateRangeState extends State<DateRange> {
     setState(() {
       // If current whole month is selected then select next whole month
       if (_selectedDateRange!.isWholeMonth) {
-        final start = DateTime(
+        final DateTime start = DateTime(
           _selectedDateRange!.start.year,
           _selectedDateRange!.start.month + 1,
           _selectedDateRange!.start.day,
@@ -249,7 +256,7 @@ class DateRangeState extends State<DateRange> {
     setState(() {
       // If current whole month is selected then select previous whole month
       if (_selectedDateRange!.isWholeMonth) {
-        final start = DateTime(
+        final DateTime start = DateTime(
           _selectedDateRange!.start.year,
           _selectedDateRange!.start.month - 1,
           _selectedDateRange!.start.day,
@@ -299,23 +306,34 @@ class DateRangeState extends State<DateRange> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = widget.textStyle ?? Theme.of(context).primaryTextTheme.bodyLarge!;
-    final text = DefaultTextStyle(
-      style: textStyle,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      child: Text(
-        _selectedDateRange == null ? widget.emptyLabel : _formatRange(context, dateFormat: widget.dateFormat),
-      ),
+    final isBeforeFirstDate = _isBeforeFirstDate();
+    final isAfterLastDate = _isAfterLastDate();
+
+    final text = Text(
+      _selectedDateRange == null ? widget.emptyLabel : _formatRange(context, dateFormat: widget.dateFormat),
+      style: widget.textStyle,
     );
+
     return Row(
       children: [
-        IconButton(
-          padding: EdgeInsets.zero,
-          onPressed: _isBeforeFirstDate() ? null : _prevDateRange,
-          tooltip: widget.previousTooltip,
-          splashRadius: 24,
-          icon: Icon(ZdsIcons.chevron_left, color: textStyle.color!.withOpacity(_isBeforeFirstDate() ? 0.5 : 1)),
+        Semantics(
+          excludeSemantics: true,
+          button: true,
+          label: widget.previousTooltip,
+          onTap: isBeforeFirstDate ? null : _prevDateRange,
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: isBeforeFirstDate ? null : _prevDateRange,
+            tooltip: widget.previousTooltip,
+            splashRadius: 24,
+            icon: Opacity(
+              opacity: isBeforeFirstDate ? 0.5 : 1,
+              child: Icon(
+                ZdsIcons.chevron_left,
+                color: widget.textStyle?.color,
+              ),
+            ),
+          ),
         ),
         if (!widget.isSelectable) text,
         if (widget.isSelectable)
@@ -324,12 +342,24 @@ class DateRangeState extends State<DateRange> {
             onTap: () async => _showDateSelector(context),
             child: text.paddingInsets(const EdgeInsets.symmetric(vertical: 8)),
           ),
-        IconButton(
-          padding: EdgeInsets.zero,
-          onPressed: _isAfterLastDate() ? null : _nextDateRange,
-          splashRadius: 24,
-          tooltip: widget.nextTooltip,
-          icon: Icon(ZdsIcons.chevron_right, color: textStyle.color!.withOpacity(_isAfterLastDate() ? 0.5 : 1)),
+        Semantics(
+          excludeSemantics: true,
+          button: true,
+          label: widget.nextTooltip,
+          onTap: isAfterLastDate ? null : _nextDateRange,
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: isAfterLastDate ? null : _nextDateRange,
+            splashRadius: 24,
+            tooltip: widget.nextTooltip,
+            icon: Opacity(
+              opacity: isAfterLastDate ? 0.5 : 1,
+              child: Icon(
+                ZdsIcons.chevron_right,
+                color: widget.textStyle?.color,
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -338,11 +368,11 @@ class DateRangeState extends State<DateRange> {
   /// Returns a locale-appropriate string to describe the start of a date range.
   String _formatRange(BuildContext context, {String? dateFormat}) {
     if (_selectedDateRange == null) return '';
-    final localizations = MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     if (_selectedDateRange!.isWholeMonth) {
       return localizations.formatMonthYear(_selectedDateRange!.start);
     }
-    final startDateFormatted = dateFormat != null
+    final String startDateFormatted = dateFormat != null
         ? DateFormat(dateFormat).format(_selectedDateRange!.start)
         : _formatStartDate(
             localizations,
@@ -350,7 +380,7 @@ class DateRangeState extends State<DateRange> {
             _selectedDateRange?.end,
           );
 
-    final endDateFormatted = dateFormat != null
+    final String endDateFormatted = dateFormat != null
         ? DateFormat(dateFormat).format(_selectedDateRange!.end)
         : _formatEndDate(
             localizations,

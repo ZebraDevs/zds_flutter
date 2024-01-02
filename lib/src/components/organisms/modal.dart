@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// A widget that can be passed to [showDialog] to warn the user of a potentially destructive action, like deleting a
 /// file. Can be used to obtain confirmation that they want to perform said action.
@@ -31,6 +31,18 @@ import '../../../zds_flutter.dart';
 ///
 ///  * [ZdsInputDialog], used to retrieve 1 String value with built-in validation.
 class ZdsModal extends StatelessWidget {
+  /// Creates the contents of a modal.
+  const ZdsModal({
+    super.key,
+    this.child,
+    this.actions = const <Widget>[],
+    this.padding = const EdgeInsets.all(24),
+    this.usesKeyboard = false,
+    this.icon,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.actionsPadding = const EdgeInsets.all(24),
+  });
+
   /// The padding that will surround the [child] widget.
   ///
   /// EdgeInsets.all(24) by default.
@@ -63,18 +75,6 @@ class ZdsModal extends StatelessWidget {
   /// Defaults to `EdgeInsets.all(24)`.
   final EdgeInsets actionsPadding;
 
-  /// Creates the contents of a modal.
-  const ZdsModal({
-    super.key,
-    this.child,
-    this.actions = const <Widget>[],
-    this.padding = const EdgeInsets.all(24),
-    this.usesKeyboard = false,
-    this.icon,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.actionsPadding = const EdgeInsets.all(24),
-  });
-
   @override
   Widget build(BuildContext context) {
     final Widget modal = SafeArea(
@@ -85,13 +85,14 @@ class ZdsModal extends StatelessWidget {
             child: Stack(
               alignment: Alignment.topCenter,
               clipBehavior: Clip.none,
-              children: [
+              children: <Widget>[
                 ZdsCard(
+                  backgroundColor: Theme.of(context).dialogTheme.backgroundColor,
                   padding: EdgeInsets.zero,
                   child: Column(
                     crossAxisAlignment: crossAxisAlignment,
                     mainAxisSize: MainAxisSize.min,
-                    children: [
+                    children: <Widget>[
                       Padding(
                         padding: padding,
                         child: child,
@@ -150,13 +151,12 @@ class ZdsModal extends StatelessWidget {
 }
 
 class _KeyboardAvoider extends StatelessWidget {
-  final Widget child;
-
   const _KeyboardAvoider({required this.child});
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     return Center(
       child: AnimatedContainer(
         padding: mediaQuery.viewInsets,

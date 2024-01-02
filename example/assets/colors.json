@@ -1,0 +1,19 @@
+{
+  "identifier": "default",
+  "themeMode": "system",
+  "contrast": "aa",
+  "fontFamily": "packages/zeta_flutter/IBMPlexSans",
+  "adjustAccessibility": false,
+  "light": {
+    "appBarStyle": "surface",
+    "primary": "#0073e6",
+    "secondary": "#0073e6",
+    "error": "#D70015"
+  },
+  "dark": {
+    "appBarStyle": "surface",
+    "primary": "#0073e6",
+    "secondary": "#0073e6",
+    "error": "#D70015"
+  }
+}
