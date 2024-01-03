@@ -31,7 +31,7 @@ class ZdsNestedTableView extends StatelessWidget {
   String get _tablecss =>
       'table, th, td{border:1px solid gray;}table {border-collapse: collapse;}td, tr{padding:6px}th {text-align: left;}';
 
-  ///Initial `data` as a content for an [WebView] instance.
+  ///Initial `data` as a content for an [InAppWebView] instance.
   InAppWebViewInitialData? get initialData => InAppWebViewInitialData(
         data: html,
       );
@@ -50,17 +50,9 @@ class ZdsNestedTableView extends StatelessWidget {
             Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new),
             Factory<HorizontalDragGestureRecognizer>(HorizontalDragGestureRecognizer.new),
           },
-          initialOptions: InAppWebViewGroupOptions(
-            crossPlatform: InAppWebViewOptions(
-              useShouldOverrideUrlLoading: true,
-              mediaPlaybackRequiresUserGesture: false,
-            ),
-            android: AndroidInAppWebViewOptions(
-              useHybridComposition: true,
-            ),
-            ios: IOSInAppWebViewOptions(
-              allowsInlineMediaPlayback: true,
-            ),
+          initialSettings: InAppWebViewSettings(
+            useShouldOverrideUrlLoading: true,
+            allowsInlineMediaPlayback: true,
           ),
           onPageCommitVisible: (controller, url) {
             if (applyCss) {

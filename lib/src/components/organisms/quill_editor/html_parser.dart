@@ -51,7 +51,6 @@ extension DeltaToHtml on Delta {
       </html>
       ''',
       ),
-      initialOptions: InAppWebViewGroupOptions(crossPlatform: InAppWebViewOptions()),
       onWebViewCreated: (InAppWebViewController controller) {
         // JavaScript handler to retrieve the converted HTML and complete the completer.
         controller.addJavaScriptHandler(
@@ -119,7 +118,6 @@ extension HtmlToDelta on String {
         </html>
         ''',
       ),
-      initialOptions: InAppWebViewGroupOptions(crossPlatform: InAppWebViewOptions()),
       onWebViewCreated: (InAppWebViewController controller) {
         // JavaScript handler to retrieve the converted Delta and complete the completer.
         controller.addJavaScriptHandler(

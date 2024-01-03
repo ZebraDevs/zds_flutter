@@ -105,9 +105,8 @@ class ZdsDateRangePickerTileForm extends FormField<ZdsDateTimeRange> {
                                 BuildContext context,
                                 BoxConstraints constraints,
                               ) {
-                                final double scale = MediaQuery.of(context).textScaleFactor;
-                                final double width = _calculateWidth(constraints, scale);
-                                final bool isColumn = constraints.maxWidth <= _screenColumnBreakpoint * scale;
+                                final double width = _calculateWidth(constraints);
+                                final bool isColumn = constraints.maxWidth <= _screenColumnBreakpoint;
                                 final List<Widget> fields = <Widget>[
                                   _DateField(
                                     date: state.value?.start ?? initialValue.start,
@@ -123,7 +122,6 @@ class ZdsDateRangePickerTileForm extends FormField<ZdsDateTimeRange> {
                                     validator: (DateTime? value) => state.hasError ? '' : null,
                                     isInitialDate: true,
                                     width: width,
-                                    scale: scale,
                                     startDayOfWeek: startDayOfWeek,
                                     okClickText: okClickText,
                                     cancelClickText: cancelClickText,
@@ -145,7 +143,6 @@ class ZdsDateRangePickerTileForm extends FormField<ZdsDateTimeRange> {
                                       );
                                     },
                                     width: width,
-                                    scale: scale,
                                     startDayOfWeek: startDayOfWeek,
                                     okClickText: okClickText,
                                     cancelClickText: cancelClickText,
@@ -335,13 +332,13 @@ class ZdsDateRangePickerTile extends StatefulWidget {
   }
 }
 
-double _calculateWidth(BoxConstraints constraints, double scale) {
-  final double maxWidthScale = _screenColumnBreakpoint * scale;
-  final double maxScale = (_screenColumnBreakpoint / 2) * scale;
+double _calculateWidth(BoxConstraints constraints) {
+  const double maxWidthScale = _screenColumnBreakpoint;
+  const double maxScale = _screenColumnBreakpoint / 2;
   if (constraints.maxWidth < maxWidthScale) {
     return maxWidthScale.clamp(0, maxScale);
   } else {
-    final double calculatedWidth = ((constraints.maxWidth - _padding) / 2) * scale;
+    final double calculatedWidth = (constraints.maxWidth - _padding) / 2;
     return calculatedWidth.clamp(0, maxScale);
   }
 }
@@ -389,9 +386,8 @@ class _ZdsDateRangePickerTileState extends State<ZdsDateRangePickerTile> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: LayoutBuilder(
                     builder: (BuildContext context, BoxConstraints constraints) {
-                      final double scale = MediaQuery.of(context).textScaleFactor;
-                      final double width = _calculateWidth(constraints, scale);
-                      final bool isColumn = constraints.maxWidth <= _screenColumnBreakpoint * scale;
+                      final double width = _calculateWidth(constraints);
+                      final bool isColumn = constraints.maxWidth <= _screenColumnBreakpoint;
                       final List<Widget> fields = <Widget>[
                         _DateField(
                           date: initialDate,
@@ -412,7 +408,6 @@ class _ZdsDateRangePickerTileState extends State<ZdsDateRangePickerTile> {
                           },
                           isInitialDate: true,
                           width: width,
-                          scale: scale,
                           startDayOfWeek: widget.startDayOfWeek,
                           okClickText: widget.okClickText,
                           cancelClickText: widget.cancelClickText,
@@ -439,7 +434,6 @@ class _ZdsDateRangePickerTileState extends State<ZdsDateRangePickerTile> {
                             return null;
                           },
                           width: width,
-                          scale: scale,
                           startDayOfWeek: widget.startDayOfWeek,
                           okClickText: widget.okClickText,
                           cancelClickText: widget.cancelClickText,
@@ -487,7 +481,6 @@ class _DateField extends StatelessWidget {
     required this.date,
     required this.format,
     required this.width,
-    required this.scale,
     this.validator,
     this.initialSelectableDate,
     this.finalSelectableDate,
@@ -507,7 +500,6 @@ class _DateField extends StatelessWidget {
   final String format;
   final String? helpText;
   final double width;
-  final double scale;
   final String? Function(DateTime?)? validator;
 
   /// Starting day of week 1, 2, 3, Sunday, Monday, Tuesday respectively.
@@ -586,13 +578,12 @@ class _DateField extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       SizedBox(
-                        height: _fontLineHeight * scale,
+                        height: _fontLineHeight,
                         child: date != null
                             ? Text(
                                 date!.format(format),
                                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                      height:
-                                          (_fontLineHeight / Theme.of(context).textTheme.bodyLarge!.fontSize!) / scale,
+                                      height: _fontLineHeight / Theme.of(context).textTheme.bodyLarge!.fontSize!,
                                     ),
                               )
                             : null,
@@ -646,7 +637,6 @@ class _DateField extends StatelessWidget {
       ..add(StringProperty('format', format))
       ..add(StringProperty('helpText', helpText))
       ..add(DoubleProperty('width', width))
-      ..add(DoubleProperty('scale', scale))
       ..add(
         ObjectFlagProperty<String? Function(DateTime? p1)?>.has(
           'validator',

@@ -136,7 +136,7 @@ class ZdsButton extends StatelessWidget {
         isOnDarkBackground = false,
         isDangerButton = false;
 
-  /// The Widget that will go inside the button, typically a [Text] with style [Theme.textTheme.titleMedium].
+  /// The Widget that will go inside the button, typically a [Text] with style [TextTheme.titleMedium].
   ///
   /// Must not be null.
   final Widget child;

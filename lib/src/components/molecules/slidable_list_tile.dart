@@ -307,9 +307,8 @@ class CustomSlidableAction extends StatelessWidget {
   /// {@template slidable.actions.foregroundColor}
   /// The foreground color of this action.
   ///
-  /// Defaults to [Colors.black] if [backgroundColor]'s brightness is
-  /// [Brightness.light], or to [Colors.white] if [backgroundColor]'s brightness is
-  /// [Brightness.dark].
+  /// Defaults to [Colors.black] if the background brightness is [Brightness.light],
+  /// or to [Colors.white] if background brightness is [Brightness.dark].
   /// {@endtemplate}
   final Color? foregroundColor;
 

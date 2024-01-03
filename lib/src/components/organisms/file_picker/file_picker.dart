@@ -248,7 +248,7 @@ class ZdsFilePicker extends StatefulWidget {
 
   /// List of processes a file should undergo post getting picked from file picker
   ///
-  /// Defaults to [zds DefaultPostProcessors]
+  /// Defaults to [zdsDefaultPostProcessors]
   final List<ZdsFilePostProcessor>? postProcessors;
 
   /// Validations that are needed to be performed on a file
@@ -258,7 +258,7 @@ class ZdsFilePicker extends StatefulWidget {
 
   /// A function called whenever any exception is thrown in selection process
   ///
-  /// Defaults to [zds FileError]
+  /// Defaults to [zdsFileError]
   final void Function(BuildContext context, FilePickerConfig config, Exception exception)? onError;
 
   @override
@@ -781,7 +781,7 @@ extension on ZdsFilePickerState {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: style?.copyWith(color: zetaColors.textSubtle),
-                  textScaleFactor: MediaQuery.of(context).textScaleFactor > 2.7 ? 2.7 : null,
+                  textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2.7),
                 ),
               ],
             ],

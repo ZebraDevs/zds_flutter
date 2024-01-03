@@ -99,7 +99,7 @@ class UnreadBadge extends StatelessWidget {
                     : Directionality.of(context) == TextDirection.ltr
                         ? '$maximumNumber+'
                         : '+$maximumNumber',
-                textScaleFactor: MediaQuery.of(context).textScaleFactor > 1.35 ? 1.35 : null,
+                textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.35),
                 style: themeData.textTheme.bodySmall?.copyWith(
                   color: foregroundColor ?? (backgroundColor ?? themeData.colorScheme.error).onColor,
                   fontSize: max(themeData.textTheme.bodySmall?.fontSize ?? 0, minHeight * 0.65),

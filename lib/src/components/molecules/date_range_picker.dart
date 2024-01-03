@@ -257,10 +257,6 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final Orientation orientation = MediaQuery.of(context).orientation;
     final TextTheme textTheme = theme.textTheme;
-    // Constrain the textScaleFactor to the largest supported value to prevent
-    // layout issues.
-    final double textScaleFactor = math.min(MediaQuery.of(context).textScaleFactor, 1.3);
-
     final String dateText = localizations.formatMediumDate(_selectedDate.value);
     final Color onPrimarySurface =
         colorScheme.brightness == Brightness.light ? colorScheme.onPrimary : colorScheme.onSurface;
@@ -371,7 +367,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
       entryModeButton: entryModeButton,
     );
 
-    final Size dialogSize = _dialogSize(context) * textScaleFactor;
+    final Size dialogSize = _dialogSize(context);
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       clipBehavior: Clip.antiAlias,
@@ -382,7 +378,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
         curve: Curves.easeIn,
         child: MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaleFactor: textScaleFactor,
+            textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.3),
           ),
           child: Builder(
             builder: (BuildContext context) {
@@ -1305,7 +1301,6 @@ class _ZdsDateRangePickerDialogState extends State<ZdsDateRangePickerDialog> wit
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final Orientation orientation = mediaQuery.orientation;
-    final double textScaleFactor = math.min(mediaQuery.textScaleFactor, 1.3);
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final Color onPrimarySurface =
@@ -1427,7 +1422,7 @@ class _ZdsDateRangePickerDialogState extends State<ZdsDateRangePickerDialog> wit
         curve: Curves.easeIn,
         child: MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaleFactor: textScaleFactor,
+            textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.3),
           ),
           child: Builder(
             builder: (BuildContext context) {

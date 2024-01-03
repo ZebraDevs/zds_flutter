@@ -70,13 +70,15 @@ class ZdsNestedFlowState extends State<ZdsNestedFlow> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) async {
         if (_navigator.currentState?.canPop() ?? false) {
           await _navigator.currentState?.maybePop();
-          return false;
         }
-        return widget.shouldClose;
+        if (widget.shouldClose && context.mounted) {
+          Navigator.of(context).pop();
+        }
       },
       child: Navigator(
         key: _navigator,

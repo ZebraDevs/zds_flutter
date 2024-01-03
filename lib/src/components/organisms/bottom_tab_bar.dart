@@ -190,7 +190,7 @@ class _ZdsBottomTabBarTile extends StatelessWidget {
               child: Text(
                 label,
                 style: labelStyle,
-                textScaleFactor: MediaQuery.of(context).textScaleFactor > 1.35 ? 1.35 : null,
+                textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.35),
               ),
             ),
           ],

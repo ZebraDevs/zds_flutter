@@ -234,7 +234,7 @@ class _ZdsDayPickerState extends State<ZdsDayPicker> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final double pillWidth = 68 * MediaQuery.of(context).textScaleFactor;
+        const double pillWidth = 68;
         const int pillSpacing = 4;
         const double horizontalPadding = 12;
 

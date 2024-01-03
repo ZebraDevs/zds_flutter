@@ -74,7 +74,7 @@ class ZdsNetworkAvatar extends StatelessWidget implements PreferredSizeWidget {
     final Center initialsWidget = Center(
       child: Text(
         initials,
-        textScaleFactor: 1,
+        textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1),
         style: textStyle ??
             themeData.textTheme.displaySmall?.copyWith(
               color: (backgroundColor ?? themeData.colorScheme.secondary).onColor,

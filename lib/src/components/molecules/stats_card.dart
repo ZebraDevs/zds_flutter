@@ -52,10 +52,9 @@ class ZdsStatCard extends StatelessWidget {
   final ZdsCardVariant? cardVariant;
 
   bool _isVertical(BuildContext context, BoxConstraints constraints) {
-    final double scale = MediaQuery.of(context).textScaleFactor;
     final double totalPadding = stats.length * 2 * _padding;
     final double totalDividers = _dividerWidth * 0.5 * (stats.length - 1);
-    final double width = ((totalDividers + totalPadding - constraints.maxWidth) / -stats.length) / scale;
+    final double width = (totalDividers + totalPadding - constraints.maxWidth) / -stats.length;
     for (int i = 0; i < stats.length; i++) {
       final bool description = hasTextOverflow(stats[i].description, Theme.of(context).textTheme.bodySmall!, width);
       final bool value = hasTextOverflow(
