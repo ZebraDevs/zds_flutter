@@ -11,5 +11,5 @@ export 'src/utils/localizations.dart';
 export 'src/utils/theme.dart';
 export 'src/utils/tools.dart';
 
-/// Name of package
+/// Name of package ttttttttt
 const String packageName = 'zds_flutter';
