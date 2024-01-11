@@ -1,34 +1,33 @@
 name: "Merge"
 
 on:
+  push:
   pull_request:
     types: [closed]
+    branches:
+      - main
 
 jobs:
   changes:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      any_changed: ${{ steps.changed-files.outputs.all_changed_files_count }}
     if: github.event.pull_request.merged
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Get all changed *.dart, files in docs or pubspec.yaml
         id: changed-files
-        uses: tj-actions/changed-files@v37
-        with:
-          base_sha: ${{ github.event.pull_request.base.sha }}
-          sha: ${{ github.event.pull_request.head.sha }}
-          files: |
-            **/*.dart
-            pubspec.yaml
-  merge:
+        uses: tj-actions/changed-files@v41
+  bump_and_tag:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: changes
-    if: needs.changes.outputs.files == 'true'
+    if: needs.changes.outputs.any_changed != '0'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
@@ -38,15 +37,7 @@ jobs:
         run: dart pub global activate cider
       - name: Change flutter version tag
         run: |
-          echo "FLUTTER_BUILD_VERSION=$(cider bump patch --bump-build)" >> "$GITHUB_ENV"
-      - name: Update CHANGELOG
-        id: changelog
-        uses: requarks/changelog-action@v1
-        with:
-          token: ${{ secrets.PAT }}
-          tag: ${{ steps.read-version.outputs.version-number }}
-          excludeTypes: ""
-          includeInvalidCommits: true
+          echo "FLUTTER_BUILD_VERSION=$(cider bump patch)" >> "$GITHUB_ENV"
       - name: Update
         id: update
         run: |
@@ -55,48 +46,29 @@ jobs:
           git add -A
           git commit --amend --no-edit
           git push -f
-          echo "newSha=$(git rev-parse ${{github.event.pull_request.head.sha}})" >>  $GITHUB_ENV
+          echo "newSha=$(git rev-parse HEAD)" >>  $GITHUB_ENV
       - name: Create tag
-        uses: actions/github-script@v6
+        id: tag
+        uses: mathieudutour/github-tag-action@v6.1
         with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/${{env.FLUTTER_BUILD_VERSION}}',
-              sha: "${{env.newSha}}"
-            })
-      - name: release
-        uses: actions/github-script@v5
-        if: ${{ (steps.bump.outputs.release == 'true') && (env.modified == 'true') }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{env.FLUTTER_BUILD_VERSION}}
+          tag_prefix: ""
+      - name: Update CHANGELOG
+        id: changelog
+        uses: requarks/changelog-action@v1
         with:
-          script: |
-            github.rest.repos.createRelease({
-                draft: false,
-                generate_release_notes: true,
-                name: "${{steps.bump.outputs.version}}",
-                owner: context.repo.owner,
-                prerelease: false,
-                repo: context.repo.repo,
-                tag_name: "${{steps.bump.outputs.version}}",
-              });
-  build_and_deploy:
-    if: github.event.pull_request.merged
-    runs-on: ubuntu-latest
-    needs: merge
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.13.x"
-          channel: "stable"
-      - name: Setup flutter
-        run: flutter pub get
-      - name: build
+          token: ${{ github.token }}
+          tag: ${{env.FLUTTER_BUILD_VERSION}}
+          excludeTypes: ""
+          includeInvalidCommits: true
+      - name: Push changelog
         run: |
-          cd example
-          flutter build web -o ../build --no-tree-shake-icons --base-href "/zds_flutter/"
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+          git add .
+          git commit --amend --no-edit
+          git push -f
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          folder: build
+          body: "https://pub.dev/packages/zds_flutter/versions/${{env.FLUTTER_BUILD_VERSION}}"
+          tag_name: ${{env.FLUTTER_BUILD_VERSION}}

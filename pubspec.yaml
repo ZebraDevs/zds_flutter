@@ -1,6 +1,6 @@
 name: zds_flutter
 description: Zebra Design System components for Flutter. A selection of UI components from Zebra Technologies.
-version: 1.0.0
+version: 1.0.2
 homepage: https://github.com/zebradevs/zds_flutter
 repository: https://github.com/zebradevs/zds_flutter
 issue_tracker: https://github.com/zebradevs/zds_flutter/issues
@@ -15,7 +15,7 @@ platforms:
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
-  flutter: ">=3.7.0"
+  flutter: ">=3.0.0 <3.16.0"
 
 dependencies:
   cached_network_image: ^3.2.1
