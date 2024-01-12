@@ -1,3 +1,7 @@
+## [1.0.1] - 2024-01-12
+
+- [`21a2bb9`](https://github.com/ZebraDevs/zds_flutter/commit/21a2bb9905cbedf381cb04cf37b31fc4c12275d8) - fix dependency violation. \_(commit by @thelukewalton)
+
 ## [1.0.0] - 2024-01-02
 
 ### :sparkles: New features
@@ -9,5 +13,3 @@
 ### :sparkles: New Features
 
 - [`885fa19`](https://github.com/zebradevs/zds-flutter/commit/885fa19d4d0ec4426a259b61cb828b6c9fac175e) - init. _(commit by [@thelukewalton](https://github.com/thelukewalton))_
-
-[1.0.0]: https://github.com/ZebraDevs/zds_flutter/compare/0.2.0...1.0.0
