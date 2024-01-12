@@ -416,6 +416,7 @@ Color iconColor(String ext) {
   }
 }
 
+/// Extensions to get an icon from a file type.
 extension IconDataFromExt on String {
   /// Assuming the string is a file name, this function returns the corresponding icon for the filetype.
   ///
@@ -435,6 +436,7 @@ extension IconDataFromExt on String {
     return _resolveFileIcon(this);
   }
 
+  /// Returns file type icon with color. See [IconDataFromExt.fileIcon].
   Icon coloredFileIcon() {
     return Icon(_resolveFileIcon(this), color: _resolveFileColor(this));
   }

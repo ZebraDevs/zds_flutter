@@ -12,14 +12,18 @@ A library of Flutter components made by Zebra Technologies based on the Zebra De
 Make sure your app meets the following requirements before using ZDS Flutter
 
 - sdk: >=3.0.10 <4.0.0
-- flutter: >=3.7.0
+- flutter: >=3.7.0 <3.16.0
+
+```
+Note: This package version may not work on the newest versions of Flutter (<3.16.0).
+```
 
 ## Usage
 
 Add the following as a dependency in your pubspec.yaml file.
 
 ```yml
-zds-flutter: ^1.0.0
+zds-flutter: ^1.0.1
 ```
 
 ## Getting started
