@@ -1,6 +1,9 @@
 name: CI - Pull Request
 on:
-  pull_request:
+  push: #TODO: Remove this
+  pull_request_target:
+    types:
+      - opened
 
 jobs:
   up-to-date:
@@ -14,8 +17,6 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Check branch is up to date
         run: |
-          echo ${{ github.event.pull_request.base.sha}}
-          echo ${{ github.event.pull_request.head.sha}}
           if git merge-base --is-ancestor ${{ github.event.pull_request.base.sha}} ${{ github.event.pull_request.head.sha}}
           then
             echo "Your branch is up to date."

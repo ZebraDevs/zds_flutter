@@ -14,13 +14,11 @@ dependencies:
   intl: ^0.18.0
   table_calendar: ^3.0.9
   shared_preferences: ^2.2.2
-  css_colors: ^1.1.4
   zds_flutter:
     path: ../
   flutter_quill: ^9.2.2
   flutter_localizations:
     sdk: flutter
-  zeta_flutter: ^0.1.1+1
 
 flutter:
   uses-material-design: true
