@@ -102,6 +102,7 @@ class ZdsQuillEditorPage extends StatefulWidget {
 
   @override
   State<ZdsQuillEditorPage> createState() => _ZdsQuillEditorState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
