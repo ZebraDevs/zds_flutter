@@ -134,6 +134,22 @@ class _ButtonDemoState extends State<ButtonDemo> {
                 // backgroundColor: Color.fromRGBO(215, 0, 21, 1),
                 type: CircleButtonType.negative,
               ),
+              const SizedBox(height: 10),
+              CircleIconButton(
+                icon: Icons.call_end_rounded,
+                label: "Accept",
+                // backgroundColor: Color.fromRGBO(215, 0, 21, 1),
+                type: CircleButtonType.positive,
+              ),
+              const SizedBox(height: 10),
+              CircleIconButton(
+                icon: Icons.mic_none_rounded,
+                label: "Mute",
+                // backgroundColor: Color.fromRGBO(215, 0, 21, 1),
+                type: CircleButtonType.unToggled,
+                activeIcon: Icons.mic_off_rounded,
+                activeLabel: "Un-Mute",
+              ),
             ],
             Row(
               children: [
