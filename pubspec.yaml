@@ -18,6 +18,7 @@ environment:
   flutter: ">=3.19.0"
 
 dependencies:
+  any_link_preview: ^3.0.1
   cached_network_image: ^3.2.1
   camerawesome: ^2.0.1
   chewie: ^1.7.1
@@ -62,6 +63,7 @@ dependencies:
   path_provider: ^2.0.2
   popover: ^0.3.0
   shared_preferences: ^2.2.2
+  shimmer: ^3.0.0
   table_calendar: ^3.0.3
   universal_platform: ^1.0.0+1
   url_launcher: ^6.0.10
