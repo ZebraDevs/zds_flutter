@@ -12,6 +12,7 @@ export 'molecules/dropdown.dart';
 export 'molecules/empty.dart';
 export 'molecules/expansion_tile.dart';
 export 'molecules/fields_list_tile.dart';
+export 'molecules/highlighted_word.dart';
 export 'molecules/icon_badge_widget.dart';
 export 'molecules/information_bar.dart';
 export 'molecules/input_dialog.dart';

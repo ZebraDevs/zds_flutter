@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zds_flutter_example/pages/components/audio_player.dart';
+import 'package:zds_flutter_example/pages/components/chat.dart';
+import 'package:zds_flutter_example/pages/theme/colors.dart';
+import 'package:zds_flutter_example/pages/theme/text.dart';
 
 import 'home.dart';
 import 'pages/assets/animations.dart';
@@ -293,6 +296,14 @@ final kRoutes = {
       title: 'Audio Player',
       child: AudioPlayerDemo(),
     ),
+    const DemoRoute(title: 'Infinite list', child: InfiniteListDemo()),
+    const DemoRoute(title: 'Bottom Tab Bar Scaffold', child: BottomTabScaffoldDemo()),
+    const DemoRoute(title: 'Sheet Headers', child: SheetHeaderDemo()),
+    const DemoRoute(title: 'Vertical Navigation', child: VerticalNavDemo()),
+    const DemoRoute(wrapper: false, title: 'Split Navigation', child: SplitNavigatorDemo()),
+    const DemoRoute(wrapper: false, title: 'Quill Editor', child: QuillEditorDemo()),
+    const DemoRoute(title: 'Html Preview', wrapper: false, child: HtmlPreview()),
+    const DemoRoute(title: 'Chat', child: ChatDemo()),
   ],
   'Assets': [
     const DemoRoute(
@@ -321,6 +332,9 @@ final kRoutes = {
       title: 'Typography',
       child: TextDemo(),
     ),
+    const DemoRoute(title: 'Colors', child: ColorsDemo()),
+    const DemoRoute(title: 'Colors generator', child: ColorUtilsDemo()),
+    const DemoRoute(title: 'Typography', child: TextDemo()),
   ],
 };
 

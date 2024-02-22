@@ -24,6 +24,7 @@ dependencies:
   collection: ^1.17.2
   cross_file: ^0.3.3+4
   csslib: ^0.17.3
+  dart_emoji: ^0.2.0+2
   dropdown_button2: ^2.1.4
   expand_tap_area: ^1.1.0
   extended_image: ^8.2.0
@@ -64,6 +65,7 @@ dependencies:
   table_calendar: ^3.0.3
   universal_platform: ^1.0.0+1
   url_launcher: ^6.0.10
+  validators: ^3.0.0
   video_compress: ^3.1.0
   video_player: ^2.7.2
   vsc_quill_delta_to_html: ^1.0.3
