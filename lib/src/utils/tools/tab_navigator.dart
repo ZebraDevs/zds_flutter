@@ -484,6 +484,7 @@ class ZdsFadePageRouteBuilder<T> extends PageRouteBuilder<T> {
     required this.builder,
     super.settings,
     super.fullscreenDialog,
+    super.opaque,
   }) : super(
           pageBuilder: (context, _, __) => builder(context),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {

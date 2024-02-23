@@ -54,12 +54,10 @@ extension on CircleButtonType {
         return ZetaColorSwatch.fromColor(Colors.red);
       case CircleButtonType.base:
         return ZetaColorSwatch.fromColor(colors.borderSubtle);
-
       case CircleButtonType.toggled:
         return ZetaColorSwatch.fromColor(colors.borderSubtle);
       case CircleButtonType.positive:
       case CircleButtonType.negative:
-      default:
         return ZetaColorSwatch.fromColor(Colors.white);
     }
   }
@@ -73,27 +71,27 @@ extension on CircleButtonType {
       case CircleButtonType.toggled:
       case CircleButtonType.positive:
       case CircleButtonType.negative:
-      default:
         return ZetaColorSwatch.fromColor(Colors.white);
     }
   }
 
-  bool get border => this.index > 1;
+  bool get border => index > 1;
 }
 
 /// Component [CircleIconButton]
 class CircleIconButton extends StatefulWidget {
   /// Constructor for [CircleIconButton]
 
-  const CircleIconButton(
-      {super.key,
-      this.size = ButtonSize.large,
-      required this.type,
-      required this.icon,
-      required this.label,
-      this.activeIcon,
-      this.activeLabel,
-      required this.onTap});
+  const CircleIconButton({
+    super.key,
+    this.size = ButtonSize.large,
+    required this.type,
+    required this.icon,
+    required this.label,
+    this.activeIcon,
+    this.activeLabel,
+    required this.onTap,
+  });
 
   /// Size for [CircleIconButton]
   final ButtonSize size;
@@ -144,8 +142,7 @@ class _CircleIconButton extends State<CircleIconButton> {
   }
 
   Future<void> handleClick() async {
-    final bool isToggleable =
-        type == CircleButtonType.toggled || type == CircleButtonType.base;
+    final bool isToggleable = type == CircleButtonType.toggled || type == CircleButtonType.base;
 
     //Change style to show button clicking effect
     if (!isToggleable) {
@@ -154,13 +151,11 @@ class _CircleIconButton extends State<CircleIconButton> {
       });
     }
 
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
 
     if (isToggleable) {
       setState(() {
-        type = (type == CircleButtonType.toggled)
-            ? CircleButtonType.base
-            : CircleButtonType.toggled;
+        type = (type == CircleButtonType.toggled) ? CircleButtonType.base : CircleButtonType.toggled;
       });
     }
 

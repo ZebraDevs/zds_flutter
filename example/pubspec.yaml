@@ -19,6 +19,9 @@ dependencies:
   flutter_quill: ^9.2.2
   flutter_localizations:
     sdk: flutter
+  scrollable_positioned_list: ^0.3.8
+  url_launcher: ^6.2.5
+  zeta_flutter: ^0.4.0
 
 flutter:
   uses-material-design: true

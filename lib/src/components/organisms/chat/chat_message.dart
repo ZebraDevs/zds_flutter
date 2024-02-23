@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../zds_flutter.dart';
 import 'chat_utils.dart';
 import 'message_body/deleted.dart';
+import 'message_body/file_preview.dart';
 import 'message_body/forwarded.dart';
 import 'message_body/info.dart';
 import 'message_body/read_receipt.dart';
@@ -136,8 +137,28 @@ class ZdsChatMessage extends StatelessWidget {
       return ZdsChatDeletedText(textContent: message.content);
     } else if (message.type == ZdsChatMessageType.text && message.content != null) {
       return ZdsChatTextMessage(searchTerm: searchTerm, content: message.content!, onLinkTapped: onLinkTapped);
+    } else if (message.isPreviewable) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (message.content != null)
+            ZdsChatTextMessage(
+              searchTerm: searchTerm,
+              content: message.content!,
+              onLinkTapped: onLinkTapped,
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+            ),
+          if (showFilePreview)
+            ZdsChatFilePreview(
+              type: message.attachmentType!,
+              attachment: message.attachment,
+              downloadCallback: onFileDownload,
+            ),
+        ],
+      );
+    } else {
+      return const Text('TODO: UX-941 Attachment ').paddingAll(12);
     }
-    return null;
   }
 
   @override

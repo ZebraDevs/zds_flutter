@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:zds_flutter/zds_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -10,6 +12,7 @@ void main() async {
   final preferences = await SharedPreferences.getInstance();
   final themeService = ZdsThemeService(assetPath: 'assets/colors.json', preferences: preferences);
   final themeData = await themeService.load();
+  HttpOverrides.global = MyHttpOverrides();
   runApp(
     DemoApp(
       data: themeData,
@@ -64,5 +67,13 @@ class DemoApp extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
 }
