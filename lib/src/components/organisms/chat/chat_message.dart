@@ -9,6 +9,7 @@ import 'message_body/info.dart';
 import 'message_body/read_receipt.dart';
 import 'message_body/reply.dart';
 import 'message_body/text.dart';
+import 'reacts_tags.dart';
 
 /// Chat message widget.
 class ZdsChatMessage extends StatelessWidget {
@@ -87,6 +88,8 @@ class ZdsChatMessage extends StatelessWidget {
   final ValueChanged<String>? onLinkTapped;
 
   /// Callback for when message is long pressed.
+  ///
+  /// Typically used to open a menu for tags and reacts.
   final VoidCallback? onLongPress;
 
   /// Callback for user to download attachment.
@@ -194,6 +197,19 @@ class ZdsChatMessage extends StatelessWidget {
                   ),
                 ),
               ),
+              if (!message.isDeleted)
+                Positioned(
+                  bottom: 0,
+                  right: isLocalUser ? 24 : null,
+                  left: !isLocalUser ? 24 : null,
+                  child: ReactTagsRow(
+                    reacts: message.reacts,
+                    tags: message.tags,
+                    reverse: isLocalUser,
+                    onTagTapped: onTagTapped,
+                    onReactTapped: onReactTapped,
+                  ),
+                ),
             ],
           ),
           ZdsReadReceipt(

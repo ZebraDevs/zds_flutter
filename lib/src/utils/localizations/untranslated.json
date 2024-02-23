@@ -1,5 +1,18 @@
 {
     "WEEK": "Week",
     "FROM": "From",
-    "ALL": "All"
+    "ALL": "All",
+    "MSG_NOT_SENT": "Message not sent",
+    "MSG_SENT": "Message sent",
+    "MSG_DELIVERED": "Message delivered",
+    "MSG_READ": "Message read",
+    "MSG_ERR": "Message status unknown",
+    "FORWARDED": "Forwarded",
+    "OPEN_REACTS": "Open reacts",
+    "REACTIONS": "reactions",
+    "REACTION": "reaction",
+    "TAGS": "tags",
+    "MODIFY_TAGS": "modify tags",
+    "MSG_DELETED": "This message was deleted",
+    "DOWNLOAD": "Download"
 }

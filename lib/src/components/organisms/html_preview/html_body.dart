@@ -10,7 +10,7 @@ import 'package:flutter_html_svg/flutter_html_svg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:html/dom.dart' as html;
 
-import '../../../../zds_flutter.dart' hide ZdsMessage;
+import '../../../../zds_flutter.dart';
 import 'nested_table.dart';
 import 'table_html_extension.dart';
 import 'video_html_extension.dart';
