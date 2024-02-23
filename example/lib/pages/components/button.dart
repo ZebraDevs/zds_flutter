@@ -129,26 +129,41 @@ class _ButtonDemoState extends State<ButtonDemo> {
               ),
               const SizedBox(height: 10),
               CircleIconButton(
-                icon: Icons.call_end_rounded,
+                icon: ZetaIcons.end_call_round,
                 label: "Reject",
-                // backgroundColor: Color.fromRGBO(215, 0, 21, 1),
                 type: CircleButtonType.negative,
+                onTap: () {
+                  print("Tap");
+                },
               ),
               const SizedBox(height: 10),
               CircleIconButton(
-                icon: Icons.call_end_rounded,
+                icon: ZetaIcons.phone_round,
                 label: "Accept",
-                // backgroundColor: Color.fromRGBO(215, 0, 21, 1),
                 type: CircleButtonType.positive,
+                onTap: () {
+                  print("Tap");
+                },
               ),
               const SizedBox(height: 10),
               CircleIconButton(
-                icon: Icons.mic_none_rounded,
+                icon: ZetaIcons.microphone_round,
                 label: "Mute",
-                // backgroundColor: Color.fromRGBO(215, 0, 21, 1),
-                type: CircleButtonType.unToggled,
-                activeIcon: Icons.mic_off_rounded,
+                type: CircleButtonType.base,
+                activeIcon: ZetaIcons.microphone_off_round,
                 activeLabel: "Un-Mute",
+                onTap: () {
+                  print("Tap");
+                },
+              ),
+              const SizedBox(height: 10),
+              CircleIconButton(
+                icon: ZetaIcons.alert_round,
+                label: "Security",
+                type: CircleButtonType.alert,
+                onTap: () {
+                  print("Tap");
+                },
               ),
             ],
             Row(

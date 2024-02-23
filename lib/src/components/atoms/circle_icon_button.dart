@@ -10,8 +10,11 @@ enum CircleButtonType {
   /// Negative button, defaults to red
   negative,
 
+  ///Alert button, defaults to white
+  alert,
+
   /// Untoggled button, defaults to white
-  unToggled,
+  base,
 
   /// Toggled button, defaults to black
   toggled
@@ -36,30 +39,61 @@ extension on CircleButtonType {
         return colors.positive;
       case CircleButtonType.negative:
         return colors.negative;
-      case CircleButtonType.unToggled:
+      case CircleButtonType.alert:
+        return ZetaColorSwatch.fromColor(Colors.white);
+      case CircleButtonType.base:
         return ZetaColorSwatch.fromColor(Colors.grey.shade100);
       case CircleButtonType.toggled:
         return ZetaColorSwatch.fromColor(Colors.black);
     }
   }
 
-  bool get border =>
-      this == CircleButtonType.toggled || this == CircleButtonType.unToggled;
+  ZetaColorSwatch borderColor(ZetaColors colors) {
+    switch (this) {
+      case CircleButtonType.alert:
+        return ZetaColorSwatch.fromColor(Colors.red);
+      case CircleButtonType.base:
+        return ZetaColorSwatch.fromColor(colors.borderSubtle);
+
+      case CircleButtonType.toggled:
+        return ZetaColorSwatch.fromColor(colors.borderSubtle);
+      case CircleButtonType.positive:
+      case CircleButtonType.negative:
+      default:
+        return ZetaColorSwatch.fromColor(Colors.white);
+    }
+  }
+
+  ZetaColorSwatch foregroundColor(ZetaColors colors) {
+    switch (this) {
+      case CircleButtonType.alert:
+        return ZetaColorSwatch.fromColor(Colors.red);
+      case CircleButtonType.base:
+        return ZetaColorSwatch.fromColor(Colors.black);
+      case CircleButtonType.toggled:
+      case CircleButtonType.positive:
+      case CircleButtonType.negative:
+      default:
+        return ZetaColorSwatch.fromColor(Colors.white);
+    }
+  }
+
+  bool get border => this.index > 1;
 }
 
 /// Component [CircleIconButton]
 class CircleIconButton extends StatefulWidget {
   /// Constructor for [CircleIconButton]
 
-  const CircleIconButton({
-    super.key,
-    this.size = ButtonSize.large,
-    required this.type,
-    required this.icon,
-    required this.label,
-    this.activeIcon,
-    this.activeLabel,
-  });
+  const CircleIconButton(
+      {super.key,
+      this.size = ButtonSize.large,
+      required this.type,
+      required this.icon,
+      required this.label,
+      this.activeIcon,
+      this.activeLabel,
+      required this.onTap});
 
   /// Size for [CircleIconButton]
   final ButtonSize size;
@@ -79,6 +113,9 @@ class CircleIconButton extends StatefulWidget {
   /// Toggled label
   final String? activeLabel;
 
+  /// Callback function
+  final VoidCallback onTap;
+
   @override
   State<CircleIconButton> createState() => _CircleIconButton();
 
@@ -91,7 +128,8 @@ class CircleIconButton extends StatefulWidget {
       ..add(DiagnosticsProperty<IconData>('icon', icon))
       ..add(StringProperty('label', label))
       ..add(DiagnosticsProperty<IconData?>('activeIcon', activeIcon))
-      ..add(StringProperty('activeLabel', activeLabel));
+      ..add(StringProperty('activeLabel', activeLabel))
+      ..add(ObjectFlagProperty<VoidCallback>.has('onTap', onTap));
   }
 }
 
@@ -107,7 +145,7 @@ class _CircleIconButton extends State<CircleIconButton> {
 
   Future<void> handleClick() async {
     final bool isToggleable =
-        type == CircleButtonType.toggled || type == CircleButtonType.unToggled;
+        type == CircleButtonType.toggled || type == CircleButtonType.base;
 
     //Change style to show button clicking effect
     if (!isToggleable) {
@@ -121,7 +159,7 @@ class _CircleIconButton extends State<CircleIconButton> {
     if (isToggleable) {
       setState(() {
         type = (type == CircleButtonType.toggled)
-            ? CircleButtonType.unToggled
+            ? CircleButtonType.base
             : CircleButtonType.toggled;
       });
     }
@@ -129,6 +167,8 @@ class _CircleIconButton extends State<CircleIconButton> {
     setState(() {
       isPressed = false;
     });
+
+    widget.onTap();
   }
 
   @override
@@ -146,7 +186,7 @@ class _CircleIconButton extends State<CircleIconButton> {
             child: Icon(
               toggled ? widget.activeIcon : widget.icon,
               size: _iconSize,
-              color: type.color(colors).onColor,
+              color: type.foregroundColor(colors),
             ).padding(_iconPadding),
           ),
         ),
@@ -195,7 +235,7 @@ class _CircleIconButton extends State<CircleIconButton> {
       borderRadius: const BorderRadius.all(Radius.circular(360)),
       border: type.border
           ? Border.all(
-              color: colors.borderSubtle,
+              color: type.borderColor(colors),
             )
           : null,
     );
