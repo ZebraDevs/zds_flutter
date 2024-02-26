@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../zds_flutter.dart';
+import '../../../zds_flutter.dart';
 
 /// Defines a button for [ZdsBottomTabBar] or [ZdsVerticalNav]. Used in [ZdsBottomTabBar.items].
 class ZdsNavItem {
@@ -190,7 +190,7 @@ class _ZdsBottomTabBarTile extends StatelessWidget {
               child: Text(
                 label,
                 style: labelStyle,
-                textScaleFactor: MediaQuery.of(context).textScaleFactor > 1.35 ? 1.35 : null,
+                textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.35),
               ),
             ),
           ],

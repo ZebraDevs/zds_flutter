@@ -706,13 +706,20 @@ class HtmlPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final htmlList = [mediaHtml, html, htmlData, tableHtml, testHtml, imgHtml];
+    String htmlContent =
+        '''<p style="margin-left:0px;"><br><span style="color:#202122;font-family:'Arial',sans-serif;font-size:10.5pt;"><strong>Birds</strong> are a group of </span><a target="_blank" rel="noopener noreferrer\" href="https://en.wikipedia.org/wiki/Warm-blooded"><span style="color:#3366CC;font-family:'Arial',sans-serif;font-size:10.5pt;">warm-blooded</span></a>
+    
+    ''';
+    final colorHtml =
+        '''<p><span style=\"color:#e6ffff\">blue</span><br/><span style=\"color:#303F9F\">PURPLE</span><br/><span style=\"color:#D32F2F\">red</span><br/><span style=\"color:#00796B\">Green</span><br/><span style=\"color:#FFF176\">YELLOW</span><br/><span style=\"color:#000000\">Black </span><br/><span style=\"color:#EEEEEE\">Gray</span></p>''';
+    final htmlList = [mediaHtml, htmlContent, html, htmlData, colorHtml];
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text('Html Preview'),
       ),
       body: ListView.separated(
+        shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           final data = htmlList[index];
           return ZdsHtmlContainer(

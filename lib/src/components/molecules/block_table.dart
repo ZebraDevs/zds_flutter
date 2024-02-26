@@ -139,7 +139,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     _tableBody = _controllers.addAndGet();
 
     WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-      headerHeight = widget.rowHeaderHeight * MediaQuery.of(context).textScaleFactor;
+      headerHeight = widget.rowHeaderHeight;
       buildTable();
     });
 
@@ -230,7 +230,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
             Container(
               alignment: Alignment.center,
               width: _getDayColumnWidth(),
-              height: 28 * MediaQuery.of(context).textScaleFactor,
+              height: 28,
               color: themeData.colorScheme.surface,
               child: Text(
                 items[index].text,
@@ -416,7 +416,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     return Container(
       alignment: Alignment.center,
       width: _getAssocColumnWidth(),
-      height: 28 * MediaQuery.of(context).textScaleFactor,
+      height: 28,
       color: Theme.of(context).colorScheme.surface,
     ).paddingOnly(right: 1);
   }

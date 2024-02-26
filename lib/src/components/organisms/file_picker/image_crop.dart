@@ -43,7 +43,7 @@ class ZdsImageCropPostProcessor implements ZdsFilePostProcessor {
         return FileWrapper(file.type, ZdsXFile.fromFile(result));
       }
     }
-
-    return file;
+    // Clicking cancel returns an empty file.
+    return const FileWrapper(FilePickerOptions.GALLERY, null);
   }
 }

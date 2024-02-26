@@ -6,6 +6,25 @@ import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:html/dom.dart' as html;
 
+/// Supported tags for [TableHtmlExtension] to use with flutter_html library.
+const zdsTableTags = {
+  'table',
+  'tr',
+  'tbody',
+  'tfoot',
+  'thead',
+  'th',
+  'td',
+  'col',
+  'p',
+  'div',
+  'blockquote',
+  'ol',
+  'ul',
+  'li',
+  'colgroup',
+};
+
 /// [TableHtmlExtension] adds support for the <table> element to the flutter_html library.
 /// <tr>, <tbody>, <tfoot>, <thead>, <th>, <td>, <col>, and <colgroup> are also
 /// supported.
@@ -16,23 +35,7 @@ class ZdsTableHtmlExtension extends HtmlExtension {
   const ZdsTableHtmlExtension();
 
   @override
-  Set<String> get supportedTags => <String>{
-        'table',
-        'tr',
-        'tbody',
-        'tfoot',
-        'thead',
-        'th',
-        'td',
-        'col',
-        'p',
-        'div',
-        'blockquote',
-        'ol',
-        'ul',
-        'li',
-        'colgroup',
-      };
+  Set<String> get supportedTags => zdsTableTags;
 
   @override
   bool matches(ExtensionContext context) {

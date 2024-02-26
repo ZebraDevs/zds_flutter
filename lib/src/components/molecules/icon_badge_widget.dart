@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -65,7 +63,7 @@ class IconWithBadge extends StatelessWidget {
 
   /// The fill for drawing the icon.
   ///
-  /// Requires the underlying icon font to support the `FILL` [FontVariation]
+  /// Requires the underlying icon font to support the `FILL` `FontVariation`
   /// axis, otherwise has no effect. Variable font filenames often indicate
   /// the supported axes. Must be between 0.0 (unfilled) and 1.0 (filled),
   /// inclusive.
@@ -82,7 +80,7 @@ class IconWithBadge extends StatelessWidget {
 
   /// The stroke weight for drawing the icon.
   ///
-  /// Requires the underlying icon font to support the `weight` [FontVariation]
+  /// Requires the underlying icon font to support the `weight` `FontVariation`
   /// axis, otherwise has no effect. Variable font filenames often indicate
   /// the supported axes. Must be greater than 0.
   ///
@@ -97,7 +95,7 @@ class IconWithBadge extends StatelessWidget {
 
   /// The grade (granular stroke weight) for drawing the icon.
   ///
-  /// Requires the underlying icon font to support the `GRAD` [FontVariation]
+  /// Requires the underlying icon font to support the `GRAD` `FontVariation`
   /// axis, otherwise has no effect. Variable font filenames often indicate
   /// the supported axes. Can be negative.
   ///
@@ -120,7 +118,7 @@ class IconWithBadge extends StatelessWidget {
 
   /// The optical size for drawing the icon.
   ///
-  /// Requires the underlying icon font to support the `optical size` [FontVariation]
+  /// Requires the underlying icon font to support the `optical size` `FontVariation`
   /// axis, otherwise has no effect. Variable font filenames often indicate
   /// the supported axes. Must be greater than 0.
   ///

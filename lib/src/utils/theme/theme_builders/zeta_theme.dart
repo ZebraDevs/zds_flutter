@@ -82,14 +82,16 @@ extension AppBarColor on ZetaAppBarStyle {
 extension ZetaThemeBuilder on ZetaColorScheme {
   /// Converts the ZetaColorScheme to a ThemeData object.
   ///
-  /// Takes optional parameters `fontFamily` , a string representing
+  /// Takes optional parameters [fontFamily] , a string representing
   /// the font that the generated ThemeData object will use, and
-  /// `appBarStyle` an enum object of type ZetaAppBarStyle to define the
+  /// [appBarStyle] an enum object of type ZetaAppBarStyle to define the
   /// style of the AppBar. These parameters defaults to null and ZetaAppBarStyle.primary
   /// respectively if they're not provided.
+  /// [useMaterial3] enables or disabled the Material3 design, defaults to false
   ThemeData toTheme({
     String? fontFamily,
     ZetaAppBarStyle appBarStyle = ZetaAppBarStyle.primary,
+    bool useMaterial3 = false,
   }) {
     // A TextTheme object for the colors onPrimary.
     final primaryTextTheme = buildZdsTextTheme(
@@ -112,6 +114,7 @@ extension ZetaThemeBuilder on ZetaColorScheme {
     return ThemeData(
       colorScheme: this,
       appBarTheme: barTheme,
+      useMaterial3: useMaterial3,
       bottomAppBarTheme: bottomAppBarTheme(),
       bottomNavigationBarTheme: bottomNavigationBarTheme(textTheme),
       bottomSheetTheme: bottomSheetTheme(),

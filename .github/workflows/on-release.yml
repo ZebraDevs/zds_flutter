@@ -1,0 +1,50 @@
+name: "CI - Release"
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+*"
+
+jobs:
+  check-package:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    environment: pub.dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.x"
+          channel: "stable"
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Format code
+        run: dart format --fix .
+      - name: Check Publish Warnings
+        run: dart pub publish --dry-run
+      - name: Publish
+        run: dart pub publish --force
+  deploy-preview:
+    name: Deploy preview version of the example app on firebase
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.x"
+          channel: "stable"
+      - name: Setup flutter
+        run: flutter pub get
+      - name: Build example app
+        run: |
+          cd example
+          flutter build web -o ../build --no-tree-shake-icons
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_ZDS_FLUTTER }}"
+          expires: 7d
+          projectId: zds-c9c24
+          channelId: "release"

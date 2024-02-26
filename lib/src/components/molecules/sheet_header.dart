@@ -56,7 +56,7 @@ class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
                     headerText,
                     style: headerTextStyle ?? themeData.textTheme.headlineMedium,
                     overflow: TextOverflow.ellipsis,
-                    textScaleFactor: MediaQuery.of(context).textScaleFactor > 2 ? 2 : null,
+                    textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2),
                   ),
                 ).paddingOnly(bottom: 5),
                 if (leading != null)

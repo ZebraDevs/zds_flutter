@@ -14,12 +14,14 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   static const pickerConfig = FilePickerConfig(
     maxFilesAllowed: 5,
     maxFileSize: 2500000,
+    maxVideoTimeInSeconds: 10,
     options: [
       FilePickerOptions.FILE,
       FilePickerOptions.GIF,
       FilePickerOptions.LINK,
       FilePickerOptions.CAMERA,
       FilePickerOptions.GALLERY,
+      FilePickerOptions.VIDEO,
     ],
   );
 

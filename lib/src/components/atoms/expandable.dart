@@ -15,7 +15,7 @@ const Duration _kFadeDuration = Duration(milliseconds: 200);
 ///
 /// See also:
 ///
-///  * [readMore], an alternative way of making a collapsible widget.
+///  * [ExpandableTextExtension.readMore], an alternative way of making a collapsible widget.
 class ZdsExpandable extends StatelessWidget {
   /// A widget that can be collapsed and expanded.
   const ZdsExpandable({

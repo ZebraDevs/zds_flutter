@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zds_flutter/zds_flutter.dart';
 
 ///Example for htmlEditor
@@ -25,7 +26,29 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Quill Editor')),
+      appBar: AppBar(
+        title: const Text('Quill Editor'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.html),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
+                    child: Dialog(
+                      child: ZdsCard(
+                        child: Text(ZdsQuillDelta(document: controller.document).toHtml()),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.edit),
         onPressed: () {
@@ -33,7 +56,7 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
             context,
             title: 'Edit Notes',
             initialDelta: ZdsQuillDelta(document: controller.document),
-            charLimit: 200,
+            charLimit: 20000,
           ).then((value) {
             if (value != null) {
               controller.document = value.document;
@@ -45,9 +68,12 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
         children: [
           Expanded(
             child: QuillEditor.basic(
-              padding: const EdgeInsets.all(16),
-              controller: controller,
-              readOnly: true,
+              configurations: QuillEditorConfigurations(
+                padding: const EdgeInsets.all(16),
+                controller: controller,
+                readOnly: true,
+              ),
+              focusNode: FocusNode(canRequestFocus: false),
             ),
           ),
         ],
