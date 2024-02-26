@@ -1,11 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../zds_flutter.dart';
 
 /// Variants of [ZdsSearchField].
 enum ZdsSearchFieldVariant {
-  /// Creates a Search field with a border on all edges of color [ZetaColors.warm.60].
+  /// Creates a Search field with a border on all edges of color `ZetaColors.warm.60`.
   outlined,
 
   /// Creates a Search field with a box shadow around the edges with a radius of 4.

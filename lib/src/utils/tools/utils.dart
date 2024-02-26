@@ -632,3 +632,204 @@ Set<String> getAllowedFileBrowserTypes({required bool useLiveMediaOnly, required
   }
   return allowedFileTypes;
 }
+
+//// Generates color from String
+extension ColorFromString on String {
+  /// Creates a [Color] from a String.
+  ///
+  /// The String follows either of the "RRGGBB" or "AARRGGBB" formats, with an optional leading "#".
+  Color colorFromHex() {
+    final StringBuffer buffer = StringBuffer();
+    if (length == 6 || length == 7) buffer.write('ff');
+    buffer.write(replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
+
+  //// Function to convert CSS color string (rgb or rgba) to RGB
+  Color colorFromRGBString() {
+    final rgbaMatch = RegExp(r'rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*\d+\.?\d*)?\)').firstMatch(this);
+    final red = int.parse(rgbaMatch?.group(1) ?? '0');
+    final green = int.parse(rgbaMatch?.group(2) ?? '0');
+    final blue = int.parse(rgbaMatch?.group(3) ?? '0') >> 16;
+    final color = Color.fromRGBO(red, green, blue, 1);
+    return color; //Color.fromRGBO(red,green,blue, 0.5);
+  }
+
+  //// Function to convert named CSS colors to RGB
+  Color? colorFromNamedColor() {
+    final Map<String, Color> namedColors = {
+      'aliceBlue': const Color(0xFFF0F8FF),
+      'antiqueWhite': const Color(0xFFFAEBD7),
+      'aqua': const Color(0xFF00FFFF),
+      'aquamarine': const Color(0xFF7FFFD4),
+      'azure': const Color(0xFFF0FFFF),
+      'beige': const Color(0xFFF5F5DC),
+      'bisque': const Color(0xFFFFE4C4),
+      'black': const Color(0xFF000000),
+      'blanchedAlmond': const Color(0xFFFFEBCD),
+      'blue': const Color(0xFF0000FF),
+      'blueViolet': const Color(0xFF8A2BE2),
+      'brown': const Color(0xFFA52A2A),
+      'burlyWood': const Color(0xFFDEB887),
+      'cadetBlue': const Color(0xFF5F9EA0),
+      'chartreuse': const Color(0xFF7FFF00),
+      'chocolate': const Color(0xFFD2691E),
+      'coral': const Color(0xFFFF7F50),
+      'cornflowerBlue': const Color(0xFF6495ED),
+      'cornsilk': const Color(0xFFFFF8DC),
+      'crimson': const Color(0xFFDC143C),
+      'cyan': const Color(0xFF00FFFF),
+      'darkBlue': const Color(0xFF00008B),
+      'darkCyan': const Color(0xFF008B8B),
+      'darkGoldenRod': const Color(0xFFB8860B),
+      'darkGray': const Color(0xFFA9A9A9),
+      'darkGreen': const Color(0xFF006400),
+      'darkGrey': const Color(0xFFA9A9A9),
+      'darkKhaki': const Color(0xFFBDB76B),
+      'darkMagenta': const Color(0xFF8B008B),
+      'darkOliveGreen': const Color(0xFF556B2F),
+      'darkOrange': const Color(0xFFFF8C00),
+      'darkOrchid': const Color(0xFF9932CC),
+      'darkRed': const Color(0xFF8B0000),
+      'darkSalmon': const Color(0xFFE9967A),
+      'darkSeaGreen': const Color(0xFF8FBC8F),
+      'darkSlateBlue': const Color(0xFF483D8B),
+      'darkSlateGray': const Color(0xFF2F4F4F),
+      'darkSlateGrey': const Color(0xFF2F4F4F),
+      'darkTurquoise': const Color(0xFF00CED1),
+      'darkViolet': const Color(0xFF9400D3),
+      'deepPink': const Color(0xFFFF1493),
+      'deepSkyBlue': const Color(0xFF00BFFF),
+      'dimGray': const Color(0xFF696969),
+      'dimGrey': const Color(0xFF696969),
+      'dodgerBlue': const Color(0xFF1E90FF),
+      'fireBrick': const Color(0xFFB22222),
+      'floralWhite': const Color(0xFFFFFAF0),
+      'forestGreen': const Color(0xFF228B22),
+      'fuchsia': const Color(0xFFFF00FF),
+      'gainsboro': const Color(0xFFDCDCDC),
+      'ghostWhite': const Color(0xFFF8F8FF),
+      'gold': const Color(0xFFFFD700),
+      'goldenRod': const Color(0xFFDAA520),
+      'gray': const Color(0xFF808080),
+      'green': const Color(0xFF008000),
+      'greenYellow': const Color(0xFFADFF2F),
+      'grey': const Color(0xFF808080),
+      'honeyDew': const Color(0xFFF0FFF0),
+      'hotPink': const Color(0xFFFF69B4),
+      'indianRed': const Color(0xFFCD5C5C),
+      'indigo': const Color(0xFF4B0082),
+      'ivory': const Color(0xFFFFFFF0),
+      'khaki': const Color(0xFFF0E68C),
+      'lavender': const Color(0xFFE6E6FA),
+      'lavenderBlush': const Color(0xFFFFF0F5),
+      'lawnGreen': const Color(0xFF7CFC00),
+      'lemonChiffon': const Color(0xFFFFFACD),
+      'lightBlue': const Color(0xFFADD8E6),
+      'lightCoral': const Color(0xFFF08080),
+      'lightCyan': const Color(0xFFE0FFFF),
+      'lightGoldenRodYellow': const Color(0xFFFAFAD2),
+      'lightGray': const Color(0xFFD3D3D3),
+      'lightGreen': const Color(0xFF90EE90),
+      'lightGrey': const Color(0xFFD3D3D3),
+      'lightPink': const Color(0xFFFFB6C1),
+      'lightSalmon': const Color(0xFFFFA07A),
+      'lightSeaGreen': const Color(0xFF20B2AA),
+      'lightSkyBlue': const Color(0xFF87CEFA),
+      'lightSlateGray': const Color(0xFF778899),
+      'lightSlateGrey': const Color(0xFF778899),
+      'lightSteelBlue': const Color(0xFFB0C4DE),
+      'lightYellow': const Color(0xFFFFFFE0),
+      'lime': const Color(0xFF00FF00),
+      'limeGreen': const Color(0xFF32CD32),
+      'linen': const Color(0xFFFAF0E6),
+      'magenta': const Color(0xFFFF00FF),
+      'maroon': const Color(0xFF800000),
+      'mediumAquaMarine': const Color(0xFF66CDAA),
+      'mediumBlue': const Color(0xFF0000CD),
+      'mediumOrchid': const Color(0xFFBA55D3),
+      'mediumPurple': const Color(0xFF9370DB),
+      'mediumSeaGreen': const Color(0xFF3CB371),
+      'mediumSlateBlue': const Color(0xFF7B68EE),
+      'mediumSpringGreen': const Color(0xFF00FA9A),
+      'mediumTurquoise': const Color(0xFF48D1CC),
+      'mediumVioletRed': const Color(0xFFC71585),
+      'midnightBlue': const Color(0xFF191970),
+      'mintCream': const Color(0xFFF5FFFA),
+      'mistyRose': const Color(0xFFFFE4E1),
+      'moccasin': const Color(0xFFFFE4B5),
+      'navajoWhite': const Color(0xFFFFDEAD),
+      'navy': const Color(0xFF000080),
+      'oldLace': const Color(0xFFFDF5E6),
+      'olive': const Color(0xFF808000),
+      'oliveDrab': const Color(0xFF6B8E23),
+      'orange': const Color(0xFFFFA500),
+      'orangeRed': const Color(0xFFFF4500),
+      'orchid': const Color(0xFFDA70D6),
+      'paleGoldenRod': const Color(0xFFEEE8AA),
+      'paleGreen': const Color(0xFF98FB98),
+      'paleTurquoise': const Color(0xFFAFEEEE),
+      'paleVioletRed': const Color(0xFFDB7093),
+      'papayaWhip': const Color(0xFFFFEFD5),
+      'peachPuff': const Color(0xFFFFDAB9),
+      'peru': const Color(0xFFCD853F),
+      'pink': const Color(0xFFFFC0CB),
+      'plum': const Color(0xFFDDA0DD),
+      'powderBlue': const Color(0xFFB0E0E6),
+      'purple': const Color(0xFF800080),
+      'rebeccaPurple': const Color(0xFF663399),
+      'red': const Color(0xFFFF0000),
+      'rosyBrown': const Color(0xFFBC8F8F),
+      'royalBlue': const Color(0xFF4169E1),
+      'saddleBrown': const Color(0xFF8B4513),
+      'salmon': const Color(0xFFFA8072),
+      'sandyBrown': const Color(0xFFF4A460),
+      'seaGreen': const Color(0xFF2E8B57),
+      'seaShell': const Color(0xFFFFF5EE),
+      'sienna': const Color(0xFFA0522D),
+      'silver': const Color(0xFFC0C0C0),
+      'skyBlue': const Color(0xFF87CEEB),
+      'slateBlue': const Color(0xFF6A5ACD),
+      'slateGray': const Color(0xFF708090),
+      'slateGrey': const Color(0xFF708090),
+      'snow': const Color(0xFFFFFAFA),
+      'springGreen': const Color(0xFF00FF7F),
+      'steelBlue': const Color(0xFF4682B4),
+      'tan': const Color(0xFFD2B48C),
+      'teal': const Color(0xFF008080),
+      'thistle': const Color(0xFFD8BFD8),
+      'tomato': const Color(0xFFFF6347),
+      'turquoise': const Color(0xFF40E0D0),
+      'violet': const Color(0xFFEE82EE),
+      'wheat': const Color(0xFFF5DEB3),
+      'white': const Color(0xFFFFFFFF),
+      'whiteSmoke': const Color(0xFFF5F5F5),
+      'yellow': const Color(0xFFFFFF00),
+      'yellowGreen': const Color(0xFF9ACD32),
+    };
+
+    return namedColors[toLowerCase()];
+  }
+}
+
+/// Extension to determine if a [num] is a whole number.
+extension Whole on num {
+  /// Extension to determine if a [num] is a whole number.
+  bool get isWhole => this % 1 == 0;
+}
+
+/// Extension on [Duration]
+extension DurationFormatter on Duration {
+  /// Returns a string with days, hours, minutes, and seconds in the
+  /// following format: `MM:SS`. For example,
+  ///
+  ///   var d = new Duration( minutes:1, seconds:20);
+  ///   d.formatted();  // "1:20"
+  String formatted() {
+    final segments = [inMinutes.remainder(60), inSeconds.remainder(60)].map((seg) {
+      return seg.toString().padLeft(2, '0');
+    }).toList();
+
+    return segments.join(':');
+  }
+}

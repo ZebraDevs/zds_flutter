@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zds_flutter_example/pages/theme/colors.dart';
-import 'package:zds_flutter_example/pages/theme/text.dart';
+import 'package:zds_flutter_example/pages/components/audio_player.dart';
 
 import 'home.dart';
 import 'pages/assets/animations.dart';
@@ -15,8 +14,10 @@ import 'pages/components/bottom_tab_bar.dart';
 import 'pages/components/bottom_tab_scaffold.dart';
 import 'pages/components/button.dart';
 import 'pages/components/calendar.dart';
+import 'pages/components/camera_example.dart';
 import 'pages/components/card_actions.dart';
 import 'pages/components/card.dart';
+import 'pages/components/conditional_wrapper.dart';
 import 'pages/components/date_picker.dart';
 import 'pages/components/day_picker_demo.dart';
 import 'pages/components/default_flutter.dart';
@@ -31,9 +32,10 @@ import 'pages/components/image_picker.dart';
 import 'pages/components/index.dart';
 import 'pages/components/infinite_list.dart';
 import 'pages/components/information_bar.dart';
+import 'pages/components/interactive_viewer.dart';
+import 'pages/components/list_tile_wrapper.dart';
 import 'pages/components/list_tile.dart';
 import 'pages/components/list.dart';
-import 'pages/components/list_tile_wrapper.dart';
 import 'pages/components/modal.dart';
 import 'pages/components/navigation_menu.dart';
 import 'pages/components/popover.dart';
@@ -44,7 +46,10 @@ import 'pages/components/radio_list.dart';
 import 'pages/components/search.dart';
 import 'pages/components/sheet_header.dart';
 import 'pages/components/slidable_list_tile.dart';
+import 'pages/components/speed_scrollable_list.dart';
+import 'pages/components/speed_slider.dart';
 import 'pages/components/split_navigator.dart';
+import 'pages/components/star_rating.dart';
 import 'pages/components/stats_card.dart';
 import 'pages/components/tab_bar.dart';
 import 'pages/components/tag_list.dart';
@@ -53,6 +58,8 @@ import 'pages/components/text_field.dart';
 import 'pages/components/toast.dart';
 import 'pages/components/toolbar.dart';
 import 'pages/components/vertical_nav.dart';
+import 'pages/theme/colors.dart';
+import 'pages/theme/text.dart';
 import 'pages/utils/color_utils.dart';
 
 final kRoutes = {
@@ -74,8 +81,23 @@ final kRoutes = {
       child: CardDemo(),
     ),
     const DemoRoute(
+      title: 'Camera',
+      wrapper: false,
+      child: CameraExample(),
+    ),
+    const DemoRoute(
       title: 'Card Actions',
       child: CardActionsDemo(),
+    ),
+    const DemoRoute(
+      title: 'Interactive Viewer',
+      wrapper: false,
+      child: InteractiveViewerExample(),
+    ),
+    const DemoRoute(
+      title: 'Conditional Wrapper',
+      wrapper: false,
+      child: ConditionalWrapperExample(),
     ),
     const DemoRoute(
       title: 'File Picker',
@@ -224,27 +246,81 @@ final kRoutes = {
       title: 'Default Flutter',
       child: DefaultFlutter(),
     ),
-    const DemoRoute(title: 'Infinite list', child: InfiniteListDemo()),
-    const DemoRoute(title: 'Bottom Tab Bar Scaffold', child: BottomTabScaffoldDemo()),
-    const DemoRoute(title: 'Sheet Headers', child: SheetHeaderDemo()),
-    const DemoRoute(title: 'Vertical Navigation', child: VerticalNavDemo()),
-    const DemoRoute(wrapper: false, title: 'Split Navigation', child: SplitNavigatorDemo()),
-    const DemoRoute(wrapper: false, title: 'Quill Editor', child: QuillEditorDemo()),
-    const DemoRoute(title: 'Html Preview', wrapper: false, child: HtmlPreview()),
-  ],
-  'Animations': [
-    const DemoRoute(title: 'Colors generator', child: ColorUtilsDemo()),
+    const DemoRoute(
+      title: 'Infinite list',
+      child: InfiniteListDemo(),
+    ),
+    const DemoRoute(
+      title: 'Bottom Tab Bar Scaffold',
+      child: BottomTabScaffoldDemo(),
+    ),
+    const DemoRoute(
+      title: 'Sheet Headers',
+      child: SheetHeaderDemo(),
+    ),
+    const DemoRoute(
+      title: 'Vertical Navigation',
+      child: VerticalNavDemo(),
+    ),
+    const DemoRoute(
+      wrapper: false,
+      title: 'Split Navigation',
+      child: SplitNavigatorDemo(),
+    ),
+    const DemoRoute(
+      wrapper: false,
+      title: 'Quill Editor',
+      child: QuillEditorDemo(),
+    ),
+    const DemoRoute(
+      title: 'Html Preview',
+      wrapper: false,
+      child: HtmlPreview(),
+    ),
+    const DemoRoute(
+      title: 'Speed Slider',
+      child: SpeedSliderDemo(),
+    ),
+    const DemoRoute(
+      title: 'Speed Scrollable List',
+      child: SpeedScrollableListDemo(),
+    ),
+    const DemoRoute(
+      title: 'Star Rating',
+      child: StarRatingExample(),
+    ),
+    const DemoRoute(
+      title: 'Audio Player',
+      child: AudioPlayerDemo(),
+    ),
   ],
   'Assets': [
-    const DemoRoute(title: 'Animations', child: AnimationsDemo()),
-    const DemoRoute(title: 'Images', child: ImagesDemo()),
-    const DemoRoute(title: 'Icons', child: IconsDemo())
+    const DemoRoute(
+      title: 'Animations',
+      child: AnimationsDemo(),
+    ),
+    const DemoRoute(
+      title: 'Images',
+      child: ImagesDemo(),
+    ),
+    const DemoRoute(
+      title: 'Icons',
+      child: IconsDemo(),
+    )
   ],
-  'Colors': [
-    const DemoRoute(title: 'Colors', child: ColorsDemo()),
-  ],
-  'Typography': [
-    const DemoRoute(title: 'Typography', child: TextDemo()),
+  'Theme': [
+    const DemoRoute(
+      title: 'Colors',
+      child: ColorsDemo(),
+    ),
+    const DemoRoute(
+      title: 'Colors generator',
+      child: ColorUtilsDemo(),
+    ),
+    const DemoRoute(
+      title: 'Typography',
+      child: TextDemo(),
+    ),
   ],
 };
 

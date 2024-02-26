@@ -162,7 +162,7 @@ class _VideoWidgetState extends State<ZdsVideoWidget> with AutomaticKeepAliveCli
     }
 
     return AspectRatio(
-      aspectRatio: _width! / _height!,
+      aspectRatio: _width != null && _height != null ? _width! / _height! : 16 / 9,
       child: Chewie(
         controller: _chewieController!,
       ),

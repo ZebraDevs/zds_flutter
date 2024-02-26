@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_audio/flutter_html_audio.dart';
 import 'package:flutter_html_svg/flutter_html_svg.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:html/dom.dart' as html;
+
 import '../../../../zds_flutter.dart';
 import 'nested_table.dart';
 import 'table_html_extension.dart';
@@ -60,196 +62,22 @@ class ZdsHtml extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final colorscheme = themeData.colorScheme;
-    BoxDecoration boxDecoration() => BoxDecoration(
-          color: Zeta.of(context).colors.surfaceDisabled,
-          border: Border.all(color: Zeta.of(context).colors.borderSubtle, width: 0.5),
-          borderRadius: BorderRadius.circular(8),
-        );
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints box) {
         return Html(
           data: htmlText,
-          style: <String, Style>{
-            'p': Style(
-              fontSize: fontSize != null ? FontSize(fontSize!) : null,
-              maxLines: maxLines,
-              lineHeight: LineHeight.percent(125),
-              textOverflow: TextOverflow.ellipsis,
-              margin: Margins.only(left: 0, right: 0),
-            ),
-            'li': Style(
-              fontSize: fontSize != null ? FontSize(fontSize!) : null,
-              maxLines: maxLines,
-              lineHeight: LineHeight.percent(125),
-              textOverflow: TextOverflow.ellipsis,
-              margin: Margins.only(left: 0, right: 0),
-              backgroundColor: Theme.of(context).colorScheme.surface,
-            ),
-            'table': Style(
-              width: Width.auto(),
-              border: Border(
-                bottom: BorderSide(color: colorscheme.onBackground),
-                left: BorderSide(color: colorscheme.onBackground),
-                right: BorderSide(color: colorscheme.onBackground),
-                top: BorderSide(color: colorscheme.onBackground),
-              ),
-            ),
-            'tr': Style(
-              width: Width.auto(),
-              border: Border(
-                bottom: BorderSide(color: colorscheme.onBackground, width: 0.5),
-                left: BorderSide(color: colorscheme.onBackground, width: 0.5),
-                right: BorderSide(color: colorscheme.onBackground, width: 0.5),
-                top: BorderSide(color: colorscheme.onBackground, width: 0.5),
-              ),
-            ),
-            'th': Style(width: Width.auto(), padding: HtmlPaddings.all(6)),
-            'td': Style(
-              width: Width.auto(),
-              padding: HtmlPaddings.all(6),
-              alignment: Alignment.topLeft,
-              border: Border(
-                bottom: BorderSide(color: colorscheme.onBackground, width: 0.5),
-                left: BorderSide(color: colorscheme.onBackground, width: 0.5),
-                right: BorderSide(color: colorscheme.onBackground, width: 0.5),
-                top: BorderSide(color: colorscheme.onBackground, width: 0.5),
-              ),
-            ),
-            'h5': Style(maxLines: maxLines, textOverflow: TextOverflow.ellipsis),
-            'iframe': Style(width: Width(box.maxWidth), height: Height((box.maxWidth / 16) * 9)),
-            'figure': Style(width: Width(box.maxWidth)),
-            'blockquote': Style(
-              padding: HtmlPaddings.only(left: 16),
-              border: Border(left: BorderSide(color: Zeta.of(context).colors.borderSubtle, width: 5)),
-            ),
-            ...style,
-          },
+          style: _buildStyles(context, colorscheme, box),
           extensions: <HtmlExtension>[
-            TagWrapExtension(
-              tagsToWrap: <String>{'table'},
-              builder: (Widget child) {
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.only(right: 150),
-                  scrollDirection: Axis.horizontal,
-                  physics: const ClampingScrollPhysics(),
-                  child: child,
-                );
-              },
-            ),
-            const ZdsTableHtmlExtension(),
-            extensions.get(
-              'video',
-              fallback: const ZdsVideoHtmlExtension(),
-            ),
-            extensions.get(
-              'audio',
-              fallback: const AudioHtmlExtension(),
-            ),
-            extensions.get(
-              'svg',
-              fallback: const SvgHtmlExtension(),
-            ),
-            extensions.get(
-              'img',
-              fallback: TagExtension(
-                tagsToExtend: {'img'},
-                builder: (ctx) {
-                  final url = ctx.attributes['src'];
-                  return url != null && url.isNotEmpty
-                      ? ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: box.maxWidth),
-                          child: kIsWeb ? Image.network(url) : CachedNetworkImage(imageUrl: url),
-                        )
-                      : Container();
-                },
-              ),
-            ),
-            extensions.get(
-              'loader',
-              fallback: TagExtension(
-                tagsToExtend: {'loader'},
-                builder: (ctx) {
-                  return DecoratedBox(
-                    decoration: boxDecoration(),
-                    child: const AspectRatio(
-                      aspectRatio: 16 / 9,
-                      child: Center(child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator())),
-                    ),
-                  );
-                },
-              ),
-            ),
-            extensions.get(
-              'nestedtable',
-              fallback: TagExtension(
-                tagsToExtend: {'nestedtable'},
-                builder: (ctx) {
-                  return InkWell(
-                    child: Text(
-                      ComponentStrings.of(context).get('TABLE_CONTENT', 'Click to see table content'),
-                      style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
-                    ),
-                    onTap: () {
-                      final tableHtml = ctx.element?.outerHtml;
-                      final applycss = (ctx.element?.attributes ?? {})['applycss'] == 'true';
-                      if (tableHtml != null && tableHtml.isNotEmpty) {
-                        unawaited(
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => ZdsNestedTableView(tableHtml, applyCss: applycss)),
-                          ),
-                        );
-                      }
-                    },
-                  ).paddingOnly(top: 10, bottom: 10);
-                },
-              ),
-            ),
-            extensions.get(
-              'mediacontainer',
-              fallback: TagExtension(
-                tagsToExtend: {'mediacontainer'},
-                builder: (ctx) {
-                  final url = ctx.attributes['src'];
-                  final zetaColors = Zeta.of(context).colors;
-                  return url != null && url.isNotEmpty
-                      ? InkWell(
-                          child: DecoratedBox(
-                            decoration: boxDecoration(),
-                            child: AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.error,
-                                      color: zetaColors.iconSubtle,
-                                      size: 50,
-                                    ).paddingOnly(bottom: 20),
-                                    Text(
-                                      ComponentStrings.of(context).get('MEDIA_ERROR', 'Error loading media.'),
-                                      style: themeData.textTheme.headlineMedium,
-                                    ).paddingOnly(bottom: 10),
-                                    Text(
-                                      url,
-                                      style: themeData.textTheme.bodyMedium
-                                          ?.copyWith(color: zetaColors.link, decoration: TextDecoration.underline),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ).padding(10),
-                          ),
-                          onTap: () {
-                            onLinkTap?.call(url, ctx.attributes, ctx.element);
-                          },
-                        )
-                      : const SizedBox.shrink();
-                },
-              ),
-            ),
+            _buildTableWrapper(),
+            ...zdsTableTags.map((e) => extensions.get(e, fallback: const ZdsTableHtmlExtension())),
+            extensions.get('video', fallback: const ZdsVideoHtmlExtension()),
+            extensions.get('audio', fallback: const AudioHtmlExtension()),
+            extensions.get('svg', fallback: const SvgHtmlExtension()),
+            extensions.get('img', fallback: _imageExtension(box)),
+            extensions.get('loader', fallback: _loader()),
+            extensions.get('nestedtable', fallback: _nestedTable(context)),
+            extensions.get('mediacontainer', fallback: _unknownMediaType()),
           ],
           onLinkTap: onLinkTap,
           onCssParseError: (String css, List<Message> messages) {
@@ -261,6 +89,170 @@ class ZdsHtml extends StatelessWidget {
             return '';
           },
         );
+      },
+    );
+  }
+
+  TagWrapExtension _buildTableWrapper() {
+    return TagWrapExtension(
+      tagsToWrap: <String>{'table'},
+      builder: (Widget child) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const ClampingScrollPhysics(),
+          child: child.paddingOnly(right: 150),
+        );
+      },
+    );
+  }
+
+  Map<String, Style> _buildStyles(BuildContext context, ColorScheme colorscheme, BoxConstraints box) {
+    return <String, Style>{
+      'p': Style(
+        fontSize: fontSize != null ? FontSize(fontSize!) : null,
+        maxLines: maxLines,
+        lineHeight: LineHeight.percent(125),
+        textOverflow: TextOverflow.ellipsis,
+        margin: Margins.only(left: 0, right: 0),
+      ),
+      'li': Style(
+        fontSize: fontSize != null ? FontSize(fontSize!) : null,
+        maxLines: maxLines,
+        lineHeight: LineHeight.percent(125),
+        textOverflow: TextOverflow.ellipsis,
+        margin: Margins.only(left: 0, right: 0),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+      ),
+      'table': Style(
+        height: Height.auto(),
+        width: Width.auto(),
+        border: Border(
+          bottom: BorderSide(color: colorscheme.onBackground),
+          left: BorderSide(color: colorscheme.onBackground),
+          right: BorderSide(color: colorscheme.onBackground),
+          top: BorderSide(color: colorscheme.onBackground),
+        ),
+      ),
+      'tr': Style(
+        height: Height.auto(),
+        width: Width.auto(),
+        border: Border(
+          bottom: BorderSide(color: colorscheme.onBackground, width: 0.5),
+          left: BorderSide(color: colorscheme.onBackground, width: 0.5),
+          right: BorderSide(color: colorscheme.onBackground, width: 0.5),
+          top: BorderSide(color: colorscheme.onBackground, width: 0.5),
+        ),
+      ),
+      'th': Style(
+        height: Height.auto(),
+        width: Width.auto(),
+        border: Border(
+          bottom: BorderSide(color: colorscheme.onBackground, width: 0.5),
+          left: BorderSide(color: colorscheme.onBackground, width: 0.5),
+          right: BorderSide(color: colorscheme.onBackground, width: 0.5),
+          top: BorderSide(color: colorscheme.onBackground, width: 0.5),
+        ),
+        padding: HtmlPaddings.all(6),
+      ),
+      'td': Style(
+        height: Height.auto(),
+        width: Width.auto(),
+        padding: HtmlPaddings.all(6),
+        alignment: Alignment.topLeft,
+        border: Border(
+          bottom: BorderSide(color: colorscheme.onBackground, width: 0.5),
+          left: BorderSide(color: colorscheme.onBackground, width: 0.5),
+          right: BorderSide(color: colorscheme.onBackground, width: 0.5),
+          top: BorderSide(color: colorscheme.onBackground, width: 0.5),
+        ),
+      ),
+      'h5': Style(maxLines: maxLines, textOverflow: TextOverflow.ellipsis),
+      'iframe': Style(width: Width(box.maxWidth), height: Height((box.maxWidth / 16) * 9)),
+      'figure': Style(width: Width(box.maxWidth)),
+      'blockquote': Style(
+        padding: HtmlPaddings.only(left: 16),
+        border: Border(left: BorderSide(color: Zeta.of(context).colors.borderSubtle, width: 5)),
+      ),
+      ...style,
+    };
+  }
+
+  TagExtension _unknownMediaType() {
+    return TagExtension(
+      tagsToExtend: {'mediacontainer'},
+      builder: (ctx) {
+        final initialUrl = Uri.tryParse(ctx.attributes['src'] ?? '');
+        return initialUrl != null
+            ? ColoredBox(
+                color: Colors.black,
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: InAppWebView(
+                    initialUrlRequest: URLRequest(url: WebUri.uri(initialUrl)),
+                    initialSettings: InAppWebViewSettings(
+                      verticalScrollBarEnabled: false,
+                      horizontalScrollBarEnabled: false,
+                      disableHorizontalScroll: true,
+                      disableVerticalScroll: true,
+                      supportZoom: false,
+                      disableContextMenu: true,
+                    ),
+                  ),
+                ),
+              )
+            : const SizedBox.shrink();
+      },
+    );
+  }
+
+  TagExtension _nestedTable(BuildContext context) {
+    return TagExtension(
+      tagsToExtend: {'nestedtable'},
+      builder: (ctx) {
+        return InkWell(
+          child: Text(
+            ComponentStrings.of(context).get('TABLE_CONTENT', 'Click to see table content'),
+            style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+          ),
+          onTap: () {
+            final tableHtml = ctx.element?.outerHtml;
+            final applycss = (ctx.element?.attributes ?? {})['applycss'] == 'true';
+            if (tableHtml != null && tableHtml.isNotEmpty) {
+              unawaited(
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ZdsNestedTableView(tableHtml, applyCss: applycss)),
+                ),
+              );
+            }
+          },
+        ).paddingOnly(top: 10, bottom: 10);
+      },
+    );
+  }
+
+  TagExtension _loader() {
+    return TagExtension(
+      tagsToExtend: {'loader'},
+      builder: (ctx) {
+        return const AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Center(child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator())),
+        );
+      },
+    );
+  }
+
+  TagExtension _imageExtension(BoxConstraints box) {
+    return TagExtension(
+      tagsToExtend: {'img'},
+      builder: (ctx) {
+        final url = ctx.attributes['src'];
+        return url != null && url.isNotEmpty
+            ? ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: box.maxWidth),
+                child: kIsWeb ? Image.network(url) : CachedNetworkImage(imageUrl: url),
+              )
+            : Container();
       },
     );
   }

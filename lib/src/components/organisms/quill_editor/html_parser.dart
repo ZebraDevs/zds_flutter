@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/quill_delta.dart';
 
 import '../../../../zds_flutter.dart';
 
@@ -51,7 +51,7 @@ extension DeltaToHtml on Delta {
       </html>
       ''',
       ),
-      initialOptions: InAppWebViewGroupOptions(crossPlatform: InAppWebViewOptions()),
+      initialSettings: InAppWebViewSettings(),
       onWebViewCreated: (InAppWebViewController controller) {
         // JavaScript handler to retrieve the converted HTML and complete the completer.
         controller.addJavaScriptHandler(
@@ -119,7 +119,7 @@ extension HtmlToDelta on String {
         </html>
         ''',
       ),
-      initialOptions: InAppWebViewGroupOptions(crossPlatform: InAppWebViewOptions()),
+      initialSettings: InAppWebViewSettings(),
       onWebViewCreated: (InAppWebViewController controller) {
         // JavaScript handler to retrieve the converted Delta and complete the completer.
         controller.addJavaScriptHandler(

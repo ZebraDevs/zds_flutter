@@ -135,21 +135,14 @@ class ZdsHorizontalList extends _ZdsHorizontalList {
 }
 
 class _ZdsHorizontalList extends StatelessWidget {
-  const _ZdsHorizontalList({
-    super.key,
-    _ZdsHorizontalChildDelegate? delegate,
-    Widget? caption,
-    bool isReducedHeight = false,
-  })  : _isReducedHeight = isReducedHeight,
-        _delegate = delegate,
-        _caption = caption;
-  final Widget? _caption;
-  final _ZdsHorizontalChildDelegate? _delegate;
-  final bool _isReducedHeight;
+  const _ZdsHorizontalList({super.key, this.delegate, this.caption, this.isReducedHeight = false});
+  final Widget? caption;
+  final _ZdsHorizontalChildDelegate? delegate;
+  final bool isReducedHeight;
 
   @override
   Widget build(BuildContext context) {
-    final Widget firstItem = _delegate!.build(context, 0);
+    final Widget firstItem = delegate!.build(context, 0);
 
     return MeasureSize(
       child: firstItem,
@@ -159,11 +152,11 @@ class _ZdsHorizontalList extends StatelessWidget {
           children: <Widget>[
             DefaultTextStyle(
               style: Theme.of(context).textTheme.displayMedium!,
-              child: _caption != null ? _caption!.paddingOnly(top: 20, left: 20, right: 20) : const SizedBox(),
+              child: caption != null ? caption!.paddingOnly(top: 20, left: 20, right: 20) : const SizedBox(),
             ),
             SizedBox(
               width: double.infinity,
-              height: _isReducedHeight ? size.height : size.height + 20,
+              height: isReducedHeight ? size.height : size.height + 20,
               child: CustomScrollView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -172,8 +165,8 @@ class _ZdsHorizontalList extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        _delegate!.build,
-                        childCount: _delegate!.estimatedChildCount,
+                        delegate!.build,
+                        childCount: delegate!.estimatedChildCount,
                       ),
                     ),
                   ),
@@ -190,8 +183,8 @@ class _ZdsHorizontalList extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<_ZdsHorizontalChildDelegate?>('delegate', _delegate))
-      ..add(DiagnosticsProperty<bool>('isReducedHeight', _isReducedHeight));
+      ..add(DiagnosticsProperty<_ZdsHorizontalChildDelegate?>('delegate', delegate))
+      ..add(DiagnosticsProperty<bool>('isReducedHeight', isReducedHeight));
   }
 }
 

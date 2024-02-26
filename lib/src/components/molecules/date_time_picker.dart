@@ -312,7 +312,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
     } else {
       final date = await _showDatePicker(context, currentValue ?? DateTime.now());
       if (date != null) {
-        if (mounted) {
+        if (context.mounted) {
           final time = await _showTimePicker(context, currentValue ?? DateTime.now());
           if (time != null) {
             newValue = _combine(date, time);
@@ -329,6 +329,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
   }
 
   Future<DateTime?> _showDatePicker(BuildContext context, DateTime? currentValue) {
+    final componentString = ComponentStrings.of(context);
     return showZdsFiscalDatePicker(
       format: widget.format,
       context: context,
@@ -336,7 +337,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
           (widget.minDate != null && DateTime.now().isBefore(widget.minDate!) ? widget.minDate! : DateTime.now()),
       firstDate: widget.minDate ?? DateTime(1900),
       lastDate: widget.maxDate ?? DateTime(2100),
-      titleText: widget.helpText ?? 'Select Date',
+      titleText: widget.helpText ?? componentString.get('SELECT_DATE', 'Select Date'),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).zdsDateTimePickerTheme.copyWith(
@@ -345,8 +346,8 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
           child: child!,
         );
       },
-      cancelText: widget.cancelClickText ?? ComponentStrings.of(context).get('CANCEL', 'Cancel'),
-      okText: widget.okClickText ?? ComponentStrings.of(context).get('OK', 'OK'),
+      cancelText: widget.cancelClickText ?? componentString.get('CANCEL', 'Cancel'),
+      okText: widget.okClickText ?? componentString.get('OK', 'OK'),
       startDayOfWeek: widget.startDayOfWeek ?? 1,
     );
   }
@@ -366,7 +367,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
         ? TimeOfDay.fromDateTime(currentValue ?? DateTime.now())
         : TimeOfDay.fromDateTime(currentValue ?? _roundDate(DateTime.now()));
 
-    final timePickerResult = widget.interval == null && mounted
+    final timePickerResult = widget.interval == null && context.mounted
         ? await showTimePicker(
             context: context,
             initialTime: initialValue,
@@ -375,7 +376,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
             helpText: widget.helpText,
             builder: timePickerBuilder,
           )
-        : mounted
+        : context.mounted
             ? await interval_picker.showIntervalTimePicker(
                 context: context,
                 initialTime: initialValue,

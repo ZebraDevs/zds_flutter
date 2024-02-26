@@ -176,7 +176,7 @@ class ZdsFileSize extends StatelessWidget {
   Widget _sizeText(BuildContext context, int size) {
     return Text(
       fileSizeWithUnit(size),
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Zeta.of(context).colors.textDisabled),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Zeta.of(context).colors.textSubtle),
     );
   }
 

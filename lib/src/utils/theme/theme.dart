@@ -383,7 +383,7 @@ extension ThemeExtension on ThemeData {
       final ThemeData theme = Theme.of(context);
 
       final TabBarTheme tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
-      final TextStyle? labelStyle = hasIcons ? theme.textTheme.bodyXSmall : theme.textTheme.bodyLarge;
+      final TextStyle? labelStyle = hasIcons ? theme.textTheme.bodySmall : theme.textTheme.bodyLarge;
 
       return ZdsTabBarStyleContainer(
         customTheme: ZdsTabBarThemeData(

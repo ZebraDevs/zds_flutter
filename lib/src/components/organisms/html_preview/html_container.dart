@@ -4,10 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:html/dom.dart' as css;
 import 'package:html/parser.dart' show parse;
 import 'package:http_client_helper/http_client_helper.dart';
+
 import '../../../../../zds_flutter.dart';
 import 'html_body.dart' as html;
+
+final _mediaTypeCache = <String, MediaType>{};
 
 /// An enumeration to represent different types of media content.
 enum MediaType {
@@ -20,6 +24,9 @@ enum MediaType {
   /// webUrl
   webUrl
 }
+
+/// Map of colors Swatch
+Map<Color, ZetaColorSwatch> htmlColorSwatch = {};
 
 /// A container widget for displaying HTML content with optional features.
 ///
@@ -98,9 +105,11 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
   String htmlContent = '';
   double? containerWidth;
 
-  Map<String, MediaType> embeddedMedia = <String, MediaType>{};
+  static final mediaRegex = RegExp(
+    '<figure class="media">.*?(?:url|src|data-oembed-url|href)="(https?://[^"]+)".*?</figure>',
+    dotAll: true,
+  );
 
-  static final mediaRegex = RegExp('<figure class="media">.*?data-oembed-url="(.*?)".*?</figure>', dotAll: true);
   static final loaderRegex = RegExp(r'<loader\s+src=(\S+)></loader>', dotAll: true);
   static final iFrameRegex = RegExp('<iframe.*?src="(.*?)".*?</iframe>', dotAll: true);
   static final nestedTableRegex = RegExp('.*?<table.*?<table.*?.*?</table>.*?</table>.*?', dotAll: true);
@@ -172,8 +181,7 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
     for (final RegExpMatch match in matches) {
       final String? mediaUrl = match.group(1);
       if (mediaUrl != null) {
-        final MediaType mediaType = await _getMediaType(mediaUrl);
-        embeddedMedia[mediaUrl] = mediaType;
+        await _cacheMediaType(mediaUrl);
       }
     }
   }
@@ -208,16 +216,18 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
   void _transformMediaFigures() {
     String mediaUrl;
     htmlContent = htmlContent.replaceAllMapped(loaderRegex, (Match match) {
-      mediaUrl = match.group(1) ?? '';
+      mediaUrl = (match.group(1) ?? '').replaceAll('"', '').replaceAll(r'\', '').replaceAll("'", '');
       String attributes = 'controls';
       if (containerWidth != null) {
         attributes = '$attributes width=$containerWidth height=${(containerWidth! / 16) * 9}';
       }
-      final MediaType? mediaType = embeddedMedia[mediaUrl];
-      if (mediaType == MediaType.audio || mediaType == MediaType.video) {
+      final MediaType? mediaType = _mediaTypeCache[mediaUrl];
+      if (mediaType == MediaType.video) {
         return '<p><video src="$mediaUrl" $attributes></video></p>';
+      } else if (mediaType == MediaType.audio) {
+        return '<p><audio src="$mediaUrl" $attributes></audio></p>';
       } else {
-        return '<p><mediacontainer src=$mediaUrl></mediacontainer></p>';
+        return '<p><mediacontainer src="$mediaUrl"></mediacontainer></p>';
       }
     });
   }
@@ -229,29 +239,36 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
     });
   }
 
-  Future<MediaType> _getMediaType(String url) async {
-    MediaType type = MediaType.webUrl;
+  void _transformColorTag() {
+    htmlContent = adjustHtmlColorsForTheme(htmlContent);
+  }
+
+  Future<void> _cacheMediaType(String url) async {
+    if (_mediaTypeCache.containsKey(url)) return;
     try {
       final Response? response = await HttpClientHelper.head(Uri.parse(url), retries: 2);
       if (response != null) {
         final String? contentType = response.headers['content-type'];
         if (contentType != null && contentType.isNotEmpty) {
-          type = contentType.startsWith('audio/')
+          _mediaTypeCache[url] = contentType.contains('audio')
               ? MediaType.audio
-              : contentType.startsWith('video/')
+              : contentType.contains('video')
                   ? MediaType.video
                   : MediaType.webUrl;
+          return;
         }
       }
+
+      _mediaTypeCache[url] = MediaType.webUrl;
     } catch (e) {
-      type = MediaType.webUrl;
+      _mediaTypeCache[url] = MediaType.webUrl;
     }
-    return type;
   }
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme surfaceColor = Theme.of(context).colorScheme;
+    _transformColorTag();
     final html.ZdsHtml htmlView = html.ZdsHtml(
       htmlContent,
       fontSize: widget.fontSize,
@@ -328,6 +345,82 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
     );
   }
 
+  // Check if html element colors are visible on background and if not adjust them as per background color
+  String adjustHtmlColorsForTheme(String htmlContent) {
+    final document = parse(htmlContent);
+    final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+
+    bool isContrastEnough(Color textColor, Color backgroundColor) {
+      return textColor.contrastRatio(backgroundColor) >= 3;
+    }
+
+    // Function to convert various color formats to Color
+    Color getColor(String color) {
+      if (color.startsWith('#')) {
+        return color.colorFromHex();
+      } else if (color.startsWith('rgb')) {
+        return color.colorFromRGBString();
+      } else {
+        return color.colorFromNamedColor() ?? (isDarkMode ? Colors.white : Colors.black);
+      }
+    }
+
+    void adjustColor(css.Element element) {
+      final style = element.attributes['style'];
+      if (style != null) {
+        // Extract color and background-color properties
+        final colorMatch = RegExp(r'color:\s*([^;]+);?').firstMatch(style);
+        final bgColorMatch = RegExp(r'background-color:\s*([^;]+);?').firstMatch(style);
+
+        final textColorStr = colorMatch?.group(1);
+        final bgColorStr = bgColorMatch?.group(1);
+
+        Color? textColor;
+        Color? bgColor;
+
+        if (textColorStr != null) {
+          textColor = getColor(textColorStr);
+        }
+
+        bgColor = bgColorStr != null ? getColor(bgColorStr) : (isDarkMode ? Colors.black : Colors.white);
+
+        if (textColor != null && !isContrastEnough(textColor, bgColor)) {
+          Color visible;
+          if (textColor == Colors.black) {
+            visible = Colors.white;
+          } else if (textColor == Colors.white) {
+            visible = Colors.black;
+          } else {
+            visible = textColor.adjustContrast(on: bgColor, target: 4.57);
+          }
+          element.attributes['style'] = style.replaceFirst(
+            RegExp(r'color:\s*[^;]+;?'),
+            'color: ${visible.toHex()};',
+          );
+        }
+      }
+    }
+
+    document.body?.children.forEach((element) {
+      adjustColor(element);
+      element.querySelectorAll('*').forEach(adjustColor);
+    });
+
+    return document.outerHtml;
+  }
+
+  // Get visible color on background color
+  ZetaColorSwatch getVisibleColor(Color color, Color bgColor) {
+    var visible = htmlColorSwatch[color];
+    if (visible == null) {
+      final colorSwatch = ZetaColorSwatch.fromColor(color);
+      htmlColorSwatch[color] = colorSwatch;
+      visible = colorSwatch;
+    }
+
+    return visible.apply(brightness: bgColor.isDark ? Brightness.dark : Brightness.light);
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -335,7 +428,6 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
       ..add(DiagnosticsProperty<bool>('expanded', expanded))
       ..add(DiagnosticsProperty<bool>('hasMore', hasMore))
       ..add(StringProperty('htmlContent', htmlContent))
-      ..add(DiagnosticsProperty<Map<String, MediaType>>('embeddedMedia', embeddedMedia))
       ..add(DiagnosticsProperty<RegExp>('mediaRegex', mediaRegex))
       ..add(DiagnosticsProperty<RegExp>('iFrameRegex', iFrameRegex))
       ..add(DoubleProperty('containerWidth', containerWidth));

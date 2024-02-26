@@ -316,14 +316,22 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
           );
 
           return Stack(
-            children: <Widget>[
+            children: [
               SizedBox(
                 width: shouldSplit ? maxWidth : layout.maxWidth,
-                child: widget.primaryWidget,
+                child: Semantics(
+                  container: true,
+                  explicitChildNodes: true,
+                  child: widget.primaryWidget,
+                ),
               ),
               Positioned.fill(
                 left: maxWidth,
-                child: splitContent,
+                child: Semantics(
+                  container: true,
+                  explicitChildNodes: true,
+                  child: splitContent,
+                ),
               ),
             ],
           );

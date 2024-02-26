@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+
+import '../../../../zds_flutter.dart';
 import 'quill_toolbar.dart';
 
 /// A custom widget for the Quill editor.
@@ -76,16 +78,18 @@ class ZdsQuillEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     // Base editor configuration
     final editor = QuillEditor.basic(
-      controller: controller,
-      readOnly: readOnly,
-      keyboardAppearance: keyboardAppearance,
-      embedBuilders: embedBuilders,
-      padding: padding,
-      autoFocus: autoFocus,
-      expands: expands,
+      configurations: QuillEditorConfigurations(
+        controller: controller,
+        readOnly: readOnly,
+        keyboardAppearance: keyboardAppearance ?? Brightness.light,
+        embedBuilders: embedBuilders,
+        padding: padding,
+        autoFocus: autoFocus,
+        expands: expands,
+        placeholder: placeholder,
+        editorKey: editorKey,
+      ),
       focusNode: readOnly ? FocusNode(canRequestFocus: false) : focusNode,
-      placeholder: placeholder,
-      editorKey: editorKey,
     );
 
     // If readOnly, return just editor
@@ -109,7 +113,7 @@ class ZdsQuillEditor extends StatelessWidget {
       toolbarOptions: toolbarOptions.isNotEmpty ? toolbarOptions : QuillToolbarOption.values.toSet(),
       toolbarIconSize: toolbarIconSize,
       langCode: langCode,
-      color: toolbarColor,
+      toolbarColor: toolbarColor,
     );
   }
 

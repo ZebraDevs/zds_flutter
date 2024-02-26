@@ -187,7 +187,7 @@ class ZdsInputDialogState extends State<ZdsInputDialog> {
                         },
                         onFieldSubmitted: (_) async {
                           final String? error = await _validateText();
-                          if ((error?.isEmpty ?? true) && mounted) {
+                          if ((error?.isEmpty ?? true) && context.mounted) {
                             await Navigator.maybePop(context, _controller.text);
                           }
                         },
@@ -230,7 +230,7 @@ class ZdsInputDialogState extends State<ZdsInputDialog> {
                       onTap: _error == null
                           ? () async {
                               final String? error = await _validateText();
-                              if ((error?.isEmpty ?? true) && mounted) {
+                              if ((error?.isEmpty ?? true) && context.mounted) {
                                 await Navigator.maybePop(context, _controller.text);
                               }
                             }

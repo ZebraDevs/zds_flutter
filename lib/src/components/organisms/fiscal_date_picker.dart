@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -129,7 +127,6 @@ class _ZdsDatePickerDialogState extends State<ZdsDatePickerDialog> {
   Widget build(BuildContext context) {
     final Orientation orientation = MediaQuery.of(context).orientation;
     final Size size = orientation == Orientation.portrait ? _inputPortraitDialogSize : _inputRangeLandscapeDialogSize;
-    final double textScaleFactor = math.min(MediaQuery.of(context).textScaleFactor, 1.3);
     final theme = Theme.of(context);
 
     final fixContent = [
@@ -220,7 +217,7 @@ class _ZdsDatePickerDialogState extends State<ZdsDatePickerDialog> {
         curve: Curves.easeIn,
         child: MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaleFactor: textScaleFactor,
+            textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.3),
           ),
           child: Builder(
             builder: (BuildContext context) {

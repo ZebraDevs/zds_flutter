@@ -15,31 +15,33 @@ platforms:
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
-  flutter: ">=3.0.0 <3.16.0"
+  flutter: ">=3.16.0"
 
 dependencies:
   cached_network_image: ^3.2.1
+  camerawesome: ^2.0.1
   chewie: ^1.7.1
   collection: ^1.17.2
   cross_file: ^0.3.3+4
   csslib: ^0.17.3
   dropdown_button2: ^2.1.4
   expand_tap_area: ^1.1.0
-  extended_image: ^8.1.0
-  file_picker: ^5.1.0
+  extended_image: ^8.2.0
+  file_picker: ^6.1.1
   flutter:
     sdk: flutter
+  flutter_colorpicker: ^1.0.3
   flutter_html: ^3.0.0-beta.2
   flutter_html_audio: ^3.0.0-beta.2
   flutter_html_svg: ^3.0.0-beta.2
   flutter_html_table: ^3.0.0-beta.2
   flutter_html_video: ^3.0.0-beta.2
   flutter_image_compress: ^2.0.4
-  flutter_inappwebview: ^5.7.2+3
+  flutter_inappwebview: ^6.0.0
   flutter_layout_grid: ^2.0.5
   flutter_localizations:
     sdk: flutter
-  flutter_quill: 7.4.16
+  flutter_quill: ^9.3.1
   flutter_slidable: ^3.0.0
   flutter_svg: ^2.0.7
   flutter_swipe_action_cell: ^3.0.2
@@ -50,13 +52,14 @@ dependencies:
   image_picker: ^1.0.2
   interval_time_picker: ^2.0.0+5
   intl: ^0.18.0
+  just_audio: ^0.9.36
   linked_scroll_controller: ^0.2.0
   mime: ^1.0.0
   modal_bottom_sheet: ^3.0.0-pre
   open_filex: ^4.1.1
   path: ^1.8.0
   path_provider: ^2.0.2
-  popover: ^0.2.6+2
+  popover: ^0.3.0
   shared_preferences: ^2.2.2
   table_calendar: ^3.0.3
   universal_platform: ^1.0.0+1
@@ -64,12 +67,12 @@ dependencies:
   video_compress: ^3.1.0
   video_player: ^2.7.2
   vsc_quill_delta_to_html: ^1.0.3
-  zeta_flutter: ^0.1.1+1
+  zeta_flutter: ^0.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  lottie: ^2.1.0
+  lottie: ^3.0.0
   zds_analysis: ^1.0.0
 
 flutter:
