@@ -3,7 +3,7 @@
 A library of Flutter components made by Zebra Technologies based on the Zebra Design System, or ZDS.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docassets/zds-dark.png">
+  <source media="(prefers-color-scheme: dark)" srcset="doc/assets/zds-dark.png">
   <img alt="zds_flutter example" src="doc/assets/zds-light.png">
 </picture>
 
