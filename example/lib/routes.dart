@@ -130,9 +130,6 @@ final kRoutes = {
     const DemoRoute(title: 'Colors', child: ColorsDemo()),
     const DemoRoute(title: 'Colors generator', child: ColorUtilsDemo()),
     const DemoRoute(title: 'Typography', child: TextDemo()),
-    const DemoRoute(title: 'Colors', child: ColorsDemo()),
-    const DemoRoute(title: 'Colors generator', child: ColorUtilsDemo()),
-    const DemoRoute(title: 'Typography', child: TextDemo()),
   ],
 };
 

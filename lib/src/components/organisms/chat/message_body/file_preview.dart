@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -9,37 +10,19 @@ import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../../zds_flutter.dart';
 import '../chat_utils.dart';
+import 'attachment.dart';
 
 /// Shows a preview of an attachment for [ZdsChatMessage].
 class ZdsChatFilePreview extends StatefulWidget {
   /// Constructs a [ZdsChatFilePreview].
   const ZdsChatFilePreview({
     super.key,
-    this.attachment,
-    required this.type,
-    this.fileName,
+    required this.attachment,
     this.downloadCallback,
   });
 
-  /// Constructs a file preview for image strings in base64 format.
-  const ZdsChatFilePreview.imageBase64({
-    super.key,
-    required String imageString,
-    this.fileName,
-    this.downloadCallback,
-  })  : attachment = imageString,
-        type = AttachmentType.imageBase64;
-
   /// Attachment to be previewed.
-  final dynamic attachment;
-
-  /// Type of attachment.
-  final AttachmentType type;
-
-  /// File name.
-  ///
-  /// If not provided, generic download prompt will show.
-  final String? fileName;
+  final ZdsChatAttachment attachment;
 
   /// Callback to trigger file download.
   final VoidCallback? downloadCallback;
@@ -51,8 +34,6 @@ class ZdsChatFilePreview extends StatefulWidget {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('attachment', attachment))
-      ..add(EnumProperty<AttachmentType>('type', type))
-      ..add(StringProperty('fileName', fileName))
       ..add(ObjectFlagProperty<VoidCallback>.has('downloadCallback', downloadCallback));
   }
 }
@@ -64,40 +45,32 @@ class _ZdsChatFilePreviewState extends State<ZdsChatFilePreview> {
   Widget build(BuildContext context) {
     final Widget? body;
     bool hero = false;
-    switch (widget.type) {
-      case AttachmentType.imageBase64:
+    switch (widget.attachment.type) {
+      case ZdsChatAttachmentType.imageBase64:
         hero = true;
-        body = Image.memory(const Base64Decoder().convert((widget.attachment as String).base64 ?? ''));
-      case AttachmentType.imageNetwork:
+        body = Image.memory(const Base64Decoder().convert((widget.attachment.content.toString().base64) ?? ''));
+      case ZdsChatAttachmentType.imageNetwork:
         hero = true;
         body = CachedNetworkImage(
-          imageUrl: widget.attachment as String,
+          imageUrl: widget.attachment.url?.toString() ?? '',
           errorListener: (value) => setState(() => _fileError = true),
           placeholder: (context, url) => const CircularProgressIndicator.adaptive(),
-          errorWidget: (context, url, error) {
-            return Padding(
-              padding: const EdgeInsets.all(12),
-              child: Text(
-                ComponentStrings.of(context).get('MEDIA_ERROR', 'Error loading media.'),
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontStyle: FontStyle.italic,
-                      color: Zeta.of(context).colors.error.text,
-                    ),
-              ),
-            );
-          },
+          errorWidget: (context, url, error) => ZdsChatAttachmentWidget.fromAttachment(
+            attachment: widget.attachment,
+            onTap: widget.downloadCallback,
+          ),
         );
-      case AttachmentType.imageLocal:
+      case ZdsChatAttachmentType.imageLocal:
         hero = true;
         body = Image.file(widget.attachment as File);
-      case AttachmentType.videoNetwork:
-      case AttachmentType.videoLocal:
-        body = _Video(type: widget.type, video: widget.attachment as String);
-      case AttachmentType.audioNetwork:
-      case AttachmentType.audioLocal:
-      case AttachmentType.docNetwork:
-      case AttachmentType.docLocal:
+      case ZdsChatAttachmentType.videoNetwork:
+      case ZdsChatAttachmentType.videoLocal:
+        body = _Video(type: widget.attachment.type, video: widget.attachment as String);
+      case ZdsChatAttachmentType.audioNetwork:
+      case ZdsChatAttachmentType.audioLocal:
         body = const Text('Not done');
+      case ZdsChatAttachmentType.doc:
+        body = null;
     }
 
     final Widget downloadRow = InkWell(
@@ -111,7 +84,7 @@ class _ZdsChatFilePreviewState extends State<ZdsChatFilePreview> {
             Icon(ZdsIcons.download, size: 24, color: Zeta.of(context).colors.iconSubtle),
             const SizedBox.square(dimension: 10),
             Text(
-              widget.fileName ?? ComponentStrings.of(context).get('DOWNLOAD', 'Download'),
+              ComponentStrings.of(context).get('DOWNLOAD', 'Download'),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -121,41 +94,44 @@ class _ZdsChatFilePreviewState extends State<ZdsChatFilePreview> {
 
     final heroWidget = Hero(
       createRectTween: (Rect? begin, Rect? end) => RectTween(begin: begin, end: end),
-      tag: widget.attachment.toString(),
-      child: body,
+      // If multiple files have the same name, Hero should still function.
+      tag: widget.attachment.name + (Random().nextDouble() * 100).toString(),
+      child: body ?? const SizedBox(),
     );
 
     return Material(
       color: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
-        padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+        padding: _fileError ? EdgeInsets.zero : const EdgeInsets.fromLTRB(8, 8, 8, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: !_fileError && hero
-                  ? () => unawaited(
-                        Navigator.of(context).push(
-                          ZdsFadePageRouteBuilder(
-                            opaque: false,
-                            builder: (_) => _FullScreenViewer(
-                              imageBytes:
-                                  widget.type == AttachmentType.imageBase64 ? widget.attachment as String? : null,
-                              imagePath: widget.type == AttachmentType.imageLocal ? widget.attachment as String? : null,
-                              imageUrl:
-                                  widget.type == AttachmentType.imageNetwork ? widget.attachment as String? : null,
-                              body: heroWidget,
-                            ),
-                          ),
-                        ),
-                      )
-                  : null,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: hero ? heroWidget : body,
-              ),
-            ),
+            if (!_fileError && hero)
+              InkWell(
+                onTap: () => unawaited(
+                  Navigator.of(context).push(
+                    ZdsFadePageRouteBuilder(
+                      opaque: false,
+                      builder: (_) => _FullScreenViewer(
+                        imageBytes: widget.attachment.type == ZdsChatAttachmentType.imageBase64
+                            ? widget.attachment.content.toString().base64
+                            : null,
+                        imagePath: widget.attachment.type == ZdsChatAttachmentType.imageLocal
+                            ? widget.attachment.content
+                            : null,
+                        imageUrl: widget.attachment.type == ZdsChatAttachmentType.imageNetwork
+                            ? widget.attachment.content
+                            : null,
+                        body: heroWidget,
+                      ),
+                    ),
+                  ),
+                ),
+                child: ClipRRect(borderRadius: BorderRadius.circular(8), child: hero ? heroWidget : body),
+              )
+            else
+              body ?? const SizedBox(),
             if (widget.downloadCallback != null && !_fileError) downloadRow,
           ],
         ),
@@ -166,17 +142,14 @@ class _ZdsChatFilePreviewState extends State<ZdsChatFilePreview> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('attachment', widget.attachment))
-      ..add(EnumProperty<AttachmentType>('type', widget.type))
-      ..add(StringProperty('fileName', widget.fileName));
+    properties.add(DiagnosticsProperty('attachment', widget.attachment));
   }
 }
 
 class _Video extends StatefulWidget {
   const _Video({required this.type, required this.video});
 
-  final AttachmentType type;
+  final ZdsChatAttachmentType type;
 
   final String video;
   @override
@@ -185,7 +158,7 @@ class _Video extends StatefulWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(EnumProperty<AttachmentType>('type', type))
+      ..add(EnumProperty<ZdsChatAttachmentType>('type', type))
       ..add(StringProperty('video', video));
   }
 }
@@ -205,14 +178,14 @@ class __VideoState extends State<_Video> {
   void initState() {
     super.initState();
 
-    if (widget.type == AttachmentType.videoLocal) {
+    if (widget.type == ZdsChatAttachmentType.videoLocal) {
       _videoController = VideoPlayerController.asset(widget.video);
     }
-    if (widget.type == AttachmentType.videoNetwork) {
+    if (widget.type == ZdsChatAttachmentType.videoNetwork) {
       _videoController = VideoPlayerController.networkUrl(Uri.parse(widget.video));
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (widget.type == AttachmentType.videoLocal || widget.type == AttachmentType.videoNetwork) {
+      if (widget.type == ZdsChatAttachmentType.videoLocal || widget.type == ZdsChatAttachmentType.videoNetwork) {
         await _videoController?.initialize();
         setState(() => loading = false);
 

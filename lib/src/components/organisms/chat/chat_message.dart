@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../zds_flutter.dart';
 import 'chat_utils.dart';
+import 'message_body/attachment.dart';
 import 'message_body/deleted.dart';
 import 'message_body/file_preview.dart';
 import 'message_body/forwarded.dart';
@@ -135,30 +136,37 @@ class ZdsChatMessage extends StatelessWidget {
   Widget? get _body {
     if (message.isDeleted) {
       return ZdsChatDeletedText(textContent: message.content);
-    } else if (message.type == ZdsChatMessageType.text && message.content != null) {
-      return ZdsChatTextMessage(searchTerm: searchTerm, content: message.content!, onLinkTapped: onLinkTapped);
-    } else if (message.isPreviewable) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (message.content != null)
-            ZdsChatTextMessage(
-              searchTerm: searchTerm,
-              content: message.content!,
-              onLinkTapped: onLinkTapped,
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-            ),
-          if (showFilePreview)
-            ZdsChatFilePreview(
-              type: message.attachmentType!,
-              attachment: message.attachment,
-              downloadCallback: onFileDownload,
-            ),
-        ],
-      );
-    } else {
-      return const Text('TODO: UX-941 Attachment ').paddingAll(12);
     }
+    final Widget? text = message.content != null
+        ? ZdsChatTextMessage(
+            searchTerm: searchTerm,
+            content: message.content!,
+            onLinkTapped: onLinkTapped,
+            padding: message.attachment != null ? const EdgeInsets.fromLTRB(12, 12, 12, 0) : const EdgeInsets.all(12),
+          )
+        : null;
+
+    if (message.type == ZdsChatMessageType.text && message.content != null) {
+      return text;
+    } else if (message.attachment != null) {
+      return InkWell(
+        onTap: (!(showFilePreview && message.attachment!.isPreviewable)) ? onFileDownload : null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (text != null) text,
+            if (showFilePreview && message.attachment!.isPreviewable)
+              ZdsChatFilePreview(
+                attachment: message.attachment!,
+                downloadCallback: onFileDownload,
+              )
+            else
+              ZdsChatAttachmentWidget.fromAttachment(attachment: message.attachment!),
+          ],
+        ),
+      );
+    }
+    return null;
   }
 
   @override
@@ -202,14 +210,18 @@ class ZdsChatMessage extends StatelessWidget {
                       border: Border.all(color: color.subtle),
                       borderRadius: _borderRadius,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (_showReply) ZdsChatReplyMessageBody(message: message.replyMessageInfo!, onTap: onReplyTap),
-                        if (_showForwarded) const ZdsChatForwarded(),
-                        if (body != null) body,
-                      ],
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (_showReply)
+                            ZdsChatReplyMessageBody(message: message.replyMessageInfo!, onTap: onReplyTap),
+                          if (_showForwarded) const ZdsChatForwarded(),
+                          if (body != null) body,
+                        ],
+                      ),
                     ),
                   ).paddingOnly(
                     left: isLocalUser ? 40 : 18,

@@ -14,5 +14,6 @@
     "TAGS": "tags",
     "MODIFY_TAGS": "modify tags",
     "MSG_DELETED": "This message was deleted",
+    "SHARE_FILE": "Shared a file:",
     "DOWNLOAD": "Download"
 }

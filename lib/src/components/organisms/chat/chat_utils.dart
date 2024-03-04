@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mime/mime.dart';
 import 'package:validators/validators.dart';
 
 import '../../../../zds_flutter.dart';
@@ -56,7 +53,6 @@ class ZdsMessage {
     this.isForwarded = false,
     this.replyMessageInfo,
     this.id = '',
-    this.attachmentType,
   });
 
   /// Constructs a Text only message.
@@ -73,14 +69,14 @@ class ZdsMessage {
     this.replyMessageInfo,
     this.id = '',
   })  : attachment = null,
-        isInfo = false,
-        attachmentType = null;
+        isInfo = false;
 
   /// Constructs a message with an image attachment as a base64 image.
-  const ZdsMessage.imageBase64({
+  ZdsMessage.imageBase64({
     required this.status,
     required this.time,
     required String image,
+    required String imageName,
     String? text,
     this.senderName = '',
     this.isDeleted = false,
@@ -91,15 +87,15 @@ class ZdsMessage {
     this.replyMessageInfo,
     this.id = '',
   })  : content = text,
-        attachment = image,
-        isInfo = false,
-        attachmentType = AttachmentType.imageBase64;
+        attachment = ZdsChatAttachment(name: imageName, content: image, type: ZdsChatAttachmentType.imageBase64),
+        isInfo = false;
 
   /// Constructs a message with an image attachment with a local file path.
-  const ZdsMessage.imageLocal({
+  ZdsMessage.imageLocal({
     required this.status,
     required this.time,
     required String filePath,
+    String? fileName,
     String? text,
     this.senderName = '',
     this.isDeleted = false,
@@ -110,15 +106,19 @@ class ZdsMessage {
     this.replyMessageInfo,
     this.id = '',
   })  : content = text,
-        attachment = filePath,
-        isInfo = false,
-        attachmentType = AttachmentType.imageNetwork;
+        attachment = ZdsChatAttachment(
+          name: fileName ?? filePath.split('/').last,
+          localPath: filePath,
+          type: ZdsChatAttachmentType.imageNetwork,
+        ),
+        isInfo = false;
 
   /// Constructs a message with an image attachment with a network url.
-  const ZdsMessage.imageNetwork({
+  ZdsMessage.imageNetwork({
     required this.status,
     required this.time,
-    required String url,
+    required Uri url,
+    String? fileName,
     String? text,
     this.senderName = '',
     this.isDeleted = false,
@@ -129,15 +129,19 @@ class ZdsMessage {
     this.replyMessageInfo,
     this.id = '',
   })  : content = text,
-        attachment = url,
-        isInfo = false,
-        attachmentType = AttachmentType.imageNetwork;
+        attachment = ZdsChatAttachment(
+          name: fileName ?? url.toString().split('/').last,
+          url: url,
+          type: ZdsChatAttachmentType.imageNetwork,
+        ),
+        isInfo = false;
 
   /// Constructs a message with a video attachment with a network url.
-  const ZdsMessage.videoNetwork({
+  ZdsMessage.videoNetwork({
     required this.status,
     required this.time,
-    required String url,
+    required Uri url,
+    String? fileName,
     String? text,
     this.senderName = '',
     this.isDeleted = false,
@@ -148,15 +152,19 @@ class ZdsMessage {
     this.replyMessageInfo,
     this.id = '',
   })  : content = text,
-        attachment = url,
-        isInfo = false,
-        attachmentType = AttachmentType.videoNetwork;
+        attachment = ZdsChatAttachment(
+          type: ZdsChatAttachmentType.videoNetwork,
+          name: fileName ?? url.toString().split('/').last,
+          url: url,
+        ),
+        isInfo = false;
 
   /// Constructs a message with a video attachment with a local file path.
-  const ZdsMessage.videoLocal({
+  ZdsMessage.videoLocal({
     required this.status,
     required this.time,
     required String filePath,
+    String? fileName,
     String? text,
     this.senderName = '',
     this.isDeleted = false,
@@ -167,15 +175,18 @@ class ZdsMessage {
     this.replyMessageInfo,
     this.id = '',
   })  : content = text,
-        attachment = filePath,
-        isInfo = false,
-        attachmentType = AttachmentType.videoLocal;
+        attachment = ZdsChatAttachment(
+          type: ZdsChatAttachmentType.videoLocal,
+          name: fileName ?? filePath.split('/').last,
+          localPath: filePath,
+        ),
+        isInfo = false;
 
-  /// Constructs a message with a video attachment with a network url.
-  const ZdsMessage.audioNetwork({
+  /// Constructs a [ZdsMessage] with an attachment.
+  ZdsMessage.attachment({
     required this.status,
     required this.time,
-    required String url,
+    required this.attachment,
     String? text,
     this.senderName = '',
     this.isDeleted = false,
@@ -186,9 +197,7 @@ class ZdsMessage {
     this.replyMessageInfo,
     this.id = '',
   })  : content = text,
-        attachment = url,
-        isInfo = false,
-        attachmentType = AttachmentType.audioNetwork;
+        isInfo = false;
 
   // TODO(thelukewalton): UX-940 Add constructors for messages with audio.
 
@@ -206,8 +215,7 @@ class ZdsMessage {
         isForwarded = false,
         isInfo = true,
         tags = const [],
-        status = ZdsChatMessageStatus.notSent,
-        attachmentType = null;
+        status = ZdsChatMessageStatus.notSent;
 
   /// Constructs a blank message. Should not normally be used.
   ///
@@ -225,8 +233,7 @@ class ZdsMessage {
         isInfo = false,
         isForwarded = false,
         replyMessageInfo = null,
-        id = '',
-        attachmentType = null;
+        id = '';
 
   /// Text content of message.
   final String? content;
@@ -254,8 +261,8 @@ class ZdsMessage {
   /// List of tags.
   final List<String> tags;
 
-  /// Attachment. Typically a document, image, video or voice note. //TODO(thelukwalton): UX-941
-  final dynamic attachment;
+  /// Attachment. Typically a document, image, video or voice note.
+  final ZdsChatAttachment? attachment;
 
   /// True if message is an information message, not a chat message.
   final bool isInfo;
@@ -268,9 +275,6 @@ class ZdsMessage {
 
   /// Unique ID of message.
   final String id;
-
-  /// Type of file attached to message.
-  final AttachmentType? attachmentType;
 
   /// [ZdsChatMessageType] of message.
   ZdsChatMessageType get type => attachment != null
@@ -292,25 +296,6 @@ class ZdsMessage {
       }
     }
     return '';
-  }
-
-  /// Returns true if the attachment can be previewed inline, or if it must be downloaded.
-  bool get isPreviewable {
-    if (attachmentType == AttachmentType.imageBase64) {
-      return (attachment as String).base64 != null;
-    }
-    if (attachmentType == AttachmentType.imageNetwork) {
-      return Uri.tryParse(attachment as String) != null;
-    }
-
-    if (attachmentType == AttachmentType.imageLocal) {
-      final File file = attachment as File;
-      final String? mime = lookupMimeType(file.path);
-
-      return file.existsSync() && mime != null && mime.contains('image');
-    }
-
-    return false;
   }
 }
 
@@ -376,7 +361,7 @@ extension ZdsMessageStatusExtension on ZdsChatMessageStatus {
 }
 
 /// Type of attachment provided.
-enum AttachmentType {
+enum ZdsChatAttachmentType {
   /// Image string formatted as Base64.
   imageBase64,
 
@@ -398,13 +383,79 @@ enum AttachmentType {
   /// File directory where audio is saved.
   audioLocal,
 
-  /// Url of file.
+  /// Document file.
   ///
-  /// In this case, doc refers to any file that is not image, video or audio.
-  docNetwork,
+  /// Catchall type for if attachment is not previewable.
+  doc,
+}
 
-  /// File directory where doc is saved.
+/// Attachment model for [ZdsChatMessage].
+class ZdsChatAttachment {
+  /// Constructs a [ZdsChatAttachment].
+  const ZdsChatAttachment({
+    required this.name,
+    this.type = ZdsChatAttachmentType.doc,
+    this.extension,
+    this.content,
+    this.url,
+    this.localPath,
+    this.id,
+  });
+
+  /// Name of file.
+  final String name;
+
+  /// File type of attachment.
   ///
-  /// In this case, doc refers to any file that is not image, video or audio.
-  docLocal
+  /// If not provided, [name] will be parsed for extensions.
+  final String? extension;
+
+  /// Content of attachment encoded in base64.
+  final String? content;
+
+  /// URL pointing to file content.
+  final Uri? url;
+
+  /// Local path of downloaded file.
+  final String? localPath;
+
+  /// Type of file attached.
+  final ZdsChatAttachmentType type;
+
+  /// Unique id of file.
+  final String? id;
+
+  /// Getter for [extension].
+  ///
+  /// If extension is not defined for a base64 image, attempt to parse file type from content.
+  String get fileType {
+    if (extension != null && extension!.isNotEmpty) return extension!;
+    if (type == ZdsChatAttachmentType.imageBase64) {
+      return content.toString().base64Extension ?? '';
+    }
+    if (name.contains('.')) {
+      return name.split('.').last;
+    }
+    return '';
+  }
+
+  /// Returns true if the attachment can be previewed inline, or if it must be downloaded.
+  bool get isPreviewable {
+    if (type == ZdsChatAttachmentType.imageBase64) {
+      return content?.base64 != null;
+    }
+    if (type == ZdsChatAttachmentType.imageNetwork) {
+      return url?.hasAbsolutePath ?? false;
+    }
+
+    if (type == ZdsChatAttachmentType.imageLocal) {
+      // final File file = attachment as File;
+      // final String? mime = lookupMimeType(file.path);
+
+      // return file.existsSync() && mime != null && mime.contains('image');
+      // TODO(thelukwalton): Look into local files.
+    }
+
+    return false;
+  }
 }
