@@ -92,7 +92,7 @@ extension HtmlToDelta on String {
     final Completer<Delta> completer = Completer<Delta>();
 
     // Load the Quill JavaScript library from the specified path.
-    final String quillJs = await rootBundle.loadString('packages/reflexis_ui/lib/assets/js/quill.min.js');
+    final String quillJs = await rootBundle.loadString('packages/$packageName/lib/assets/js/quill.min.js');
 
     late HeadlessInAppWebView webView;
 

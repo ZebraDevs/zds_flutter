@@ -63,14 +63,18 @@ class _ZdsChatFilePreviewState extends State<ZdsChatFilePreview> {
         );
       case ZdsChatAttachmentType.imageLocal:
         hero = true;
-        body = Image.file(widget.attachment as File);
+        body = Image.file(File(widget.attachment.localPath ?? ''));
       case ZdsChatAttachmentType.videoNetwork:
+        body = _Video(type: widget.attachment.type, video: widget.attachment.url.toString());
       case ZdsChatAttachmentType.videoLocal:
-        body = _Video(type: widget.attachment.type, video: widget.attachment as String);
+        body = _Video(type: widget.attachment.type, video: widget.attachment.localPath ?? '');
+
       case ZdsChatAttachmentType.audioNetwork:
+        body = ZdsAudioPlayer.fromUrl(url: widget.attachment.url.toString());
       case ZdsChatAttachmentType.audioLocal:
-        body = const Text('Not done');
-      case ZdsChatAttachmentType.doc:
+        body = ZdsAudioPlayer.fromFile(path: widget.attachment.localPath);
+      case ZdsChatAttachmentType.docNetwork:
+      case ZdsChatAttachmentType.docLocal:
         body = null;
     }
 
@@ -180,7 +184,7 @@ class __VideoState extends State<_Video> {
     super.initState();
 
     if (widget.type == ZdsChatAttachmentType.videoLocal) {
-      _videoController = VideoPlayerController.asset(widget.video);
+      _videoController = VideoPlayerController.file(File(widget.video));
     }
     if (widget.type == ZdsChatAttachmentType.videoNetwork) {
       _videoController = VideoPlayerController.networkUrl(Uri.parse(widget.video));

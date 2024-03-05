@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:validators/validators.dart';
@@ -109,7 +112,7 @@ class ZdsMessage {
         attachment = ZdsChatAttachment(
           name: fileName ?? filePath.split('/').last,
           localPath: filePath,
-          type: ZdsChatAttachmentType.imageNetwork,
+          type: ZdsChatAttachmentType.imageLocal,
         ),
         isInfo = false;
 
@@ -199,7 +202,51 @@ class ZdsMessage {
   })  : content = text,
         isInfo = false;
 
-  // TODO(thelukewalton): UX-940 Add constructors for messages with audio.
+  /// Constructs a message with an audio attachment with a network url.
+  ZdsMessage.audioNetwork({
+    required this.status,
+    required this.time,
+    required Uri url,
+    String? fileName,
+    String? text,
+    this.senderName = '',
+    this.isDeleted = false,
+    this.reacts = const {},
+    this.senderColor,
+    this.tags = const [],
+    this.isForwarded = false,
+    this.replyMessageInfo,
+    this.id = '',
+  })  : content = text,
+        attachment = ZdsChatAttachment(
+          type: ZdsChatAttachmentType.audioNetwork,
+          name: fileName ?? url.toString().split('/').last,
+          url: url,
+        ),
+        isInfo = false;
+
+  /// Constructs a message with audio attachment with a local file path.
+  ZdsMessage.audioLocal({
+    required this.status,
+    required this.time,
+    required String filePath,
+    String? fileName,
+    String? text,
+    this.senderName = '',
+    this.isDeleted = false,
+    this.reacts = const {},
+    this.senderColor,
+    this.tags = const [],
+    this.isForwarded = false,
+    this.replyMessageInfo,
+    this.id = '',
+  })  : content = text,
+        attachment = ZdsChatAttachment(
+          type: ZdsChatAttachmentType.audioLocal,
+          name: fileName ?? filePath.split('/').last,
+          localPath: filePath,
+        ),
+        isInfo = false;
 
   /// Constructs an info message used to display updates to user. Message not from another user.
   const ZdsMessage.info({
@@ -383,10 +430,15 @@ enum ZdsChatAttachmentType {
   /// File directory where audio is saved.
   audioLocal,
 
-  /// Document file.
+  /// Document file from Url.
   ///
-  /// Catchall type for if attachment is not previewable.
-  doc,
+  /// Catch-all type for if attachment is not previewable.
+  docNetwork,
+
+  /// File directory where file is saved.
+  ///
+  /// Catch-all type for if attachment is not previewable.
+  docLocal,
 }
 
 /// Attachment model for [ZdsChatMessage].
@@ -394,7 +446,7 @@ class ZdsChatAttachment {
   /// Constructs a [ZdsChatAttachment].
   const ZdsChatAttachment({
     required this.name,
-    this.type = ZdsChatAttachmentType.doc,
+    this.type = ZdsChatAttachmentType.docNetwork,
     this.extension,
     this.content,
     this.url,
@@ -444,16 +496,16 @@ class ZdsChatAttachment {
     if (type == ZdsChatAttachmentType.imageBase64) {
       return content?.base64 != null;
     }
-    if (type == ZdsChatAttachmentType.imageNetwork) {
+    if (type == ZdsChatAttachmentType.imageNetwork ||
+        type == ZdsChatAttachmentType.audioNetwork ||
+        type == ZdsChatAttachmentType.videoNetwork) {
       return url?.hasAbsolutePath ?? false;
     }
 
-    if (type == ZdsChatAttachmentType.imageLocal) {
-      // final File file = attachment as File;
-      // final String? mime = lookupMimeType(file.path);
-
-      // return file.existsSync() && mime != null && mime.contains('image');
-      // TODO(thelukwalton): Look into local files.
+    if (type == ZdsChatAttachmentType.imageLocal ||
+        type == ZdsChatAttachmentType.audioLocal ||
+        type == ZdsChatAttachmentType.videoLocal) {
+      return !kIsWeb && File(localPath ?? '').existsSync();
     }
 
     return false;

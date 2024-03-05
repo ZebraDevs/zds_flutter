@@ -14,7 +14,7 @@ platforms:
   linux:
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.2.0 <4.0.0"
   flutter: ">=3.16.0"
 
 dependencies:
@@ -43,7 +43,7 @@ dependencies:
   flutter_layout_grid: ^2.0.5
   flutter_localizations:
     sdk: flutter
-  flutter_quill: ^9.3.1
+  flutter_quill: ^9.2.0
   flutter_slidable: ^3.0.0
   flutter_svg: ^2.0.7
   flutter_swipe_action_cell: ^3.0.2

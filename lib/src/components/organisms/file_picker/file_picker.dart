@@ -61,7 +61,7 @@ class FilePickerConfig {
     this.allowedExtensions = const {},
     this.useLiveMediaOnly = false,
     this.showCapturePreview = true,
-    this.giphyKey = 'g7OLsTuQPs57a0lKJkvFAC1YxYBCWYQ1',
+    this.giphyKey,
     this.options = const [
       FilePickerOptions.VIDEO,
       FilePickerOptions.FILE,

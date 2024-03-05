@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'package:zds_flutter/zds_flutter.dart';
@@ -7,6 +10,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 const lorem =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis vel eros donec ac odio tempor orci dapibus. Ullamcorper a lacus vestibulum sed. Purus semper eget duis at tellus at urna condimentum. Duis at consectetur lorem donec massa sapien. Lacus vestibulum sed arcu non odio. Morbi tincidunt ornare massa eget. Massa tempor nec feugiat nisl pretium fusce. Ipsum faucibus vitae aliquet nec ullamcorper. Viverra nibh cras pulvinar mattis nunc sed blandit libero. Elit ut aliquam purus sit amet luctus venenatis lectus.\n';
+
+const testAudioPath = 'notification.wav';
+const testVideoPath = 'video.mp4';
+const testImgPath = 'sleeping_zebra.png';
 
 class _ChatExampleObj {
   final ZdsMessage message;
@@ -48,10 +55,28 @@ class _ChatDemoState extends State<ChatDemo> {
     );
   }
 
+  Future<void> copyAssetToDevice(String fileName) async {
+    final path = await rootBundle.load('assets/' + fileName);
+
+    if (tmpDir == null) {
+      final _dir = (await getTemporaryDirectory()).path;
+      setState(() {
+        tmpDir = _dir;
+      });
+    }
+
+    final file = File('${tmpDir}/${fileName}');
+    await file.create(recursive: true);
+    final x = await file.writeAsBytes(path.buffer.asUint8List(path.offsetInBytes, path.lengthInBytes));
+
+    print(x);
+  }
+
   bool loading = true;
   String? img;
   List? children;
   Map childWidgets = {};
+  String? tmpDir;
   final ItemScrollController controller = ItemScrollController();
 
   @override
@@ -59,15 +84,21 @@ class _ChatDemoState extends State<ChatDemo> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       try {
-        final _img = await rootBundle.loadString('assets/b64Image');
-        setState(() {
-          img = _img;
-          loading = false;
-        });
+        final _img = await rootBundle.loadString('assets/b64image.txt');
+        setState(() => img = _img);
       } catch (e) {
         print(e);
-        setState(() => loading = false);
       }
+      try {
+        await Future.wait([
+          copyAssetToDevice(testAudioPath),
+          copyAssetToDevice(testVideoPath),
+          copyAssetToDevice(testImgPath),
+        ]);
+      } catch (e) {
+        print(e);
+      }
+      setState(() => loading = false);
     });
   }
 
@@ -196,7 +227,7 @@ class _ChatDemoState extends State<ChatDemo> {
         message: ZdsMessage.attachment(
           time: DateTime.now(),
           text: 'Important file. Guard it with your life.',
-          attachment: ZdsChatAttachment(type: ZdsChatAttachmentType.doc, name: 'Blueprints.pdf'),
+          attachment: ZdsChatAttachment(type: ZdsChatAttachmentType.docNetwork, name: 'Blueprints.pdf'),
           status: ZdsChatMessageStatus.read,
         ),
         isLocalUser: false,
@@ -204,9 +235,43 @@ class _ChatDemoState extends State<ChatDemo> {
       _ChatExampleObj(
         message: ZdsMessage.imageBase64(
           time: DateTime.now(),
-          imageName: 'Cat1',
+          imageName: 'big.png',
           image: img ?? '',
           status: ZdsChatMessageStatus.read,
+        ),
+      ),
+      _ChatExampleObj(
+        isLocalUser: false,
+        message: ZdsMessage.audioNetwork(
+          time: DateTime.now(),
+          url: Uri.parse('https://download.samplelib.com/mp3/sample-3s.mp3'),
+          status: ZdsChatMessageStatus.read,
+          text: 'Network file',
+        ),
+      ),
+      _ChatExampleObj(
+        isLocalUser: false,
+        message: ZdsMessage.audioLocal(
+          time: DateTime.now(),
+          filePath: '${tmpDir}/${testAudioPath}',
+          status: ZdsChatMessageStatus.read,
+          text: 'Local audio file',
+        ),
+      ),
+      _ChatExampleObj(
+        message: ZdsMessage.videoLocal(
+          time: DateTime.now(),
+          filePath: '${tmpDir}/${testVideoPath}',
+          status: ZdsChatMessageStatus.read,
+          text: 'Local video',
+        ),
+      ),
+      _ChatExampleObj(
+        message: ZdsMessage.imageLocal(
+          time: DateTime.now(),
+          filePath: '${tmpDir}/${testImgPath}',
+          status: ZdsChatMessageStatus.read,
+          text: 'Local image Zebby',
         ),
       )
     ];

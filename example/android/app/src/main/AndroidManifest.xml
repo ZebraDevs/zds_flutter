@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
-        android:label="reflexis_ui example"
+        android:label="zds_flutter example"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
