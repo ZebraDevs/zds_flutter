@@ -1,6 +1,5 @@
 // Molecules are groups of atoms bonded together and are the smallest fundamental units of a compound.
 
-export 'molecules/audio_player.dart';
 export 'molecules/block_table.dart';
 export 'molecules/bottom_sheet.dart';
 export 'molecules/card_actions.dart';

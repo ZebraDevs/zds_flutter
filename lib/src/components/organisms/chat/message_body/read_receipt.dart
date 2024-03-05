@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../zds_flutter.dart';
-import '../chat_utils.dart';
+import 'chat_utils.dart';
 
 /// Read Receipt component for [ZdsChatMessage].
 class ZdsReadReceipt extends StatelessWidget {

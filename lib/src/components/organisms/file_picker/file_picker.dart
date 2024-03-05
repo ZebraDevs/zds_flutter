@@ -28,7 +28,7 @@ import 'giphy_picker.dart';
 export 'package:giphy_get/giphy_get.dart';
 
 export 'file_post_processor.dart';
-export 'file_validator.dart' hide TextMessage;
+export 'file_validator.dart';
 export 'file_wrapper.dart';
 export 'xfile.dart';
 

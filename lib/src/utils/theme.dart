@@ -1,4 +1,3 @@
-export 'theme/audio_player_decoration.dart';
 export 'theme/input_border.dart';
 export 'theme/theme.dart';
 export 'theme/theme_builders/zeta_theme.dart';

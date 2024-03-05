@@ -5,7 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
+import 'audio_decoration.dart';
 
 /// Controls for playing audio files.
 /// This widget does not handle the actual playing of the audio files.
@@ -214,6 +215,7 @@ class ZdsAudioPlayerState extends State<ZdsAudioPlayer> {
       _completed = false;
       await _player.seek(Duration.zero);
     }
+    _player.sequence;
     await _player.play();
     widget.onPlay?.call();
   }
@@ -272,6 +274,7 @@ class ZdsAudioPlayerState extends State<ZdsAudioPlayer> {
                     value: _position.toDouble(),
                     onChange: (double d) async {
                       final duration = Duration(milliseconds: d.floor());
+                      _completed = false;
                       await _player.seek(duration);
                       widget.onSeek?.call(duration);
                     },

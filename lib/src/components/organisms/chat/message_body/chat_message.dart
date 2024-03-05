@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../zds_flutter.dart';
+import '../../../../../zds_flutter.dart';
+import 'attachment.dart';
 import 'chat_utils.dart';
-import 'message_body/attachment.dart';
-import 'message_body/deleted.dart';
-import 'message_body/file_preview.dart';
-import 'message_body/forwarded.dart';
-import 'message_body/info.dart';
-import 'message_body/read_receipt.dart';
-import 'message_body/reply.dart';
-import 'message_body/text.dart';
+import 'deleted.dart';
+import 'file_preview.dart';
+import 'forwarded.dart';
+import 'info.dart';
 import 'reacts_tags.dart';
+import 'read_receipt.dart';
+import 'reply.dart';
+import 'text.dart';
 
 /// Chat message widget.
 class ZdsChatMessage extends StatelessWidget {

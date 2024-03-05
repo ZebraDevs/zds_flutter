@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../zds_flutter.dart';
+import '../../../../../zds_flutter.dart';
 
 /// Row at bottom of chat message that shows tags and reacts.
 class ReactTagsRow extends StatelessWidget {

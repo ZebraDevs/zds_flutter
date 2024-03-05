@@ -15,5 +15,10 @@
     "MODIFY_TAGS": "modify tags",
     "MSG_DELETED": "This message was deleted",
     "SHARE_FILE": "Shared a file:",
-    "DOWNLOAD": "Download"
+    "DOWNLOAD": "Download",
+    "MICROPHONE_PERMISISON_ERROR": "Microphone permissions need to be granted in order to record",
+    "EXPAND_MESSAGE_OPTIONS": "Expand message options",
+    "SEND_MESSAGE": "Send message",
+    "ADD_VOICE_NOTE": "Add voice note",
+    "ATTACHMENTS": "Attachments"
 }

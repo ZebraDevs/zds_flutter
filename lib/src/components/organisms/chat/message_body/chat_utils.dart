@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:validators/validators.dart';
 
-import '../../../../zds_flutter.dart';
+import '../../../../../zds_flutter.dart';
 
 /// Type of message for [ZdsChatMessage].
 enum ZdsChatMessageType {

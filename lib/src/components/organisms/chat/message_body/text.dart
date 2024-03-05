@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../zds_flutter.dart';
 
-import '../chat_utils.dart';
+import 'chat_utils.dart';
 import 'link_preview.dart';
 
 /// Text message for [ZdsChatMessage].

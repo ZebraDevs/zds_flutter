@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'pages/components/audio_recorder.dart';
 
 import 'home.dart';
 import 'pages/assets/animations.dart';
@@ -67,6 +68,7 @@ final kRoutes = {
   'Components': [
     const DemoRoute(title: 'App bar', wrapper: false, child: AppBarDemo()),
     const DemoRoute(title: 'Audio Player', child: AudioPlayerDemo()),
+    const DemoRoute(title: 'Audio Recorder', child: AudioRecorderDemo()),
     const DemoRoute(title: 'Big Toggle Button', child: BigToggleButtonDemo()),
     const DemoRoute(title: 'Block Table', child: BlockTableDemo()),
     const DemoRoute(title: 'Bottom bar', child: BottomBarDemo()),

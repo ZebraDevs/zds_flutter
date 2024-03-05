@@ -8,9 +8,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
+
 import '../../../../../zds_flutter.dart';
-import '../chat_utils.dart';
 import 'attachment.dart';
+import 'chat_utils.dart';
 
 /// Shows a preview of an attachment for [ZdsChatMessage].
 class ZdsChatFilePreview extends StatefulWidget {
