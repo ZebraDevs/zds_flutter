@@ -116,6 +116,7 @@ class _VideoWidgetState extends State<ZdsVideoWidget> with AutomaticKeepAliveCli
     if (sources.isNotEmpty && sources.first != null) {
       _width = givenWidth ?? (givenHeight ?? 150) * 2;
       _height = givenHeight ?? (givenWidth ?? 300) / 2;
+
       final Uri sourceUri = Uri.parse(sources.first!);
       switch (sourceUri.scheme) {
         case 'asset':
@@ -126,6 +127,7 @@ class _VideoWidgetState extends State<ZdsVideoWidget> with AutomaticKeepAliveCli
           _videoController = VideoPlayerController.networkUrl(sourceUri);
           break;
       }
+
       _chewieController = ChewieController(
         videoPlayerController: _videoController!,
         placeholder: attributes['poster'] != null && attributes['poster']!.isNotEmpty
@@ -139,6 +141,7 @@ class _VideoWidgetState extends State<ZdsVideoWidget> with AutomaticKeepAliveCli
         deviceOrientationsOnEnterFullScreen: widget.deviceOrientationsOnEnterFullScreen,
         deviceOrientationsAfterFullScreen: widget.deviceOrientationsAfterFullScreen,
       );
+
       widget.callback?.call(
         widget.context.element,
         _chewieController!,

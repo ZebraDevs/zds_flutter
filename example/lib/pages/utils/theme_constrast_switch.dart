@@ -39,7 +39,10 @@ class ZetaThemeContrastSwitch extends StatelessWidget {
               foregroundColor: colors.primary,
               child: Text(
                 e == ZetaContrast.aa ? 'AA' : 'AAA',
-                style: ZetaTextStyles.bodyMedium.copyWith(color: colors.primary, fontWeight: FontWeight.w700),
+                style: ZetaTextStyles.bodyMedium.copyWith(
+                  color: colors.primary,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           );

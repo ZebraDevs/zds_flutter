@@ -96,7 +96,9 @@ class ZdsShakeAnimationState extends State<ZdsShakeAnimation> with SingleTickerP
 
   @override
   void dispose() {
-    animationController.removeStatusListener(_updateStatus);
+    animationController
+      ..removeStatusListener(_updateStatus)
+      ..dispose();
     super.dispose();
   }
 

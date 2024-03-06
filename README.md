@@ -11,7 +11,7 @@ A library of Flutter components made by Zebra Technologies based on the Zebra De
 
 Make sure your app meets the following requirements before using ZDS Flutter
 
-- sdk: >=3.0.10 <4.0.0
+- sdk: >=3.2.0 <4.0.0
 - flutter: >=3.16.0
 
 ## Usage

@@ -117,7 +117,7 @@ void zdsFileError(BuildContext context, FilePickerConfig config, Exception excep
 }
 
 ///extension used to return different strings on exceptions.
-extension TextMessage on PickerExceptionType {
+extension ExceptionTextMessage on PickerExceptionType {
   ///  method returns FilePickerException message's.
   String message(BuildContext context, {List<String> args = const <String>[]}) {
     final ComponentStrings strings = ComponentStrings.of(context);

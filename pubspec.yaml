@@ -14,16 +14,18 @@ platforms:
   linux:
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.2.0 <4.0.0"
   flutter: ">=3.16.0"
 
 dependencies:
+  any_link_preview: ^3.0.1
   cached_network_image: ^3.2.1
   camerawesome: ^2.0.1
   chewie: ^1.7.1
   collection: ^1.17.2
   cross_file: ^0.3.3+4
   csslib: ^0.17.3
+  dart_emoji: ^0.2.0+2
   dropdown_button2: ^2.1.4
   expand_tap_area: ^1.1.0
   extended_image: ^8.2.0
@@ -41,7 +43,7 @@ dependencies:
   flutter_layout_grid: ^2.0.5
   flutter_localizations:
     sdk: flutter
-  flutter_quill: ^9.3.1
+  flutter_quill: ^9.2.0
   flutter_slidable: ^3.0.0
   flutter_svg: ^2.0.7
   flutter_swipe_action_cell: ^3.0.2
@@ -60,10 +62,14 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.2
   popover: ^0.3.0
+  record: ^5.0.4
+  share_plus: ^7.2.2
   shared_preferences: ^2.2.2
+  shimmer: ^3.0.0
   table_calendar: ^3.0.3
   universal_platform: ^1.0.0+1
   url_launcher: ^6.0.10
+  validators: ^3.0.0
   video_compress: ^3.1.0
   video_player: ^2.7.2
   vsc_quill_delta_to_html: ^1.0.3

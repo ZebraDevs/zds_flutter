@@ -115,6 +115,44 @@ class _ButtonDemoState extends State<ButtonDemo> {
                 onTap: hasOnTap ? () {} : null,
                 child: const Text('Muted'),
               ),
+              const SizedBox(height: 10),
+              CircleIconButton(
+                icon: ZetaIcons.end_call_round,
+                label: "Reject",
+                type: CircleButtonType.negative,
+                onTap: () {
+                  print("Tap");
+                },
+              ),
+              const SizedBox(height: 10),
+              CircleIconButton(
+                icon: ZetaIcons.phone_round,
+                label: "Accept",
+                type: CircleButtonType.positive,
+                onTap: () {
+                  print("Tap");
+                },
+              ),
+              const SizedBox(height: 10),
+              CircleIconButton(
+                icon: ZetaIcons.microphone_round,
+                label: "Mute",
+                type: CircleButtonType.base,
+                activeIcon: ZetaIcons.microphone_off_round,
+                activeLabel: "Un-Mute",
+                onTap: () {
+                  print("Tap");
+                },
+              ),
+              const SizedBox(height: 10),
+              CircleIconButton(
+                icon: ZetaIcons.alert_round,
+                label: "Security",
+                type: CircleButtonType.alert,
+                onTap: () {
+                  print("Tap");
+                },
+              ),
             ],
             Row(
               children: [

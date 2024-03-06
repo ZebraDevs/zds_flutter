@@ -6,6 +6,7 @@ export 'atoms/back_button.dart';
 export 'atoms/border_clipper.dart';
 export 'atoms/button.dart';
 export 'atoms/card.dart';
+export 'atoms/circle_icon_button.dart';
 export 'atoms/conditional_wrapper.dart';
 export 'atoms/dashed_line.dart';
 export 'atoms/expandable.dart';

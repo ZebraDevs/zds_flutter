@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
+
 import '../../../zds_flutter.dart';
 
 /// Identifiers for the supported Zebra icons.
@@ -355,25 +356,40 @@ const Map<String, IconData> _extensions = <String, IconData>{
   '.url': ZdsIcons.file_o,
 };
 
-// Text Documents: #376FC9
-// PDF & PPT (distinguished as they are commonly used): #DB0D00
-// Images: #F56200
-// Video: #6F00C6
-// Audio: #70A300
-// Spreadsheets: #1F802E
-// Misc: #888888
-Color iconColor(String ext) {
-  switch (ext) {
+/// Gets icon color based on file extension.
+///
+/// If `context` is not null, this will use colors from [ZetaColors].
+///
+/// Otherwise:
+/// Text Documents: #376FC9
+/// PDF & PPT (distinguished as they are commonly used): #DB0D00
+/// Images: #F56200
+/// Video: #6F00C6
+/// Audio: #70A300
+/// Spreadsheets: #1F802E
+/// Misc: #888888
+Color iconColor(String ext, {BuildContext? context}) {
+  final String ext1;
+  if (!ext.contains('.')) {
+    ext1 = '.$ext';
+  } else if (ext.split('.').length > 2) {
+    ext1 = ".${ext.split('.').last}";
+  } else {
+    ext1 = ext;
+  }
+  switch (ext1) {
     case '.doc':
     case '.docx':
     case '.rtf':
     case '.ttf':
     case '.txt':
+      if (context != null) return Zeta.of(context).colors.blue;
       return '#376FC9'.colorFromHex();
 
     case '.pdf':
     case '.ppt':
     case '.pptx':
+      if (context != null) return Zeta.of(context).colors.red;
       return '#DB0D00'.colorFromHex();
 
     case '.gif':
@@ -384,6 +400,7 @@ Color iconColor(String ext) {
     case '.tif':
     case '.tiff':
     case '.bmp':
+      if (context != null) return Zeta.of(context).colors.orange;
       return '#F56200'.colorFromHex();
 
     case '.flv':
@@ -392,6 +409,7 @@ Color iconColor(String ext) {
     case '.mpeg':
     case '.mpg':
     case '.qt':
+      if (context != null) return Zeta.of(context).colors.purple;
       return '#6F00C6'.colorFromHex();
 
     case '.au':
@@ -400,23 +418,39 @@ Color iconColor(String ext) {
     case '.mp3':
     case '.mp4':
     case '.wav':
+      if (context != null) return Zeta.of(context).colors.teal;
       return '#70A300'.colorFromHex();
 
     case '.csv':
     case '.xml':
     case '.xls':
     case '.xlsx':
+      if (context != null) return Zeta.of(context).colors.green;
       return '#1F802E'.colorFromHex();
 
     case '.htm':
     case '.rar':
     case '.url':
     case '.zip':
+      if (context != null) return Zeta.of(context).colors.warm;
+
       return '#888888'.colorFromHex();
 
     default:
       return '#888888'.colorFromHex();
   }
+}
+
+IconData extensionIcon(String ext) {
+  final String ext1;
+  if (!ext.contains('.')) {
+    ext1 = '.$ext';
+  } else if (ext.split('.').length > 2) {
+    ext1 = ".${ext.split('.').last}";
+  } else {
+    ext1 = ext;
+  }
+  return _extensions[ext1] ?? ZdsIcons.file_o;
 }
 
 extension IconDataFromExt on String {
