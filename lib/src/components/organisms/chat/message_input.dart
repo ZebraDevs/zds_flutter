@@ -56,6 +56,9 @@ class ZdsMessageInput extends StatefulWidget {
   final void Function(List<XFile> file)? onUploadFiles;
 
   /// Enables voice notes to be sent as messages
+  ///
+  /// Does not currently work on web.
+  ///
   /// Defaults to false
   final bool allowVoiceNotes;
 
@@ -330,7 +333,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                                     },
                                   ),
                                 ),
-                                if (widget.allowVoiceNotes)
+                                if (widget.allowVoiceNotes && !kIsWeb)
                                   IconButton(
                                     icon: Icon(Icons.mic, size: 24, color: zetaColors.iconSubtle),
                                     tooltip: ComponentStrings.of(context).get(
