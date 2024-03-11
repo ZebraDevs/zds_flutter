@@ -26,6 +26,12 @@ zds-flutter: ^1.1.0
 
 ## Getting started
 
+### Template
+
+To speed up development, we have a template repo with ZDS Flutter already set up: [zds_flutter_template](https://github.com/ZebraDevs/zds_flutter_template)
+
+### Manual setup
+
 In order to use components from ZDS Flutter, you must change your app widget to be a `ZdsApp`
 
 ```dart
