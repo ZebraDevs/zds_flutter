@@ -1,11 +1,13 @@
 # ZDS Flutter
 
 A library of Flutter components made by Zebra Technologies based on the Zebra Design System, or ZDS.
-
+<a href='https://zds-c9c24.web.app/'>
 <picture>
+
   <source media="(prefers-color-scheme: dark)" srcset="doc/assets/zds-dark.png">
   <img alt="zds_flutter example" src="doc/assets/zds-light.png">
 </picture>
+</a>
 
 ## Requirements
 
@@ -19,10 +21,16 @@ Make sure your app meets the following requirements before using ZDS Flutter
 Add the following as a dependency in your pubspec.yaml file.
 
 ```yml
-zds-flutter: ^1.0.1
+zds-flutter: ^1.1.0
 ```
 
 ## Getting started
+
+### Template
+
+To speed up development, we have a template repo with ZDS Flutter already set up: [zds_flutter_template](https://github.com/ZebraDevs/zds_flutter_template)
+
+### Manual setup
 
 In order to use components from ZDS Flutter, you must change your app widget to be a `ZdsApp`
 
@@ -43,7 +51,7 @@ class DemoApp extends StatelessWidget {
 
 ## Viewing the components
 
-To view examples of all the components in the library, you can run the example app in this repo or go to [this link](https://zebradevs.github.io/zds_flutter).
+To view examples of all the components in the library, you can run the example app in this repo or go to [this link](https://zds-c9c24.web.app/).
 
 ## Theming
 
