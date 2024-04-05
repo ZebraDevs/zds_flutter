@@ -249,7 +249,7 @@ class ZdsHtml extends StatelessWidget {
         final url = ctx.attributes['src'];
         return url != null && url.isNotEmpty
             ? ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: box.maxWidth),
+                constraints: BoxConstraints(maxWidth: box.maxWidth / PlatformDispatcher.instance.textScaleFactor),
                 child: kIsWeb ? Image.network(url) : CachedNetworkImage(imageUrl: url),
               )
             : Container();
