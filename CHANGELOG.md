@@ -2,6 +2,20 @@
 
 - [`21a2bb9`](https://github.com/ZebraDevs/zds_flutter/commit/21a2bb9905cbedf381cb04cf37b31fc4c12275d8) - fix dependency violation. \_(commit by @thelukewalton)
 
+## [1.2.0](https://github.com/ZebraDevs/zds_flutter/compare/v1.1.0...v1.2.0) (2024-04-05)
+
+
+### Features
+
+* Audio player feat: Camera view feat: Video player feat: Star rating feat: Interactive viewer feat: Speed scroll list fix: Add semantics to SplitTabNavigator chore: enable GitHub actions for code quality, preview, release fix: html viewer bugs chore: update dependencies chore: Update icons chore: Update flutter_quill  chore: Update translations ([8c86b9c](https://github.com/ZebraDevs/zds_flutter/commit/8c86b9ce527ea64124c4f675bb7752ee0f6144b2))
+* Update to match internal repo ([#6](https://github.com/ZebraDevs/zds_flutter/issues/6)) ([8e04f23](https://github.com/ZebraDevs/zds_flutter/commit/8e04f238c831884750c1dafd08bef9ea060bf0d4))
+
+
+### Bug Fixes
+
+* adding more files to pubignore to make package smaller ([#8](https://github.com/ZebraDevs/zds_flutter/issues/8)) ([5ec2561](https://github.com/ZebraDevs/zds_flutter/commit/5ec2561fa85162993a343dc29bad6d29a65900f5))
+* remove voice note option on web ([#7](https://github.com/ZebraDevs/zds_flutter/issues/7)) ([f30410e](https://github.com/ZebraDevs/zds_flutter/commit/f30410e2fb6ad84de85c72c13fdef5efaf7c3937))
+
 ## [1.1.0](https://github.com/ZebraDevs/zds_flutter/compare/1.0.1...v1.1.0) (2024-03-08)
 
 
