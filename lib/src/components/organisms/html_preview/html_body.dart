@@ -111,6 +111,7 @@ class ZdsHtml extends StatelessWidget {
       'p': Style(
         fontSize: fontSize != null ? FontSize(fontSize!) : null,
         maxLines: maxLines,
+        before: '\n',
         lineHeight: LineHeight.percent(125),
         textOverflow: TextOverflow.ellipsis,
         margin: Margins.only(left: 0, right: 0),
