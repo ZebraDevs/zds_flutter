@@ -79,6 +79,7 @@ class ZdsHtmlContainer extends StatefulWidget {
 
   @override
   State<ZdsHtmlContainer> createState() => _ZdsHtmlContainerState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -126,6 +127,13 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
     expanded = widget.expanded || !widget.showReadMore;
     htmlContent = widget.htmlText;
     _transformWebView();
+  }
+
+  @override
+  void didUpdateWidget(covariant ZdsHtmlContainer oldWidget) {
+    htmlContent = widget.htmlText;
+    _transformWebView();
+    super.didUpdateWidget(oldWidget);
   }
 
   void _setContainerWidth(double width) {
@@ -369,7 +377,7 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
       final style = element.attributes['style'];
       if (style != null) {
         // Extract color and background-color properties
-        final colorMatch = RegExp(r'color:\s*([^;]+);?').firstMatch(style);
+        final colorMatch = RegExp(r'(?<!\w-)color\b\s*:\s*([^;]+)').firstMatch(style);
         final bgColorMatch = RegExp(r'background-color:\s*([^;]+);?').firstMatch(style);
 
         final textColorStr = colorMatch?.group(1);
@@ -386,15 +394,19 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
 
         if (textColor != null && !isContrastEnough(textColor, bgColor)) {
           Color visible;
-          if (textColor == Colors.black) {
-            visible = Colors.white;
-          } else if (textColor == Colors.white) {
-            visible = Colors.black;
+          if (isDarkMode) {
+            if (textColor == Colors.black) {
+              visible = Colors.white;
+            } else if (textColor == Colors.white) {
+              visible = Colors.black;
+            } else {
+              visible = textColor.adjustContrast(on: bgColor, target: 4.57);
+            }
           } else {
-            visible = textColor.adjustContrast(on: bgColor, target: 4.57);
+            visible = textColor;
           }
           element.attributes['style'] = style.replaceFirst(
-            RegExp(r'color:\s*[^;]+;?'),
+            RegExp(r'(?<!\w-)color\b\s*:\s*([^;]+)'),
             'color: ${visible.toHex()};',
           );
         }
