@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -449,7 +450,12 @@ extension DeviceTypeFromContext on BuildContext {
   /// Determines the [DeviceType] from the current context.
   DeviceType getDeviceType() {
     final Orientation orientation = MediaQuery.of(this).orientation;
-    if (MediaQuery.of(this).size.shortestSide < 550) {
+    // For iPad(physical device) MediaQuery.of(this).size.shortestSide
+    // giving wrong result at the time of app minimize,
+    // So instead of MediaQuery we have to use PlatformDispatcher to get shortestSide
+    final shortestSide = PlatformDispatcher.instance.displays.first.size.shortestSide /
+        PlatformDispatcher.instance.displays.first.devicePixelRatio;
+    if (shortestSide < 550) {
       if (orientation == Orientation.landscape) {
         return DeviceType.phoneLandscape;
       } else {

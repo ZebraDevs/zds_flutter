@@ -131,6 +131,7 @@ class ZdsIcons {
   static const IconData file_text_o = IconData(0xf0f6, fontFamily: _family, fontPackage: packageName);
   static const IconData file_video_o = IconData(0xf1c8, fontFamily: _family, fontPackage: packageName);
   static const IconData file_word_o = IconData(0xf1c2, fontFamily: _family, fontPackage: packageName);
+  static const IconData file_xlsm_o = IconData(0xe9ae, fontFamily: _family, fontPackage: packageName);
   static const IconData filter = IconData(0xe917, fontFamily: _family, fontPackage: packageName);
   static const IconData flag = IconData(0xe96d, fontFamily: _family, fontPackage: packageName);
   static const IconData flip = IconData(0xe96e, fontFamily: _family, fontPackage: packageName);
@@ -280,7 +281,9 @@ class ZdsIcons {
   static const IconData star = IconData(0xe93d, fontFamily: _family, fontPackage: packageName);
   static const IconData start_outlined = IconData(0xe946, fontFamily: _family, fontPackage: packageName);
   static const IconData store = IconData(0xea0d, fontFamily: _family, fontPackage: packageName);
+  static const IconData store_release = IconData(0xe9bb, fontFamily: _family, fontPackage: packageName);
   static const IconData store_swap = IconData(0xea0c, fontFamily: _family, fontPackage: packageName);
+  static const IconData store_transfer = IconData(0xe9b9, fontFamily: _family, fontPackage: packageName);
   static const IconData subscription = IconData(0xe9a4, fontFamily: _family, fontPackage: packageName);
   static const IconData summary = IconData(0xe93e, fontFamily: _family, fontPackage: packageName);
   static const IconData support = IconData(0xe93f, fontFamily: _family, fontPackage: packageName);
@@ -313,7 +316,6 @@ class ZdsIcons {
   static const IconData walk = IconData(0xe986, fontFamily: _family, fontPackage: packageName);
   static const IconData wifi = IconData(0xea18, fontFamily: _family, fontPackage: packageName);
   static const IconData write = IconData(0xe9ac, fontFamily: _family, fontPackage: packageName);
-  static const IconData file_xlsm = IconData(0xe9ae, fontFamily: _family, fontPackage: packageName);
 }
 
 const Map<String, IconData> _extensions = <String, IconData>{
@@ -350,7 +352,7 @@ const Map<String, IconData> _extensions = <String, IconData>{
   '.wav': ZdsIcons.file_audio_o,
   '.xls': ZdsIcons.file_excel_o,
   '.xlsx': ZdsIcons.file_excel_o,
-  '.xlsm': ZdsIcons.file_xlsm,
+  '.xlsm': ZdsIcons.file_xlsm_o,
   '.xml': ZdsIcons.file_excel_o,
   '.zip': ZdsIcons.file_archive_o,
   '.url': ZdsIcons.file_o,

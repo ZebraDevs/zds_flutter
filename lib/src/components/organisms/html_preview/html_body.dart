@@ -111,6 +111,7 @@ class ZdsHtml extends StatelessWidget {
       'p': Style(
         fontSize: fontSize != null ? FontSize(fontSize!) : null,
         maxLines: maxLines,
+        before: '\n',
         lineHeight: LineHeight.percent(125),
         textOverflow: TextOverflow.ellipsis,
         margin: Margins.only(left: 0, right: 0),
@@ -249,7 +250,7 @@ class ZdsHtml extends StatelessWidget {
         final url = ctx.attributes['src'];
         return url != null && url.isNotEmpty
             ? ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: box.maxWidth),
+                constraints: BoxConstraints(maxWidth: box.maxWidth / PlatformDispatcher.instance.textScaleFactor),
                 child: kIsWeb ? Image.network(url) : CachedNetworkImage(imageUrl: url),
               )
             : Container();

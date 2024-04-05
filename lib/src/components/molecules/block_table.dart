@@ -153,6 +153,14 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     });
   }
 
+  @override
+  void didUpdateWidget(covariant ZdsBlockTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+      buildTable();
+    });
+  }
+
   void buildTable() {
     if (!mounted) return;
     setState(() {
@@ -345,7 +353,10 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
             decoration: BoxDecoration(
               border: isSelected ? Border.all(color: themeData.colorScheme.secondary, width: 2) : null,
               color: isSelected
-                  ? themeData.colorScheme.secondary.withLight(0.1, background: themeData.colorScheme.background)
+                  ? themeData.colorScheme.secondary.withLight(
+                      0.1,
+                      background: themeData.colorScheme.background,
+                    )
                   : tableCell.backgroundColor ?? themeData.colorScheme.surface,
             ),
             child: Align(
