@@ -139,7 +139,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     _tableBody = _controllers.addAndGet();
 
     WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-      headerHeight = widget.rowHeaderHeight;
+      headerHeight = widget.rowHeaderHeight * MediaQuery.of(context).textScaleFactor;
       buildTable();
     });
 
@@ -148,6 +148,14 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
 
   @override
   void didChangeMetrics() {
+    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+      buildTable();
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant ZdsBlockTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
     WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
       buildTable();
     });
@@ -230,7 +238,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
             Container(
               alignment: Alignment.center,
               width: _getDayColumnWidth(),
-              height: 28,
+              height: 28 * MediaQuery.of(context).textScaleFactor,
               color: themeData.colorScheme.surface,
               child: Text(
                 items[index].text,
@@ -345,7 +353,10 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
             decoration: BoxDecoration(
               border: isSelected ? Border.all(color: themeData.colorScheme.secondary, width: 2) : null,
               color: isSelected
-                  ? themeData.colorScheme.secondary.withLight(0.1, background: themeData.colorScheme.background)
+                  ? themeData.colorScheme.secondary.withLight(
+                      0.1,
+                      background: themeData.colorScheme.background,
+                    )
                   : tableCell.backgroundColor ?? themeData.colorScheme.surface,
             ),
             child: Align(
@@ -416,7 +427,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     return Container(
       alignment: Alignment.center,
       width: _getAssocColumnWidth(),
-      height: 28,
+      height: 28 * MediaQuery.of(context).textScaleFactor,
       color: Theme.of(context).colorScheme.surface,
     ).paddingOnly(right: 1);
   }
