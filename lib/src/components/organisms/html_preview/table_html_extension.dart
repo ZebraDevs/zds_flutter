@@ -23,6 +23,7 @@ const zdsTableTags = {
   'ul',
   'li',
   'colgroup',
+  'hr',
 };
 
 /// [TableHtmlExtension] adds support for the <table> element to the flutter_html library.
