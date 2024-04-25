@@ -11,17 +11,17 @@ class FilePickerDemo extends StatefulWidget {
 class _FilePickerDemoState extends State<FilePickerDemo> {
   final ZdsFilePickerController controller = ZdsFilePickerController();
 
-  static const pickerConfig = FilePickerConfig(
+  static const pickerConfig = ZdsFilePickerConfig(
     maxFilesAllowed: 5,
     maxFileSize: 2500000,
     maxVideoTimeInSeconds: 10,
     options: [
-      FilePickerOptions.FILE,
-      FilePickerOptions.GIF,
-      FilePickerOptions.LINK,
-      FilePickerOptions.CAMERA,
-      FilePickerOptions.GALLERY,
-      FilePickerOptions.VIDEO,
+      ZdsFilePickerOptions.FILE,
+      ZdsFilePickerOptions.GIF,
+      ZdsFilePickerOptions.LINK,
+      ZdsFilePickerOptions.CAMERA,
+      ZdsFilePickerOptions.GALLERY,
+      ZdsFilePickerOptions.VIDEO,
     ],
   );
 

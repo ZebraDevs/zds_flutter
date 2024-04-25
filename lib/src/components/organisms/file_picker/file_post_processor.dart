@@ -14,7 +14,7 @@ typedef BuildContextProvider = BuildContext Function();
 // ignore: one_member_abstracts
 abstract class ZdsFilePostProcessor {
   /// method that is to be implemented.
-  Future<FileWrapper> process(FilePickerConfig config, FileWrapper wrapper);
+  Future<ZdsFileWrapper> process(ZdsFilePickerConfig config, ZdsFileWrapper wrapper);
 }
 
 /// Default post processors

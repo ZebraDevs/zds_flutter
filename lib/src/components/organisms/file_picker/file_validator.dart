@@ -58,16 +58,16 @@ enum PickerExceptionType {
 /// Default file validator
 Future<FilePickerException?> zdsValidator(
   ZdsFilePickerController controller,
-  FilePickerConfig config,
-  FileWrapper wrapper,
-  FilePickerOptions option,
+  ZdsFilePickerConfig config,
+  ZdsFileWrapper wrapper,
+  ZdsFilePickerOptions option,
 ) async {
   final dynamic file = wrapper.content;
   if (file is! XFile) return null;
 
   //file type check if [useLiveMediaOnly] is true and
   //option will be [FilePickerOptions.FILE]
-  if (config.useLiveMediaOnly && option == FilePickerOptions.FILE) {
+  if (config.useLiveMediaOnly && option == ZdsFilePickerOptions.FILE) {
     final allowedFileTypes = getAllowedFileBrowserTypes(
       useLiveMediaOnly: config.useLiveMediaOnly,
       allowedFileTypes: config.allowedExtensions,
@@ -96,7 +96,7 @@ Future<FilePickerException?> zdsValidator(
 }
 
 /// Default error handler
-void zdsFileError(BuildContext context, FilePickerConfig config, Exception exception) {
+void zdsFileError(BuildContext context, ZdsFilePickerConfig config, Exception exception) {
   String message(Exception exception) {
     if (exception is FilePickerException) {
       return exception.type.message(context, args: exception.args);

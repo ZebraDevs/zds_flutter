@@ -134,28 +134,28 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     setState(() => __hasText = value);
   }
 
-  late final _moreConfig = FilePickerConfig(
+  late final _moreConfig = ZdsFilePickerConfig(
     maxFilesAllowed: 1,
     maxFileSize: widget.maxAttachSize,
     allowedExtensions: widget.allowedFileTypes,
     maxPixelSize: widget.maxPixelSize,
     options: [
-      FilePickerOptions.FILE,
-      FilePickerOptions.GIF,
-      FilePickerOptions.GALLERY,
-      FilePickerOptions.VIDEO,
-      FilePickerOptions.CAMERA,
+      ZdsFilePickerOptions.FILE,
+      ZdsFilePickerOptions.GIF,
+      ZdsFilePickerOptions.GALLERY,
+      ZdsFilePickerOptions.VIDEO,
+      ZdsFilePickerOptions.CAMERA,
     ],
   );
 
-  FilePickerConfig get _inlineConfig {
-    return FilePickerConfig(
+  ZdsFilePickerConfig get _inlineConfig {
+    return ZdsFilePickerConfig(
       maxFilesAllowed: 1,
       maxFileSize: widget.maxAttachSize,
       allowedExtensions: widget.allowedFileTypes,
       maxPixelSize: widget.maxPixelSize,
       options: [
-        FilePickerOptions.CAMERA,
+        ZdsFilePickerOptions.CAMERA,
       ],
     );
   }
@@ -199,7 +199,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     }
   }
 
-  void _onFilesChanged(List<FileWrapper> items) {
+  void _onFilesChanged(List<ZdsFileWrapper> items) {
     if (items.isEmpty) {
       return;
     } else if (items.first.content is XFile) {
@@ -378,7 +378,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     final modalController = ZdsFilePickerController();
     final zetaColors = Zeta.of(context).colors;
     unawaited(
-      showZdsBottomSheet<FileWrapper>(
+      showZdsBottomSheet<ZdsFileWrapper>(
         enforceSheet: true,
         backgroundColor: zetaColors.surfacePrimary,
         context: context,

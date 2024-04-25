@@ -17,7 +17,7 @@ class ZdsFileEditPostProcessor implements ZdsFilePostProcessor {
   final BuildContextProvider buildContext;
 
   @override
-  Future<FileWrapper> process(FilePickerConfig config, FileWrapper file) async {
+  Future<ZdsFileWrapper> process(ZdsFilePickerConfig config, ZdsFileWrapper file) async {
     if (kIsWeb) return file;
 
     if (file.isImage() && file.content != null) {
@@ -42,7 +42,7 @@ class ZdsFileEditPostProcessor implements ZdsFilePostProcessor {
         await originalFile.delete(recursive: true);
         final File result = File(path.join(dir, path.basename(originalFile.absolute.path)));
         await result.writeAsBytes(bytes);
-        return FileWrapper(file.type, ZdsXFile.fromFile(result));
+        return ZdsFileWrapper(file.type, ZdsXFile.fromFile(result));
       }
     }
 

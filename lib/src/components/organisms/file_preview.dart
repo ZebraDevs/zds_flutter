@@ -33,7 +33,7 @@ class ZdsFilePreview extends StatelessWidget {
   });
 
   /// The file that needs to be previewed.
-  final FileWrapper file;
+  final ZdsFileWrapper file;
 
   /// The maximum preview size.
   ///
@@ -121,10 +121,10 @@ class ZdsFilePreview extends StatelessWidget {
             : const SizedBox();
   }
 
-  Widget _getFile(FileWrapper file) {
+  Widget _getFile(ZdsFileWrapper file) {
     return Builder(
       builder: (BuildContext context) {
-        final bool isUrl = file.type == FilePickerOptions.LINK;
+        final bool isUrl = file.type == ZdsFilePickerOptions.LINK;
         final themeData = Theme.of(context);
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -154,7 +154,7 @@ class ZdsFilePreview extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<FileWrapper>('file', file))
+      ..add(DiagnosticsProperty<ZdsFileWrapper>('file', file))
       ..add(DoubleProperty('size', size))
       ..add(DiagnosticsProperty<bool>('useCard', useCard))
       ..add(ObjectFlagProperty<VoidCallback?>.has('onDelete', onDelete))
