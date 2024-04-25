@@ -13,7 +13,7 @@ import '../../../zds_flutter.dart';
 class ComponentStrings {
   /// Constructs a [ComponentStrings].
   /// default value for [debugStrings] is false.
-  ComponentStrings(this.locale, {this.debugStrings = false});
+  ComponentStrings(this.locale, {this.debugStrings = false, this.testing = false});
 
   /// Default locale of the components is English.
   static const Locale defaultLocale = Locale('en');
@@ -27,6 +27,9 @@ class ComponentStrings {
   /// Default value of [debugStrings] is false.
   /// If true then [get] method returns key instead of value
   final bool debugStrings;
+
+  ///Running in test mode
+  final bool testing;
 
   /// Delegate used to get the translated strings.
   static LocalizationsDelegate<ComponentStrings> delegate = ComponentDelegate();
@@ -147,7 +150,7 @@ class ComponentStrings {
   /// Loads strings from file and sets [_strings].
   Future<ComponentStrings> load() async {
     // Loading strings from assets
-    _strings = await _loadStrings();
+    _strings = testing ? {} : await _loadStrings();
     return this;
   }
 
@@ -202,7 +205,7 @@ abstract class ComponentDeltaProvider {
 /// Delegate to get translations for these components.
 class ComponentDelegate extends LocalizationsDelegate<ComponentStrings> {
   /// Constructs a [ComponentDelegate].
-  ComponentDelegate({this.deltaProvider, this.debugStrings = false});
+  ComponentDelegate({this.deltaProvider, this.debugStrings = false, this.testing = false});
 
   /// Custom string delta
   final ComponentDeltaProvider? deltaProvider;
@@ -210,15 +213,21 @@ class ComponentDelegate extends LocalizationsDelegate<ComponentStrings> {
   ///debug strings
   final bool debugStrings;
 
+  ///Running in test mode
+  final bool testing;
+
   @override
   Future<ComponentStrings> load(Locale locale) async {
-    final ComponentStrings strings = await ComponentStrings(locale).load();
+    final ComponentStrings strings = ComponentStrings(locale, testing: testing, debugStrings: debugStrings);
+    await strings.load();
+
     if (deltaProvider != null) {
       final Map<String, String> delta = await deltaProvider!.loadDelta(locale);
       if (delta.isNotEmpty) {
         strings.update(delta);
       }
     }
+
     return strings;
   }
 

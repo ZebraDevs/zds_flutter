@@ -13,31 +13,31 @@ class ZdsFileRenamePostProcessor implements ZdsFilePostProcessor {
   const ZdsFileRenamePostProcessor();
 
   @override
-  Future<FileWrapper> process(FilePickerConfig config, FileWrapper file) async {
+  Future<ZdsFileWrapper> process(ZdsFilePickerConfig config, ZdsFileWrapper file) async {
     if (kIsWeb || file.content is! XFile) return file;
     final String photoDir = path.dirname(file.xFilePath);
     final String epoch = DateFormat('yyyyMMdd_HHmmssSSS').format(DateTime.now());
     final String fileName = '${file.type.toPrefix()}_$epoch${path.extension(file.xFilePath)}';
     final String newPath = path.join(photoDir, fileName);
     final File photoFile = File(file.xFilePath).renameSync(newPath);
-    return FileWrapper(file.type, ZdsXFile.fromFile(photoFile));
+    return ZdsFileWrapper(file.type, ZdsXFile.fromFile(photoFile));
   }
 }
 
-extension on FilePickerOptions {
+extension on ZdsFilePickerOptions {
   String toPrefix() {
     switch (this) {
-      case FilePickerOptions.CAMERA:
+      case ZdsFilePickerOptions.CAMERA:
         return 'IMG';
-      case FilePickerOptions.FILE:
+      case ZdsFilePickerOptions.FILE:
         return 'FIL';
-      case FilePickerOptions.GALLERY:
+      case ZdsFilePickerOptions.GALLERY:
         return 'GAL';
-      case FilePickerOptions.GIF:
+      case ZdsFilePickerOptions.GIF:
         return 'GIF';
-      case FilePickerOptions.LINK:
+      case ZdsFilePickerOptions.LINK:
         return 'LNK';
-      case FilePickerOptions.VIDEO:
+      case ZdsFilePickerOptions.VIDEO:
         return 'VID';
     }
   }

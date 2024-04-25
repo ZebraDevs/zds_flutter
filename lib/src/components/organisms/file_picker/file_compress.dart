@@ -21,13 +21,13 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
   const ZdsFileCompressPostProcessor();
 
   @override
-  Future<FileWrapper> process(FilePickerConfig config, FileWrapper file) async {
+  Future<ZdsFileWrapper> process(ZdsFilePickerConfig config, ZdsFileWrapper file) async {
     if (kIsWeb) {
       return file;
     } else if (file.isImage()) {
-      return FileWrapper(file.type, await _compressImage(File(file.xFilePath), config));
+      return ZdsFileWrapper(file.type, await _compressImage(File(file.xFilePath), config));
     } else if (file.isVideo()) {
-      return FileWrapper(
+      return ZdsFileWrapper(
         file.type,
         await _compressVideo(File(file.xFilePath), config),
       );
@@ -36,7 +36,7 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
     }
   }
 
-  Future<XFile> _compressVideo(File video, FilePickerConfig config) async {
+  Future<XFile> _compressVideo(File video, ZdsFilePickerConfig config) async {
     try {
       final String dir = await zdsTempDirectory();
       final String fileExtension = path.extension(video.path).toLowerCase().replaceAll('.', '');
@@ -79,7 +79,7 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
     return qualityMap[config] ?? VideoQuality.Res640x480Quality;
   }
 
-  Future<XFile> _compressImage(File image, FilePickerConfig config) async {
+  Future<XFile> _compressImage(File image, ZdsFilePickerConfig config) async {
     try {
       final int fileSize = config.maxFileSize == 0 ? _maxImageUploadSize : config.maxFileSize;
       final int h = config.maxPixelSize <= 0 ? 1080 : config.maxPixelSize;
@@ -126,7 +126,7 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
     }
   }
 
-  CompressFormat? _getCompressFormat(String extension, FilePickerConfig config) {
+  CompressFormat? _getCompressFormat(String extension, ZdsFilePickerConfig config) {
     final Iterable<String> allowedExt = config.allowedExtensions.map((String e) => e.toLowerCase());
 
     // If allowed file extension list is empty then return jpeg

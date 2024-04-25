@@ -16,14 +16,14 @@ class ZdsImageAnnotationPostProcessor implements ZdsFilePostProcessor {
   final BuildContextProvider buildContext;
 
   @override
-  Future<FileWrapper> process(FilePickerConfig config, FileWrapper file) async {
+  Future<ZdsFileWrapper> process(ZdsFilePickerConfig config, ZdsFileWrapper file) async {
     if (kIsWeb) return file;
 
     if (file.isImage() && file.content != null) {
       final File originalFile = File(file.xFilePath);
       final XFile? result = await _editFile(buildContext.call(), originalFile);
       if (result != null) {
-        return FileWrapper(file.type, result);
+        return ZdsFileWrapper(file.type, result);
       }
     }
 

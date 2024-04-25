@@ -9,7 +9,11 @@ import 'file_picker.dart';
 /// Extension on FilePickerException to show message
 
 /// Types of files the [ZdsFilePicker] can be used to pick.
-enum FilePickerOptions {
+@Deprecated('Use ZdsFilePickerOptions instead of FilePickerOptions.')
+typedef FilePickerOptions = ZdsFilePickerOptions;
+
+/// Types of files the [ZdsFilePicker] can be used to pick.
+enum ZdsFilePickerOptions {
   /// Opens native video file picker.
   VIDEO,
 
@@ -30,13 +34,17 @@ enum FilePickerOptions {
 }
 
 /// Wrapper around files picked using [ZdsFilePicker].
+@Deprecated('Use ZdsFileWrapper instead of FileWrapper.')
+typedef FileWrapper = ZdsFileWrapper;
+
+/// Wrapper around files picked using [ZdsFilePicker].
 @immutable
-class FileWrapper {
-  /// Constructs a [FileWrapper].
-  const FileWrapper(this.type, this.content);
+class ZdsFileWrapper {
+  /// Constructs a [ZdsFileWrapper].
+  const ZdsFileWrapper(this.type, this.content);
 
   /// The type of file wrapped.
-  final FilePickerOptions type;
+  final ZdsFilePickerOptions type;
 
   /// The content of the picked file.
   final dynamic content;
@@ -114,7 +122,7 @@ class FileWrapper {
   int get hashCode => type.hashCode ^ content.hashCode;
 
   @override
-  bool operator ==(covariant FileWrapper other) {
+  bool operator ==(covariant ZdsFileWrapper other) {
     // ignore: avoid_dynamic_calls
     if (other.content.runtimeType != content.runtimeType) return false;
     if (content is XFile && other.content is XFile) {
