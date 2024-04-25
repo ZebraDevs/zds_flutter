@@ -2,6 +2,15 @@
 
 - [`21a2bb9`](https://github.com/ZebraDevs/zds_flutter/commit/21a2bb9905cbedf381cb04cf37b31fc4c12275d8) - fix dependency violation. \_(commit by @thelukewalton)
 
+## [1.2.1](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.0...v1.2.1) (2024-04-25)
+
+
+### Bug Fixes
+
+* Adding All supporting tag in table to render the data correctly as precautionary action ([f49b1e3](https://github.com/ZebraDevs/zds_flutter/commit/f49b1e3f9164fac5f1cfb0380f0e9d5851b6aba8))
+* Table inserted in project notes/task notes along with data is not properly shown at Project Notes/Task Notes summery section. ([eb65465](https://github.com/ZebraDevs/zds_flutter/commit/eb6546568380a23481525392f9588c805534b761))
+* Updated file picker to delegate the file picked events ([e1ed80d](https://github.com/ZebraDevs/zds_flutter/commit/e1ed80d97bc21350bd8d0a25c9778ab97c47b86b))
+
 ## [1.2.0](https://github.com/ZebraDevs/zds_flutter/compare/v1.1.0...v1.2.0) (2024-04-05)
 
 
