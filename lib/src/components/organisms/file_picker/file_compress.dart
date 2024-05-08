@@ -19,7 +19,7 @@ const int _maxVideoUploadSize = 5 * 1024 * 1024; // 25 Mb
 class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
   /// Default constructor
   const ZdsFileCompressPostProcessor({
-    this.compressVideoTypes = const {'mp4', 'mov', '3gp', 'm4v', 'hevc', 'avi', 'flv'},
+    this.compressVideoTypes = const {'mp4', 'mov', '3gp', 'm4v', 'hevc', 'avi'},
   });
 
   /// Video types to compress
