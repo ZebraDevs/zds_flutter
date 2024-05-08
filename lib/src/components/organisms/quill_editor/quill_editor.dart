@@ -80,7 +80,6 @@ class ZdsQuillEditor extends StatelessWidget {
     final editor = QuillEditor.basic(
       configurations: QuillEditorConfigurations(
         controller: controller,
-        readOnly: readOnly,
         keyboardAppearance: keyboardAppearance ?? Brightness.light,
         embedBuilders: embedBuilders,
         padding: padding,

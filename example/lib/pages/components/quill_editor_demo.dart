@@ -71,7 +71,6 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
               configurations: QuillEditorConfigurations(
                 padding: const EdgeInsets.all(16),
                 controller: controller,
-                readOnly: true,
               ),
               focusNode: FocusNode(canRequestFocus: false),
             ),
