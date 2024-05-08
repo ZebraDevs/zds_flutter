@@ -194,6 +194,7 @@ class ZdsHtml extends StatelessWidget {
                       verticalScrollBarEnabled: false,
                       horizontalScrollBarEnabled: false,
                       disableHorizontalScroll: true,
+                      iframeAllowFullscreen: true,
                       disableVerticalScroll: true,
                       supportZoom: false,
                       disableContextMenu: true,
