@@ -73,16 +73,13 @@ dependencies:
   video_compress: ^3.1.0
   video_player: ^2.7.2
   vsc_quill_delta_to_html: ^1.0.3
-  zeta_flutter: ^0.8.1
+  zeta_flutter: ^0.8.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   lottie: ^3.0.0
   zds_analysis: ^1.0.0
-
-dependency_overrides:
-  intl: 0.19.0
 
 flutter:
   assets:
