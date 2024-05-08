@@ -2,6 +2,13 @@
 
 - [`21a2bb9`](https://github.com/ZebraDevs/zds_flutter/commit/21a2bb9905cbedf381cb04cf37b31fc4c12275d8) - fix dependency violation. \_(commit by @thelukewalton)
 
+## [1.2.3](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.2...v1.2.3) (2024-05-08)
+
+
+### Bug Fixes
+
+* update zeta_flutter ([#16](https://github.com/ZebraDevs/zds_flutter/issues/16)) ([695064b](https://github.com/ZebraDevs/zds_flutter/commit/695064b6c0f8d82b8fdc4917cbe153d8178429e3))
+
 ## [1.2.2](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.1...v1.2.2) (2024-05-08)
 
 
