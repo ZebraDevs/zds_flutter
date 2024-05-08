@@ -603,24 +603,42 @@ extension _Methods on ZdsFilePickerState {
   }
 
   Future<void> _handleGifAction(BuildContext context) async {
-    final GiphyGif? gif = await Navigator.push<GiphyGif?>(
+    final maxFilesAllowed = config.maxFilesAllowed;
+    final allowMultiple = maxFilesAllowed == 0 || maxFilesAllowed > 1;
+    final List<GiphyGif>? result = await Navigator.push<List<GiphyGif>?>(
       context,
-      MaterialPageRoute<GiphyGif?>(
-        builder: (BuildContext context) => ZdsGiphyPicker(apiKey: config.giphyKey!),
+      MaterialPageRoute<List<GiphyGif>?>(
+        builder: (BuildContext context) => ZdsGiphyPicker(
+          apiKey: config.giphyKey!,
+          allowMultiple: allowMultiple,
+        ),
       ),
     );
-    try {
-      if (gif == null) return;
-      _busy = true;
-      if (context.mounted) {
-        final file = await onPicked(
-          context,
-          ZdsFileWrapper(ZdsFilePickerOptions.GIF, gif),
-          ZdsFilePickerOptions.GIF,
-        );
 
-        if (file != null) widget.onPicked?.call([file]);
+    try {
+      if (result == null) return;
+      _busy = true;
+
+      final List<ZdsFileWrapper> list = [];
+
+      if (context.mounted) {
+        for (final GiphyGif gif in result) {
+          final itemsLength = controller.items.where((ZdsFileWrapper element) => !element.isLink).toList().length +
+              controller.remoteItems.length;
+          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed && context.mounted) {
+            showToast(context, PickerExceptionType.maxLimitReached.message(context));
+            break;
+          }
+          final file = await onPicked(
+            context,
+            ZdsFileWrapper(ZdsFilePickerOptions.GIF, gif),
+            ZdsFilePickerOptions.GIF,
+          );
+          if (file != null) list.add(file);
+        }
       }
+
+      if (list.isNotEmpty) widget.onPicked?.call(list);
     } on Exception catch (e) {
       if (context.mounted) widget.onError?.call(context, config, e);
     } finally {

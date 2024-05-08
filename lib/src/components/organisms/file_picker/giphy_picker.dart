@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,19 +21,24 @@ class ZdsGiphyPicker extends StatefulWidget {
   ///
   /// The [key] parameter is optional and is used to control the framework's
   /// widget replacement and state synchronization mechanisms.
-  const ZdsGiphyPicker({super.key, required this.apiKey});
+  const ZdsGiphyPicker({super.key, required this.apiKey, this.allowMultiple = false});
 
   /// API Key, required to use giphy service.
   ///
   /// See [Giphy Developers](https://developers.giphy.com/).
   final String apiKey;
 
+  /// Check for allowing multiple files or not
+  final bool allowMultiple;
+
   @override
   State<ZdsGiphyPicker> createState() => _ZdsGiphyPickerState();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('apiKey', apiKey));
+    properties
+      ..add(StringProperty('apiKey', apiKey))
+      ..add(DiagnosticsProperty<bool>('allowMultiple', allowMultiple));
   }
 }
 
@@ -66,6 +72,8 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
 
   /// Delay before the debounce effect takes place.
   late Duration debounceDelay;
+
+  List<GiphyGif> selectedGIFs = [];
 
   @override
   void initState() {
@@ -121,7 +129,21 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
         : null;
 
     return Scaffold(
-      appBar: AppBar(title: Text(ComponentStrings.of(context).get('PICK_GIF', 'Pick a Gif'))),
+      appBar: AppBar(
+        title: Text(ComponentStrings.of(context).get('PICK_GIF', 'Pick a Gif')),
+        actions: widget.allowMultiple
+            ? [
+                TextButton(
+                  onPressed: selectedGIFs.isNotEmpty
+                      ? () {
+                          Navigator.pop(context, selectedGIFs);
+                        }
+                      : null,
+                  child: Text(ComponentStrings.of(context).get('ADD', 'Add')),
+                ),
+              ]
+            : [],
+      ),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints box) {
@@ -169,44 +191,79 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
   Widget _item(BuildContext context, GiphyGif gif) {
     final String? url = gif.images?.previewWebp?.url;
     return InkWell(
-      onTap: () => Navigator.pop(context, gif),
+      onTap: () {
+        if (widget.allowMultiple) {
+          _toggleCheckBox(gif);
+        } else {
+          Navigator.pop(context, [gif]);
+        }
+      },
       child: url == null
           ? Container()
-          : ExtendedImage.network(
-              url,
-              semanticLabel: gif.title,
-              gaplessPlayback: true,
-              fit: BoxFit.fill,
-              headers: const <String, String>{'accept': 'image/*'},
-              loadStateChanged: (ExtendedImageState state) => AnimatedSwitcher(
-                duration: const Duration(milliseconds: 350),
-                child: gif.images == null
-                    ? Container()
-                    : <LoadState, AspectRatio>{
-                        LoadState.loading: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(color: Theme.of(context).cardColor),
-                        ),
-                        LoadState.completed: AspectRatio(
-                          aspectRatio: 1,
-                          child: ExtendedRawImage(fit: BoxFit.fill, image: state.extendedImageInfo?.image),
-                        ),
-                        LoadState.failed: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(color: Theme.of(context).cardColor),
-                        ),
-                      }.get(
-                        state.extendedImageLoadState,
-                        fallback: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            color: Theme.of(context).cardColor,
+          : Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                ExtendedImage.network(
+                  url,
+                  semanticLabel: gif.title,
+                  gaplessPlayback: true,
+                  fit: BoxFit.fill,
+                  headers: const <String, String>{'accept': 'image/*'},
+                  loadStateChanged: (ExtendedImageState state) => AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 350),
+                    child: gif.images == null
+                        ? Container()
+                        : <LoadState, AspectRatio>{
+                            LoadState.loading: AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(color: Theme.of(context).cardColor),
+                            ),
+                            LoadState.completed: AspectRatio(
+                              aspectRatio: 1,
+                              child: ExtendedRawImage(fit: BoxFit.fill, image: state.extendedImageInfo?.image),
+                            ),
+                            LoadState.failed: AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(color: Theme.of(context).cardColor),
+                            ),
+                          }.get(
+                            state.extendedImageLoadState,
+                            fallback: AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(
+                                color: Theme.of(context).cardColor,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-              ),
+                  ),
+                ),
+                if (widget.allowMultiple)
+                  Checkbox(
+                    value: selectedGIFs.contains(gif),
+                    shape: const CircleBorder(),
+                    onChanged: (bool? value) {
+                      _toggleCheckBox(gif);
+                    },
+                    side: selectedGIFs.contains(gif)
+                        ? const BorderSide(
+                            color: Colors.red,
+                            width: 2,
+                          )
+                        : BorderSide.none,
+                  ),
+              ],
             ),
     );
+  }
+
+  void _toggleCheckBox(GiphyGif gif) {
+    setState(() {
+      if (selectedGIFs.contains(gif)) {
+        selectedGIFs.remove(gif);
+      } else {
+        selectedGIFs.add(gif);
+      }
+    });
   }
 
   Future<void> _loadMore() async {
@@ -269,6 +326,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
     properties
       ..add(DiagnosticsProperty<Duration>('debounceDelay', debounceDelay))
       ..add(IntProperty('offset', offset))
-      ..add(DiagnosticsProperty<ScrollController>('scrollController', scrollController));
+      ..add(DiagnosticsProperty<ScrollController>('scrollController', scrollController))
+      ..add(IterableProperty<GiphyGif>('selecetdGifs', selectedGIFs));
   }
 }
