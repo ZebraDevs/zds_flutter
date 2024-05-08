@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
-import '../../../../zds_flutter.dart';
+import '../../../zds_flutter.dart';
 
 /// Defines a header for a [ZdsBlockTable]
 class ZdsBlockTableHeader {
@@ -174,7 +174,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Zeta.of(context).colors.borderSubtle,
+      color: Zeta.of(context).colors.surfacePrimary,
       child: IntrinsicHeight(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,13 +233,26 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
       items.length,
       (int index) {
         final themeData = Theme.of(context);
+        final zetaColors = Zeta.of(context).colors;
         return Row(
           children: <Widget>[
             Container(
+              decoration: BoxDecoration(
+                color: themeData.colorScheme.surface,
+                border: Border(
+                  bottom: BorderSide(
+                    width: 1.5,
+                    color: zetaColors.borderSubtle,
+                  ),
+                  right: BorderSide(
+                    width: 1.5,
+                    color: zetaColors.borderSubtle,
+                  ),
+                ),
+              ),
               alignment: Alignment.center,
               width: _getDayColumnWidth(),
               height: 28,
-              color: themeData.colorScheme.surface,
               child: Text(
                 items[index].text,
                 style: themeData.textTheme.bodySmall?.copyWith(
@@ -264,7 +277,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
         final ZdsBlockTableRow row = rows[index];
         final ZdsBlockTableCellData cellItem = row.titleCell;
         final themeData = Theme.of(context);
-
+        final zetaColors = Zeta.of(context).colors;
         return Row(
           children: <Widget>[
             Column(
@@ -275,10 +288,15 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
                     height: headerHeight,
                     width: _getAssocColumnWidth(),
                     decoration: BoxDecoration(
-                      color: Zeta.of(context).colors.borderDisabled,
+                      color: zetaColors.borderDisabled,
                       border: Border(
                         bottom: BorderSide(
-                          color: Zeta.of(context).colors.borderSubtle,
+                          width: 1.5,
+                          color: zetaColors.borderSubtle,
+                        ),
+                        right: BorderSide(
+                          width: 1.5,
+                          color: zetaColors.borderSubtle,
                         ),
                       ),
                     ),
@@ -294,10 +312,22 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
                     ),
                   ),
                 Container(
+                  decoration: BoxDecoration(
+                    color: cellItem.backgroundColor ?? themeData.colorScheme.surface,
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 1.5,
+                        color: zetaColors.borderSubtle,
+                      ),
+                      right: BorderSide(
+                        width: 1.5,
+                        color: zetaColors.borderSubtle,
+                      ),
+                    ),
+                  ),
                   alignment: Alignment.center,
                   width: _getAssocColumnWidth(),
                   height: widget.cellHeight + widget.cellPadding,
-                  color: cellItem.backgroundColor ?? themeData.colorScheme.surface,
                   margin: const EdgeInsets.only(bottom: 1),
                   child: cellItem.child ??
                       Text(
@@ -326,7 +356,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     final List<Widget> cells = <Widget>[];
     final List<ZdsBlockTableRow> rows = widget.rows;
     final double cellHeight = widget.cellHeight + widget.cellPadding;
-
+    final zetaColors = Zeta.of(context).colors;
     for (int j = 0; j < rows[index].data.length; j++) {
       final List<Widget> columnWidgets = <Widget>[];
 
@@ -335,9 +365,16 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
           Container(
             height: headerHeight,
             decoration: BoxDecoration(
-              color: Zeta.of(context).colors.borderDisabled,
+              color: zetaColors.borderDisabled,
               border: Border(
-                bottom: BorderSide(color: Zeta.of(context).colors.borderSubtle),
+                bottom: BorderSide(
+                  width: 1.5,
+                  color: zetaColors.borderSubtle,
+                ),
+                right: BorderSide(
+                  width: 1.5,
+                  color: zetaColors.borderSubtle,
+                ),
               ),
             ),
           ),
@@ -351,7 +388,18 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
         Expanded(
           child: DecoratedBox(
             decoration: BoxDecoration(
-              border: isSelected ? Border.all(color: themeData.colorScheme.secondary, width: 2) : null,
+              border: isSelected
+                  ? Border.all(color: themeData.colorScheme.secondary, width: 2)
+                  : Border(
+                      bottom: BorderSide(
+                        width: 1.5,
+                        color: zetaColors.borderSubtle,
+                      ),
+                      right: BorderSide(
+                        width: 1.5,
+                        color: zetaColors.borderSubtle,
+                      ),
+                    ),
               color: isSelected
                   ? themeData.colorScheme.secondary.withLight(
                       0.1,
@@ -424,11 +472,24 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   }
 
   Widget _getZeroCellWidget() {
+    final zetaColors = Zeta.of(context).colors;
     return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            width: 1.5,
+            color: zetaColors.borderSubtle,
+          ),
+          right: BorderSide(
+            width: 1.5,
+            color: zetaColors.borderSubtle,
+          ),
+        ),
+      ),
       alignment: Alignment.center,
       width: _getAssocColumnWidth(),
       height: 28,
-      color: Theme.of(context).colorScheme.surface,
     ).paddingOnly(right: 1);
   }
 
