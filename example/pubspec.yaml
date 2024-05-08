@@ -11,7 +11,6 @@ dependencies:
   flutter:
     sdk: flutter
   lottie: ^2.1.0
-  intl: ^0.18.0
   table_calendar: ^3.0.9
   shared_preferences: ^2.2.2
   zds_flutter:
@@ -22,8 +21,10 @@ dependencies:
   path_provider: ^2.1.2
   scrollable_positioned_list: ^0.3.8
   url_launcher: ^6.2.5
-  zeta_flutter: ^0.4.0
   cross_file: ^0.3.3+8
+
+dependency_overrides:
+  intl: 0.19.0
 
 flutter:
   uses-material-design: true

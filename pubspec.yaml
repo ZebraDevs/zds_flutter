@@ -29,7 +29,7 @@ dependencies:
   dropdown_button2: ^2.1.4
   expand_tap_area: ^1.1.0
   extended_image: ^8.2.0
-  file_picker: ^6.1.1
+  file_picker: ^8.0.3
   flutter:
     sdk: flutter
   flutter_colorpicker: ^1.0.3
@@ -53,7 +53,7 @@ dependencies:
   image_editor_plus: ^1.0.3
   image_picker: ^1.0.2
   interval_time_picker: ^2.0.0+5
-  intl: ^0.18.0
+  intl: ^0.18.1
   just_audio: ^0.9.36
   linked_scroll_controller: ^0.2.0
   mime: ^1.0.0
@@ -63,7 +63,7 @@ dependencies:
   path_provider: ^2.0.2
   popover: ^0.3.0
   record: ^5.0.4
-  share_plus: ^7.2.2
+  share_plus: ^9.0.0
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0
   table_calendar: ^3.0.3
@@ -73,13 +73,16 @@ dependencies:
   video_compress: ^3.1.0
   video_player: ^2.7.2
   vsc_quill_delta_to_html: ^1.0.3
-  zeta_flutter: ^0.4.0
+  zeta_flutter: ^0.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   lottie: ^3.0.0
   zds_analysis: ^1.0.0
+
+dependency_overrides:
+  intl: 0.19.0
 
 flutter:
   assets:

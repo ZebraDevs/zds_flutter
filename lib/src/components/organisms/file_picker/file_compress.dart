@@ -18,7 +18,14 @@ const int _maxVideoUploadSize = 5 * 1024 * 1024; // 25 Mb
 @immutable
 class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
   /// Default constructor
-  const ZdsFileCompressPostProcessor();
+  const ZdsFileCompressPostProcessor({
+    this.compressVideoTypes = const {'mp4', 'mov', '3gp', 'm4v', 'hevc', 'avi'},
+  });
+
+  /// Video types to compress
+  /// Default tested types are `{'mp4', 'mov', '3gp', 'm4v', 'hevc', 'avi'}`
+  /// You can add more types to compress, but make sure to check if compression works fine for that type
+  final Set<String> compressVideoTypes;
 
   @override
   Future<ZdsFileWrapper> process(ZdsFilePickerConfig config, ZdsFileWrapper file) async {
@@ -27,10 +34,7 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
     } else if (file.isImage()) {
       return ZdsFileWrapper(file.type, await _compressImage(File(file.xFilePath), config));
     } else if (file.isVideo()) {
-      return ZdsFileWrapper(
-        file.type,
-        await _compressVideo(File(file.xFilePath), config),
-      );
+      return ZdsFileWrapper(file.type, await _compressVideo(File(file.xFilePath), config));
     } else {
       return file;
     }
@@ -38,21 +42,25 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
 
   Future<XFile> _compressVideo(File video, ZdsFilePickerConfig config) async {
     try {
-      final String dir = await zdsTempDirectory();
       final String fileExtension = path.extension(video.path).toLowerCase().replaceAll('.', '');
-      final File targetFile = File('$dir/${path.basenameWithoutExtension(video.path)}.$fileExtension');
       final int maxFileSize = config.maxFileSize == 0 ? _maxVideoUploadSize : config.maxFileSize;
-
       File compressedVideo;
-      try {
-        compressedVideo = await ZdsCompressor.compressVideo(
-              video: video,
-              target: targetFile,
-              maxFileSize: maxFileSize,
-              quality: _videoQuality(config.videoCompressionLevel),
-            ) ??
-            video;
-      } catch (e) {
+
+      if (compressVideoTypes.contains(fileExtension)) {
+        try {
+          final String dir = await zdsTempDirectory();
+          final File targetFile = File('$dir/${path.basenameWithoutExtension(video.path)}.$fileExtension');
+          compressedVideo = await ZdsCompressor.compressVideo(
+                video: video,
+                target: targetFile,
+                maxFileSize: maxFileSize,
+                quality: _videoQuality(config.videoCompressionLevel),
+              ) ??
+              video;
+        } catch (e) {
+          compressedVideo = video;
+        }
+      } else {
         compressedVideo = video;
       }
 
@@ -97,9 +105,16 @@ class ZdsFileCompressPostProcessor implements ZdsFilePostProcessor {
 
       if (format != null) {
         try {
-          final Compression c =
-              Compression(maxFileSize: fileSize, minHeight: h, minWidth: h, format: format, quality: quality);
+          final Compression c = Compression(
+            maxFileSize: fileSize,
+            minHeight: h,
+            minWidth: h,
+            format: format,
+            quality: quality,
+          );
+
           File? compressed = await ZdsCompressor.compressImage(image: image, compression: c);
+
           if (compressed != null) {
             // Rename file back to jpg if picked file was jpg and allowed file types dose not contain jpeg.
             // This step is needed as jpg is compressed to jpeg

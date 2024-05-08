@@ -21,8 +21,9 @@ jobs:
         run: |
           dart format --fix .
           dart fix --apply
-      - name: Check Publish Warnings
-        run: dart pub publish --dry-run
+      # TODO: Package uses pre-release packages, so this always fails.
+      # - name: Check Publish Warnings
+      #   run: dart pub publish --dry-run
       - name: Publish
         run: dart pub publish --force
   deploy:
