@@ -19,6 +19,7 @@ import '../../atoms/absorb_pointer.dart';
 import '../../atoms/button.dart';
 import '../../atoms/card.dart';
 import '../../molecules/list.dart';
+import '../../molecules/toast.dart';
 import '../camera/camera_page.dart';
 import '../file_preview.dart';
 import '../list_tile.dart';
@@ -734,7 +735,8 @@ extension _Methods on ZdsFilePickerState {
         for (final PlatformFile file in result.files) {
           final itemsLength = controller.items.where((ZdsFileWrapper element) => !element.isLink).toList().length +
               controller.remoteItems.length;
-          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed) {
+          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed && context.mounted) {
+            showToast(context, PickerExceptionType.maxLimitReached.message(context));
             break;
           }
           if (kIsWeb) {
@@ -763,6 +765,24 @@ extension _Methods on ZdsFilePickerState {
     } finally {
       _busy = false;
     }
+  }
+
+  void showToast(BuildContext context, String title) {
+    ScaffoldMessenger.of(context).showZdsToast(
+      ZdsToast(
+        title: Text(title),
+        leading: const Icon(ZdsIcons.check_circle),
+        color: ZdsToastColors.error,
+        actions: [
+          IconButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+            icon: const Icon(ZdsIcons.close),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<ZdsFileWrapper?> onPicked(
