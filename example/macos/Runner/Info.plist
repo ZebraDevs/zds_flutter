@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need add only access to save medias</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to save medias</string>
 </dict>
 </plist>

@@ -22,6 +22,7 @@ dependencies:
   scrollable_positioned_list: ^0.3.8
   url_launcher: ^6.2.5
   cross_file: ^0.3.3+8
+  flutter_quill_extensions: ^9.3.11
 
 flutter:
   uses-material-design: true

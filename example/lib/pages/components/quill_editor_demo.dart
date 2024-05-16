@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill_extensions/flutter_quill_embeds.dart';
 import 'package:zds_flutter/zds_flutter.dart';
 
 ///Example for htmlEditor
@@ -57,6 +59,7 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
             title: 'Edit Notes',
             initialDelta: ZdsQuillDelta(document: controller.document),
             charLimit: 20000,
+            embedBuilders: kIsWeb ? FlutterQuillEmbeds.editorWebBuilders() : FlutterQuillEmbeds.editorBuilders(),
           ).then((value) {
             if (value != null) {
               controller.document = value.document;
@@ -71,6 +74,7 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
               configurations: QuillEditorConfigurations(
                 padding: const EdgeInsets.all(16),
                 controller: controller,
+                embedBuilders: kIsWeb ? FlutterQuillEmbeds.editorWebBuilders() : FlutterQuillEmbeds.editorBuilders(),
               ),
               focusNode: FocusNode(canRequestFocus: false),
             ),

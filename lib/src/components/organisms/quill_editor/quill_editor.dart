@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill_extensions/flutter_quill_embeds.dart';
 
 import '../../../../zds_flutter.dart';
 import 'quill_toolbar.dart';
@@ -26,6 +27,7 @@ class ZdsQuillEditor extends StatelessWidget {
     this.placeholder,
     this.editorKey,
     this.toolbarColor,
+    this.embedButtons,
     super.key,
   });
 
@@ -74,6 +76,9 @@ class ZdsQuillEditor extends StatelessWidget {
   /// A key to associate with the underlying editor widget.
   final GlobalKey<EditorState>? editorKey;
 
+  /// Embed buttons for `flutter_quill_extensions`.
+  final List<EmbedButtonBuilder>? embedButtons;
+
   @override
   Widget build(BuildContext context) {
     // Base editor configuration
@@ -113,6 +118,7 @@ class ZdsQuillEditor extends StatelessWidget {
       toolbarIconSize: toolbarIconSize,
       langCode: langCode,
       toolbarColor: toolbarColor,
+      embedButtons: FlutterQuillEmbeds.toolbarButtons(),
     );
   }
 
@@ -134,6 +140,7 @@ class ZdsQuillEditor extends StatelessWidget {
       ..add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode))
       ..add(StringProperty('placeholder', placeholder))
       ..add(ColorProperty('toolbarColor', toolbarColor))
-      ..add(DiagnosticsProperty<GlobalKey<EditorState>?>('editorKey', editorKey));
+      ..add(DiagnosticsProperty<GlobalKey<EditorState>?>('editorKey', editorKey))
+      ..add(IterableProperty<EmbedButtonBuilder>('embedButtons', embedButtons));
   }
 }

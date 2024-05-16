@@ -28,6 +28,7 @@ class ZdsQuillEditorPage extends StatefulWidget {
     this.charLimit = 10000,
     this.placeholder = '',
     this.initialDelta,
+    this.embedBuilders,
   });
 
   /// The title displayed in the editor's AppBar.
@@ -62,6 +63,9 @@ class ZdsQuillEditorPage extends StatefulWidget {
   /// Defaults to true.
   final bool showClearFormatAsFloating;
 
+  /// Embed builders
+  final Iterable<quill.EmbedBuilder>? embedBuilders;
+
   /// Navigates to the editor page for creating or editing content.
   ///
   /// Returns a [ZdsQuillDelta] representing the edited content or null if the user cancels the operation.
@@ -78,6 +82,7 @@ class ZdsQuillEditorPage extends StatefulWidget {
     bool showClearFormatAsFloating = true,
     Set<QuillToolbarOption>? toolbarOptions,
     QuillToolbarPosition? quillToolbarPosition = QuillToolbarPosition.bottom,
+    Iterable<quill.EmbedBuilder>? embedBuilders,
   }) {
     return Navigator.of(context).push<ZdsQuillDelta>(
       MaterialPageRoute<ZdsQuillDelta>(
@@ -94,6 +99,7 @@ class ZdsQuillEditorPage extends StatefulWidget {
             toolbarOptions: toolbarOptions ?? zdsQuillToolbarOptions,
             langCode: langCode ?? ComponentStrings.of(context).locale.toString(),
             initialDelta: initialDelta?.copyWith(document: initialDelta.document),
+            embedBuilders: embedBuilders,
           );
         },
       ),
@@ -117,6 +123,7 @@ class ZdsQuillEditorPage extends StatefulWidget {
       ..add(StringProperty('placeholder', placeholder))
       ..add(IterableProperty<QuillToolbarOption>('toolbarOptions', toolbarOptions))
       ..add(DiagnosticsProperty<bool>('showClearFormatAsFloating', showClearFormatAsFloating));
+    properties.add(IterableProperty<quill.EmbedBuilder>('embedBuilders', embedBuilders));
   }
 }
 
@@ -380,6 +387,7 @@ class _ZdsQuillEditorState extends State<ZdsQuillEditorPage> with FrameCallbackM
       toolbarIconSize: widget.toolbarIconSize,
       quillToolbarPosition: widget.quillToolbarPosition,
       toolbarColor: Theme.of(context).colorScheme.surface,
+      embedBuilders: widget.embedBuilders,
       toolbarOptions: <QuillToolbarOption>{...widget.toolbarOptions}
         ..remove(QuillToolbarOption.redo)
         ..remove(QuillToolbarOption.undo)

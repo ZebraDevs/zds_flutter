@@ -143,6 +143,7 @@ class ZdsQuillToolbar extends QuillToolbar {
     double? toolbarIconSize,
     String? langCode,
     Color? toolbarColor,
+    List<EmbedButtonBuilder>? embedButtons,
   }) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final Color effectiveToolbarColor = toolbarColor ?? colorScheme.surface;
@@ -176,6 +177,7 @@ class ZdsQuillToolbar extends QuillToolbar {
       showSuperscript: false,
       showSearchButton: false,
       multiRowsDisplay: false,
+      embedButtons: embedButtons,
       iconTheme: QuillIconTheme(
         iconButtonUnselectedData: IconButtonData(
           color: effectiveToolbarColor.onColor,
