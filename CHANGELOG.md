@@ -2,6 +2,15 @@
 
 - [`21a2bb9`](https://github.com/ZebraDevs/zds_flutter/commit/21a2bb9905cbedf381cb04cf37b31fc4c12275d8) - fix dependency violation. \_(commit by @thelukewalton)
 
+## [1.2.4](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.3...v1.2.4) (2024-05-20)
+
+
+### Bug Fixes
+
+* update interval time picker to work with flutter 3.22.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* update to flutter 3.22.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* update to zeta_flutter 0.9.1 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+
 ## [1.2.3](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.2...v1.2.3) (2024-05-08)
 
 
