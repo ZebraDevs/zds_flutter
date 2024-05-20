@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:interval_time_picker/interval_time_picker.dart' as interval_picker;
-
 import 'package:intl/intl.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
@@ -13,6 +11,7 @@ import '../../utils/theme/theme.dart';
 import '../../utils/tools/controller.dart';
 import '../organisms/date_range_picker_tile.dart';
 import '../organisms/fiscal_date_picker.dart';
+import 'interval_time_picker.dart' as interval_picker;
 
 /// Variants of [ZdsDateTimePicker].
 enum DateTimePickerMode {

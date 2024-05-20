@@ -403,7 +403,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
               color: isSelected
                   ? themeData.colorScheme.secondary.withLight(
                       0.1,
-                      background: themeData.colorScheme.background,
+                      background: themeData.colorScheme.surface,
                     )
                   : tableCell.backgroundColor ?? themeData.colorScheme.surface,
             ),

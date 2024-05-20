@@ -45,7 +45,7 @@ class ZdsExpandable extends StatelessWidget {
 
   /// The color to be used for the fadeout gradient indicating the widget is collapsed.
   ///
-  /// Defaults to [ColorScheme.background].
+  /// Defaults to [ColorScheme.surface].
   final Color? color;
 
   @override
@@ -53,7 +53,7 @@ class ZdsExpandable extends StatelessWidget {
     return child.readMore(
       collapsedButtonText: collapsedButtonText,
       expandedButtonText: expandedButtonText,
-      color: color ?? Theme.of(context).colorScheme.background,
+      color: color ?? Theme.of(context).colorScheme.surface,
       minHeight: minHeight,
     );
   }
@@ -137,7 +137,7 @@ class _ExpandableContainerState extends State<_ExpandableContainer> with SingleT
       contentKey: _keyText,
       button: TextButton(
         style: TextButton.styleFrom(
-          foregroundColor: Theme.of(context).elevatedButtonTheme.style!.backgroundColor!.resolve(<MaterialState>{}),
+          foregroundColor: Theme.of(context).elevatedButtonTheme.style!.backgroundColor!.resolve(<WidgetState>{}),
           backgroundColor: Colors.transparent,
         ),
         onPressed: isExpanded ? collapse : expand,
@@ -290,7 +290,7 @@ extension ExpandableTextExtension on Widget {
   ///
   /// [collapsedButtonText] and [expandedButtonText] define the button's text for when the widget is collapsed and
   /// expanded respectively. [color] defines the color to be used for the fadeout gradient indicating the widget is
-  /// collapsed, and defaults to [ColorScheme.background].
+  /// collapsed, and defaults to [ColorScheme.surface].
   ///
   /// See also:
   ///
@@ -313,7 +313,7 @@ extension ExpandableTextExtension on Widget {
               collapsedButtonText.isEmpty ? strings.get('READ_MORE', 'Read more') : collapsedButtonText,
           expandedButtonText: expandedButtonText.isEmpty ? strings.get('COLLAPSE', 'Collapse') : expandedButtonText,
           minHeight: minHeight,
-          color: color ?? Theme.of(context).colorScheme.background,
+          color: color ?? Theme.of(context).colorScheme.surface,
           child: this,
         );
       },

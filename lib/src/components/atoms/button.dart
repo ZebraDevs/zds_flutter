@@ -251,7 +251,7 @@ class ZdsButton extends StatelessWidget {
     final Color defaultBackground = customColor ?? (isDangerButton ? zetaColors.negative : zetaColors.secondary);
 
     // Common textStyle for all variants.
-    final textStyle = MaterialStateProperty.all(textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500));
+    final textStyle = WidgetStateProperty.all(textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500));
 
     // Helper function to calculate the overlay color.
     Color calculateOverlay({double opacity = 0.1, Color? background}) {
@@ -261,44 +261,44 @@ class ZdsButton extends StatelessWidget {
     switch (variant) {
       case ZdsButtonVariant.filled:
         return ButtonStyle(
-          padding: MaterialStateProperty.all(tp),
+          padding: WidgetStateProperty.all(tp),
           textStyle: textStyle,
-          foregroundColor: materialStatePropertyResolver(
+          foregroundColor: widgetStatePropertyResolver(
             defaultValue: defaultBackground.onColor,
             disabledValue: zetaColors.textDisabled,
           ),
-          backgroundColor: materialStatePropertyResolver(
+          backgroundColor: widgetStatePropertyResolver(
             defaultValue: defaultBackground,
             disabledValue: zetaColors.surfaceDisabled,
           ),
-          overlayColor: materialStatePropertyResolver(
+          overlayColor: widgetStatePropertyResolver(
             hoveredValue: defaultBackground.darken(5), // Slight darkening for hover
             pressedValue: defaultBackground.darken(15), // More noticeable darkening for pressed state
             defaultValue: Colors.transparent,
           ),
-          side: materialStatePropertyResolver(
+          side: widgetStatePropertyResolver(
             focusedValue: BorderSide(color: zetaColors.secondary.subtle, width: 3),
             disabledValue: BorderSide(color: zetaColors.borderDisabled),
           ),
         );
       case ZdsButtonVariant.outlined:
         return ButtonStyle(
-          padding: MaterialStateProperty.all(tp),
+          padding: WidgetStateProperty.all(tp),
           textStyle: textStyle,
-          foregroundColor: materialStatePropertyResolver(
+          foregroundColor: widgetStatePropertyResolver(
             defaultValue: defaultBackground,
             disabledValue: zetaColors.textDisabled,
           ),
-          backgroundColor: materialStatePropertyResolver(
+          backgroundColor: widgetStatePropertyResolver(
             defaultValue: Colors.transparent,
             disabledValue: zetaColors.surfaceDisabled,
           ),
-          overlayColor: materialStatePropertyResolver(
+          overlayColor: widgetStatePropertyResolver(
             defaultValue: Colors.transparent,
             hoveredValue: calculateOverlay(),
             pressedValue: calculateOverlay(opacity: 0.2),
           ),
-          side: materialStatePropertyResolver(
+          side: widgetStatePropertyResolver(
             focusedValue: BorderSide(color: zetaColors.secondary.subtle, width: 3),
             defaultValue: BorderSide(color: defaultBackground),
             disabledValue: BorderSide(color: zetaColors.borderDisabled),
@@ -306,43 +306,43 @@ class ZdsButton extends StatelessWidget {
         );
       case ZdsButtonVariant.text:
         return ButtonStyle(
-          padding: MaterialStateProperty.all(tp),
+          padding: WidgetStateProperty.all(tp),
           textStyle: textStyle,
-          foregroundColor: materialStatePropertyResolver(
+          foregroundColor: widgetStatePropertyResolver(
             defaultValue: isOnDarkBackground ? zetaColors.textInverse : defaultBackground,
             disabledValue: zetaColors.textDisabled,
           ),
-          backgroundColor: materialStatePropertyResolver(
+          backgroundColor: widgetStatePropertyResolver(
             defaultValue: Colors.transparent,
           ),
-          overlayColor: materialStatePropertyResolver(
+          overlayColor: widgetStatePropertyResolver(
             defaultValue: Colors.transparent,
             hoveredValue: calculateOverlay(),
             pressedValue: calculateOverlay(opacity: 0.2),
           ),
-          side: materialStatePropertyResolver(
+          side: widgetStatePropertyResolver(
             focusedValue: BorderSide(color: zetaColors.secondary.subtle, width: 3),
             disabledValue: const BorderSide(color: Colors.transparent),
           ),
         );
       case ZdsButtonVariant.muted:
         return ButtonStyle(
-          padding: MaterialStateProperty.all(tp),
+          padding: WidgetStateProperty.all(tp),
           textStyle: textStyle,
-          foregroundColor: materialStatePropertyResolver(
+          foregroundColor: widgetStatePropertyResolver(
             defaultValue: zetaColors.textDefault,
             disabledValue: zetaColors.textDisabled,
           ),
-          backgroundColor: materialStatePropertyResolver(
+          backgroundColor: widgetStatePropertyResolver(
             defaultValue: Colors.transparent,
             disabledValue: zetaColors.surfaceDisabled,
           ),
-          overlayColor: materialStatePropertyResolver(
+          overlayColor: widgetStatePropertyResolver(
             defaultValue: Colors.transparent,
             hoveredValue: calculateOverlay(background: zetaColors.borderDefault),
             pressedValue: calculateOverlay(background: zetaColors.borderDefault, opacity: 0.2),
           ),
-          side: materialStatePropertyResolver(
+          side: widgetStatePropertyResolver(
             focusedValue: BorderSide(color: zetaColors.secondary.subtle, width: 3),
             disabledValue: BorderSide(color: zetaColors.borderDisabled),
             defaultValue: BorderSide(color: zetaColors.borderDefault),

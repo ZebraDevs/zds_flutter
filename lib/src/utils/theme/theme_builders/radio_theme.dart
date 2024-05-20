@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
 
-import '../../tools/utils.dart' show materialStatePropertyResolver;
+import '../../tools/utils.dart' show widgetStatePropertyResolver;
 
 /// An extension on [ZetaColorScheme].
 ///
@@ -12,19 +12,19 @@ extension RadioExtension on ZetaColorScheme {
   ///
   /// Mouse cursors, fill color, overlay color, tap target size, and visual density
   /// of radio buttons can be customized through this method.
-  /// [MouseCursor] and Color values are resolved using materialStatePropertyResolver that handles
+  /// [MouseCursor] and Color values are resolved using WidgetStatePropertyResolver that handles
   /// different UI states of radio button (like hover, disabled etc.).
   RadioThemeData radioThemeData() {
     return RadioThemeData(
       /// Defines the mouse cursor when hovered, disabled and the default value.
-      mouseCursor: materialStatePropertyResolver(
+      mouseCursor: widgetStatePropertyResolver(
         hoveredValue: SystemMouseCursors.click,
         disabledValue: SystemMouseCursors.forbidden,
         defaultValue: SystemMouseCursors.basic,
       ),
 
       /// Defines the fill color for the different states of radio button.
-      fillColor: materialStatePropertyResolver(
+      fillColor: widgetStatePropertyResolver(
         selectedValue: zetaColors.secondary,
         hoveredValue: zetaColors.secondary.hover,
         focusedValue: zetaColors.secondary.hover,
@@ -33,7 +33,7 @@ extension RadioExtension on ZetaColorScheme {
       ),
 
       /// Defines the overlay color for hover state of radio button.
-      overlayColor: materialStatePropertyResolver(
+      overlayColor: widgetStatePropertyResolver(
         hoveredValue: zetaColors.secondary.hover,
       ),
 

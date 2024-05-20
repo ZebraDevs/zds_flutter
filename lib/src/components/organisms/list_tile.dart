@@ -55,7 +55,7 @@ class ZdsListTile extends StatelessWidget {
   /// Typically a [Text] widget.
   ///
   /// The subtitle's default [TextStyle] depends on [TextTheme.bodyMedium] except
-  /// [TextStyle.color]. The [TextStyle.color] is [ColorScheme.onBackground].
+  /// [TextStyle.color]. The [TextStyle.color] is [ColorScheme.onSurface].
   final Widget? subtitle;
 
   /// A widget to display after the title.

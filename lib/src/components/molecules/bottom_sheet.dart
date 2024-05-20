@@ -39,7 +39,7 @@ class ZdsBottomSheet extends StatelessWidget {
 
   /// The background color for this bottom sheet.
   ///
-  /// Defaults to [ColorScheme.background]
+  /// Defaults to [ColorScheme.surface]
   final Color? backgroundColor;
 
   /// How high this bottom sheet will be allowed to grow. If not null, it must be greater than 0. The bottom sheet will
@@ -56,7 +56,7 @@ class ZdsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color sheetBackgroundColor = backgroundColor ?? colorScheme.background;
+    final Color sheetBackgroundColor = backgroundColor ?? colorScheme.surface;
     final Color headerColor = header != null ? colorScheme.surface : sheetBackgroundColor;
     final _BottomSheetHeader headerWidget = _BottomSheetHeader(bottom: header, backgroundColor: headerColor);
     final MediaQueryData media = MediaQuery.of(context);

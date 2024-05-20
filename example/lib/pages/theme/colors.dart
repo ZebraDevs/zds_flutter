@@ -95,12 +95,12 @@ class ColorsDemo extends StatelessWidget {
         'subtitle': 'Theme.of(context).colorScheme.onSurface',
       },
       {
-        'color': Theme.of(context).colorScheme.background,
+        'color': Theme.of(context).colorScheme.surface,
         'name': 'background',
         'subtitle': 'Theme.of(context).colorScheme.background',
       },
       {
-        'color': Theme.of(context).colorScheme.onBackground,
+        'color': Theme.of(context).colorScheme.onSurface,
         'name': 'onBackground',
         'subtitle': 'Theme.of(context).colorScheme.onBackground',
       },

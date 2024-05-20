@@ -43,6 +43,7 @@ enum ZetaAppBarStyle {
 
   /// Use scheme background color as the AppBar's themed background color,
   /// including any blend (surface tint) color it may have.
+  @Deprecated('Use surface instead. ' 'This feature was deprecated after v3.18.0-0.1.pre.')
   background,
 }
 
@@ -66,11 +67,10 @@ extension AppBarColor on ZetaAppBarStyle {
         // Applying secondary color of color scheme
         return colorScheme.secondary;
       case ZetaAppBarStyle.surface:
+      // ignore: deprecated_member_use_from_same_package
+      case ZetaAppBarStyle.background:
         // Applying surface color of color scheme
         return colorScheme.surface;
-      case ZetaAppBarStyle.background:
-        // Applying background color of color scheme
-        return colorScheme.background;
     }
   }
 }
@@ -139,7 +139,7 @@ extension ZetaThemeBuilder on ZetaColorScheme {
       primaryTextTheme: primaryTextTheme,
       progressIndicatorTheme: progressIndicatorTheme(),
       radioTheme: radioThemeData(),
-      scaffoldBackgroundColor: background,
+      scaffoldBackgroundColor: surface,
       searchBarTheme: searchBarTheme(textTheme),
       shadowColor: zetaColors.borderDisabled.withOpacity(0.7),
       sliderTheme: sliderTheme(),

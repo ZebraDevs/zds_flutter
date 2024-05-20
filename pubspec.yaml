@@ -52,8 +52,7 @@ dependencies:
   http_client_helper: ^3.0.0
   image_editor_plus: ^1.0.3
   image_picker: ^1.0.2
-  interval_time_picker: ^2.0.0+5
-  intl: ^0.18.1
+  intl: ^0.19.0
   just_audio: ^0.9.36
   linked_scroll_controller: ^0.2.0
   mime: ^1.0.0
@@ -73,7 +72,7 @@ dependencies:
   video_compress: ^3.1.0
   video_player: ^2.7.2
   vsc_quill_delta_to_html: ^1.0.3
-  zeta_flutter: ^0.8.2
+  zeta_flutter: ^0.9.1
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,4 @@
-// ignore_for_file: implementation_imports, public_member_api_docs
+// ignore_for_file: implementation_imports
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/src/widgets/toolbar/buttons/alignment/select_alignment_buttons.dart';
@@ -84,35 +84,94 @@ enum QuillToolbarOption {
 
 /// Options for Toolbar buttons
 enum ToolbarButtons {
+  /// Quill undo button.
   undo,
+
+  /// Quill redo button.
   redo,
+
+  /// Quill fontFamily button.
   fontFamily,
+
+  /// Quill fontSize button.
   fontSize,
+
+  /// Quill bold button.
   bold,
+
+  /// Quill subscript button.
   subscript,
+
+  /// Quill superscript button.
   superscript,
+
+  /// Quill italic button.
   italic,
+
+  /// Quill small button.
   small,
+
+  /// Quill underline button.
   underline,
+
+  /// Quill strikeThrough button.
   strikeThrough,
+
+  /// Quill inlineCode button.
   inlineCode,
+
+  /// Quill color button.
   color,
+
+  /// Quill backgroundColor button.
   backgroundColor,
+
+  /// Quill clearFormat button.
   clearFormat,
+
+  /// Quill centerAlignment button.
   centerAlignment,
+
+  /// Quill leftAlignment button.
   leftAlignment,
+
+  /// Quill rightAlignment button.
   rightAlignment,
+
+  /// Quill justifyAlignment button.
   justifyAlignment,
+
+  /// Quill direction button.
   direction,
+
+  /// Quill headerStyle button.
   headerStyle,
+
+  /// Quill listNumbers button.
   listNumbers,
+
+  /// Quill listBullets button.
   listBullets,
+
+  /// Quill listChecks button.
   listChecks,
+
+  /// Quill codeBlock button.
   codeBlock,
+
+  /// Quill quote button.
   quote,
+
+  /// Quill indentIncrease button.
   indentIncrease,
+
+  /// Quill indentDecrease button.
   indentDecrease,
+
+  /// Quill link button.
   link,
+
+  /// Quill search button.
   search,
 }
 

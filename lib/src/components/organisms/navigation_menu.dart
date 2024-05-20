@@ -63,7 +63,7 @@ class ZdsNavigationMenu extends StatelessWidget {
                   .toList(),
             ),
           ),
-          if (withSpacer) Container(height: 12, color: Theme.of(context).colorScheme.background),
+          if (withSpacer) Container(height: 12, color: Theme.of(context).colorScheme.surface),
         ],
       ),
     );

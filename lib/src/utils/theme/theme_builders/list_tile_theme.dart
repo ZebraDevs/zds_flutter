@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
 
-import '../../tools.dart' show materialStatePropertyResolver;
+import '../../tools.dart' show widgetStatePropertyResolver;
 
 /// This extension on [ZetaColorScheme] allows to create and customize [ListTileThemeData].
 extension ListTileExtension on ZetaColorScheme {
@@ -38,7 +38,7 @@ extension ListTileExtension on ZetaColorScheme {
       leadingAndTrailingTextStyle: textTheme.bodySmall?.copyWith(color: zetaColors.textSubtle),
 
       /// Setting up custom mouse cursors for different material states.
-      mouseCursor: materialStatePropertyResolver(
+      mouseCursor: widgetStatePropertyResolver(
         hoveredValue: SystemMouseCursors.click,
         disabledValue: SystemMouseCursors.forbidden,
         defaultValue: SystemMouseCursors.basic,

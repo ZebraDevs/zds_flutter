@@ -1,10 +1,10 @@
-// ignore_for_file: strict_raw_type, public_member_api_docs
+// ignore_for_file: strict_raw_type,
 
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart' hide ColorExtension1;
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/translations.dart';
 
@@ -16,6 +16,7 @@ import '../../../utils/tools/utils.dart';
 /// When pressed, this button displays overlay toolbar with
 /// buttons for each color.
 class ZdsQuillToolbarColorButton extends StatefulWidget {
+  /// Constructs a [ZdsQuillToolbarColorButton].
   const ZdsQuillToolbarColorButton({
     required this.controller,
     required this.isBackground,
@@ -25,11 +26,15 @@ class ZdsQuillToolbarColorButton extends StatefulWidget {
 
   /// Is this background color button or font color
   final bool isBackground;
+
+  /// Quill controller.
   final QuillController controller;
+
+  /// Options for the color button. See [QuillToolbarColorButtonOptions].
   final QuillToolbarColorButtonOptions options;
 
   @override
-  ZdsQuillToolbarColorButtonState createState() => ZdsQuillToolbarColorButtonState();
+  State<ZdsQuillToolbarColorButton> createState() => _ZdsQuillToolbarColorButtonState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -41,7 +46,7 @@ class ZdsQuillToolbarColorButton extends StatefulWidget {
   }
 }
 
-class ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton> {
+class _ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton> {
   late bool _isToggledColor;
   late bool _isToggledBackground;
   late bool _isWhite;

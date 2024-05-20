@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
 
-import '../../tools/utils.dart' show materialStatePropertyResolver;
+import '../../tools/utils.dart' show widgetStatePropertyResolver;
 
 /// This code defines a Dart extension method for [ZetaColorScheme], which uses Material UI components.
 /// It provides a new [switchTheme] method that allows for customization of a [SwitchThemeData] according to the [ZetaColorScheme].
@@ -20,19 +20,19 @@ extension SwitchExtension on ZetaColorScheme {
   /// Returns a [SwitchThemeData] object.
   SwitchThemeData switchTheme() {
     return SwitchThemeData(
-      /// Defines the mouse cursor for different [MaterialState]s.
+      /// Defines the mouse cursor for different [WidgetState]s.
       ///
       /// Hovered state uses [SystemMouseCursors.click], Disabled state
       /// uses [SystemMouseCursors.forbidden], default state uses
       /// [SystemMouseCursors.basic].
-      mouseCursor: materialStatePropertyResolver(
+      mouseCursor: widgetStatePropertyResolver(
         hoveredValue: SystemMouseCursors.click,
         disabledValue: SystemMouseCursors.forbidden,
         defaultValue: SystemMouseCursors.basic,
       ),
 
       /// Defines the overlay [Color] for the [Switch] when it's hovered.
-      overlayColor: materialStatePropertyResolver(
+      overlayColor: widgetStatePropertyResolver(
         hoveredValue: zetaColors.secondary,
       ),
 

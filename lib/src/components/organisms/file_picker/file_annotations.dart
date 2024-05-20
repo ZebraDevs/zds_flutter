@@ -31,7 +31,7 @@ class ZdsImageAnnotationPostProcessor implements ZdsFilePostProcessor {
   }
 
   Future<XFile?> _editFile(BuildContext context, File originalFile) async {
-    ImageEditor.i18n(ComponentStrings.of(context).getAll());
+    ImageEditor.setI18n(ComponentStrings.of(context).getAll());
     final bytes = await Navigator.of(context, rootNavigator: true).push<Uint8List>(
       ZdsFadePageRouteBuilder(
         fullscreenDialog: true,
