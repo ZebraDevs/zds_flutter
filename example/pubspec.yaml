@@ -25,9 +25,6 @@ dependencies:
   zeta_flutter: any
   intl: any
 
-dependency_overrides:
-  intl: ^0.19.0
-
 flutter:
   uses-material-design: true
   assets:
