@@ -240,7 +240,7 @@ class _SelectedBackground extends StatelessWidget {
         padding: const EdgeInsets.only(left: 1),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: <Color>[themeData.colorScheme.background, themeData.colorScheme.surface],
+            colors: <Color>[themeData.colorScheme.surface, themeData.colorScheme.surface],
           ),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(4),

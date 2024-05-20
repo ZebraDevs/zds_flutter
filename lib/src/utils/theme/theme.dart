@@ -11,7 +11,7 @@ ZdsBottomBarThemeData buildZdsBottomBarThemeData(BuildContext context) {
     shadows: <BoxShadow>[
       BoxShadow(
         offset: const Offset(0, -1),
-        color: themeData.colorScheme.onBackground.withOpacity(0.1),
+        color: themeData.colorScheme.onSurface.withOpacity(0.1),
         blurRadius: 2,
       ),
     ],
@@ -354,7 +354,7 @@ extension ThemeExtension on ThemeData {
   /// Custom theme for [ZdsDateTimePicker].
   ThemeData get zdsDateTimePickerTheme {
     return copyWith(
-      dialogBackgroundColor: colorScheme.brightness == Brightness.dark ? colorScheme.background : null,
+      dialogBackgroundColor: colorScheme.brightness == Brightness.dark ? colorScheme.surface : null,
       colorScheme: colorScheme.copyWith(
         primary: colorScheme.secondary.withLight(colorScheme.brightness == Brightness.dark ? 0.75 : 1),
         onPrimary: colorScheme.onSecondary,
@@ -504,8 +504,8 @@ extension ThemeExtension on ThemeData {
   ///
   /// Should not be used often as buttons typically should not be too small.
   ThemeData get shrunkenButtonsThemeData {
-    MaterialStateProperty<EdgeInsetsGeometry> buildShrunkenButtonPadding() {
-      return MaterialStateProperty.all(EdgeInsets.zero);
+    WidgetStateProperty<EdgeInsetsGeometry> buildShrunkenButtonPadding() {
+      return WidgetStateProperty.all(EdgeInsets.zero);
     }
 
     return copyWith(
@@ -513,7 +513,7 @@ extension ThemeExtension on ThemeData {
         style: textButtonTheme.style?.copyWith(
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           padding: buildShrunkenButtonPadding(),
-          foregroundColor: MaterialStateProperty.all(colorScheme.primary),
+          foregroundColor: WidgetStateProperty.all(colorScheme.primary),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(

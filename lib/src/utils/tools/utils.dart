@@ -211,7 +211,7 @@ int numberOfWeeksInYear(int year) {
 }
 
 /// DateTime extension on [String].
-extension DateTimeParser on String {
+extension StringParser on String {
   /// Creates a [DateTime] from this [DateFormat].template string.
   DateTime? parseDate([String template = 'MM/dd/yyyy KK:mm a', String locale = 'en_US']) {
     try {
@@ -557,38 +557,38 @@ List<T> rotateArrayLeft<T>(List<T> array, int positions) {
   return remainingPart + rotatedPart;
 }
 
-/// Generates a MaterialStateProperty based on given values for different states.
-MaterialStateProperty<T?> materialStatePropertyResolver<T>({
-  // Value when MaterialState is hovered
+/// Generates a WidgetStateProperty based on given values for different states.
+WidgetStateProperty<T?> widgetStatePropertyResolver<T>({
+  // Value when WidgetState is hovered
   T? hoveredValue,
-  // Value when MaterialState is focused
+  // Value when WidgetState is focused
   T? focusedValue,
-  // Value when MaterialState is pressed
+  // Value when WidgetState is pressed
   T? pressedValue,
-  // Value when MaterialState is dragged
+  // Value when WidgetState is dragged
   T? draggedValue,
-  // Value when MaterialState is selected
+  // Value when WidgetState is selected
   T? selectedValue,
-  // Value when MaterialState is scrolledUnder
+  // Value when WidgetState is scrolledUnder
   T? scrolledUnderValue,
-  // Value when MaterialState is disabled
+  // Value when WidgetState is disabled
   T? disabledValue,
-  // Value when MaterialState is error
+  // Value when WidgetState is error
   T? errorValue,
   // Default value when no state is present
   T? defaultValue,
 }) {
   // The blocks check for each possible state and returns the value
   // If none of the states is present, default value is returned
-  return MaterialStateProperty.resolveWith<T?>((states) {
-    if (hoveredValue != null && states.contains(MaterialState.hovered)) return hoveredValue;
-    if (focusedValue != null && states.contains(MaterialState.focused)) return focusedValue;
-    if (pressedValue != null && states.contains(MaterialState.pressed)) return pressedValue;
-    if (draggedValue != null && states.contains(MaterialState.dragged)) return draggedValue;
-    if (selectedValue != null && states.contains(MaterialState.selected)) return selectedValue;
-    if (scrolledUnderValue != null && states.contains(MaterialState.scrolledUnder)) return scrolledUnderValue;
-    if (disabledValue != null && states.contains(MaterialState.disabled)) return disabledValue;
-    if (errorValue != null && states.contains(MaterialState.error)) return errorValue;
+  return WidgetStateProperty.resolveWith<T?>((states) {
+    if (hoveredValue != null && states.contains(WidgetState.hovered)) return hoveredValue;
+    if (focusedValue != null && states.contains(WidgetState.focused)) return focusedValue;
+    if (pressedValue != null && states.contains(WidgetState.pressed)) return pressedValue;
+    if (draggedValue != null && states.contains(WidgetState.dragged)) return draggedValue;
+    if (selectedValue != null && states.contains(WidgetState.selected)) return selectedValue;
+    if (scrolledUnderValue != null && states.contains(WidgetState.scrolledUnder)) return scrolledUnderValue;
+    if (disabledValue != null && states.contains(WidgetState.disabled)) return disabledValue;
+    if (errorValue != null && states.contains(WidgetState.error)) return errorValue;
     return defaultValue;
   });
 }

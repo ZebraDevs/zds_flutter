@@ -135,7 +135,7 @@ class ZdsToggleButtonState extends State<ZdsToggleButton> {
                               color: (index == _selectedValue)
                                   ? widget.foregroundColor ??
                                       (widget.backgroundColor ?? Theme.of(context).colorScheme.primary).onColor
-                                  : Theme.of(context).colorScheme.onBackground,
+                                  : Theme.of(context).colorScheme.onSurface,
                             ),
                             child: Text(widget.values[index]),
                           ),

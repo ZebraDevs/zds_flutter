@@ -8,7 +8,7 @@ import '../../../components/atoms/button.dart' show ZdsButton, ZdsButtonVariant;
 extension ZetaButtonTheme on ZetaColorScheme {
   /// Returns a [BorderSide] with no outline. This is meant for buttons
   /// that should not have any border.
-  MaterialStateProperty<BorderSide> baseButtonBorderSide() => MaterialStateProperty.all(BorderSide.none);
+  WidgetStateProperty<BorderSide> baseButtonBorderSide() => WidgetStateProperty.all(BorderSide.none);
 
   /// Provides a standard padding for buttons across this [ZetaColorScheme].
   EdgeInsets buttonPadding() => const EdgeInsets.symmetric(horizontal: 24, vertical: 10);
@@ -16,10 +16,10 @@ extension ZetaButtonTheme on ZetaColorScheme {
   /// Provides the border radius for round buttons in this [ZetaColorScheme].
   BorderRadius buttonBorderRadius() => const BorderRadius.all(Radius.circular(71));
 
-  /// Returns a [MaterialStateProperty] of [OutlinedBorder] which could
+  /// Returns a [WidgetStateProperty] of [OutlinedBorder] which could
   /// be used when round buttons are required in this [ZetaColorScheme].
-  MaterialStateProperty<OutlinedBorder> buttonCircularShapeBorder() {
-    return MaterialStateProperty.all(
+  WidgetStateProperty<OutlinedBorder> buttonCircularShapeBorder() {
+    return WidgetStateProperty.all(
       RoundedRectangleBorder(
         borderRadius: buttonBorderRadius(),
       ),
@@ -35,9 +35,9 @@ extension ZetaButtonTheme on ZetaColorScheme {
         zetaColors: zetaColors,
         textTheme: textTheme,
       ).copyWith(
-        padding: MaterialStateProperty.all(buttonPadding()),
+        padding: WidgetStateProperty.all(buttonPadding()),
         shape: buttonCircularShapeBorder(),
-        elevation: MaterialStateProperty.all(0),
+        elevation: WidgetStateProperty.all(0),
         visualDensity: VisualDensity.standard,
       ),
     );
@@ -52,9 +52,9 @@ extension ZetaButtonTheme on ZetaColorScheme {
         zetaColors: zetaColors,
         textTheme: textTheme,
       ).copyWith(
-        padding: MaterialStateProperty.all(buttonPadding()),
+        padding: WidgetStateProperty.all(buttonPadding()),
         shape: buttonCircularShapeBorder(),
-        elevation: MaterialStateProperty.all(0),
+        elevation: WidgetStateProperty.all(0),
         visualDensity: VisualDensity.standard,
       ),
     );
@@ -69,9 +69,9 @@ extension ZetaButtonTheme on ZetaColorScheme {
         zetaColors: zetaColors,
         textTheme: textTheme,
       ).copyWith(
-        padding: MaterialStateProperty.all(buttonPadding()),
+        padding: WidgetStateProperty.all(buttonPadding()),
         shape: buttonCircularShapeBorder(),
-        elevation: MaterialStateProperty.all(0),
+        elevation: WidgetStateProperty.all(0),
         visualDensity: VisualDensity.standard,
       ),
     );

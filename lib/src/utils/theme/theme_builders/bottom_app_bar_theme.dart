@@ -20,7 +20,7 @@ extension ZetaBottomAppBartTheme on ZetaColorScheme {
 
       /// The shadow color of the `BottomAppBar` is set to the `onBackground` color of the `ZetaColorScheme`,
       /// but with an opacity of 0.1.
-      shadowColor: onBackground.withOpacity(0.1),
+      shadowColor: onSurface.withOpacity(0.1),
 
       /// Padding inside the `BottomAppBar`. This is constant and set to be symmetric both horizontally
       /// and vertically. When running on the web, vertical padding is 8, otherwise it's 4.

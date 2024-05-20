@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorExtensions, ZetaColorScheme;
 
-import '../../tools.dart' show materialStatePropertyResolver;
+import '../../tools.dart' show widgetStatePropertyResolver;
 
 /// This is an extension method on [ZetaColorScheme] which is used to customize the [CheckboxThemeData].
 extension ZetaCheckboxTheme on ZetaColorScheme {
@@ -14,14 +14,14 @@ extension ZetaCheckboxTheme on ZetaColorScheme {
     /// overlayColor, materialTapTargetSize and visualDensity.
     return CheckboxThemeData(
       /// Setting up custom mouse cursors for different material states.
-      mouseCursor: materialStatePropertyResolver(
+      mouseCursor: widgetStatePropertyResolver(
         hoveredValue: SystemMouseCursors.click,
         disabledValue: SystemMouseCursors.forbidden,
         defaultValue: SystemMouseCursors.basic,
       ),
 
       /// Setting up custom fill color for different material states.
-      fillColor: materialStatePropertyResolver(
+      fillColor: widgetStatePropertyResolver(
         selectedValue: zetaColors.secondary,
         hoveredValue: zetaColors.secondary.hover,
         focusedValue: zetaColors.secondary.hover,
@@ -33,14 +33,14 @@ extension ZetaCheckboxTheme on ZetaColorScheme {
       side: BorderSide(color: zetaColors.iconDefault, width: 2),
 
       /// Setting up custom checkColor for different material states.
-      checkColor: materialStatePropertyResolver(
+      checkColor: widgetStatePropertyResolver(
         selectedValue: onSecondary,
         hoveredValue: secondary,
         defaultValue: zetaColors.secondary.onColor,
       ),
 
       /// Setting up custom overlayColor for different material states.
-      overlayColor: materialStatePropertyResolver(
+      overlayColor: widgetStatePropertyResolver(
         hoveredValue: zetaColors.secondary.hover,
       ),
 
