@@ -23,7 +23,7 @@ class ZdsImageCropPostProcessor implements ZdsFilePostProcessor {
     if (file.isImage() && file.content != null) {
       // ignore: avoid_dynamic_calls
       final originalFile = File(file.content.path as String);
-      ImageEditor.i18n(ComponentStrings.of(buildContext.call()).getAll());
+      ImageEditor.setI18n(ComponentStrings.of(buildContext.call()).getAll());
       final bytes = await Navigator.of(buildContext.call(), rootNavigator: true).push<Uint8List>(
         ZdsFadePageRouteBuilder(
           fullscreenDialog: true,
