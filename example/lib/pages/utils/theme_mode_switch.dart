@@ -29,8 +29,9 @@ class ZetaThemeModeSwitch extends StatelessWidget {
         elevation: 0,
         isDense: true,
         alignment: Alignment.center,
-        icon: SizedBox(width: 8),
+        icon: SizedBox(width: 0),
         dropdownColor: zeta.colors.borderDisabled,
+        padding: EdgeInsets.all(ZetaSpacing.xs),
         items: _themes.map((e) {
           final colors = zetaColors(e).apply(contrast: zeta.contrast);
           return DropdownMenuItem<ThemeMode>(

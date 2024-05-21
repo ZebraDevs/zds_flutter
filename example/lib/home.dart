@@ -21,7 +21,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         leadingWidth: 20,
         leading: SizedBox(width: 20),
-        title: const Text('ZDS Demo'),
+        // x-release-please-start-version
+        title: const Text('zds_flutter v1.2.4'),
+        // x-release-please-end
         centerTitle: false,
         actions: [
           ZetaThemeModeSwitch(),
