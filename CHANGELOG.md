@@ -1,7 +1,3 @@
-## [1.0.1] - 2024-01-12
-
-- [`21a2bb9`](https://github.com/ZebraDevs/zds_flutter/commit/21a2bb9905cbedf381cb04cf37b31fc4c12275d8) - fix dependency violation. \_(commit by @thelukewalton)
-
 ## [1.2.4](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.3...v1.2.4) (2024-05-20)
 
 
