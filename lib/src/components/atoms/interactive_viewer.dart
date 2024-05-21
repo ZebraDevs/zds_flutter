@@ -39,8 +39,7 @@ class ZdsInteractiveViewer extends StatefulWidget {
   final Clip clipBehavior;
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ZdsInteractiveViewerState createState() => _ZdsInteractiveViewerState();
+  State<ZdsInteractiveViewer> createState() => _ZdsInteractiveViewerState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

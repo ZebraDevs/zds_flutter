@@ -20,9 +20,13 @@ Make sure your app meets the following requirements before using ZDS Flutter
 
 Add the following as a dependency in your pubspec.yaml file.
 
-```yml
-zds-flutter: ^1.1.0
+<!--x-release-please-start-version-->
+
+```yaml
+zds-flutter: ^1.2.4
 ```
+
+<!-- x-release-please-end -->
 
 ## Getting started
 
@@ -75,8 +79,6 @@ This software is licensed with the MIT license (see [LICENSE](./LICENSE)) and us
 
 [ ] Add [Widgetbook](https://pub.dev/packages/widgetbook).
 
-[ ] Update version in readme for each release.
-
 [ ] Fix untranslated strings - see `untranslated.json`.
 
 [ ] Set up themes to inherit from parent classes - think of toolbar within bottom of appbar.
@@ -84,7 +86,5 @@ This software is licensed with the MIT license (see [LICENSE](./LICENSE)) and us
 [ ] Integrate ZetaColors better.
 
 [ ] Analyze dependencies for weaknesses, possibly phase out some.
-
-[ ] Improve Github actions to be safer and to add a change log.
 
 [ ] Remove code from this repo that is not strictly needed for flutter - github actions could be in another repo?
