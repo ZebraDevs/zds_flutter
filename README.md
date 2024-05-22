@@ -20,7 +20,7 @@ Make sure your app meets the following requirements before using ZDS Flutter
 
 Add the following as a dependency in your pubspec.yaml file.
 
-<!--x-release-please-start-version-->
+<!-- x-release-please-start-version -->
 
 ```yaml
 zds-flutter: ^1.2.4

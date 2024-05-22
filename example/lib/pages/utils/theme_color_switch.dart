@@ -42,7 +42,8 @@ class ZetaThemeColorSwitch extends StatelessWidget {
         elevation: 0,
         isDense: true,
         alignment: Alignment.center,
-        icon: SizedBox(width: 8),
+        icon: SizedBox(width: 0),
+        padding: EdgeInsets.all(ZetaSpacing.xs),
         dropdownColor: zeta.colors.borderDisabled,
         items: _themes.entries.map((e) {
           var zetaColors = primary(_themes[e.key]!).apply(contrast: zeta.contrast);

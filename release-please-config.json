@@ -6,7 +6,8 @@
   },
   "include-component-in-tag": false,
   "extra-files": [
-    "/README.md"
+    "/README.md",
+    "example/lib/home.dart"
   ],
   "changelog-sections": [
     {
