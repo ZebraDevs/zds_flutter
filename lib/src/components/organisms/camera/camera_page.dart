@@ -357,7 +357,10 @@ class _CameraWrapperState extends State<_CameraWrapper> {
               children: [
                 if (widget.state is! VideoRecordingCameraState)
                   GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
+                    onTap: () async {
+                      await ZdsSystemChrome.resetAppOrientations();
+                      if (context.mounted) Navigator.of(context).pop();
+                    },
                     child: AwesomeCircleWidget(
                       theme: theme,
                       size: 45,
@@ -782,18 +785,23 @@ class _PreviewActions extends StatelessWidget {
             elevation: 0,
             shape: const CircleBorder(),
             backgroundColor: Colors.black38,
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () async => _onPop(context, false),
             child: const Icon(Icons.close, color: ZetaColorBase.white),
           ),
           FloatingActionButton(
             elevation: 0,
             shape: const CircleBorder(),
             backgroundColor: Colors.black38,
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () async => _onPop(context, true),
             child: const Icon(Icons.done, color: ZetaColorBase.white),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _onPop(BuildContext context, bool result) async {
+    await ZdsSystemChrome.resetAppOrientations();
+    if (context.mounted) Navigator.of(context).pop(result);
   }
 }
