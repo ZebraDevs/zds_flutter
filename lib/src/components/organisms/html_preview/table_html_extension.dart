@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:html/dom.dart' as html;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 /// Supported tags for [TableHtmlExtension] to use with flutter_html library.
 const zdsTableTags = {
@@ -261,6 +263,18 @@ class ZdsTableHtmlExtension extends HtmlExtension {
         ),
         node: context.node,
       );
+    } else if (context.elementName == 'a') {
+      return InteractiveElement(
+        name: context.elementName,
+        children: children,
+        href: context.attributes['href'],
+        style: Style(
+          color: ZetaColorBase.blue.shade50,
+          textDecoration: TextDecoration.underline,
+        ),
+        node: context.node,
+        elementId: context.id,
+      );
     }
 
     return StyledElement(
@@ -295,12 +309,49 @@ class ZdsTableHtmlExtension extends HtmlExtension {
           ),
         ),
       );
+    } else if (context.elementName == 'a' &&
+        context.inlineSpanChildren != null &&
+        context.inlineSpanChildren!.isNotEmpty) {
+      return TextSpan(
+        children: context.inlineSpanChildren!.map((childSpan) {
+          return _processInteractableChild(context, childSpan);
+        }).toList(),
+      );
     }
 
     return WidgetSpan(
       child: CssBoxWidget.withInlineSpanChildren(
         children: context.inlineSpanChildren!,
         style: Style(),
+      ),
+    );
+  }
+}
+
+InlineSpan _processInteractableChild(
+  ExtensionContext context,
+  InlineSpan childSpan,
+) {
+  void onTap() => context.parser.internalOnAnchorTap?.call(
+        (context.styledElement! as InteractiveElement).href,
+        context.attributes,
+        context.node as html.Element,
+      );
+
+  if (childSpan is TextSpan) {
+    return TextSpan(
+      text: childSpan.text,
+      children: childSpan.children?.map((e) => _processInteractableChild(context, e)).toList(),
+      style: childSpan.style,
+      semanticsLabel: childSpan.semanticsLabel,
+      recognizer: TapGestureRecognizer()..onTap = onTap,
+    );
+  } else {
+    return WidgetSpan(
+      child: GestureDetector(
+        key: AnchorKey.of(context.parser.key, context.styledElement),
+        onTap: onTap,
+        child: (childSpan as WidgetSpan).child,
       ),
     );
   }
