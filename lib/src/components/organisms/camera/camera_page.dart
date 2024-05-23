@@ -46,6 +46,7 @@ class ZdsCamera extends StatelessWidget {
     this.cameraMode = ZdsCameraMode.photo,
     this.maxVideoDuration,
     this.showPreview = true,
+    this.saveGPSLocation = false,
     this.photoPathBuilder,
     this.videoPathBuilder,
     this.filters,
@@ -59,6 +60,9 @@ class ZdsCamera extends StatelessWidget {
 
   /// - [showPreview] determines whether the camera preview is shown before selecting a file, enabled by default.
   final bool showPreview;
+
+  /// - [saveGPSLocation] determines whether the camera output be tagged with GPS location, disabled by default.
+  final bool saveGPSLocation;
 
   /// A builder for the path to save the photo or video file.
   ///
@@ -87,6 +91,7 @@ class ZdsCamera extends StatelessWidget {
     BuildContext context, {
     bool showPreview = true,
     bool rootNavigator = true,
+    bool saveGPSLocation = false,
     CaptureRequestBuilder? photoPathBuilder,
     CaptureRequestBuilder? videoPathBuilder,
     List<AwesomeFilter>? filters,
@@ -98,6 +103,7 @@ class ZdsCamera extends StatelessWidget {
         ZdsFadePageRouteBuilder(
           builder: (context) => ZdsCamera(
             showPreview: showPreview,
+            saveGPSLocation: saveGPSLocation,
             photoPathBuilder: photoPathBuilder,
             videoPathBuilder: videoPathBuilder,
             filters: filters,
@@ -242,7 +248,7 @@ class ZdsCamera extends StatelessWidget {
             ),
           )
         : SaveConfig.photo(
-            exifPreferences: ExifPreferences(saveGPSLocation: true),
+            exifPreferences: ExifPreferences(saveGPSLocation: saveGPSLocation),
             pathBuilder: videoPathBuilder ??
                 (sensors) async {
                   final Directory extDir = await getTemporaryDirectory();
@@ -270,7 +276,8 @@ class ZdsCamera extends StatelessWidget {
       ..add(DiagnosticsProperty<bool>('showPreview', showPreview))
       ..add(ObjectFlagProperty<CaptureRequestBuilder?>.has('photoPathBuilder', photoPathBuilder))
       ..add(ObjectFlagProperty<CaptureRequestBuilder?>.has('videoPathBuilder', videoPathBuilder))
-      ..add(IterableProperty<AwesomeFilter>('filters', filters));
+      ..add(IterableProperty<AwesomeFilter>('filters', filters))
+      ..add(DiagnosticsProperty<bool>('saveGPSLocation', saveGPSLocation));
   }
 }
 
