@@ -725,6 +725,9 @@ class HtmlPreview extends StatelessWidget {
           return ZdsHtmlContainer(
             data,
             showReadMore: false,
+            onLinkTap: (_, __, ___) {
+              print('Link tapped');
+            },
           );
         },
         itemCount: htmlList.length,
