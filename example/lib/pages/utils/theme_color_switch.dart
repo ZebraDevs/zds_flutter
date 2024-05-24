@@ -5,22 +5,29 @@ class ZetaThemeColorSwitch extends StatelessWidget {
   ZetaThemeColorSwitch({super.key});
 
   late final _themes = {
-    "default": ZetaThemeData(),
+    "default": ZetaThemeData(
+      primary: ZetaColorBase.blue,
+      secondary: ZetaColorBase.blue,
+    ),
     "teal": ZetaThemeData(
       identifier: 'teal',
       primary: ZetaColorBase.teal,
+      secondary: ZetaColorBase.teal,
     ),
     "yellow": ZetaThemeData(
       identifier: 'yellow',
       primary: ZetaColorBase.yellow,
+      secondary: ZetaColorBase.yellow,
     ),
     "red": ZetaThemeData(
       identifier: 'red',
       primary: ZetaColorBase.red,
+      secondary: ZetaColorBase.red,
     ),
     "purple": ZetaThemeData(
       identifier: 'purple',
       primary: ZetaColorBase.purple,
+      secondary: ZetaColorBase.purple,
     ),
   };
 

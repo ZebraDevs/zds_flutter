@@ -203,15 +203,15 @@ class ZdsTag extends StatelessWidget {
   Color _resolveFgColor(ZetaColors zetaColors, ZdsTagColor tagColor) {
     switch (tagColor) {
       case ZdsTagColor.error:
-        return zetaColors.negative;
+        return zetaColors.surfaceNegative;
       case ZdsTagColor.alert:
-        return zetaColors.warning;
+        return zetaColors.surfaceWarning;
       case ZdsTagColor.primary:
         return zetaColors.primary;
       case ZdsTagColor.secondary:
         return zetaColors.secondary;
       case ZdsTagColor.success:
-        return zetaColors.positive;
+        return zetaColors.surfacePositive;
       case ZdsTagColor.basic:
         return zetaColors.warm.shade80;
     }

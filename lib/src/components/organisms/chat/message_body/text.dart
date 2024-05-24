@@ -44,7 +44,10 @@ class ZdsChatTextMessage extends StatelessWidget {
     final zetaColors = Zeta.of(context).colors;
     final wordsMapping = Map<String, HighlightedWord>.fromEntries(
       [...urls].map((e) {
-        return MapEntry(e, HighlightedWord(textStyle: textStyle?.apply(color: zetaColors.link), onTap: onLinkTapped));
+        return MapEntry(
+          e,
+          HighlightedWord(textStyle: textStyle?.apply(color: zetaColors.blue.shade70), onTap: onLinkTapped),
+        );
       }),
     );
 

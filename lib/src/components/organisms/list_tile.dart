@@ -211,7 +211,7 @@ class ZdsListTile extends StatelessWidget {
     tile = InkWell(
       onTap: onTap,
       splashColor: zetaColors.surfaceSelected,
-      hoverColor: zetaColors.surfaceHovered,
+      hoverColor: zetaColors.surfaceHover,
       child: (bottom != null)
           ? Column(
               mainAxisSize: MainAxisSize.min,

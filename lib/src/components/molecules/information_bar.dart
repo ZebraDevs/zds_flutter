@@ -119,23 +119,23 @@ Color _getBarColor(ZdsInformationBarTheme color, ZetaColors colors) {
     case ZdsInformationBarTheme.neutral:
       return colors.cool.surface;
     case ZdsInformationBarTheme.positive:
-      return colors.green.surface;
+      return colors.surfacePositiveSubtle;
     case ZdsInformationBarTheme.inProgress:
-      return colors.secondary.surface;
+      return colors.surfaceSecondarySubtle;
     case ZdsInformationBarTheme.negative:
-      return colors.negative.surface;
+      return colors.surfaceNegativeSubtle;
   }
 }
 
 Color _getIconColor(ZdsInformationBarTheme color, ZetaColors colors) {
   switch (color) {
     case ZdsInformationBarTheme.neutral:
-      return colors.cool.icon;
+      return colors.iconDefault;
     case ZdsInformationBarTheme.positive:
-      return colors.green.icon;
+      return colors.borderPositive;
     case ZdsInformationBarTheme.inProgress:
-      return colors.secondary.icon;
+      return colors.surfaceSecondary;
     case ZdsInformationBarTheme.negative:
-      return colors.negative.icon;
+      return colors.surfaceNegative;
   }
 }

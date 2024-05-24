@@ -19,7 +19,7 @@ class _ZdsBaseColors {
 
     var error = (json?['error'] as String?)?.toColor();
     if (error == null && isShadeOfRed(primary)) {
-      error = ZetaColorBase.greyWarm;
+      error = ZetaColorBase.warm;
     } else {
       error = ZetaColorBase.red;
     }
@@ -188,7 +188,8 @@ class ZdsThemeData {
   ///
   /// Returns a new [ZdsThemeData] object from JSON data.
   factory ZdsThemeData.fromJsonString(String json) {
-    return ZdsThemeData.fromJson(_parseJson(json));
+    final x = ZdsThemeData.fromJson(_parseJson(json));
+    return x;
   }
 
   /// Asynchronously creates an instance of [ZdsThemeData] from the JSON file at the given [path].

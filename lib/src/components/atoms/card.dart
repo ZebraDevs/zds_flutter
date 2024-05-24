@@ -152,7 +152,7 @@ class ZdsCard extends StatelessWidget {
             wrapperBuilder: (child) {
               return InkWell(
                 splashColor: zetaColors.surfaceSelected,
-                hoverColor: zetaColors.surfaceSelectedHovered,
+                hoverColor: zetaColors.surfaceSelectedHover.withOpacity(0.1),
                 onTap: onTap,
                 child: child,
               );

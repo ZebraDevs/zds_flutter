@@ -107,7 +107,13 @@ class _ChatReactionsPill extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
-            boxShadow: [BoxShadow(color: zetaColors.shadow, blurRadius: 1, offset: const Offset(0, 1))],
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+                blurRadius: 1,
+                offset: const Offset(0, 1),
+              ),
+            ],
             color: zetaColors.surfacePrimary,
             border: Border.all(color: zetaColors.borderSubtle),
           ),
@@ -209,7 +215,13 @@ class _ChatTagsPill extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(width: 2, color: zetaColors.surfacePrimary),
             borderRadius: const BorderRadius.all(Radius.circular(10)),
-            boxShadow: [BoxShadow(color: zetaColors.shadow, blurRadius: 1, offset: const Offset(0, 1))],
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+                blurRadius: 1,
+                offset: const Offset(0, 1),
+              ),
+            ],
             color: zetaColors.secondary,
           ),
           child: Padding(
