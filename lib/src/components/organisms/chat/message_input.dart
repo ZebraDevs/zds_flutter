@@ -256,7 +256,11 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
         constraints: const BoxConstraints(minHeight: 72, maxHeight: 150),
         decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(offset: const Offset(0, -1), color: zetaColors.shadow, blurRadius: 2),
+            BoxShadow(
+              offset: const Offset(0, -1),
+              color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+              blurRadius: 2,
+            ),
             BoxShadow(offset: const Offset(0, 1), color: zetaColors.surfacePrimary, blurRadius: 2),
           ],
         ),

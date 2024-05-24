@@ -276,7 +276,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
       color: Colors.transparent,
       child: InkWell(
         splashColor: zetaColors.surfaceSelected,
-        hoverColor: zetaColors.surfaceSelectedHovered,
+        hoverColor: zetaColors.surfaceSelectedHover,
         radius: MediaQuery.of(context).size.width,
         onTap: () {
           if (!widget.readOnly) unawaited(onShowPicker(context, _dateTime));

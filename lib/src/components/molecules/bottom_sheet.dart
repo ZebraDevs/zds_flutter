@@ -337,7 +337,9 @@ class _BottomSheetHeader extends StatelessWidget implements PreferredSizeWidget 
     final zetaColors = Zeta.of(context).colors;
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: bottom != null ? Border(bottom: BorderSide(color: zetaColors.shadow)) : null,
+        border: bottom != null
+            ? Border(bottom: BorderSide(color: Theme.of(context).colorScheme.shadow.withOpacity(0.1)))
+            : null,
       ),
       child: Column(
         children: <Widget>[

@@ -248,7 +248,7 @@ class ZdsButton extends StatelessWidget {
     final EdgeInsetsGeometry tp = textPadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 6);
 
     // Determine the default background color.
-    final Color defaultBackground = customColor ?? (isDangerButton ? zetaColors.negative : zetaColors.secondary);
+    final Color defaultBackground = customColor ?? (isDangerButton ? zetaColors.surfaceNegative : zetaColors.secondary);
 
     // Common textStyle for all variants.
     final textStyle = WidgetStateProperty.all(textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500));

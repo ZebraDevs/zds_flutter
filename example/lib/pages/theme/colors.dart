@@ -129,22 +129,22 @@ class ColorsDemo extends StatelessWidget {
     ];
     final alertColors = [
       {
-        'color': Zeta.of(context).colors.positive,
+        'color': Zeta.of(context).colors.surfacePositive,
         'name': 'Positive',
         'subtitle': 'Zeta.of(context).colors.positive',
       },
       {
-        'color': Zeta.of(context).colors.negative,
+        'color': Zeta.of(context).colors.surfaceNegative,
         'name': 'Negative',
         'subtitle': 'Zeta.of(context).colors.negative',
       },
       {
-        'color': Zeta.of(context).colors.warning,
+        'color': Zeta.of(context).colors.surfaceWarning,
         'name': 'Warning',
         'subtitle': 'Zeta.of(context).colors.warning',
       },
       {
-        'color': Zeta.of(context).colors.info,
+        'color': Zeta.of(context).colors.surfaceInfo,
         'name': 'Info',
         'subtitle': 'Zeta.of(context).colors.info',
       },
