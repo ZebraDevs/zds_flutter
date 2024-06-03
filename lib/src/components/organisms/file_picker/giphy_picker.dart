@@ -62,7 +62,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
   int offset = 0;
 
   /// Controller to manage scroll behavior.
-  ScrollController scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   /// Controller to manage the search text.
   final TextEditingController _searchController = TextEditingController();
@@ -71,9 +71,9 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
   Timer? _debounce;
 
   /// Delay before the debounce effect takes place.
-  late Duration debounceDelay;
+  late Duration _debounceDelay;
 
-  List<GiphyGif> selectedGIFs = [];
+  final List<GiphyGif> _selectedGifs = [];
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
       setState(() {});
     });
 
-    scrollController.addListener(_loadMore);
+    _scrollController.addListener(_loadMore);
   }
 
   @override
@@ -92,7 +92,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
 
     const double gifWidth = 80;
 
-    scrollController.addListener(_loadMore);
+    _scrollController.addListener(_loadMore);
 
     // Set items count responsive
     final int crossAxisCount = (MediaQuery.of(context).size.width / gifWidth).round();
@@ -134,9 +134,9 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
         actions: widget.allowMultiple
             ? [
                 TextButton(
-                  onPressed: selectedGIFs.isNotEmpty
+                  onPressed: _selectedGifs.isNotEmpty
                       ? () {
-                          Navigator.pop(context, selectedGIFs);
+                          Navigator.pop(context, _selectedGifs);
                         }
                       : null,
                   child: Text(ComponentStrings.of(context).get('ADD', 'Add')),
@@ -170,7 +170,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
                   child: GridView.builder(
                     itemCount: _list.length,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
-                    controller: scrollController,
+                    controller: _scrollController,
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: box.maxWidth > 500 ? 200 : 100,
                       crossAxisSpacing: 2,
@@ -239,12 +239,12 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
                 ),
                 if (widget.allowMultiple)
                   Checkbox(
-                    value: selectedGIFs.contains(gif),
+                    value: _selectedGifs.contains(gif),
                     shape: const CircleBorder(),
                     onChanged: (bool? value) {
                       _toggleCheckBox(gif);
                     },
-                    side: selectedGIFs.contains(gif)
+                    side: _selectedGifs.contains(gif)
                         ? const BorderSide(
                             color: Colors.red,
                             width: 2,
@@ -258,10 +258,10 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
 
   void _toggleCheckBox(GiphyGif gif) {
     setState(() {
-      if (selectedGIFs.contains(gif)) {
-        selectedGIFs.remove(gif);
+      if (_selectedGifs.contains(gif)) {
+        _selectedGifs.remove(gif);
       } else {
-        selectedGIFs.add(gif);
+        _selectedGifs.add(gif);
       }
     });
   }
@@ -324,9 +324,9 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<Duration>('debounceDelay', debounceDelay))
+      ..add(DiagnosticsProperty<Duration>('debounceDelay', _debounceDelay))
       ..add(IntProperty('offset', offset))
-      ..add(DiagnosticsProperty<ScrollController>('scrollController', scrollController))
-      ..add(IterableProperty<GiphyGif>('selecetdGifs', selectedGIFs));
+      ..add(DiagnosticsProperty<ScrollController>('scrollController', _scrollController))
+      ..add(IterableProperty<GiphyGif>('selecetdGifs', _selectedGifs));
   }
 }

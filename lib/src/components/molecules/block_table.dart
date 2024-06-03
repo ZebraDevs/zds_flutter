@@ -122,7 +122,6 @@ class ZdsBlockTable extends StatefulWidget {
 
 class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   final LinkedScrollControllerGroup _controllers = LinkedScrollControllerGroup();
-  late final double headerHeight;
 
   late ScrollController _tableHeader;
   late ScrollController _tableBody;
@@ -139,12 +138,19 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     _tableBody = _controllers.addAndGet();
 
     WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-      headerHeight = widget.rowHeaderHeight;
       buildTable();
     });
 
     WidgetsBinding.instance.addObserver(this);
   }
+
+  TextScaler get _textScaler => MediaQuery.of(context).textScaler;
+
+  double get _headerHeight => _textScaler.scale(widget.rowHeaderHeight);
+
+  double get _columnWidth => _textScaler.scale(widget.columnWidth);
+
+  double get _cellHeight => _textScaler.scale(widget.cellHeight);
 
   @override
   void didChangeMetrics() {
@@ -252,7 +258,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
               ),
               alignment: Alignment.center,
               width: _getDayColumnWidth(),
-              height: 28,
+              height: _textScaler.scale(28),
               child: Text(
                 items[index].text,
                 style: themeData.textTheme.bodySmall?.copyWith(
@@ -285,7 +291,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
               children: <Widget>[
                 if (row.header != null)
                   Container(
-                    height: headerHeight,
+                    height: _headerHeight,
                     width: _getAssocColumnWidth(),
                     decoration: BoxDecoration(
                       color: zetaColors.borderDisabled,
@@ -327,7 +333,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
                   ),
                   alignment: Alignment.center,
                   width: _getAssocColumnWidth(),
-                  height: widget.cellHeight + widget.cellPadding,
+                  height: _cellHeight + widget.cellPadding,
                   margin: const EdgeInsets.only(bottom: 1),
                   child: cellItem.child ??
                       Text(
@@ -355,7 +361,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   List<Widget> _buildRowElements(int index) {
     final List<Widget> cells = <Widget>[];
     final List<ZdsBlockTableRow> rows = widget.rows;
-    final double cellHeight = widget.cellHeight + widget.cellPadding;
+    final double cellHeight = _cellHeight + widget.cellPadding;
     final zetaColors = Zeta.of(context).colors;
     for (int j = 0; j < rows[index].data.length; j++) {
       final List<Widget> columnWidgets = <Widget>[];
@@ -363,7 +369,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
       if (rows[index].header != null) {
         columnWidgets.add(
           Container(
-            height: headerHeight,
+            height: _headerHeight,
             decoration: BoxDecoration(
               color: zetaColors.borderDisabled,
               border: Border(
@@ -447,7 +453,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
           Container(
             alignment: Alignment.center,
             width: _getDayColumnWidth(),
-            height: cellHeight + (rows[index].header != null ? headerHeight : 0),
+            height: cellHeight + (rows[index].header != null ? _headerHeight : 0),
             child: cells[indx],
           ),
           const SizedBox(
@@ -489,7 +495,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
       ),
       alignment: Alignment.center,
       width: _getAssocColumnWidth(),
-      height: 28,
+      height: _textScaler.scale(28),
     ).paddingOnly(right: 1);
   }
 
@@ -503,7 +509,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   }
 
   double _firstColMinWidth() {
-    return widget.columnWidth + 40;
+    return _columnWidth + 40;
   }
 
   double _screenWidthSafe() {
@@ -515,17 +521,17 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   double _getDayColumnWidth() {
     final bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     if (!isLandscape && (!context.isTablet())) {
-      return widget.columnWidth;
+      return _columnWidth;
     }
     double screenWidth = _screenWidthSafe().floorToDouble();
     screenWidth -= _firstColMinWidth(); // remove first column
     final double suggestedWidth = (screenWidth / 7).floorToDouble();
-    return suggestedWidth > widget.columnWidth ? suggestedWidth : widget.columnWidth;
+    return suggestedWidth > _columnWidth ? suggestedWidth : _columnWidth;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DoubleProperty('headerHeight', headerHeight));
+    properties.add(DoubleProperty('headerHeight', _headerHeight));
   }
 }
