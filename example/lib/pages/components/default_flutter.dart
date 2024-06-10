@@ -144,7 +144,7 @@ class DefaultFlutter extends StatelessWidget {
                     TextButton(onPressed: () {}, child: Text("Cancel")),
                     const Spacer(),
                     OutlinedButton(onPressed: () {}, child: Text("Reset")),
-                    SizedBox(width: ZetaSpacing.xs),
+                    SizedBox(width: ZetaSpacing.small),
                     ElevatedButton(onPressed: () {}, child: Text("Next")),
                   ],
                 ),

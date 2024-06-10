@@ -4,12 +4,11 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart' hide ColorExtension1;
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/translations.dart';
 
 import '../../../utils/localizations/translation.dart';
-import '../../../utils/tools/utils.dart';
 
 /// Controls color styles.
 ///

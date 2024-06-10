@@ -97,15 +97,15 @@ class ZdsQuillEditor extends StatelessWidget {
     // If not readOnly, wrap the editor in a column with the toolbar
     return Column(
       children: [
-        if (quillToolbarPosition == QuillToolbarPosition.top) _buildToolbar(context),
+        if (quillToolbarPosition == QuillToolbarPosition.top) _buildToolbar(context, QuillToolbarPosition.top),
         Expanded(child: editor),
-        if (quillToolbarPosition == QuillToolbarPosition.bottom) _buildToolbar(context),
+        if (quillToolbarPosition == QuillToolbarPosition.bottom) _buildToolbar(context, QuillToolbarPosition.bottom),
       ],
     );
   }
 
   /// Constructs the toolbar for the Quill editor.
-  Widget _buildToolbar(BuildContext context) {
+  Widget _buildToolbar(BuildContext context, QuillToolbarPosition position) {
     return ZdsQuillToolbar.custom(
       context: context,
       controller: controller,
@@ -113,6 +113,7 @@ class ZdsQuillEditor extends StatelessWidget {
       toolbarIconSize: toolbarIconSize,
       langCode: langCode,
       toolbarColor: toolbarColor,
+      quillToolbarPosition: position,
     );
   }
 

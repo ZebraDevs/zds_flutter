@@ -49,6 +49,7 @@ class ZdsSlidableListTile extends StatelessWidget {
     this.onTap,
     this.slideEnabled = true,
     this.semanticDescription,
+    this.excludeSemantics = false,
   }) : assert(actions == null || slideButtonWidth * actions.length <= width, '');
 
   /// The tile's main content. Usually a [Row]
@@ -86,6 +87,8 @@ class ZdsSlidableListTile extends StatelessWidget {
   /// Typically will contain all the text displayed on the card UI.
   final String? semanticDescription;
 
+  /// Flag to exclude child component semantics.
+  final bool excludeSemantics;
   @override
   Widget build(BuildContext context) {
     final Map<CustomSemanticsAction, VoidCallback> semanticActions = <CustomSemanticsAction, VoidCallback>{};
@@ -99,7 +102,7 @@ class ZdsSlidableListTile extends StatelessWidget {
     return Semantics(
       label: semanticDescription,
       customSemanticsActions: semanticActions,
-      excludeSemantics: semanticDescription != null,
+      excludeSemantics: excludeSemantics,
       child: Slidable(
         enabled: slideEnabled,
         startActionPane: leadingActions != null && leadingActions!.isNotEmpty
@@ -147,7 +150,8 @@ class ZdsSlidableListTile extends StatelessWidget {
       ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
       ..add(DiagnosticsProperty<bool>('slideEnabled', slideEnabled))
       ..add(DoubleProperty('minHeight', minHeight))
-      ..add(StringProperty('semanticDescription', semanticDescription));
+      ..add(StringProperty('semanticDescription', semanticDescription))
+      ..add(DiagnosticsProperty<bool>('excludeSemantics', excludeSemantics));
   }
 }
 

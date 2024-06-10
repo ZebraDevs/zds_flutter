@@ -147,7 +147,7 @@ class ZdsCamera extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (_) => Future.value(false),
+      canPop: false,
       child: Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(

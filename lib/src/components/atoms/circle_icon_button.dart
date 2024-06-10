@@ -195,7 +195,7 @@ class _CircleIconButton extends State<CircleIconButton> {
       ]
           .divide(
             const SizedBox(
-              height: ZetaSpacing.xxs,
+              height: ZetaSpacing.minimum,
             ),
           )
           .toList(),
@@ -205,22 +205,22 @@ class _CircleIconButton extends State<CircleIconButton> {
   double get _iconPadding {
     switch (widget.size) {
       case ButtonSize.large:
-        return ZetaSpacing.x5;
+        return ZetaSpacing.xl_1;
       case ButtonSize.medium:
         return 15;
       case ButtonSize.small:
-        return ZetaSpacing.x1;
+        return ZetaSpacing.minimum;
     }
   }
 
   double get _iconSize {
     switch (widget.size) {
       case ButtonSize.large:
-        return ZetaSpacing.x10;
+        return ZetaSpacing.xl_6;
       case ButtonSize.medium:
-        return ZetaSpacing.x7_5;
+        return ZetaSpacingBase.x7_5;
       case ButtonSize.small:
-        return ZetaSpacing.x5;
+        return ZetaSpacing.xl_1;
     }
   }
 
