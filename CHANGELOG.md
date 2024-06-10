@@ -7,6 +7,37 @@
 * update to flutter 3.22.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 * update to zeta_flutter 0.9.1 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 
+## [1.2.5](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.4...v1.2.5) (2024-06-10)
+
+
+### 🪲 Bug Fixes
+
+* [TM-42170] Support links in table ([bceb856](https://github.com/ZebraDevs/zds_flutter/commit/bceb8562fe1b05c5df7a9eeab85177b07874e4b1))
+* [TM-42460] Reset resetPreferredOrientations after camera dispose ([bceb856](https://github.com/ZebraDevs/zds_flutter/commit/bceb8562fe1b05c5df7a9eeab85177b07874e4b1))
+* [TM-43252] taking time to capture an image ([bceb856](https://github.com/ZebraDevs/zds_flutter/commit/bceb8562fe1b05c5df7a9eeab85177b07874e4b1))
+* [TM-43436] Angular bracket "&lt;&gt;" is not in alignment in Quill editor ([64b4688](https://github.com/ZebraDevs/zds_flutter/commit/64b4688f4d222e8c416d9c5ee5b325baa7a8df4a))
+* TM-32728 Locator Issue for MYWORK app part 1 ([64b4688](https://github.com/ZebraDevs/zds_flutter/commit/64b4688f4d222e8c416d9c5ee5b325baa7a8df4a))
+* Updated zetaColors. ([2f49efb](https://github.com/ZebraDevs/zds_flutter/commit/2f49efb75517ec0e6250920f78a17c2fe7dfedaa))
+
+
+### 📈 Documentation
+
+* update version in readme ([9faea52](https://github.com/ZebraDevs/zds_flutter/commit/9faea52f13576be130a957cd56690232bec2c8d3))
+
+
+### ⛓️ Dependencies
+
+* manually updating some deps ([9faea52](https://github.com/ZebraDevs/zds_flutter/commit/9faea52f13576be130a957cd56690232bec2c8d3))
+* update to latest zeta_flutter ([64b4688](https://github.com/ZebraDevs/zds_flutter/commit/64b4688f4d222e8c416d9c5ee5b325baa7a8df4a))
+* zeta_flutter 0.10.0 ([#25](https://github.com/ZebraDevs/zds_flutter/issues/25)) ([2f49efb](https://github.com/ZebraDevs/zds_flutter/commit/2f49efb75517ec0e6250920f78a17c2fe7dfedaa))
+
+
+### 🧹 Miscellaneous Chores
+
+* add version to example app ([#23](https://github.com/ZebraDevs/zds_flutter/issues/23)) ([bc84094](https://github.com/ZebraDevs/zds_flutter/commit/bc84094aa02434c60ff309ecccc31a12322d4a40))
+* update to match internal repo ([#24](https://github.com/ZebraDevs/zds_flutter/issues/24)) ([bceb856](https://github.com/ZebraDevs/zds_flutter/commit/bceb8562fe1b05c5df7a9eeab85177b07874e4b1))
+* update to upstream 543c885bc118726b5d56f39ddc6179f4304c1f65  ([#26](https://github.com/ZebraDevs/zds_flutter/issues/26)) ([64b4688](https://github.com/ZebraDevs/zds_flutter/commit/64b4688f4d222e8c416d9c5ee5b325baa7a8df4a))
+
 ## [1.2.3](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.2...v1.2.3) (2024-05-08)
 
 
