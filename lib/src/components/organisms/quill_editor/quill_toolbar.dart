@@ -557,20 +557,16 @@ class ZdsQuillToolbar extends QuillToolbar {
                         ),
                       ),
                     if (showInlineCode)
-                      Column(
-                        children: [
-                          QuillToolbarToggleStyleButton(
-                            attribute: Attribute.inlineCode,
-                            controller: controller,
-                            options: QuillToolbarToggleStyleButtonOptions(
-                              iconData: Icons.code,
-                              iconSize: toolbarIconSize,
-                              iconTheme: iconTheme,
-                              afterButtonPressed: afterButtonPressed,
-                              tooltip: buttonTooltips[ToolbarButtons.inlineCode],
-                            ),
-                          ),
-                        ],
+                      QuillToolbarToggleStyleButton(
+                        attribute: Attribute.inlineCode,
+                        controller: controller,
+                        options: QuillToolbarToggleStyleButtonOptions(
+                          iconData: Icons.code,
+                          iconSize: toolbarIconSize,
+                          iconTheme: iconTheme,
+                          afterButtonPressed: afterButtonPressed,
+                          tooltip: buttonTooltips[ToolbarButtons.inlineCode],
+                        ),
                       ),
                     if (showDividers) QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
                     if (showColorButton)
