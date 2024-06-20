@@ -1,4 +1,5 @@
 // ignore_for_file: implementation_imports
+
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/src/widgets/toolbar/buttons/alignment/select_alignment_buttons.dart';
@@ -20,159 +21,97 @@ enum QuillToolbarPosition {
 }
 
 /// toolbar options
+/// Enum representing the various options available in the Quill toolbar.
 enum QuillToolbarOption {
-  ///undo
+  /// Option to undo the last action.
   undo,
 
-  ///redo
+  /// Option to redo the last undone action.
   redo,
 
-  ///bold
+  /// Option to apply bold formatting to the selected text.
   bold,
 
-  ///italic
+  /// Option to apply italic formatting to the selected text.
   italic,
 
-  ///underline
+  /// Option to apply underline formatting to the selected text.
   underline,
 
-  ///strikeThrough
+  /// Option to apply strikethrough formatting to the selected text.
   strikeThrough,
 
-  ///Show small button
+  /// Option to show a small button on the toolbar.
   smallButton,
 
-  ///textColor
+  /// Option to change the color of the selected text.
   textColor,
 
-  ///backgroundColor
+  /// Option to change the background color of the selected text.
   backgroundColor,
 
-  ///clearFormat
+  /// Option to clear all formatting from the selected text.
   clearFormat,
 
-  ///inlineCode
+  /// Option to apply inline code formatting to the selected text.
   inlineCode,
 
-  ///alignmentButtons
-  alignmentButtons,
-
-  ///headers
+  /// Option to apply header styles to the selected text.
   headers,
 
-  ///numberList
+  /// Option to create a numbered list.
   numberList,
 
-  ///bullets
+  /// Option to create a bulleted list.
   bullets,
 
-  ///checkBox
+  /// Option to add a checkbox to the text.
   checkBox,
 
-  ///codeBlock
+  /// Option to create a code block.
   codeBlock,
 
-  ///indentation
-  indentation,
-
-  ///quotes
+  /// Option to apply blockquote formatting to the selected text.
   quotes,
 
-  ///link
+  /// Option to add a hyperlink to the selected text.
   link,
-}
 
-/// Options for Toolbar buttons
-enum ToolbarButtons {
-  /// Quill undo button.
-  undo,
-
-  /// Quill redo button.
-  redo,
-
-  /// Quill fontFamily button.
-  fontFamily,
-
-  /// Quill fontSize button.
-  fontSize,
-
-  /// Quill bold button.
-  bold,
-
-  /// Quill subscript button.
+  /// Option to apply subscript formatting to the selected text.
   subscript,
 
-  /// Quill superscript button.
+  /// Option to apply superscript formatting to the selected text.
   superscript,
 
-  /// Quill italic button.
-  italic,
-
-  /// Quill small button.
+  /// Option to apply small text formatting to the selected text.
   small,
 
-  /// Quill underline button.
-  underline,
-
-  /// Quill strikeThrough button.
-  strikeThrough,
-
-  /// Quill inlineCode button.
-  inlineCode,
-
-  /// Quill color button.
+  /// Option to change the text color.
   color,
 
-  /// Quill backgroundColor button.
-  backgroundColor,
-
-  /// Quill clearFormat button.
-  clearFormat,
-
-  /// Quill centerAlignment button.
+  /// Option to align the text to the center.
   centerAlignment,
 
-  /// Quill leftAlignment button.
+  /// Option to align the text to the left.
   leftAlignment,
 
-  /// Quill rightAlignment button.
+  /// Option to align the text to the right.
   rightAlignment,
 
-  /// Quill justifyAlignment button.
+  /// Option to justify the text alignment.
   justifyAlignment,
 
-  /// Quill direction button.
+  /// Option to change the text direction.
   direction,
 
-  /// Quill headerStyle button.
+  /// Option to apply header styles to the selected text.
   headerStyle,
 
-  /// Quill listNumbers button.
-  listNumbers,
-
-  /// Quill listBullets button.
-  listBullets,
-
-  /// Quill listChecks button.
-  listChecks,
-
-  /// Quill codeBlock button.
-  codeBlock,
-
-  /// Quill quote button.
-  quote,
-
-  /// Quill indentIncrease button.
+  /// Option to increase the indentation of the selected text.
   indentIncrease,
 
-  /// Quill indentDecrease button.
+  /// Option to decrease the indentation of the selected text.
   indentDecrease,
-
-  /// Quill link button.
-  link,
-
-  /// Quill search button.
-  search,
 }
 
 /// The default size of the icon of a button.
@@ -188,154 +127,130 @@ const double kToolbarSectionSpacing = 4;
 class ZdsQuillToolbar extends QuillToolbar {
   ///Constructor
 
-  const ZdsQuillToolbar({
+  const ZdsQuillToolbar._({
     super.configurations,
     required super.child,
     super.key,
   }) : super();
 
-  /// Custom constructor for [ZdsQuillToolbar]
-  factory ZdsQuillToolbar.custom({
-    required BuildContext context,
-    required QuillController controller,
-    required Set<QuillToolbarOption> toolbarOptions,
-    QuillToolbarPosition quillToolbarPosition = QuillToolbarPosition.bottom,
-    double? toolbarIconSize,
-    String? langCode,
-    Color? toolbarColor,
-  }) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color effectiveToolbarColor = toolbarColor ?? colorScheme.surface;
-    return ZdsQuillToolbar.basic(
-      context: context,
-      toolbarIconSize: toolbarIconSize ?? kDefaultIconSize,
-      controller: controller,
-      color: effectiveToolbarColor,
-      quillToolbarPosition: quillToolbarPosition,
-      locale: (langCode?.isNotEmpty ?? false) ? Locale(langCode!.substring(0, 2)) : null,
-      showUndo: toolbarOptions.contains(QuillToolbarOption.undo),
-      showRedo: toolbarOptions.contains(QuillToolbarOption.redo),
-      showBoldButton: toolbarOptions.contains(QuillToolbarOption.bold),
-      showItalicButton: toolbarOptions.contains(QuillToolbarOption.italic),
-      showUnderLineButton: toolbarOptions.contains(QuillToolbarOption.underline),
-      showStrikeThrough: toolbarOptions.contains(QuillToolbarOption.strikeThrough),
-      showSmallButton: toolbarOptions.contains(QuillToolbarOption.smallButton),
-      showColorButton: toolbarOptions.contains(QuillToolbarOption.textColor),
-      showCodeBlock: toolbarOptions.contains(QuillToolbarOption.codeBlock),
-      showBackgroundColorButton: toolbarOptions.contains(QuillToolbarOption.backgroundColor),
-      showClearFormat: toolbarOptions.contains(QuillToolbarOption.clearFormat),
-      showInlineCode: toolbarOptions.contains(QuillToolbarOption.inlineCode),
-      showAlignmentButtons: toolbarOptions.contains(QuillToolbarOption.alignmentButtons),
-      showHeaderStyle: toolbarOptions.contains(QuillToolbarOption.headers),
-      showListNumbers: toolbarOptions.contains(QuillToolbarOption.numberList),
-      showListBullets: toolbarOptions.contains(QuillToolbarOption.bullets),
-      showListCheck: toolbarOptions.contains(QuillToolbarOption.checkBox),
-      showIndent: toolbarOptions.contains(QuillToolbarOption.indentation),
-      showQuote: toolbarOptions.contains(QuillToolbarOption.quotes),
-      showLink: toolbarOptions.contains(QuillToolbarOption.link),
-      showSubscript: false,
-      showSuperscript: false,
-      showSearchButton: false,
-      multiRowsDisplay: false,
-      iconTheme: QuillIconTheme(
-        iconButtonUnselectedData: IconButtonData(
-          color: effectiveToolbarColor.onColor,
-        ),
-        iconButtonSelectedData: IconButtonData(
-          color: colorScheme.secondary,
-        ),
-      ),
-    );
-  }
-
   /// Basic constructor for ZdsQuillToolbar
+  /// Basic constructor for ZdsQuillToolbar.
   factory ZdsQuillToolbar.basic({
+    /// The [BuildContext] in which the toolbar will be built.
     required BuildContext context,
+
+    /// The [QuillController] that controls the Quill editor.
     required QuillController controller,
+
+    /// The set of options to be displayed in the toolbar.
+    required Set<QuillToolbarOption> toolbarOptions,
+
+    /// The key for the toolbar.
+    Key? key,
+
+    /// The position of the toolbar, defaults to [QuillToolbarPosition.bottom].
+    QuillToolbarPosition position = QuillToolbarPosition.bottom,
+
+    /// The axis of the toolbar, defaults to [Axis.horizontal].
     Axis axis = Axis.horizontal,
-    double toolbarIconSize = kDefaultIconSize,
+
+    /// The size of the icons in the toolbar.
+    double? toolbarIconSize,
+
+    /// The spacing between sections in the toolbar, defaults to [kToolbarSectionSpacing].
     double toolbarSectionSpacing = kToolbarSectionSpacing,
-    WrapAlignment toolbarIconAlignment = WrapAlignment.center,
-    WrapCrossAlignment toolbarIconCrossAlignment = WrapCrossAlignment.center,
-    bool multiRowsDisplay = true,
+
+    /// Whether to show dividers between toolbar sections, defaults to true.
     bool showDividers = true,
-    bool showBoldButton = true,
-    bool showItalicButton = true,
-    bool showSmallButton = false,
-    bool showUnderLineButton = true,
-    bool showStrikeThrough = true,
-    bool showInlineCode = true,
-    bool showColorButton = true,
-    bool showCodeBlock = true,
-    bool showBackgroundColorButton = true,
-    bool showClearFormat = true,
-    bool showAlignmentButtons = false,
-    bool showLeftAlignment = true,
-    bool showCenterAlignment = true,
-    bool showRightAlignment = true,
-    bool showJustifyAlignment = true,
-    bool showHeaderStyle = true,
-    bool showListNumbers = true,
-    bool showListBullets = true,
-    bool showListCheck = true,
-    bool showQuote = true,
-    bool showIndent = true,
-    bool showLink = true,
-    bool showUndo = true,
-    bool showRedo = true,
-    bool showDirection = false,
-    bool showSearchButton = true,
-    bool showSubscript = true,
-    bool showSuperscript = true,
-    QuillToolbarPosition quillToolbarPosition = QuillToolbarPosition.bottom,
+
+    /// Custom buttons to be added to the toolbar.
     List<QuillToolbarCustomButton> customButtons = const <QuillToolbarCustomButton>[],
 
-    /// Toolbar items to display for controls of embed blocks
+    /// Toolbar items to display for controls of embed blocks.
     List<EmbedButtonBuilder>? embedButtons,
 
-    ///The theme to use for the icons in the toolbar, uses type [QuillIconTheme]
+    /// The theme to use for the icons in the toolbar, uses type [QuillIconTheme].
     QuillIconTheme? iconTheme,
 
-    ///The theme to use for the theming of the [LinkDialog()],
-    ///shown when embedding an image, for example
+    /// The theme to use for the theming of the [LinkDialog()], shown when embedding an image, for example.
     QuillDialogTheme? dialogTheme,
 
     /// Callback to be called after any button on the toolbar is pressed.
     /// Is called after whatever logic the button performs has run.
     VoidCallback? afterButtonPressed,
 
-    ///Map of tooltips for toolbar  buttons
+    /// Map of tooltips for toolbar buttons.
     ///
-    ///The example is:
-    ///```dart
+    /// The example is:
+    /// ```dart
     /// tooltips = <ToolbarButtons, String>{
     ///   ToolbarButtons.undo: 'Undo',
     ///   ToolbarButtons.redo: 'Redo',
     /// }
+    /// ```
     ///
-    ///```
-    ///
-    /// To disable tooltips just pass empty map as well.
-    Map<ToolbarButtons, String>? tooltips,
+    /// To disable tooltips just pass an empty map as well.
+    Map<QuillToolbarPosition, String>? tooltips,
 
-    /// The locale to use for the editor toolbar, defaults to system locale
+    /// The locale to use for the editor toolbar, defaults to system locale.
     /// More at https://github.com/singerdmx/flutter-quill#translation
     Locale? locale,
 
-    /// The color of the toolbar
+    /// The color of the toolbar.
     Color? color,
 
-    /// The color of the toolbar section divider
+    /// The color of the toolbar section divider.
     Color? sectionDividerColor,
 
-    /// The space occupied by toolbar divider
+    /// The space occupied by the toolbar divider.
     double? sectionDividerSpace,
 
-    /// Validate the legitimacy of hyperlinks
+    /// Regular expression to validate the legitimacy of hyperlinks.
     RegExp? linkRegExp,
+
+    /// Action to be performed for the link dialog.
     LinkDialogAction? linkDialogAction,
-    Key? key,
   }) {
+    final showUndo = toolbarOptions.contains(QuillToolbarOption.undo);
+    final showRedo = toolbarOptions.contains(QuillToolbarOption.redo);
+    final showBoldButton = toolbarOptions.contains(QuillToolbarOption.bold);
+    final showItalicButton = toolbarOptions.contains(QuillToolbarOption.italic);
+    final showUnderLineButton = toolbarOptions.contains(QuillToolbarOption.underline);
+    final showStrikeThrough = toolbarOptions.contains(QuillToolbarOption.strikeThrough);
+    final showSmallButton = toolbarOptions.contains(QuillToolbarOption.smallButton);
+    final showColorButton = toolbarOptions.contains(QuillToolbarOption.textColor);
+    final showCodeBlock = toolbarOptions.contains(QuillToolbarOption.codeBlock);
+    final showBackgroundColorButton = toolbarOptions.contains(QuillToolbarOption.backgroundColor);
+    final showClearFormat = toolbarOptions.contains(QuillToolbarOption.clearFormat);
+    final showInlineCode = toolbarOptions.contains(QuillToolbarOption.inlineCode);
+    final showIndentDecrease = toolbarOptions.contains(QuillToolbarOption.indentDecrease);
+    final showIndentIncrease = toolbarOptions.contains(QuillToolbarOption.indentIncrease);
+    final showHeaderStyle = toolbarOptions.contains(QuillToolbarOption.headers);
+    final showListNumbers = toolbarOptions.contains(QuillToolbarOption.numberList);
+    final showListBullets = toolbarOptions.contains(QuillToolbarOption.bullets);
+    final showListCheck = toolbarOptions.contains(QuillToolbarOption.checkBox);
+    final showQuote = toolbarOptions.contains(QuillToolbarOption.quotes);
+    final showLink = toolbarOptions.contains(QuillToolbarOption.link);
+
+    final showLeftAlignment = toolbarOptions.contains(QuillToolbarOption.leftAlignment);
+    final showCenterAlignment = toolbarOptions.contains(QuillToolbarOption.centerAlignment);
+    final showRightAlignment = toolbarOptions.contains(QuillToolbarOption.rightAlignment);
+    final showJustifyAlignment = toolbarOptions.contains(QuillToolbarOption.justifyAlignment);
+    final showAlignmentButtons = showLeftAlignment || showCenterAlignment || showRightAlignment || showJustifyAlignment;
+
+    final showDirection = toolbarOptions.contains(QuillToolbarOption.direction);
+    final showSubscript = toolbarOptions.contains(QuillToolbarOption.subscript);
+    final showSuperscript = toolbarOptions.contains(QuillToolbarOption.superscript);
+
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final effectiveColor = color ?? colorScheme.surface;
+    final effectiveIconSize = toolbarIconSize ?? kDefaultIconSize;
+    final effectiveIconTheme = iconTheme ??
+        QuillIconTheme(
+          iconButtonUnselectedData: IconButtonData(color: effectiveColor.onColor),
+          iconButtonSelectedData: IconButtonData(color: colorScheme.secondary),
+        );
+
     final List<bool> isButtonGroupShown = <bool>[
       showBoldButton ||
           showItalicButton ||
@@ -350,83 +265,62 @@ class ZdsQuillToolbar extends QuillToolbar {
       showLeftAlignment || showCenterAlignment || showRightAlignment || showJustifyAlignment || showDirection,
       showHeaderStyle,
       showListNumbers || showListBullets || showListCheck,
-      showQuote || showIndent,
-      showLink || showSearchButton,
+      showQuote || showIndentDecrease || showIndentIncrease,
+      showLink,
     ];
 
-    final componentString = ComponentStrings.of(context);
-    final configurations = QuillSimpleToolbarConfigurations(
-      controller: controller,
-      axis: axis,
-      toolbarSize: toolbarIconSize * 3,
-      color: color,
-      toolbarSectionSpacing: toolbarSectionSpacing,
-      toolbarIconAlignment: toolbarIconAlignment,
-      toolbarIconCrossAlignment: toolbarIconCrossAlignment,
-      multiRowsDisplay: multiRowsDisplay,
-    );
-    iconTheme ??= QuillIconTheme(
-      iconButtonSelectedData: IconButtonData(
-        iconSize: toolbarIconSize,
-        alignment: Alignment.topCenter,
-      ),
-      iconButtonUnselectedData: IconButtonData(iconSize: toolbarIconSize),
-    );
-
-    return ZdsQuillToolbar(
+    final strings = ComponentStrings.of(context);
+    return ZdsQuillToolbar._(
       configurations: QuillToolbarConfigurations(
         sharedConfigurations: QuillSharedConfigurations(
-          locale: locale,
+          locale: locale ?? strings.locale,
         ),
       ),
       key: key,
       child: TooltipTheme(
-        data: TooltipThemeData(preferBelow: quillToolbarPosition == QuillToolbarPosition.top),
+        data: TooltipThemeData(preferBelow: position == QuillToolbarPosition.top),
         child: Builder(
           builder: (context) {
             //  default button tooltips
             final buttonTooltips = tooltips ??
-                <ToolbarButtons, String>{
-                  ToolbarButtons.undo: componentString.get('STR_UNDO', context.loc.undo),
-                  ToolbarButtons.redo: componentString.get('REDO', context.loc.redo),
-                  ToolbarButtons.fontFamily: componentString.get('FONT_FAMILY', context.loc.fontFamily),
-                  ToolbarButtons.fontSize: componentString.get('FONT_SIZE', context.loc.fontSize),
-                  ToolbarButtons.bold: componentString.get('BOLD', context.loc.bold),
-                  ToolbarButtons.subscript: componentString.get('SUBSCRIPT', context.loc.subscript),
-                  ToolbarButtons.superscript: componentString.get('SUPERSCRIPT', context.loc.superscript),
-                  ToolbarButtons.italic: componentString.get('ITALIC', context.loc.italic),
-                  ToolbarButtons.small: componentString.get('SMALL', context.loc.small),
-                  ToolbarButtons.underline: componentString.get('UNDERLINE', context.loc.underline),
-                  ToolbarButtons.strikeThrough: componentString.get('STRIKE_THROUGH', context.loc.strikeThrough),
-                  ToolbarButtons.inlineCode: componentString.get('INLINE_CODE', context.loc.inlineCode),
-                  ToolbarButtons.color: componentString.get('FONT_COLOR', context.loc.fontColor),
-                  ToolbarButtons.backgroundColor: componentString.get('BACKGROUND_COLOR', context.loc.backgroundColor),
-                  ToolbarButtons.clearFormat: componentString.get('CLEAR_FORMAT', context.loc.clearFormat),
-                  ToolbarButtons.leftAlignment: componentString.get('ALIGN_LEFT', context.loc.alignLeft),
-                  ToolbarButtons.centerAlignment: componentString.get('ALIGN_CENTER', context.loc.alignCenter),
-                  ToolbarButtons.rightAlignment: componentString.get('ALIGN_RIGHT', context.loc.alignRight),
-                  ToolbarButtons.justifyAlignment: componentString.get('JUSTIFY_WIDTH', context.loc.justifyWinWidth),
-                  ToolbarButtons.direction: componentString.get('TEXT_DIRECTION', context.loc.textDirection),
-                  ToolbarButtons.headerStyle: componentString.get('HEADER_STYLE', context.loc.headerStyle),
-                  ToolbarButtons.listNumbers: componentString.get('NUMBERED_LIST', context.loc.numberedList),
-                  ToolbarButtons.listBullets: componentString.get('BULLET_LIST', context.loc.bulletList),
-                  ToolbarButtons.listChecks: componentString.get('CHECKED_LIST', context.loc.checkedList),
-                  ToolbarButtons.codeBlock: componentString.get('CODE_BLOCK', context.loc.codeBlock),
-                  ToolbarButtons.quote: componentString.get('EDITOR_QUOTE', context.loc.quote),
-                  ToolbarButtons.indentIncrease: componentString.get('INCREASE_INDENT', context.loc.increaseIndent),
-                  ToolbarButtons.indentDecrease: componentString.get('DECREASE_INDENT', context.loc.decreaseIndent),
-                  ToolbarButtons.link: componentString.get('INSERT_URL', context.loc.link),
-                  ToolbarButtons.search: componentString.get('SEARCH', context.loc.search),
+                <QuillToolbarOption, String>{
+                  QuillToolbarOption.undo: strings.get('STR_UNDO', context.loc.undo),
+                  QuillToolbarOption.redo: strings.get('REDO', context.loc.redo),
+                  QuillToolbarOption.bold: strings.get('BOLD', context.loc.bold),
+                  QuillToolbarOption.subscript: strings.get('SUBSCRIPT', context.loc.subscript),
+                  QuillToolbarOption.superscript: strings.get('SUPERSCRIPT', context.loc.superscript),
+                  QuillToolbarOption.italic: strings.get('ITALIC', context.loc.italic),
+                  QuillToolbarOption.small: strings.get('SMALL', context.loc.small),
+                  QuillToolbarOption.underline: strings.get('UNDERLINE', context.loc.underline),
+                  QuillToolbarOption.strikeThrough: strings.get('STRIKE_THROUGH', context.loc.strikeThrough),
+                  QuillToolbarOption.inlineCode: strings.get('INLINE_CODE', context.loc.inlineCode),
+                  QuillToolbarOption.color: strings.get('FONT_COLOR', context.loc.fontColor),
+                  QuillToolbarOption.backgroundColor: strings.get('BACKGROUND_COLOR', context.loc.backgroundColor),
+                  QuillToolbarOption.clearFormat: strings.get('CLEAR_FORMAT', context.loc.clearFormat),
+                  QuillToolbarOption.leftAlignment: strings.get('ALIGN_LEFT', context.loc.alignLeft),
+                  QuillToolbarOption.centerAlignment: strings.get('ALIGN_CENTER', context.loc.alignCenter),
+                  QuillToolbarOption.rightAlignment: strings.get('ALIGN_RIGHT', context.loc.alignRight),
+                  QuillToolbarOption.justifyAlignment: strings.get('JUSTIFY_WIDTH', context.loc.justifyWinWidth),
+                  QuillToolbarOption.direction: strings.get('TEXT_DIRECTION', context.loc.textDirection),
+                  QuillToolbarOption.headerStyle: strings.get('HEADER_STYLE', context.loc.headerStyle),
+                  QuillToolbarOption.numberList: strings.get('NUMBERED_LIST', context.loc.numberedList),
+                  QuillToolbarOption.bullets: strings.get('BULLET_LIST', context.loc.bulletList),
+                  QuillToolbarOption.checkBox: strings.get('CHECKED_LIST', context.loc.checkedList),
+                  QuillToolbarOption.codeBlock: strings.get('CODE_BLOCK', context.loc.codeBlock),
+                  QuillToolbarOption.quotes: strings.get('EDITOR_QUOTE', context.loc.quote),
+                  QuillToolbarOption.indentIncrease: strings.get('INCREASE_INDENT', context.loc.increaseIndent),
+                  QuillToolbarOption.indentDecrease: strings.get('DECREASE_INDENT', context.loc.decreaseIndent),
+                  QuillToolbarOption.link: strings.get('INSERT_URL', context.loc.link),
                 };
 
             return Container(
-              decoration: configurations.decoration ?? BoxDecoration(color: configurations.color),
+              decoration: BoxDecoration(color: effectiveColor),
               constraints: BoxConstraints.tightFor(
-                height: configurations.axis == Axis.horizontal ? configurations.toolbarSize : null,
-                width: configurations.axis == Axis.vertical ? configurations.toolbarSize : null,
+                height: axis == Axis.horizontal ? effectiveIconSize * 3 : null,
+                width: axis == Axis.vertical ? effectiveIconSize * 3 : null,
               ),
               child: Material(
-                color: configurations.color,
+                color: effectiveColor,
                 child: QuillToolbarArrowIndicatedButtonList(
                   axis: Axis.horizontal,
                   buttons: [
@@ -437,10 +331,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         options: QuillToolbarHistoryButtonOptions(
                           iconButtonFactor: toolbarSectionSpacing,
                           iconData: Icons.undo_outlined,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.undo],
+                          tooltip: buttonTooltips[QuillToolbarOption.undo],
                         ),
                       ),
                     if (showRedo) ...<Widget>[
@@ -449,10 +343,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         isUndo: false,
                         options: QuillToolbarHistoryButtonOptions(
                           iconData: Icons.redo_outlined,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.redo],
+                          tooltip: buttonTooltips[QuillToolbarOption.redo],
                         ),
                       ),
                       if (showDividers)
@@ -462,10 +356,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                       QuillToolbarSelectHeaderStyleButtons(
                         controller: controller,
                         options: QuillToolbarSelectHeaderStyleButtonsOptions(
-                          tooltip: buttonTooltips[ToolbarButtons.headerStyle],
+                          tooltip: buttonTooltips[QuillToolbarOption.headerStyle],
                           axis: axis,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
                         ),
                       ),
@@ -478,9 +372,9 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.format_bold,
-                          iconSize: toolbarIconSize,
-                          tooltip: buttonTooltips[ToolbarButtons.bold],
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          tooltip: buttonTooltips[QuillToolbarOption.bold],
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
                         ),
                       ),
@@ -490,9 +384,9 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.subscript,
-                          iconSize: toolbarIconSize,
-                          tooltip: buttonTooltips[ToolbarButtons.subscript],
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          tooltip: buttonTooltips[QuillToolbarOption.subscript],
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
                         ),
                       ),
@@ -502,9 +396,9 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.superscript,
-                          iconSize: toolbarIconSize,
-                          tooltip: buttonTooltips[ToolbarButtons.superscript],
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          tooltip: buttonTooltips[QuillToolbarOption.superscript],
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
                         ),
                       ),
@@ -514,9 +408,9 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.format_italic,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
-                          tooltip: buttonTooltips[ToolbarButtons.italic],
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
+                          tooltip: buttonTooltips[QuillToolbarOption.italic],
                           afterButtonPressed: afterButtonPressed,
                         ),
                       ),
@@ -526,10 +420,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.format_underline,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.underline],
+                          tooltip: buttonTooltips[QuillToolbarOption.underline],
                         ),
                       ),
                     if (showStrikeThrough)
@@ -538,10 +432,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.format_strikethrough,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.strikeThrough],
+                          tooltip: buttonTooltips[QuillToolbarOption.strikeThrough],
                         ),
                       ),
                     if (showSmallButton)
@@ -550,9 +444,9 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.format_size,
-                          iconSize: toolbarIconSize,
-                          tooltip: buttonTooltips[ToolbarButtons.small],
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          tooltip: buttonTooltips[QuillToolbarOption.small],
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
                         ),
                       ),
@@ -562,10 +456,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.code,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.inlineCode],
+                          tooltip: buttonTooltips[QuillToolbarOption.inlineCode],
                         ),
                       ),
                     if (showDividers) QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
@@ -575,9 +469,9 @@ class ZdsQuillToolbar extends QuillToolbar {
                         isBackground: false,
                         options: QuillToolbarColorButtonOptions(
                           iconData: Icons.color_lens,
-                          iconSize: toolbarIconSize,
-                          tooltip: buttonTooltips[ToolbarButtons.color],
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          tooltip: buttonTooltips[QuillToolbarOption.color],
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
                         ),
                       ),
@@ -587,10 +481,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         isBackground: true,
                         options: QuillToolbarColorButtonOptions(
                           iconData: Icons.format_color_fill,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.backgroundColor],
+                          tooltip: buttonTooltips[QuillToolbarOption.backgroundColor],
                         ),
                       ),
                     if (showClearFormat)
@@ -598,15 +492,15 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarBaseButtonOptions(
                           iconData: Icons.format_clear,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.clearFormat],
+                          tooltip: buttonTooltips[QuillToolbarOption.clearFormat],
                         ),
                       ),
                     if (embedButtons != null)
                       for (final EmbedButtonBuilder builder in embedButtons)
-                        builder(controller, toolbarIconSize, iconTheme, dialogTheme),
+                        builder(controller, effectiveIconSize, effectiveIconTheme, dialogTheme),
                     if (showDividers &&
                         isButtonGroupShown[0] &&
                         (isButtonGroupShown[1] ||
@@ -620,14 +514,15 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarSelectAlignmentButtonOptions(
                           tooltips: QuillSelectAlignmentValues(
-                            leftAlignment: buttonTooltips[ToolbarButtons.leftAlignment] ?? context.loc.alignLeft,
-                            centerAlignment: buttonTooltips[ToolbarButtons.centerAlignment] ?? context.loc.alignCenter,
-                            rightAlignment: buttonTooltips[ToolbarButtons.rightAlignment] ?? context.loc.alignRight,
+                            leftAlignment: buttonTooltips[QuillToolbarOption.leftAlignment] ?? context.loc.alignLeft,
+                            centerAlignment:
+                                buttonTooltips[QuillToolbarOption.centerAlignment] ?? context.loc.alignCenter,
+                            rightAlignment: buttonTooltips[QuillToolbarOption.rightAlignment] ?? context.loc.alignRight,
                             justifyAlignment:
-                                buttonTooltips[ToolbarButtons.justifyAlignment] ?? context.loc.justifyWinWidth,
+                                buttonTooltips[QuillToolbarOption.justifyAlignment] ?? context.loc.justifyWinWidth,
                           ),
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           showLeftAlignment: showLeftAlignment,
                           showCenterAlignment: showCenterAlignment,
                           showRightAlignment: showRightAlignment,
@@ -641,10 +536,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.format_textdirection_r_to_l,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.direction],
+                          tooltip: buttonTooltips[QuillToolbarOption.direction],
                         ),
                       ),
                     if (showDividers &&
@@ -665,10 +560,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.format_list_numbered,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.listNumbers],
+                          tooltip: buttonTooltips[QuillToolbarOption.numberList],
                         ),
                       ),
                     if (showListBullets)
@@ -677,10 +572,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.format_list_bulleted,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.listBullets],
+                          tooltip: buttonTooltips[QuillToolbarOption.bullets],
                         ),
                       ),
                     if (showListCheck)
@@ -688,10 +583,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleCheckListButtonOptions(
                           iconData: Icons.check_box,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.listChecks],
+                          tooltip: buttonTooltips[QuillToolbarOption.checkBox],
                         ),
                       ),
                     if (showCodeBlock)
@@ -700,10 +595,10 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.code,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.codeBlock],
+                          tooltip: buttonTooltips[QuillToolbarOption.codeBlock],
                         ),
                       ),
                     if (showDividers && isButtonGroupShown[3] && (isButtonGroupShown[4] || isButtonGroupShown[5]))
@@ -714,34 +609,34 @@ class ZdsQuillToolbar extends QuillToolbar {
                         controller: controller,
                         options: QuillToolbarToggleStyleButtonOptions(
                           iconData: Icons.format_quote,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.quote],
+                          tooltip: buttonTooltips[QuillToolbarOption.quotes],
                         ),
                       ),
-                    if (showIndent)
+                    if (showIndentIncrease)
                       QuillToolbarIndentButton(
                         controller: controller,
                         isIncrease: true,
                         options: QuillToolbarIndentButtonOptions(
                           iconData: Icons.format_indent_increase,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.indentIncrease],
+                          tooltip: buttonTooltips[QuillToolbarOption.indentIncrease],
                         ),
                       ),
-                    if (showIndent)
+                    if (showIndentDecrease)
                       QuillToolbarIndentButton(
                         controller: controller,
                         isIncrease: false,
                         options: QuillToolbarIndentButtonOptions(
                           iconData: Icons.format_indent_decrease,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.indentDecrease],
+                          tooltip: buttonTooltips[QuillToolbarOption.indentDecrease],
                         ),
                       ),
                     if (showDividers && isButtonGroupShown[4] && isButtonGroupShown[5])
@@ -750,8 +645,8 @@ class ZdsQuillToolbar extends QuillToolbar {
                       QuillToolbarLinkStyleButton(
                         controller: controller,
                         options: QuillToolbarLinkStyleButtonOptions(
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
+                          iconSize: effectiveIconSize,
+                          iconTheme: effectiveIconTheme,
                           dialogTheme: dialogTheme,
                           afterButtonPressed: afterButtonPressed,
                           linkRegExp: linkRegExp ??
@@ -759,19 +654,7 @@ class ZdsQuillToolbar extends QuillToolbar {
                                 r'(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?',
                               ),
                           linkDialogAction: linkDialogAction,
-                          tooltip: buttonTooltips[ToolbarButtons.link],
-                        ),
-                      ),
-                    if (showSearchButton)
-                      QuillToolbarSearchButton(
-                        controller: controller,
-                        options: QuillToolbarSearchButtonOptions(
-                          iconData: Icons.search,
-                          iconSize: toolbarIconSize,
-                          iconTheme: iconTheme,
-                          dialogTheme: dialogTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[ToolbarButtons.search],
+                          tooltip: buttonTooltips[QuillToolbarOption.link],
                         ),
                       ),
                     if (customButtons.isNotEmpty)
@@ -780,11 +663,6 @@ class ZdsQuillToolbar extends QuillToolbar {
                     for (final customButton in customButtons)
                       QuillToolbarCustomButton(
                         options: customButton.options,
-                        controller: controller,
-                      ),
-                    for (final customButton in configurations.customButtons)
-                      QuillToolbarCustomButton(
-                        options: customButton,
                         controller: controller,
                       ),
                   ],
