@@ -7,6 +7,20 @@
 * update to flutter 3.22.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 * update to zeta_flutter 0.9.1 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 
+## [1.3.0](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.5...v1.3.0) (2024-06-20)
+
+
+### ✨ New Features
+
+* Add selected date to calendar ([98c291d](https://github.com/ZebraDevs/zds_flutter/commit/98c291dcb4bc08b1397fe033bd64ae22d4786b9f))
+* **TM-38113:** Restructure Quill Editor ([b2450c6](https://github.com/ZebraDevs/zds_flutter/commit/b2450c6d93812f031c8945d18ce1671dd37ffc68))
+
+
+### 🪲 Bug Fixes
+
+* **TM-43864:** Fixed delta formatting in new version of quill-editor ([43016ef](https://github.com/ZebraDevs/zds_flutter/commit/43016efc70d37cfb4bcce30f16ff5f42d026ad9a))
+* **WFM-37003:** validation in inputdialog onSetText ([1c81bf4](https://github.com/ZebraDevs/zds_flutter/commit/1c81bf4efab79efd65d332a71bfff78809d472c3))
+
 ## [1.2.5](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.4...v1.2.5) (2024-06-10)
 
 
