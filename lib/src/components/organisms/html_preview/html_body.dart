@@ -107,24 +107,42 @@ class ZdsHtml extends StatelessWidget {
   }
 
   Map<String, Style> _buildStyles(BuildContext context, ColorScheme colorscheme, BoxConstraints box) {
+    final zetaColors = Zeta.of(context).colors;
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final fSize = fontSize ?? bodyMedium?.fontSize;
     return <String, Style>{
       'p': Style(
-        fontSize: fontSize != null ? FontSize(fontSize!) : null,
+        fontSize: fSize != null ? FontSize(fSize) : null,
         maxLines: maxLines,
         before: '\n',
         lineHeight: LineHeight.percent(125),
         textOverflow: TextOverflow.ellipsis,
-        margin: Margins.only(left: 0, right: 0),
+        margin: Margins.zero,
+        padding: HtmlPaddings.zero,
       ),
       'li': Style(
         fontSize: fontSize != null ? FontSize(fontSize!) : null,
         maxLines: maxLines,
         lineHeight: LineHeight.percent(125),
         textOverflow: TextOverflow.ellipsis,
-        margin: Margins.only(left: 0, right: 0),
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        margin: Margins.zero,
+      ),
+      'ol': Style(
+        fontSize: fontSize != null ? FontSize(fontSize!) : null,
+        maxLines: maxLines,
+        lineHeight: LineHeight.percent(125),
+        textOverflow: TextOverflow.ellipsis,
+        margin: Margins.zero,
+      ),
+      'ul': Style(
+        fontSize: fontSize != null ? FontSize(fontSize!) : null,
+        maxLines: maxLines,
+        lineHeight: LineHeight.percent(125),
+        textOverflow: TextOverflow.ellipsis,
+        margin: Margins.zero,
       ),
       'table': Style(
+        margin: Margins.zero,
         height: Height.auto(),
         width: Width.auto(),
         border: Border(
@@ -135,6 +153,7 @@ class ZdsHtml extends StatelessWidget {
         ),
       ),
       'tr': Style(
+        margin: Margins.zero,
         height: Height.auto(),
         width: Width.auto(),
         border: Border(
@@ -145,6 +164,7 @@ class ZdsHtml extends StatelessWidget {
         ),
       ),
       'th': Style(
+        margin: Margins.zero,
         height: Height.auto(),
         width: Width.auto(),
         border: Border(
@@ -156,6 +176,7 @@ class ZdsHtml extends StatelessWidget {
         padding: HtmlPaddings.all(6),
       ),
       'td': Style(
+        margin: Margins.zero,
         height: Height.auto(),
         width: Width.auto(),
         padding: HtmlPaddings.all(6),
@@ -167,12 +188,29 @@ class ZdsHtml extends StatelessWidget {
           top: BorderSide(color: colorscheme.onSurface, width: 0.5),
         ),
       ),
+      'h3': Style(margin: Margins.zero),
+      'h4': Style(margin: Margins.zero),
       'h5': Style(maxLines: maxLines, textOverflow: TextOverflow.ellipsis),
       'iframe': Style(width: Width(box.maxWidth), height: Height((box.maxWidth / 16) * 9)),
       'figure': Style(width: Width(box.maxWidth)),
       'blockquote': Style(
-        padding: HtmlPaddings.only(left: 16),
-        border: Border(left: BorderSide(color: Zeta.of(context).colors.borderSubtle, width: 5)),
+        margin: Margins.zero,
+        padding: HtmlPaddings.symmetric(horizontal: 14, vertical: 8),
+        border: Border(left: BorderSide(color: zetaColors.borderDisabled, width: 4)),
+        color: zetaColors.textSubtle,
+      ),
+      'pre': Style(
+        margin: Margins.zero,
+        padding: HtmlPaddings.all(14),
+        backgroundColor: zetaColors.surfaceTertiary,
+        lineHeight: LineHeight.percent(100),
+        color: zetaColors.primary.selected,
+      ),
+      'code': Style(
+        margin: Margins.zero,
+        backgroundColor: zetaColors.surfaceTertiary,
+        lineHeight: LineHeight.percent(100),
+        color: zetaColors.primary,
       ),
       ...style,
     };

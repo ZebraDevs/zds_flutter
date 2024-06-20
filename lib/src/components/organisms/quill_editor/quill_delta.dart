@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_dynamic_calls
+
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/quill_delta.dart';
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
@@ -26,7 +27,7 @@ class ZdsQuillDelta {
   /// Converts the underlying Quill's Delta to an HTML string.
   String toHtml() {
     // Convert document to JSON format
-    final List<dynamic> deltaJson = document.toDelta().toJson();
+    final List<Map<String, dynamic>> deltaJson = _correctJsonArray(document.toDelta().toJson());
 
     // Iterate through each Delta operation
     for (final dynamic element in deltaJson) {
@@ -38,8 +39,11 @@ class ZdsQuillDelta {
     }
 
     // Use the QuillDeltaToHtmlConverter to convert modified Delta to HTML
-    final QuillDeltaToHtmlConverter converter =
-        QuillDeltaToHtmlConverter(List.castFrom(deltaJson), ConverterOptions.forEmail());
+    final QuillDeltaToHtmlConverter converter = QuillDeltaToHtmlConverter(
+      List.castFrom(deltaJson),
+      ConverterOptions.forEmail(),
+    );
+
     return converter.convert();
   }
 
@@ -49,6 +53,47 @@ class ZdsQuillDelta {
     if (element['attributes'] != null && element['attributes'][attribute] != null) {
       element['attributes'][attribute] = element['attributes'][attribute].toString().replaceAll('#FF', '#');
     }
+  }
+
+  List<Map<String, dynamic>> _correctJsonArray(List<Map<String, dynamic>> inputArray) {
+    final List<Map<String, dynamic>> correctedArray = [];
+
+    bool isBlock(dynamic attributes) {
+      return (attributes != null && attributes is Map<String, dynamic>) &&
+          (attributes.containsKey('header') ||
+              attributes.containsKey('list') ||
+              attributes.containsKey('blockquote') ||
+              attributes.containsKey('code-block') ||
+              attributes.containsKey('direction') ||
+              attributes.containsKey('align') ||
+              attributes.containsKey('indent'));
+    }
+
+    for (final element in inputArray) {
+      if (element['insert'] != '\n' && element['attributes'] != null && isBlock(element['attributes'])) {
+        final insertValue = element['insert'];
+        final attributes = element['attributes'];
+
+        if (insertValue is String && insertValue.contains('\n')) {
+          final parts = insertValue.split('\n');
+          for (int i = 0; i < parts.length; i++) {
+            if (parts[i].isNotEmpty) {
+              correctedArray
+                ..add({'insert': parts[i]})
+                ..add({'attributes': attributes, 'insert': '\n'});
+            }
+          }
+        } else {
+          correctedArray
+            ..add({'insert': insertValue})
+            ..add({'attributes': attributes, 'insert': '\n'});
+        }
+      } else {
+        correctedArray.add(element);
+      }
+    }
+
+    return correctedArray;
   }
 
   /// Creates a copy with provided document
