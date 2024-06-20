@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-
 import '../../../../zds_flutter.dart';
 import 'quill_toolbar.dart';
 
@@ -26,6 +25,7 @@ class ZdsQuillEditor extends StatelessWidget {
     this.placeholder,
     this.editorKey,
     this.toolbarColor,
+    this.embedButtons,
     super.key,
   });
 
@@ -49,6 +49,9 @@ class ZdsQuillEditor extends StatelessWidget {
 
   /// Custom embed builders, for example for image or video embedding.
   final Iterable<EmbedBuilder>? embedBuilders;
+
+  /// Toolbar items to display for controls of embed blocks.
+  final List<EmbedButtonBuilder>? embedButtons;
 
   /// The appearance style of the keyboard, can be either dark or light.
   final Brightness? keyboardAppearance;
@@ -78,6 +81,7 @@ class ZdsQuillEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     // Base editor configuration
     final editor = QuillEditor.basic(
+      focusNode: readOnly ? FocusNode(canRequestFocus: false) : focusNode,
       configurations: QuillEditorConfigurations(
         controller: controller,
         keyboardAppearance: keyboardAppearance ?? Brightness.light,
@@ -88,7 +92,6 @@ class ZdsQuillEditor extends StatelessWidget {
         placeholder: placeholder,
         editorKey: editorKey,
       ),
-      focusNode: readOnly ? FocusNode(canRequestFocus: false) : focusNode,
     );
 
     // If readOnly, return just editor
@@ -97,23 +100,25 @@ class ZdsQuillEditor extends StatelessWidget {
     // If not readOnly, wrap the editor in a column with the toolbar
     return Column(
       children: [
-        if (quillToolbarPosition == QuillToolbarPosition.top) _buildToolbar(context, QuillToolbarPosition.top),
+        if (quillToolbarPosition == QuillToolbarPosition.top)
+          _buildToolbar(context, QuillToolbarPosition.top, embedButtons),
         Expanded(child: editor),
-        if (quillToolbarPosition == QuillToolbarPosition.bottom) _buildToolbar(context, QuillToolbarPosition.bottom),
+        if (quillToolbarPosition == QuillToolbarPosition.bottom)
+          _buildToolbar(context, QuillToolbarPosition.bottom, embedButtons),
       ],
     );
   }
 
   /// Constructs the toolbar for the Quill editor.
-  Widget _buildToolbar(BuildContext context, QuillToolbarPosition position) {
-    return ZdsQuillToolbar.custom(
+  Widget _buildToolbar(BuildContext context, QuillToolbarPosition position, List<EmbedButtonBuilder>? embedButtons) {
+    return ZdsQuillToolbar.basic(
       context: context,
       controller: controller,
-      toolbarOptions: toolbarOptions.isNotEmpty ? toolbarOptions : QuillToolbarOption.values.toSet(),
+      color: toolbarColor,
+      position: position,
+      embedButtons: embedButtons,
       toolbarIconSize: toolbarIconSize,
-      langCode: langCode,
-      toolbarColor: toolbarColor,
-      quillToolbarPosition: position,
+      toolbarOptions: toolbarOptions.isNotEmpty ? toolbarOptions : QuillToolbarOption.values.toSet(),
     );
   }
 
@@ -135,6 +140,7 @@ class ZdsQuillEditor extends StatelessWidget {
       ..add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode))
       ..add(StringProperty('placeholder', placeholder))
       ..add(ColorProperty('toolbarColor', toolbarColor))
-      ..add(DiagnosticsProperty<GlobalKey<EditorState>?>('editorKey', editorKey));
+      ..add(DiagnosticsProperty<GlobalKey<EditorState>?>('editorKey', editorKey))
+      ..add(IterableProperty<EmbedButtonBuilder>('embedButtons', embedButtons));
   }
 }

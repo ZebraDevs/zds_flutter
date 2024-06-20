@@ -24,6 +24,7 @@ dependencies:
   cross_file: ^0.3.3+8
   zeta_flutter: any
   intl: any
+  flutter_quill_extensions: ^9.4.4
 
 flutter:
   uses-material-design: true

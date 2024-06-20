@@ -28,6 +28,8 @@ class ZdsQuillEditorPage extends StatefulWidget {
     this.charLimit = 10000,
     this.placeholder = '',
     this.initialDelta,
+    this.embedBuilders,
+    this.embedButtons,
   });
 
   /// The title displayed in the editor's AppBar.
@@ -62,6 +64,12 @@ class ZdsQuillEditorPage extends StatefulWidget {
   /// Defaults to true.
   final bool showClearFormatAsFloating;
 
+  ///EmbedBuilders for image and video support
+  final List<quill.EmbedBuilder>? embedBuilders;
+
+  /// Toolbar items to display for controls of embed blocks.
+  final List<quill.EmbedButtonBuilder>? embedButtons;
+
   /// Navigates to the editor page for creating or editing content.
   ///
   /// Returns a [ZdsQuillDelta] representing the edited content or null if the user cancels the operation.
@@ -78,6 +86,8 @@ class ZdsQuillEditorPage extends StatefulWidget {
     bool showClearFormatAsFloating = true,
     Set<QuillToolbarOption>? toolbarOptions,
     QuillToolbarPosition? quillToolbarPosition = QuillToolbarPosition.bottom,
+    List<quill.EmbedBuilder>? embedBuilders,
+    List<quill.EmbedButtonBuilder>? embedButtons,
   }) {
     return Navigator.of(context).push<ZdsQuillDelta>(
       MaterialPageRoute<ZdsQuillDelta>(
@@ -87,13 +97,15 @@ class ZdsQuillEditorPage extends StatefulWidget {
             title: title,
             readOnly: readOnly,
             charLimit: charLimit,
+            embedButtons: embedButtons,
             placeholder: placeholder,
             toolbarIconSize: toolbarIconSize,
             quillToolbarPosition: quillToolbarPosition,
             showClearFormatAsFloating: showClearFormatAsFloating,
             toolbarOptions: toolbarOptions ?? zdsQuillToolbarOptions,
-            langCode: langCode ?? ComponentStrings.of(context).locale.toString(),
+            langCode: langCode,
             initialDelta: initialDelta?.copyWith(document: initialDelta.document),
+            embedBuilders: embedBuilders,
           );
         },
       ),
@@ -101,7 +113,7 @@ class ZdsQuillEditorPage extends StatefulWidget {
   }
 
   @override
-  State<ZdsQuillEditorPage> createState() => _ZdsQuillEditorState();
+  State<ZdsQuillEditorPage> createState() => _ZdsQuillEditorPageState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -116,11 +128,13 @@ class ZdsQuillEditorPage extends StatefulWidget {
       ..add(DiagnosticsProperty<ZdsQuillDelta?>('initialDelta', initialDelta))
       ..add(StringProperty('placeholder', placeholder))
       ..add(IterableProperty<QuillToolbarOption>('toolbarOptions', toolbarOptions))
-      ..add(DiagnosticsProperty<bool>('showClearFormatAsFloating', showClearFormatAsFloating));
+      ..add(DiagnosticsProperty<bool>('showClearFormatAsFloating', showClearFormatAsFloating))
+      ..add(IterableProperty<quill.EmbedBuilder>('embedBuilders', embedBuilders))
+      ..add(IterableProperty<quill.EmbedButtonBuilder>('embedButtons', embedButtons));
   }
 }
 
-class _ZdsQuillEditorState extends State<ZdsQuillEditorPage> with FrameCallbackMixin {
+class _ZdsQuillEditorPageState extends State<ZdsQuillEditorPage> with FrameCallbackMixin {
   /// Builder for handling uncaught Flutter errors in the widget.
   ErrorWidgetBuilder? _originalErrorWidgetBuilder;
 
@@ -175,6 +189,17 @@ class _ZdsQuillEditorState extends State<ZdsQuillEditorPage> with FrameCallbackM
     if (__fetchingText == value) return;
     setState(() {
       __fetchingText = value;
+    });
+  }
+
+  bool _showingLoading = false;
+
+  bool get showingLoading => _showingLoading;
+
+  set showingLoading(bool value) {
+    if (_showingLoading == value) return;
+    setState(() {
+      _showingLoading = value;
     });
   }
 
@@ -382,8 +407,9 @@ class _ZdsQuillEditorState extends State<ZdsQuillEditorPage> with FrameCallbackM
       toolbarColor: Theme.of(context).colorScheme.surface,
       toolbarOptions: <QuillToolbarOption>{...widget.toolbarOptions}
         ..remove(QuillToolbarOption.redo)
-        ..remove(QuillToolbarOption.undo)
-        ..remove(QuillToolbarOption.clearFormat),
+        ..remove(QuillToolbarOption.undo),
+      embedBuilders: widget.embedBuilders,
+      embedButtons: widget.embedButtons,
     );
   }
 
@@ -417,7 +443,7 @@ class _ZdsQuillEditorState extends State<ZdsQuillEditorPage> with FrameCallbackM
         AnimatedOpacity(
           duration: const Duration(milliseconds: 250),
           opacity: _withinLimit ? 1.0 : 0.3,
-          child: _fetchingText ? _buildProgressIndicator(context) : _buildSaveButton(context),
+          child: (_fetchingText || _showingLoading) ? _buildProgressIndicator(context) : _buildSaveButton(context),
         ),
       ],
     );
@@ -500,7 +526,8 @@ class _ZdsQuillEditorState extends State<ZdsQuillEditorPage> with FrameCallbackM
     properties
       ..add(DiagnosticsProperty<bool>('showingHtmlError', showingHtmlError))
       ..add(DiagnosticsProperty<bool>('showClear', showClear))
-      ..add(DiagnosticsProperty<bool>('showClearPill', showClearPill));
+      ..add(DiagnosticsProperty<bool>('showClearPill', showClearPill))
+      ..add(DiagnosticsProperty<bool>('showingLoading', showingLoading));
   }
 }
 
