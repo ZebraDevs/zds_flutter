@@ -171,9 +171,12 @@ class ZdsInputDialogState extends State<ZdsInputDialog> {
                 children: <Widget>[
                   Expanded(
                     child: Semantics(
-                      textField: true,
                       onTap: _focusNode.requestFocus,
                       excludeSemantics: true,
+                      onSetText: (value) async {
+                        _controller.text = value;
+                        await _validateText();
+                      },
                       label: _controller.text.isNotEmpty ? _controller.text : widget.hint,
                       child: TextFormField(
                         maxLength: widget.characterCount,
