@@ -39,11 +39,14 @@ class ZdsIcons {
   static const IconData audio = IconData(0xe9af, fontFamily: _family, fontPackage: packageName);
   static const IconData audio_file = IconData(0xe906, fontFamily: _family, fontPackage: packageName);
   static const IconData audit_activity = IconData(0xe900, fontFamily: _family, fontPackage: packageName);
+  static const IconData available = IconData(0xe9be, fontFamily: _family, fontPackage: packageName);
+  static const IconData away = IconData(0xe9c3, fontFamily: _family, fontPackage: packageName);
   static const IconData back = IconData(0xe907, fontFamily: _family, fontPackage: packageName);
   static const IconData book_open = IconData(0xe9a9, fontFamily: _family, fontPackage: packageName);
   static const IconData break_filled = IconData(0xe9b0, fontFamily: _family, fontPackage: packageName);
   static const IconData broadcast = IconData(0xe9b1, fontFamily: _family, fontPackage: packageName);
   static const IconData building = IconData(0xe9b2, fontFamily: _family, fontPackage: packageName);
+  static const IconData busy = IconData(0xe9c4, fontFamily: _family, fontPackage: packageName);
   static const IconData calendar = IconData(0xe96f, fontFamily: _family, fontPackage: packageName);
   static const IconData calendar_3_day = IconData(0xe9b3, fontFamily: _family, fontPackage: packageName);
   static const IconData calendar_available = IconData(0xe9b4, fontFamily: _family, fontPackage: packageName);
@@ -106,6 +109,7 @@ class ZdsIcons {
   static const IconData delete = IconData(0xe913, fontFamily: _family, fontPackage: packageName);
   static const IconData details = IconData(0xe914, fontFamily: _family, fontPackage: packageName);
   static const IconData dialpad = IconData(0xe9db, fontFamily: _family, fontPackage: packageName);
+  static const IconData do_not_disturb = IconData(0xe9cb, fontFamily: _family, fontPackage: packageName);
   static const IconData download = IconData(0xe9dc, fontFamily: _family, fontPackage: packageName);
   static const IconData edit = IconData(0xe916, fontFamily: _family, fontPackage: packageName);
   static const IconData edit_notifications = IconData(0xe94d, fontFamily: _family, fontPackage: packageName);
@@ -203,6 +207,8 @@ class ZdsIcons {
   static const IconData notification_silence = IconData(0xe95f, fontFamily: _family, fontPackage: packageName);
   static const IconData notifications_off = IconData(0xe948, fontFamily: _family, fontPackage: packageName);
   static const IconData notifications_off_outlined = IconData(0xe92f, fontFamily: _family, fontPackage: packageName);
+  static const IconData offline = IconData(0xe9ef, fontFamily: _family, fontPackage: packageName);
+  static const IconData on_shift = IconData(0xea09, fontFamily: _family, fontPackage: packageName);
   static const IconData open_in_small = IconData(0xe95e, fontFamily: _family, fontPackage: packageName);
   static const IconData open_new = IconData(0xe9f1, fontFamily: _family, fontPackage: packageName);
   static const IconData open_new_off = IconData(0xe9f0, fontFamily: _family, fontPackage: packageName);
@@ -279,6 +285,7 @@ class ZdsIcons {
   static const IconData sort = IconData(0xe93c, fontFamily: _family, fontPackage: packageName);
   static const IconData sphere = IconData(0xe9c9, fontFamily: _family, fontPackage: packageName);
   static const IconData star = IconData(0xe93d, fontFamily: _family, fontPackage: packageName);
+  static const IconData star_circle = IconData(0xea10, fontFamily: _family, fontPackage: packageName);
   static const IconData start_outlined = IconData(0xe946, fontFamily: _family, fontPackage: packageName);
   static const IconData store = IconData(0xea0d, fontFamily: _family, fontPackage: packageName);
   static const IconData store_release = IconData(0xe9bb, fontFamily: _family, fontPackage: packageName);
