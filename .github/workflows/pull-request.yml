@@ -1,83 +1,55 @@
 name: CI - Pull Request
 on:
-  pull_request:
+  pull_request_target:
+
+# Pull Request Runs on the same branch will be cancelled
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
 
 jobs:
-  up-to-date:
-    name: "Check branch is up to date"
+  set-env:
+    name: "Set environment"
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-      - name: Check branch is up to date
-        run: |
-          echo ${{ github.event.pull_request.base.sha}}
-          echo ${{ github.event.pull_request.head.sha}}
-          if git merge-base --is-ancestor ${{ github.event.pull_request.base.sha}} ${{ github.event.pull_request.head.sha}}
-          then
-            echo "Your branch is up to date."
-            exit 0
-          else
-            echo "You need to merge / rebase."
-            exit 1
-          fi
-  changes:
-    name: "Check for changes in code"
-    needs: up-to-date
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
     outputs:
-      files: ${{steps.changed-files.outputs.any_changed}}
+      env: ${{ steps.get_env.outputs.env }}
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          ref: main
-          persist-credentials: false
-      - name: Get all changed *.dart and pubspec.yaml
-        id: changed-files
-        uses: tj-actions/changed-files@v41
-        with:
-          base_sha: ${{ github.event.pull_request.base.sha }}
-          sha: ${{ github.event.pull_request.head.sha }}
-          files: |
-            **/*.dart
-            pubspec.yaml
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          ref: ${{ github.head_ref }}
+      - name: Determine Environment
+        id: get_env
+        run: |
+          codeowners=$(cat .github/CODEOWNERS) 
+          if [[ $(echo "${codeowners[@]}" | fgrep -w "@${{github.actor}}") ]]; then
+            echo PROWNER
+            echo "env=pr_owner" >> $GITHUB_OUTPUT
+          else
+            echo PR
+            echo "env=pr" >> $GITHUB_OUTPUT
+          fi
   code-quality:
+    name: Code quality
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: changes
-    if: needs.changes.outputs.files == 'true'
+    needs: set-env
+    environment: ${{needs.set-env.outputs.env}}
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          repository: ${{github.event.pull_request.head.repo.full_name}}
           ref: ${{ github.head_ref }}
-      - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v7.0.7
       - uses: subosito/flutter-action@v2
-      - name: Setup flutter
-        run: flutter pub get
-      - name: Lint and format
-        run: |
-          dart format . -l 120
-          dart fix --apply
-          flutter analyze
-      - name: Check for modified files
-        id: git-check
-        run: echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >>  $GITHUB_ENV
-      - name: Update changes in GitHub repository
-        if: env.modified == 'true'
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add -A
-          git commit -m '[automated commit] lint format and import sort'
-          git push
+        with:
+          cache: true
+
+      - uses: ZebraDevs/flutter-code-quality@v1.0.4
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          run-tests: false
+          run-coverage: false
+
   deploy-preview:
     name: Deploy preview version of the example app on firebase
     needs: code-quality
