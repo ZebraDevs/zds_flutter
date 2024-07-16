@@ -1,13 +1,40 @@
 name: CI - Pull Request
 on:
-  pull_request:
-  pull_request_target: #TODO: Keep only this
+  pull_request_target:
+
+# Pull Request Runs on the same branch will be cancelled
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
 
 jobs:
+  set-env:
+    name: "Set environment"
+    runs-on: ubuntu-latest
+    outputs:
+      env: ${{ steps.get_env.outputs.env }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          ref: ${{ github.head_ref }}
+      - name: Determine Environment
+        id: get_env
+        run: |
+          codeowners=$(cat .github/CODEOWNERS) 
+          if [[ $(echo "${codeowners[@]}" | fgrep -w "@${{github.actor}}") ]]; then
+            echo PROWNER
+            echo "env=pr_owner" >> $GITHUB_OUTPUT
+          else
+            echo PR
+            echo "env=pr" >> $GITHUB_OUTPUT
+          fi
   code-quality:
     name: Code quality
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    needs: set-env
+    environment: ${{needs.set-env.outputs.env}}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,7 +44,7 @@ jobs:
         with:
           cache: true
 
-      - uses: ZebraDevs/flutter-code-quality@feat/add-inputs
+      - uses: ZebraDevs/flutter-code-quality@v1.0.4
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           run-tests: false
