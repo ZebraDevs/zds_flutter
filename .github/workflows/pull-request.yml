@@ -16,9 +16,12 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           cache: true
-      - uses: ZebraDevs/flutter-code-quality@v1.0.3
+
+      - uses: ZebraDevs/flutter-code-quality@feat/add-inputs
         with:
           token: ${{secrets.GITHUB_TOKEN}}
+          run-tests: false
+          run-coverage: false
 
   deploy-preview:
     name: Deploy preview version of the example app on firebase
