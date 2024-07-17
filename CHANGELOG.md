@@ -7,6 +7,23 @@
 * update to flutter 3.22.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 * update to zeta_flutter 0.9.1 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 
+## [1.3.1](https://github.com/ZebraDevs/zds_flutter/compare/v1.3.0...v1.3.1) (2024-07-17)
+
+
+### ✨ New Features
+
+* New Icons added - available, away, busy, do-no-disturb, offline, on-shift, star-circle ([#29](https://github.com/ZebraDevs/zds_flutter/issues/29)) ([a3e8857](https://github.com/ZebraDevs/zds_flutter/commit/a3e885753c20ea4cd33673538ea6bd7b7196af95))
+
+
+### 🪲 Bug Fixes
+
+* **TM-43187:** QWalk - take a photo on iPad is sideways ([0734b24](https://github.com/ZebraDevs/zds_flutter/commit/0734b24746eafdbc7de06b9c804cd20e274f3724))
+
+
+### 🧹 Miscellaneous Chores
+
+* release 1.3.1 ([b53e34b](https://github.com/ZebraDevs/zds_flutter/commit/b53e34b4385c75e8a3cef07bcbec8375d6cf0fab))
+
 ## [1.3.0](https://github.com/ZebraDevs/zds_flutter/compare/v1.2.5...v1.3.0) (2024-06-20)
 
 
