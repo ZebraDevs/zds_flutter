@@ -65,6 +65,7 @@ class ZdsFilePickerConfig {
     this.maxPixelSize = 0,
     this.allowedExtensions = const {},
     this.useLiveMediaOnly = false,
+    this.useSystemCamera = false,
     this.showCapturePreview = true,
     this.giphyKey,
     this.options = const [
@@ -107,6 +108,9 @@ class ZdsFilePickerConfig {
   /// images will always be compressed with 250Kb as max size.
   final int maxFileSize;
 
+  /// Used to define whether to use system camera or not.
+  final bool useSystemCamera;
+
   /// The options that will be shown in the file picker.
   ///
   /// Defaults to all of the options.
@@ -144,6 +148,7 @@ class ZdsFilePickerConfig {
     int? maxPixelSize,
     Set<String>? allowedExtensions,
     bool? useLiveMediaOnly,
+    bool? useSystemCamera,
     List<ZdsFilePickerOptions>? options,
   }) {
     return ZdsFilePickerConfig(
@@ -154,6 +159,7 @@ class ZdsFilePickerConfig {
       allowedExtensions: allowedExtensions ?? this.allowedExtensions,
       options: options ?? this.options,
       useLiveMediaOnly: useLiveMediaOnly ?? this.useLiveMediaOnly,
+      useSystemCamera: useSystemCamera ?? this.useSystemCamera,
     );
   }
 
@@ -649,7 +655,11 @@ extension _Methods on ZdsFilePickerState {
   Future<void> _handleCameraAction(BuildContext context) async {
     try {
       if (!mounted) return;
-      final photo = await ZdsCamera.takePhoto(context, showPreview: config.showCapturePreview);
+      final photo = await ZdsCamera.takePhoto(
+        context,
+        showPreview: config.showCapturePreview,
+        useSystemCamera: config.useSystemCamera,
+      );
       if (photo != null && context.mounted) {
         final file = await onPicked(
           context,

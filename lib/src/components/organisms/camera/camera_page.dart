@@ -92,11 +92,12 @@ class ZdsCamera extends StatelessWidget {
     bool showPreview = true,
     bool rootNavigator = true,
     bool saveGPSLocation = false,
+    bool useSystemCamera = false,
     CaptureRequestBuilder? photoPathBuilder,
     CaptureRequestBuilder? videoPathBuilder,
     List<AwesomeFilter>? filters,
   }) async {
-    if (kIsWeb) {
+    if (useSystemCamera || kIsWeb) {
       return image_picker.ImagePicker().pickImage(source: image_picker.ImageSource.camera);
     } else {
       return Navigator.of(context, rootNavigator: rootNavigator).push<XFile>(
