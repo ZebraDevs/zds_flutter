@@ -17,6 +17,7 @@ class _ButtonDemoState extends State<ButtonDemo> {
 
   late bool isChecked;
   late bool isButtonSelected;
+  late bool _checkBoxListSelected = false;
 
   @override
   void initState() {
@@ -256,6 +257,31 @@ class _ButtonDemoState extends State<ButtonDemo> {
                     ),
                   ],
                 ),
+              ),
+            ),
+            const SizedBox(height: 50),
+            Text('Checkbox List Tiles', style: Theme.of(context).textTheme.displayLarge),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                children: [
+                  ZdsCheckboxListTile(
+                    value: _checkBoxListSelected,
+                    onChanged: (value) => setState(() {
+                      _checkBoxListSelected = value!;
+                    }),
+                    title: const Text('Approve'),
+                    label: 'Approve',
+                  ),
+                  ZdsCheckboxListTile(
+                    value: true,
+                    onChanged: (value) {},
+                    title: const Text('Decline'),
+                    label: 'Approve',
+                    enabled: false,
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 100),

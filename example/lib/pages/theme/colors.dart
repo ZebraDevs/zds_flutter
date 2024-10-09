@@ -95,16 +95,6 @@ class ColorsDemo extends StatelessWidget {
         'subtitle': 'Theme.of(context).colorScheme.onSurface',
       },
       {
-        'color': Theme.of(context).colorScheme.surface,
-        'name': 'background',
-        'subtitle': 'Theme.of(context).colorScheme.background',
-      },
-      {
-        'color': Theme.of(context).colorScheme.onSurface,
-        'name': 'onBackground',
-        'subtitle': 'Theme.of(context).colorScheme.onBackground',
-      },
-      {
         'color': Theme.of(context).colorScheme.error,
         'name': 'error',
         'subtitle': 'Theme.of(context).colorScheme.error',
@@ -131,22 +121,22 @@ class ColorsDemo extends StatelessWidget {
       {
         'color': Zeta.of(context).colors.surfacePositive,
         'name': 'Positive',
-        'subtitle': 'Zeta.of(context).colors.positive',
+        'subtitle': 'Zeta.of(context).colors.surfacePositive',
       },
       {
         'color': Zeta.of(context).colors.surfaceNegative,
         'name': 'Negative',
-        'subtitle': 'Zeta.of(context).colors.negative',
+        'subtitle': 'Zeta.of(context).colors.surfaceNegative',
       },
       {
-        'color': Zeta.of(context).colors.surfaceWarning,
+        'color': Zeta.of(context).colors.surfaceNegative,
         'name': 'Warning',
-        'subtitle': 'Zeta.of(context).colors.warning',
+        'subtitle': 'Zeta.of(context).colors.surfaceNegative',
       },
       {
         'color': Zeta.of(context).colors.surfaceInfo,
         'name': 'Info',
-        'subtitle': 'Zeta.of(context).colors.info',
+        'subtitle': 'Zeta.of(context).colors.surfaceInfo',
       },
     ];
 

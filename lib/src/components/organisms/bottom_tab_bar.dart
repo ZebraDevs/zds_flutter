@@ -10,6 +10,7 @@ class ZdsNavItem {
     required this.label,
     required this.icon,
     this.semanticLabel,
+    this.semanticIdentifier,
     this.semanticState = '',
     this.id,
   });
@@ -27,6 +28,11 @@ class ZdsNavItem {
   ///
   /// Defaults to [label].
   final String? semanticLabel;
+
+  /// Semantic identifier to identify the item for automation
+  ///
+  /// Defaults to empty.
+  final String? semanticIdentifier;
 
   /// Semantic label for state of the item e.g. Selected.
   ///
@@ -113,6 +119,7 @@ class ZdsBottomTabBar extends StatelessWidget implements PreferredSizeWidget {
                   return Expanded(
                     child: Semantics(
                       excludeSemantics: true,
+                      identifier: items[i].semanticIdentifier ?? '',
                       onTap: () {
                         onTap?.call(i);
                       },

@@ -29,7 +29,7 @@ class ZdsListGroup extends StatelessWidget {
         );
 
   /// A label that goes in the header of this component above the list aligned to the start.
-  final Text? headerLabel;
+  final Widget? headerLabel;
 
   /// A list of widgets that are displayed in the header of the list aligned to the end.
   final List<Widget>? headerActions;

@@ -117,7 +117,7 @@ class _ZdsStarRatingState extends State<ZdsStarRating> {
               duration: const Duration(milliseconds: 250),
               decoration: BoxDecoration(
                 color: colors.cool.shade30.withOpacity(_selected ? 1 : 0),
-                borderRadius: widget.rounded ? ZetaRadius.rounded : ZetaRadius.none,
+                borderRadius: widget.rounded ? BorderRadius.circular(8) : BorderRadius.circular(0),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -126,7 +126,7 @@ class _ZdsStarRatingState extends State<ZdsStarRating> {
                   (int index) => SizedBox.square(
                     dimension: _boxSize,
                     child: InkWell(
-                      borderRadius: widget.rounded ? ZetaRadius.rounded : ZetaRadius.none,
+                      borderRadius: widget.rounded ? BorderRadius.circular(8) : BorderRadius.circular(0),
                       splashColor: colors.cool.shade30,
                       onTap: () {
                         if (widget.halfIncrements && index + 0.5 == _valueTapped) {
@@ -162,11 +162,11 @@ extension on _StarValue {
   IconData icon({required bool rounded}) {
     switch (this) {
       case _StarValue.empty:
-        return rounded ? ZetaIcons.star_outline_round : ZetaIcons.star_outline_sharp;
+        return rounded ? Icons.star_outline_rounded : Icons.star_outline_sharp;
       case _StarValue.half:
-        return rounded ? ZetaIcons.star_half_round : ZetaIcons.star_half_sharp;
+        return rounded ? Icons.star_half_rounded : Icons.star_half_sharp;
       case _StarValue.full:
-        return rounded ? ZetaIcons.star_round : ZetaIcons.star_sharp;
+        return rounded ? Icons.star_rounded : Icons.star_sharp;
     }
   }
 }

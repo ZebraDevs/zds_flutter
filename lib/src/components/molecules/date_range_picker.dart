@@ -608,6 +608,67 @@ class _DatePickerHeader extends StatelessWidget {
   }
 }
 
+/// Use [showZdsDateRangePicker]
+@Deprecated('Use showZdsDateRangePicker')
+Future<DateTimeRange?> showRflxDateRangePicker({
+  required DateTime firstDate,
+  required DateTime lastDate,
+  required BuildContext context,
+  DateTimeRange? initialDateRange,
+  DateTime? currentDate,
+  DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
+  String? helpText,
+  String? cancelText,
+  String? confirmText,
+  String? saveText,
+  String? errorFormatText,
+  String? errorInvalidText,
+  String? errorInvalidRangeText,
+  String? fieldStartHintText,
+  String? fieldEndHintText,
+  String? fieldStartLabelText,
+  String? fieldEndLabelText,
+  String? clearButtonString,
+  String? applyButtonString,
+  Locale? locale,
+  bool useRootNavigator = true,
+  RouteSettings? routeSettings,
+  TextDirection? textDirection,
+  TransitionBuilder? builder,
+  List<Widget>? actions,
+  bool isWeekMode = false,
+  int startingDayOfWeek = 0,
+}) async =>
+    showZdsDateRangePicker(
+      firstDate: firstDate,
+      lastDate: lastDate,
+      context: context,
+      initialDateRange: initialDateRange,
+      currentDate: currentDate,
+      initialEntryMode: initialEntryMode,
+      helpText: helpText,
+      cancelText: cancelText,
+      confirmText: confirmText,
+      saveText: saveText,
+      errorFormatText: errorFormatText,
+      errorInvalidText: errorInvalidText,
+      errorInvalidRangeText: errorInvalidRangeText,
+      fieldStartHintText: fieldStartHintText,
+      fieldEndHintText: fieldEndHintText,
+      fieldStartLabelText: fieldStartLabelText,
+      fieldEndLabelText: fieldEndLabelText,
+      clearButtonString: clearButtonString,
+      applyButtonString: applyButtonString,
+      locale: locale,
+      useRootNavigator: useRootNavigator,
+      routeSettings: routeSettings,
+      textDirection: textDirection,
+      builder: builder,
+      actions: actions,
+      isWeekMode: isWeekMode,
+      startingDayOfWeek: startingDayOfWeek,
+    );
+
 /// Shows a full screen modal dialog containing a Material Design date range
 /// picker.
 ///
@@ -2318,7 +2379,8 @@ class MonthItem extends StatefulWidget {
   ///
   /// See also:
   ///
-  ///  * [DragStartBehavior], which gives an example for the different behaviors.
+  ///  * [DragStartBehavior], which gives an example for
+  ///    the different behaviors.
   final DragStartBehavior dragStartBehavior;
 
   @override

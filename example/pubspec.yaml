@@ -4,29 +4,29 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
-  flutter: ">=3.16.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.7.0"
 
 dependencies:
+  css_colors: ^1.1.4
   flutter:
     sdk: flutter
-  lottie: ^2.1.0
-  table_calendar: ^3.0.9
-  shared_preferences: ^2.2.2
-  zds_flutter:
-    path: ../
-  flutter_quill: ^9.2.0
   flutter_localizations:
     sdk: flutter
+  flutter_quill: ^10.8.2
+  flutter_quill_extensions: ^10.8.2
+  intl: ^0.19.0
+  lottie: ^3.1.2
   path_provider: ^2.1.2
   scrollable_positioned_list: ^0.3.8
-  url_launcher: ^6.2.5
-  cross_file: ^0.3.3+8
-  zeta_flutter: any
-  intl: any
-  flutter_quill_extensions: ^9.4.4
+  shared_preferences: ^2.2.2
+  table_calendar: ^3.0.9
+  zds_flutter:
+    path: ../
+  zeta_flutter: ^0.15.2
 
 flutter:
   uses-material-design: true
   assets:
-    - assets/
+    - assets/colors.json
+    - assets/notification.wav

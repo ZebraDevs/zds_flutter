@@ -33,7 +33,7 @@ class ZdsQuillToolbarColorButton extends StatefulWidget {
   final QuillToolbarColorButtonOptions options;
 
   @override
-  State<ZdsQuillToolbarColorButton> createState() => _ZdsQuillToolbarColorButtonState();
+  ZdsQuillToolbarColorButtonState createState() => ZdsQuillToolbarColorButtonState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -45,7 +45,8 @@ class ZdsQuillToolbarColorButton extends StatefulWidget {
   }
 }
 
-class _ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton> {
+// ignore: public_member_api_docs
+class ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton> {
   late bool _isToggledColor;
   late bool _isToggledBackground;
   late bool _isWhite;
@@ -99,47 +100,47 @@ class _ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton>
     super.dispose();
   }
 
-  QuillToolbarColorButtonOptions get options {
+  QuillToolbarColorButtonOptions get _options {
     return widget.options;
   }
 
-  QuillController get controller {
+  QuillController get _controller {
     return widget.controller;
   }
 
-  double get iconSize {
-    final baseFontSize = baseButtonExtraOptions?.iconSize;
-    final iconSize = options.iconSize;
+  double get _iconSize {
+    final baseFontSize = _baseButtonExtraOptions?.iconSize;
+    final iconSize = _options.iconSize;
     return iconSize ?? baseFontSize ?? kDefaultIconSize;
   }
 
-  double get iconButtonFactor {
-    final baseIconFactor = baseButtonExtraOptions?.iconButtonFactor;
-    final iconButtonFactor = options.iconButtonFactor;
+  double get _iconButtonFactor {
+    final baseIconFactor = _baseButtonExtraOptions?.iconButtonFactor;
+    final iconButtonFactor = _options.iconButtonFactor;
     return iconButtonFactor ?? baseIconFactor ?? kDefaultIconButtonFactor;
   }
 
-  VoidCallback? get afterButtonPressed {
-    return options.afterButtonPressed ?? baseButtonExtraOptions?.afterButtonPressed;
+  VoidCallback? get _afterButtonPressed {
+    return _options.afterButtonPressed ?? _baseButtonExtraOptions?.afterButtonPressed;
   }
 
-  QuillIconTheme? get iconTheme {
-    return options.iconTheme ?? baseButtonExtraOptions?.iconTheme;
+  QuillIconTheme? get _iconTheme {
+    return _options.iconTheme ?? _baseButtonExtraOptions?.iconTheme;
   }
 
-  QuillToolbarBaseButtonOptions? get baseButtonExtraOptions {
+  QuillToolbarBaseButtonOptions? get _baseButtonExtraOptions {
     return context.quillToolbarBaseButtonOptions;
   }
 
-  IconData get iconData {
-    return options.iconData ??
-        baseButtonExtraOptions?.iconData ??
+  IconData get _iconData {
+    return _options.iconData ??
+        _baseButtonExtraOptions?.iconData ??
         (widget.isBackground ? Icons.format_color_fill : Icons.color_lens);
   }
 
-  String get tooltip {
-    return options.tooltip ??
-        baseButtonExtraOptions?.tooltip ??
+  String get _tooltip {
+    return _options.tooltip ??
+        _baseButtonExtraOptions?.tooltip ??
         (widget.isBackground ? context.loc.backgroundColor : context.loc.fontColor);
   }
 
@@ -157,16 +158,16 @@ class _ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton>
     final fillColorBackground =
         _isToggledBackground && widget.isBackground && _isWhiteBackground ? _stringToColor('#ffffff') : null;
 
-    final childBuilder = options.childBuilder ?? baseButtonExtraOptions?.childBuilder;
+    final childBuilder = _options.childBuilder ?? _baseButtonExtraOptions?.childBuilder;
     if (childBuilder != null) {
       return childBuilder(
-        options,
+        _options,
         QuillToolbarColorButtonExtraOptions(
-          controller: controller,
+          controller: _controller,
           context: context,
           onPressed: () {
             unawaited(_showColorPicker());
-            afterButtonPressed?.call();
+            _afterButtonPressed?.call();
           },
           iconColor: null,
           iconColorBackground: iconColorBackground,
@@ -177,13 +178,13 @@ class _ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton>
     }
 
     return QuillToolbarIconButton(
-      tooltip: tooltip,
+      tooltip: _tooltip,
       isSelected: false,
-      iconTheme: iconTheme,
+      iconTheme: _iconTheme,
       icon: Icon(
-        iconData,
+        _iconData,
         color: widget.isBackground ? iconColorBackground : iconColor,
-        size: iconSize * iconButtonFactor,
+        size: _iconSize * _iconButtonFactor,
       ),
       onPressed: _showColorPicker,
     );
@@ -204,16 +205,16 @@ class _ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton>
   }
 
   Future<void> _showColorPicker() async {
-    final customCallback = options.customOnPressedCallback;
+    final customCallback = _options.customOnPressedCallback;
     if (customCallback != null) {
-      await customCallback(controller, widget.isBackground);
+      await customCallback(_controller, widget.isBackground);
       return;
     }
     unawaited(
       showDialog<String>(
         context: context,
         barrierColor:
-            options.dialogBarrierColor ?? context.quillSharedConfigurations?.dialogBarrierColor ?? Colors.black54,
+            _options.dialogBarrierColor ?? context.quillSharedConfigurations?.dialogBarrierColor ?? Colors.black54,
         builder: (_) => _ColorPickerDialog(
           isBackground: widget.isBackground,
           onRequestChangeColor: _changeColor,
@@ -228,15 +229,15 @@ class _ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton>
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<IconData>('iconData', iconData))
-      ..add(DiagnosticsProperty<QuillToolbarColorButtonOptions>('options', options))
-      ..add(DiagnosticsProperty<QuillController>('controller', controller))
-      ..add(DoubleProperty('iconSize', iconSize))
-      ..add(DoubleProperty('iconButtonFactor', iconButtonFactor))
-      ..add(ObjectFlagProperty<VoidCallback?>.has('afterButtonPressed', afterButtonPressed))
-      ..add(DiagnosticsProperty<QuillIconTheme?>('iconTheme', iconTheme))
-      ..add(DiagnosticsProperty<QuillToolbarBaseButtonOptions?>('baseButtonExtraOptions', baseButtonExtraOptions))
-      ..add(StringProperty('tooltip', tooltip));
+      ..add(DiagnosticsProperty<IconData>('iconData', _iconData))
+      ..add(DiagnosticsProperty<QuillToolbarColorButtonOptions>('options', _options))
+      ..add(DiagnosticsProperty<QuillController>('controller', _controller))
+      ..add(DoubleProperty('iconSize', _iconSize))
+      ..add(DoubleProperty('iconButtonFactor', _iconButtonFactor))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('afterButtonPressed', _afterButtonPressed))
+      ..add(DiagnosticsProperty<QuillIconTheme?>('iconTheme', _iconTheme))
+      ..add(DiagnosticsProperty<QuillToolbarBaseButtonOptions>('baseButtonExtraOptions', _baseButtonExtraOptions))
+      ..add(StringProperty('tooltip', _tooltip));
   }
 }
 

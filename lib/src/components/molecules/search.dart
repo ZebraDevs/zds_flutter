@@ -39,6 +39,7 @@ class ZdsSearchField extends StatelessWidget {
     this.suffixIcon,
     this.controller,
     this.inputAction = TextInputAction.search,
+    this.semanticIdentifier,
   });
 
   /// The Key to use for the underlying [TextFormField].
@@ -84,6 +85,9 @@ class ZdsSearchField extends StatelessWidget {
   /// A controller that can be used to notify listeners when the text changes.
   final TextEditingController? controller;
 
+  /// Semantic Identifier for Widget locate
+  final String? semanticIdentifier;
+
   @override
   Widget build(BuildContext context) {
     final ThemeData defaultTheme = Theme.of(context);
@@ -97,6 +101,7 @@ class ZdsSearchField extends StatelessWidget {
           padding: EdgeInsets.zero,
           backgroundColor: effectiveTheme.colorScheme.surface,
           child: Semantics(
+            identifier: semanticIdentifier ?? 'SEARCH_FIELD',
             excludeSemantics: true,
             onSetText: (value) => {
               controller?.text = value,
@@ -139,6 +144,7 @@ class ZdsSearchField extends StatelessWidget {
       ..add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode))
       ..add(DiagnosticsProperty<EdgeInsets>('padding', padding))
       ..add(EnumProperty<TextInputAction>('inputAction', inputAction))
+      ..add(StringProperty('semanticIdentifier', semanticIdentifier))
       ..add(DiagnosticsProperty<TextEditingController?>('controller', controller));
   }
 }

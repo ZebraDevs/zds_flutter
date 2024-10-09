@@ -213,6 +213,7 @@ class ZdsSplitNavigator extends StatefulWidget {
 
   @override
   State<ZdsSplitNavigator> createState() => ZdsSplitNavigatorState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

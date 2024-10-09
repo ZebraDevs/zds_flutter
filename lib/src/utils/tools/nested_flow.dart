@@ -72,12 +72,12 @@ class ZdsNestedFlowState extends State<ZdsNestedFlow> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (_) async {
+      onPopInvokedWithResult: (didPop, result) async {
         if (_navigator.currentState?.canPop() ?? false) {
-          await _navigator.currentState?.maybePop();
+          await _navigator.currentState?.maybePop(result);
         }
         if (widget.shouldClose && context.mounted) {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(result);
         }
       },
       child: Navigator(
@@ -90,7 +90,7 @@ class ZdsNestedFlowState extends State<ZdsNestedFlow> {
             return false;
           }
           return route.didPop(result);
-        }, /**/
+        },
       ),
     );
   }

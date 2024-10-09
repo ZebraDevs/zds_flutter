@@ -108,7 +108,7 @@ class ZdsFilePickerConfig {
   /// images will always be compressed with 250Kb as max size.
   final int maxFileSize;
 
-  /// Used to define whether to use system camera or not.
+  /// The [useSystemCamera]. flag use to define whether to use system camera or not .
   final bool useSystemCamera;
 
   /// The options that will be shown in the file picker.
@@ -627,11 +627,11 @@ extension _Methods on ZdsFilePickerState {
 
       final List<ZdsFileWrapper> list = [];
 
-      if (context.mounted) {
+      if (mounted) {
         for (final GiphyGif gif in result) {
           final itemsLength = controller.items.where((ZdsFileWrapper element) => !element.isLink).toList().length +
               controller.remoteItems.length;
-          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed && context.mounted) {
+          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed) {
             showToast(context, PickerExceptionType.maxLimitReached.message(context));
             break;
           }
@@ -646,7 +646,7 @@ extension _Methods on ZdsFilePickerState {
 
       if (list.isNotEmpty) widget.onPicked?.call(list);
     } on Exception catch (e) {
-      if (context.mounted) widget.onError?.call(context, config, e);
+      if (mounted) widget.onError?.call(context, config, e);
     } finally {
       _busy = false;
     }
@@ -660,7 +660,7 @@ extension _Methods on ZdsFilePickerState {
         showPreview: config.showCapturePreview,
         useSystemCamera: config.useSystemCamera,
       );
-      if (photo != null && context.mounted) {
+      if (photo != null && mounted) {
         final file = await onPicked(
           context,
           ZdsFileWrapper(ZdsFilePickerOptions.CAMERA, photo),
@@ -670,7 +670,7 @@ extension _Methods on ZdsFilePickerState {
         if (file != null) widget.onPicked?.call([file]);
       }
     } on Exception catch (e) {
-      if (context.mounted) widget.onError?.call(context, config, e);
+      if (mounted) widget.onError?.call(context, config, e);
     } finally {
       _busy = false;
     }
@@ -686,7 +686,7 @@ extension _Methods on ZdsFilePickerState {
         maxVideoDuration: maxVideoTimeInSeconds != null ? Duration(seconds: maxVideoTimeInSeconds) : null,
       );
 
-      if (video != null && context.mounted) {
+      if (video != null && mounted) {
         final file = await onPicked(
           context,
           ZdsFileWrapper(ZdsFilePickerOptions.VIDEO, video),
@@ -696,7 +696,7 @@ extension _Methods on ZdsFilePickerState {
         if (file != null) widget.onPicked?.call([file]);
       }
     } on Exception catch (e) {
-      if (context.mounted) widget.onError?.call(context, config, e);
+      if (mounted) widget.onError?.call(context, config, e);
     } finally {
       _busy = false;
     }
@@ -758,12 +758,12 @@ extension _Methods on ZdsFilePickerState {
               allowMultiple: allowMultiple,
             );
 
-      if (result != null && context.mounted) {
+      if (result != null && mounted) {
         final List<ZdsFileWrapper> processedFiles = <ZdsFileWrapper>[];
         for (final PlatformFile file in result.files) {
           final itemsLength = controller.items.where((ZdsFileWrapper element) => !element.isLink).toList().length +
               controller.remoteItems.length;
-          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed && context.mounted) {
+          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed) {
             showToast(context, PickerExceptionType.maxLimitReached.message(context));
             break;
           }
@@ -789,7 +789,7 @@ extension _Methods on ZdsFilePickerState {
         }
       }
     } on Exception catch (e) {
-      if (context.mounted) widget.onError?.call(context, config, e);
+      if (mounted) widget.onError?.call(context, config, e);
     } finally {
       _busy = false;
     }
@@ -832,7 +832,7 @@ extension _Methods on ZdsFilePickerState {
       }
 
       if (exception != null) {
-        if (context.mounted) widget.onError?.call(context, config, exception);
+        if (mounted) widget.onError?.call(context, config, exception);
       } else {
         if (input.content != null) {
           controller.addFiles(<ZdsFileWrapper>[input]);
@@ -842,7 +842,7 @@ extension _Methods on ZdsFilePickerState {
 
       return null;
     } on Exception catch (e) {
-      if (context.mounted) widget.onError?.call(context, config, e);
+      if (mounted) widget.onError?.call(context, config, e);
       return null;
     } finally {
       _busy = false;
@@ -1036,7 +1036,9 @@ class _MultiInputDialogState extends State<_MultiInputDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              if (widget.title != null) Text(widget.title!, style: theme.textTheme.displaySmall),
+              if (widget.title != null)
+                Text(widget.title!, style: theme.textTheme.displaySmall)
+                    .semantics(identifier: 'TITLE_${widget.title}', label: widget.title),
               if (widget.textFields.isEmpty) const SizedBox(),
               ListView.builder(
                 shrinkWrap: true,
@@ -1061,6 +1063,10 @@ class _MultiInputDialogState extends State<_MultiInputDialog> {
                       errorText: widget.textFields[index].error,
                       errorStyle: themeData.textTheme.bodyMedium?.copyWith(color: themeData.colorScheme.error),
                     ),
+                  ).semantics(
+                    textField: true,
+                    identifier: widget.textFields[index].hint,
+                    label: widget.textFields[index].hint,
                   );
                 },
               ),

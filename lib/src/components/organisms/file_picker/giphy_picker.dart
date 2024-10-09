@@ -4,6 +4,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:giphy_get/giphy_get.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../../utils/assets/icons.dart';
 import '../../../utils/localizations/translation.dart';
@@ -33,6 +34,7 @@ class ZdsGiphyPicker extends StatefulWidget {
 
   @override
   State<ZdsGiphyPicker> createState() => _ZdsGiphyPickerState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -144,7 +146,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
               ]
             : [],
       ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Zeta.of(context).colors.surfaceTertiary,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints box) {
           return Column(
