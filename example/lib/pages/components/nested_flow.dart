@@ -13,7 +13,11 @@ class NestedFlowDemo extends StatelessWidget {
         children: [
           ZdsButton(
             onTap: () => showFlow(context).then((value) => print(value)),
-            child: const Text('bottom sheet for Tablet and Mobile'),
+            child: const Text('Show Nested Flow'),
+          ),
+          const Text(
+            'Navigate through the nested flow and see how the back button works. Result will be printed to the console.',
+            style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ].divide(const SizedBox(height: 20)).toList(),
       ),
