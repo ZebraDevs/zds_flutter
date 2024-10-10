@@ -419,13 +419,6 @@ class _SplitContent extends StatelessWidget {
           onGenerateInitialRoutes: (_, __) {
             return <Route<dynamic>>[_initialRoute()];
           },
-          onPopPage: (Route<dynamic> route, dynamic result) {
-            if (!Navigator.of(context).canPop()) {
-              Navigator.of(context).pop(result);
-              return false;
-            }
-            return route.didPop(result);
-          },
         ),
       ),
     );

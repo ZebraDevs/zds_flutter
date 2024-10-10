@@ -234,7 +234,6 @@ class ZdsQuillToolbar extends QuillToolbar {
     final showCenterAlignment = toolbarOptions.contains(QuillToolbarOption.centerAlignment);
     final showRightAlignment = toolbarOptions.contains(QuillToolbarOption.rightAlignment);
     final showJustifyAlignment = toolbarOptions.contains(QuillToolbarOption.justifyAlignment);
-    final showAlignmentButtons = showLeftAlignment || showCenterAlignment || showRightAlignment || showJustifyAlignment;
 
     final showDirection = toolbarOptions.contains(QuillToolbarOption.direction);
     final showSubscript = toolbarOptions.contains(QuillToolbarOption.subscript);
@@ -509,24 +508,26 @@ class ZdsQuillToolbar extends QuillToolbar {
                               isButtonGroupShown[4] ||
                               isButtonGroupShown[5]))
                         QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                      if (showAlignmentButtons) ...[
+                      if (showLeftAlignment)
                         QuillToolbarToggleStyleButton(
                           controller: controller,
                           attribute: Attribute.leftAlignment,
                         ),
+                      if (showCenterAlignment)
                         QuillToolbarToggleStyleButton(
                           controller: controller,
                           attribute: Attribute.centerAlignment,
                         ),
+                      if (showRightAlignment)
                         QuillToolbarToggleStyleButton(
                           controller: controller,
                           attribute: Attribute.rightAlignment,
                         ),
+                      if (showJustifyAlignment)
                         QuillToolbarToggleStyleButton(
                           controller: controller,
                           attribute: Attribute.justifyAlignment,
                         ),
-                      ],
                       if (showDirection)
                         QuillToolbarToggleStyleButton(
                           attribute: Attribute.rtl,

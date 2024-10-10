@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zds_flutter_example/pages/components/audio_player.dart';
 import 'package:zds_flutter_example/pages/components/audio_recorder.dart';
 import 'package:zds_flutter_example/pages/components/message_input.dart';
+import 'package:zds_flutter_example/pages/components/nested_flow.dart';
 import 'package:zds_flutter_example/pages/components/speed_scrollable_list.dart';
 import 'package:zds_flutter_example/pages/theme/colors.dart';
 import 'package:zds_flutter_example/pages/theme/text.dart';
@@ -302,6 +303,10 @@ final kRoutes = {
     const DemoRoute(
       title: 'Message Input',
       child: MessageInputDemo(),
+    ),
+    const DemoRoute(
+      title: 'Nested Flow',
+      child: NestedFlowDemo(),
     ),
   ],
   'Animations': [
