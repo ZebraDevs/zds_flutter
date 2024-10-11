@@ -20,71 +20,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: 📚 Git Checkout
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
-        uses: actions/checkout@v4
-
-      - name: 🐦 Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ 3.24.3 }}
-
-      - name: 📦 Install Dependencies
+      - uses: subosito/flutter-action@v2
+      - name: Setup flutter
         run: flutter pub get
-
-      - name: ✨ Check Formatting
-        id: check_formatting
-        run: dart format -l 120 --set-exit-if-changed .
-        continue-on-error: true
-
-      - name: 🕵️ Analyze
-        id: analyze_code
-        run: dart analyze --fatal-infos --fatal-warnings .
-        continue-on-error: true
-
-      - name: 🧪 Run Tests
-        id: run_tests
-        run: flutter test --coverage
-        continue-on-error: true
-
-      - name: 📝 Aggregate Failures
-        if: always() && github.event_name == 'pull_request'
-        id: aggregate_failures
+      - name: Lint and format
         run: |
-          FAILURES=""
-          if [ "${{ steps.check_formatting.outcome }}" == "failure" ]; then
-            FAILURES="$FAILURES\n- **✨ Formatting issue**: Please run \`dart format -l 120 .\` to fix formatting issues."
-          fi
-          if [ "${{ steps.analyze_code.outcome }}" == "failure" ]; then
-            FAILURES="$FAILURES\n- **🕵️ Analysis issue**: Please fix the issues reported by \`dart analyze\`."
-          fi
-          if [ "${{ steps.run_tests.outcome }}" == "failure" ]; then
-            FAILURES="$FAILURES\n- **🧪 Test issue**: Please fix the test failures reported by \`flutter test\`."
-          fi
-          if [ -z "$FAILURES" ]; then
-            FAILURES="✅ All checks passed successfully."
-          else
-            FAILURES="💥💥💥 The following steps failed:$FAILURES"
-          fi
-          echo "FAILURES<<EOF" >> $GITHUB_ENV
-          echo -e "$FAILURES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-        continue-on-error: true
-
-      - name: 💬 Comment on PR
-        if: always() && github.event_name == 'pull_request'
-        uses: peter-evans/create-or-update-comment@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: ${{ env.FAILURES }}
-
-      - name: 🚨 Fail if Any Step Failed
-        if: always()
+          dart format . -l 120
+          dart fix --apply
+          flutter analyze
+      - name: Check for modified files
+        id: git-check
+        run: echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >>  $GITHUB_ENV
+      - name: Update changes in GitHub repository
+        if: env.modified == 'true'
         run: |
-          if [[ "${{ env.FAILURES }}" == *"The following steps failed:"* ]]; then
-            echo "One or more steps failed."
-            exit 1
-          fi
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add -A
+          git commit -m '[automated commit] lint format and import sort'
+          git push -f
