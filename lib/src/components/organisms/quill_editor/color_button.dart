@@ -45,7 +45,9 @@ class ZdsQuillToolbarColorButton extends StatefulWidget {
   }
 }
 
-// ignore: public_member_api_docs
+/// Options for the color button.
+/// See [QuillToolbarColorButtonOptions].
+/// See [QuillToolbarBaseButtonOptions].
 class ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton> {
   late bool _isToggledColor;
   late bool _isToggledBackground;

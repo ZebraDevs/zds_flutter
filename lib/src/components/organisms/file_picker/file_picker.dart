@@ -627,7 +627,7 @@ extension _Methods on ZdsFilePickerState {
 
       final List<ZdsFileWrapper> list = [];
 
-      if (mounted) {
+      if (context.mounted) {
         for (final GiphyGif gif in result) {
           final itemsLength = controller.items.where((ZdsFileWrapper element) => !element.isLink).toList().length +
               controller.remoteItems.length;
@@ -646,7 +646,7 @@ extension _Methods on ZdsFilePickerState {
 
       if (list.isNotEmpty) widget.onPicked?.call(list);
     } on Exception catch (e) {
-      if (mounted) widget.onError?.call(context, config, e);
+      if (context.mounted) widget.onError?.call(context, config, e);
     } finally {
       _busy = false;
     }
@@ -654,13 +654,13 @@ extension _Methods on ZdsFilePickerState {
 
   Future<void> _handleCameraAction(BuildContext context) async {
     try {
-      if (!mounted) return;
+      if (!context.mounted) return;
       final photo = await ZdsCamera.takePhoto(
         context,
         showPreview: config.showCapturePreview,
         useSystemCamera: config.useSystemCamera,
       );
-      if (photo != null && mounted) {
+      if (photo != null && context.mounted) {
         final file = await onPicked(
           context,
           ZdsFileWrapper(ZdsFilePickerOptions.CAMERA, photo),
@@ -670,7 +670,7 @@ extension _Methods on ZdsFilePickerState {
         if (file != null) widget.onPicked?.call([file]);
       }
     } on Exception catch (e) {
-      if (mounted) widget.onError?.call(context, config, e);
+      if (context.mounted) widget.onError?.call(context, config, e);
     } finally {
       _busy = false;
     }
@@ -678,7 +678,7 @@ extension _Methods on ZdsFilePickerState {
 
   Future<void> _handleVideoAction(BuildContext context) async {
     try {
-      if (!mounted) return;
+      if (!context.mounted) return;
       final maxVideoTimeInSeconds = config.maxVideoTimeInSeconds;
       final video = await ZdsCamera.recordVideo(
         context,
@@ -686,7 +686,7 @@ extension _Methods on ZdsFilePickerState {
         maxVideoDuration: maxVideoTimeInSeconds != null ? Duration(seconds: maxVideoTimeInSeconds) : null,
       );
 
-      if (video != null && mounted) {
+      if (video != null && context.mounted) {
         final file = await onPicked(
           context,
           ZdsFileWrapper(ZdsFilePickerOptions.VIDEO, video),
@@ -696,7 +696,7 @@ extension _Methods on ZdsFilePickerState {
         if (file != null) widget.onPicked?.call([file]);
       }
     } on Exception catch (e) {
-      if (mounted) widget.onError?.call(context, config, e);
+      if (context.mounted) widget.onError?.call(context, config, e);
     } finally {
       _busy = false;
     }
@@ -758,7 +758,7 @@ extension _Methods on ZdsFilePickerState {
               allowMultiple: allowMultiple,
             );
 
-      if (result != null && mounted) {
+      if (result != null && context.mounted) {
         final List<ZdsFileWrapper> processedFiles = <ZdsFileWrapper>[];
         for (final PlatformFile file in result.files) {
           final itemsLength = controller.items.where((ZdsFileWrapper element) => !element.isLink).toList().length +
@@ -789,7 +789,7 @@ extension _Methods on ZdsFilePickerState {
         }
       }
     } on Exception catch (e) {
-      if (mounted) widget.onError?.call(context, config, e);
+      if (context.mounted) widget.onError?.call(context, config, e);
     } finally {
       _busy = false;
     }
@@ -832,7 +832,7 @@ extension _Methods on ZdsFilePickerState {
       }
 
       if (exception != null) {
-        if (mounted) widget.onError?.call(context, config, exception);
+        if (context.mounted) widget.onError?.call(context, config, exception);
       } else {
         if (input.content != null) {
           controller.addFiles(<ZdsFileWrapper>[input]);
@@ -842,7 +842,7 @@ extension _Methods on ZdsFilePickerState {
 
       return null;
     } on Exception catch (e) {
-      if (mounted) widget.onError?.call(context, config, e);
+      if (context.mounted) widget.onError?.call(context, config, e);
       return null;
     } finally {
       _busy = false;

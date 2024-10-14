@@ -100,11 +100,11 @@ class ZdsToast extends StatelessWidget implements PreferredSizeWidget {
   Color _backgroundColor(ZetaColors colors, ZdsToastColors toastColor) {
     switch (toastColor) {
       case ZdsToastColors.success:
-        return colors.surfacePositive.shade10;
+        return colors.surfacePositiveSubtle;
       case ZdsToastColors.warning:
-        return colors.surfaceWarning.shade10;
+        return colors.surfaceWarningSubtle;
       case ZdsToastColors.info:
-        return colors.surfaceInfo.shade10;
+        return colors.surfaceInfoSubtle;
       case ZdsToastColors.error:
         return colors.error.shade10;
       case ZdsToastColors.primary:

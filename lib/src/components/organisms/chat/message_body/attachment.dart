@@ -35,7 +35,8 @@ class ZdsChatAttachmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Zeta.of(context).colors;
+    final zeta = Zeta.of(context);
+    final colors = zeta.colors;
     final foregroundColor = iconColor(_fileType, context: context);
     final layoutBuilder = LayoutBuilder(
       builder: (context, constraints) {
@@ -48,7 +49,7 @@ class ZdsChatAttachmentWidget extends StatelessWidget {
               margin: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: colors.surfacePrimary,
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                borderRadius: zeta.radius.rounded,
                 border: Border.all(color: colors.borderSubtle),
               ),
               child: Column(

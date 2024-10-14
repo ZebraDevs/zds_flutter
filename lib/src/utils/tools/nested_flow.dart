@@ -33,7 +33,7 @@ class ZdsNestedFlow extends StatefulWidget {
         );
 
   /// Root page for the navigator.
-  @Deprecated('message')
+  @Deprecated('Use child or builder property instead')
   final Page<dynamic>? rootPage;
 
   /// Should page be closed when just root page remains on the stack, useful when added as root widget in TabBar.

@@ -65,6 +65,8 @@ class ZdsCalendar extends StatefulWidget {
     this.previousTooltip,
     this.nextTooltip,
     this.selectedRange,
+    @Deprecated('This parameter is no longer used and will be removed in the next major version.')
+    bool showSelectedDateHeader = false,
   })  : _variant = _ZdsCalendarVariant.switchable,
         hasHeader = true;
 
@@ -101,6 +103,8 @@ class ZdsCalendar extends StatefulWidget {
     this.previousTooltip,
     this.nextTooltip,
     this.selectedRange,
+    @Deprecated('This parameter is no longer used and will be removed in the next major version.')
+    bool showSelectedDateHeader = false,
   }) : _variant = _ZdsCalendarVariant.monthly;
 
   /// Shows a calendar in a fixed weekly format.
@@ -135,6 +139,8 @@ class ZdsCalendar extends StatefulWidget {
     this.previousTooltip,
     this.nextTooltip,
     this.selectedRange,
+    @Deprecated('This parameter is no longer used and will be removed in the next major version.')
+    bool showSelectedDateHeader = false,
   })  : _variant = _ZdsCalendarVariant.weekly,
         hasHeader = false;
 

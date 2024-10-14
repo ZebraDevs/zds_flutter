@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:interval_time_picker/interval_time_picker.dart' as interval_picker;
+import 'package:interval_time_picker/models/visible_step.dart';
 
 import 'package:intl/intl.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
@@ -87,6 +88,7 @@ class ZdsDateTimePicker extends StatefulWidget {
     this.okClickText,
     this.cancelClickText,
     this.startDayOfWeek,
+    this.visibleStep = VisibleStep.fifths,
   })  : format = (format?.isNotEmpty ?? false)
             ? format!
             : (mode == DateTimePickerMode.date
@@ -177,6 +179,11 @@ class ZdsDateTimePicker extends StatefulWidget {
   /// Starting day of week 1, 2, 3, Sunday, Monday, Tuesday respectively.
   final int? startDayOfWeek;
 
+  /// Used when [interval] is set to determine the visible steps in the time picker.
+  ///
+  /// Defaults to [VisibleStep.fifths].
+  final VisibleStep visibleStep;
+
   @override
   ZdsDateTimePickerState createState() => ZdsDateTimePickerState();
 
@@ -205,7 +212,8 @@ class ZdsDateTimePicker extends StatefulWidget {
       ..add(EnumProperty<TimePickerEntryMode>('timePickerEntryMode', timePickerEntryMode))
       ..add(StringProperty('okClickText', okClickText))
       ..add(StringProperty('cancelClickText', cancelClickText))
-      ..add(IntProperty('startDayOfWeek', startDayOfWeek));
+      ..add(IntProperty('startDayOfWeek', startDayOfWeek))
+      ..add(EnumProperty<VisibleStep>('visibleStep', visibleStep));
   }
 }
 
@@ -371,19 +379,18 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
             helpText: widget.helpText,
             builder: timePickerBuilder,
           )
-        : mounted
+        : context.mounted
             ? await interval_picker.showIntervalTimePicker(
                 context: context,
                 initialTime: initialValue,
                 interval: widget.interval!,
+                visibleStep: widget.visibleStep,
                 errorInvalidText: widget.timePickerErrorText,
                 initialEntryMode: _getIntervalPickerMode(),
                 builder: timePickerBuilder,
                 helpText: widget.helpText,
               )
             : null;
-
-    // final selectedTime = timePickerResult ?? (currentValue != null ? TimeOfDay.fromDateTime(currentValue) : null);
 
     return timePickerResult;
   }
@@ -410,13 +417,5 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
         time?.minute ?? 0,
       );
 
-  DateTime? _convert(TimeOfDay? time) => time == null
-      ? null
-      : DateTime(
-          1,
-          1,
-          1,
-          time.hour,
-          time.minute,
-        );
+  DateTime? _convert(TimeOfDay? time) => time == null ? null : DateTime(1, 1, 1, time.hour, time.minute);
 }
