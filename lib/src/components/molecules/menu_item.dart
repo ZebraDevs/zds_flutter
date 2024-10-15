@@ -92,7 +92,7 @@ class ZdsMenuItem extends StatelessWidget {
                       ),
                     ],
                   ).textStyle(
-                    themeData.textTheme.bodyLarge?.copyWith(color: themeData.colorScheme.onSurface),
+                    themeData.textTheme.bodyLarge?.copyWith(color: Zeta.of(context).colors.textSubtle),
                   ),
                 ),
                 if (trailing != null) trailing!,

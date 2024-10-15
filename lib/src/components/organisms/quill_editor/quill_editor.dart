@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import '../../../../zds_flutter.dart';
 import 'quill_toolbar.dart';
 
 /// A custom widget for the Quill editor.
@@ -82,8 +81,8 @@ class ZdsQuillEditor extends StatelessWidget {
     // Base editor configuration
     final editor = QuillEditor.basic(
       focusNode: readOnly ? FocusNode(canRequestFocus: false) : focusNode,
+      controller: controller,
       configurations: QuillEditorConfigurations(
-        controller: controller,
         keyboardAppearance: keyboardAppearance ?? Brightness.light,
         embedBuilders: embedBuilders,
         padding: padding,

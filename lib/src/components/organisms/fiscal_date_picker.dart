@@ -54,8 +54,8 @@ Future<DateTime?> showZdsFiscalDatePicker({
 class ZdsDatePickerDialog extends StatefulWidget {
   /// Creates a date picker dialog.
   const ZdsDatePickerDialog({
-    required this.firstDate,
-    required this.lastDate,
+    this.firstDate,
+    this.lastDate,
     required this.cancelText,
     required this.okText,
     super.key,
@@ -79,10 +79,10 @@ class ZdsDatePickerDialog extends StatefulWidget {
   final DateTime? initialDate;
 
   /// The earliest allowable [DateTime] that the user can select.
-  final DateTime firstDate;
+  final DateTime? firstDate;
 
   /// The latest allowable [DateTime] that the user can select.
-  final DateTime lastDate;
+  final DateTime? lastDate;
 
   /// The text that is displayed on the cancel button.
   final String cancelText;
@@ -161,6 +161,8 @@ class _ZdsDatePickerDialogState extends State<ZdsDatePickerDialog> {
             ZdsCalendar.monthly(
               initialSelectedDay: _selectedDate,
               initialSelectedWeek: _selectedDate,
+              firstDay: widget.firstDate,
+              lastDay: widget.lastDate,
               calendarRowHeight: orientation == Orientation.portrait ? 44 : 38,
               headerPadding: EdgeInsets.zero,
               calendarHeaderIconColor: Zeta.of(context).colors.iconDefault,

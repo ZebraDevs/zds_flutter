@@ -39,7 +39,7 @@ class ZdsBottomSheet extends StatelessWidget {
 
   /// The background color for this bottom sheet.
   ///
-  /// Defaults to [ColorScheme.surface]
+  /// Defaults to Zeta.of(context).colors.surfaceTertiary
   final Color? backgroundColor;
 
   /// How high this bottom sheet will be allowed to grow. If not null, it must be greater than 0. The bottom sheet will
@@ -56,9 +56,9 @@ class ZdsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color sheetBackgroundColor = backgroundColor ?? colorScheme.surface;
+    final Color sheetBackgroundColor = backgroundColor ?? Zeta.of(context).colors.surfaceTertiary;
     final Color headerColor = header != null ? colorScheme.surface : sheetBackgroundColor;
-    final _BottomSheetHeader headerWidget = _BottomSheetHeader(bottom: header, backgroundColor: headerColor);
+    final _BottomSheetHeader headerWidget = _BottomSheetHeader(header: header, backgroundColor: headerColor);
     final MediaQueryData media = MediaQuery.of(context);
     final double maxScreenHeight = media.size.height - media.viewPadding.top;
     final double height =
@@ -143,6 +143,9 @@ List<Widget> buildSheetBars({
       leading: isTablet && secondaryActionText.isNotEmpty
           ? ZdsButton.text(
               child: Text(secondaryActionText),
+              onTap: () {
+                secondaryActionOnTap != null ? secondaryActionOnTap() : Navigator.of(context).pop();
+              },
             )
           : !isTablet && showClose
               ? IconButton(
@@ -241,7 +244,7 @@ Future<T?> showZdsBottomSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   Color? backgroundColor,
-  Color? barrierColor = Colors.black54,
+  Color? barrierColor,
   double? maxHeight,
   double? maxWidth,
   double? bottomInset,
@@ -253,10 +256,15 @@ Future<T?> showZdsBottomSheet<T>({
   PreferredSizeWidget Function(BuildContext)? headerBuilder,
   PreferredSizeWidget? Function(BuildContext)? bottomBuilder,
 }) {
+  Color effectiveBarrier() {
+    if (barrierColor != null) return barrierColor;
+    return Zeta.of(context).brightness == Brightness.light ? Colors.black54 : Colors.white12;
+  }
+
   return enforceSheet || !context.isTablet()
       ? showMaterialModalBottomSheet<T>(
           context: context,
-          barrierColor: barrierColor,
+          barrierColor: effectiveBarrier(),
           isDismissible: isDismissible,
           closeProgressThreshold: 0.8,
           bounce: true,
@@ -282,7 +290,7 @@ Future<T?> showZdsBottomSheet<T>({
         )
       : showDialog<T>(
           context: context,
-          barrierColor: barrierColor,
+          barrierColor: effectiveBarrier(),
           barrierDismissible: isDismissible,
           useRootNavigator: useRootNavigator,
           builder: (BuildContext context) {
@@ -326,38 +334,36 @@ Future<T?> showZdsBottomSheet<T>({
 }
 
 class _BottomSheetHeader extends StatelessWidget implements PreferredSizeWidget {
-  const _BottomSheetHeader({this.bottom, this.backgroundColor});
+  const _BottomSheetHeader({this.header, this.backgroundColor});
 
-  final PreferredSizeWidget? bottom;
+  final PreferredSizeWidget? header;
   final Color? backgroundColor;
-  static const double _dragAreaHeight = 20;
+  static const double _dragAreaHeight = 10;
 
   @override
   Widget build(BuildContext context) {
     final zetaColors = Zeta.of(context).colors;
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: bottom != null
-            ? Border(bottom: BorderSide(color: Theme.of(context).colorScheme.shadow.withOpacity(0.1)))
-            : null,
+        border: header != null ? Border(bottom: BorderSide(color: zetaColors.textDefault.withOpacity(0.1))) : null,
       ),
       child: Column(
         children: <Widget>[
           Container(
             width: double.infinity,
             height: _dragAreaHeight,
-            alignment: Alignment.center,
+            alignment: Alignment.bottomCenter,
             color: backgroundColor ?? Theme.of(context).colorScheme.surface,
             child: Container(
-              width: 120,
+              width: 60,
               height: 4,
               decoration: BoxDecoration(
-                color: zetaColors.borderSubtle,
-                borderRadius: BorderRadius.circular(19),
+                color: zetaColors.borderDefault,
+                borderRadius: BorderRadius.circular(6),
               ),
             ),
           ),
-          if (bottom != null) bottom!,
+          if (header != null) header!,
         ],
       ),
     );
@@ -365,7 +371,7 @@ class _BottomSheetHeader extends StatelessWidget implements PreferredSizeWidget 
 
   @override
   Size get preferredSize => Size.fromHeight(
-        _dragAreaHeight + (bottom?.preferredSize.height ?? 0) + kHeaderBoarderSize,
+        _dragAreaHeight + (header?.preferredSize.height ?? 0) + kHeaderBoarderSize,
       );
 
   @override

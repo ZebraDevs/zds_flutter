@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../zds_flutter.dart';
-
+import '../../../molecules/highlighted_word.dart';
 import 'chat_utils.dart';
 import 'link_preview.dart';
 

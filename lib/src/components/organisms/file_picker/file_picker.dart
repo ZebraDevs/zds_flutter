@@ -108,7 +108,7 @@ class ZdsFilePickerConfig {
   /// images will always be compressed with 250Kb as max size.
   final int maxFileSize;
 
-  /// Used to define whether to use system camera or not.
+  /// The [useSystemCamera]. flag use to define whether to use system camera or not .
   final bool useSystemCamera;
 
   /// The options that will be shown in the file picker.
@@ -631,7 +631,7 @@ extension _Methods on ZdsFilePickerState {
         for (final GiphyGif gif in result) {
           final itemsLength = controller.items.where((ZdsFileWrapper element) => !element.isLink).toList().length +
               controller.remoteItems.length;
-          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed && context.mounted) {
+          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed) {
             showToast(context, PickerExceptionType.maxLimitReached.message(context));
             break;
           }
@@ -654,7 +654,7 @@ extension _Methods on ZdsFilePickerState {
 
   Future<void> _handleCameraAction(BuildContext context) async {
     try {
-      if (!mounted) return;
+      if (!context.mounted) return;
       final photo = await ZdsCamera.takePhoto(
         context,
         showPreview: config.showCapturePreview,
@@ -678,7 +678,7 @@ extension _Methods on ZdsFilePickerState {
 
   Future<void> _handleVideoAction(BuildContext context) async {
     try {
-      if (!mounted) return;
+      if (!context.mounted) return;
       final maxVideoTimeInSeconds = config.maxVideoTimeInSeconds;
       final video = await ZdsCamera.recordVideo(
         context,
@@ -763,7 +763,7 @@ extension _Methods on ZdsFilePickerState {
         for (final PlatformFile file in result.files) {
           final itemsLength = controller.items.where((ZdsFileWrapper element) => !element.isLink).toList().length +
               controller.remoteItems.length;
-          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed && context.mounted) {
+          if (maxFilesAllowed != 0 && itemsLength >= maxFilesAllowed) {
             showToast(context, PickerExceptionType.maxLimitReached.message(context));
             break;
           }
@@ -1036,7 +1036,9 @@ class _MultiInputDialogState extends State<_MultiInputDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              if (widget.title != null) Text(widget.title!, style: theme.textTheme.displaySmall),
+              if (widget.title != null)
+                Text(widget.title!, style: theme.textTheme.displaySmall)
+                    .semantics(identifier: 'TITLE_${widget.title}', label: widget.title),
               if (widget.textFields.isEmpty) const SizedBox(),
               ListView.builder(
                 shrinkWrap: true,
@@ -1061,6 +1063,10 @@ class _MultiInputDialogState extends State<_MultiInputDialog> {
                       errorText: widget.textFields[index].error,
                       errorStyle: themeData.textTheme.bodyMedium?.copyWith(color: themeData.colorScheme.error),
                     ),
+                  ).semantics(
+                    textField: true,
+                    identifier: widget.textFields[index].hint,
+                    label: widget.textFields[index].hint,
                   );
                 },
               ),

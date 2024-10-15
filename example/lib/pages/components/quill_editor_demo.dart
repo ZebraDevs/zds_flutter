@@ -1,5 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/extensions.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zds_flutter/zds_flutter.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
@@ -54,6 +54,7 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
       children: [
         Expanded(
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Zeta.of(context).colors.surfacePrimary,
             appBar: AppBar(
               title: const Text('Quill Editor'),
@@ -119,6 +120,7 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
         const Divider(),
         Expanded(
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Zeta.of(context).colors.surfacePrimary,
             body: Builder(builder: (context) {
               final html = ZdsQuillDelta(document: controller.document).toHtml();
@@ -137,7 +139,7 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
 
 /// default embed builders
 List<EmbedBuilder> getEmbedBuilders() {
-  if (isWeb()) {
+  if (kIsWeb) {
     return FlutterQuillEmbeds.editorWebBuilders();
   } else {
     return FlutterQuillEmbeds.editorBuilders();

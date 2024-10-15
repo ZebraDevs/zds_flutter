@@ -47,6 +47,7 @@ class ZdsStarRating extends StatefulWidget {
 
   @override
   State<ZdsStarRating> createState() => _ZdsStarRatingState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -109,6 +110,7 @@ class _ZdsStarRatingState extends State<ZdsStarRating> {
       width: _boxSize * widget.size.toDouble(),
       child: LayoutBuilder(
         builder: (_, constraints) {
+          final borderRadius = widget.rounded ? Zeta.of(context).radius.rounded : Zeta.of(context).radius.none;
           return GestureDetector(
             onHorizontalDragStart: (details) => setState(() => _selected = true),
             onHorizontalDragEnd: (details) => setState(() => _selected = false),
@@ -117,7 +119,7 @@ class _ZdsStarRatingState extends State<ZdsStarRating> {
               duration: const Duration(milliseconds: 250),
               decoration: BoxDecoration(
                 color: colors.cool.shade30.withOpacity(_selected ? 1 : 0),
-                borderRadius: widget.rounded ? ZetaRadius.rounded : ZetaRadius.none,
+                borderRadius: borderRadius,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -126,7 +128,7 @@ class _ZdsStarRatingState extends State<ZdsStarRating> {
                   (int index) => SizedBox.square(
                     dimension: _boxSize,
                     child: InkWell(
-                      borderRadius: widget.rounded ? ZetaRadius.rounded : ZetaRadius.none,
+                      borderRadius: borderRadius,
                       splashColor: colors.cool.shade30,
                       onTap: () {
                         if (widget.halfIncrements && index + 0.5 == _valueTapped) {

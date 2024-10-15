@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 /// A widget that creates a slidable list tile, which can be slid right-to-left to reveal further actions.
 /// Takes a [child] which can be any widget, although a [Row] is recommended to use like so:
@@ -192,14 +193,14 @@ class _ActionBuilderState extends State<_ActionBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
+    final zetaColors = Zeta.of(context).colors;
     return FlutterSlidableAction(
       key: _key,
       onPressed: widget.action.onPressed,
       label: size.height < 60 && widget.action.icon != null ? null : widget.action.label,
       icon: widget.action.icon,
-      backgroundColor: widget.action.backgroundColor ?? themeData.colorScheme.surface,
-      foregroundColor: widget.action.foregroundColor ?? themeData.colorScheme.onSurface,
+      backgroundColor: widget.action.backgroundColor ?? zetaColors.surfaceTertiary,
+      foregroundColor: widget.action.foregroundColor ?? zetaColors.textSubtle,
       autoClose: widget.action.autoclose,
       spacing: 16,
       padding: EdgeInsets.zero,

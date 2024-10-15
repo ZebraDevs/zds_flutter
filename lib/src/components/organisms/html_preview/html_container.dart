@@ -356,7 +356,7 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
   // Check if html element colors are visible on background and if not adjust them as per background color
   String adjustHtmlColorsForTheme(String htmlContent) {
     final document = parse(htmlContent);
-    final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final isDarkMode = PlatformDispatcher.instance.platformBrightness == Brightness.dark;
 
     bool isContrastEnough(Color textColor, Color backgroundColor) {
       return textColor.contrastRatio(backgroundColor) >= 3;

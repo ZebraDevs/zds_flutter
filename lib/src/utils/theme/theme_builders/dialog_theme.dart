@@ -17,6 +17,9 @@ extension ZetaDialogTheme on ZetaColorScheme {
       // Set the background color to the tertiary color of this ZetaColorScheme
       backgroundColor: zetaColors.surfaceTertiary,
 
+      // sets dialog barrier color to white12 if the brightness is dark, otherwise black54
+      barrierColor: zetaColors.brightness == Brightness.dark ? Colors.white12 : Colors.black54,
+
       // Set the shape to a RoundedRectangle with a borderRadius of 8
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     );
