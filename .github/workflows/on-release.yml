@@ -1,4 +1,4 @@
-name: "CI - Release"
+name: CI - On Release
 on:
   push:
     tags:
@@ -15,23 +15,26 @@ jobs:
       - uses: dart-lang/setup-dart@v1
       - name: Install Flutter
         uses: subosito/flutter-action@v2
+        with:
+          cache: true
       - name: Install dependencies
         run: flutter pub get
       - name: Format code
-        run: |
-          dart format --fix .
-          dart fix --apply
+        run: dart format --fix .
       # TODO: Package uses pre-release packages, so this always fails.
       # - name: Check Publish Warnings
       #   run: dart pub publish --dry-run
       - name: Publish
         run: dart pub publish --force
+
   deploy:
     name: Deploy the example app on firebase
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
+        with:
+          cache: true
       - name: Setup flutter
         run: flutter pub get
       - name: Build example app
