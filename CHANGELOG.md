@@ -7,6 +7,23 @@
 * update to flutter 3.22.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 * update to zeta_flutter 0.9.1 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 
+## [2.0.0-alpha.1](https://github.com/ZebraDevs/zds_flutter/compare/v1.3.1...v2.0.0-alpha.1) (2024-10-16)
+
+
+### ✨ New Features
+
+* Flutter 3.24.3 upgrade ([#33](https://github.com/ZebraDevs/zds_flutter/issues/33)) ([588ec2f](https://github.com/ZebraDevs/zds_flutter/commit/588ec2f8f9b35e0c33b56d351031c8194335906a))
+
+
+### ⛓️ Dependencies
+
+* Update dependencies ([5a4d182](https://github.com/ZebraDevs/zds_flutter/commit/5a4d1820163362d000525449ddb87a38342fa038))
+
+
+### 🧹 Miscellaneous Chores
+
+* Fix routes in example app ([609fc83](https://github.com/ZebraDevs/zds_flutter/commit/609fc83e5083afa00e386cbbd8fd6b481802fc64))
+
 ## [1.3.1](https://github.com/ZebraDevs/zds_flutter/compare/v1.3.0...v1.3.1) (2024-07-17)
 
 
