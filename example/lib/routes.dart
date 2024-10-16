@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:zds_flutter_example/pages/components/audio_player.dart';
-import 'package:zds_flutter_example/pages/components/audio_recorder.dart';
-import 'package:zds_flutter_example/pages/components/message_input.dart';
-import 'package:zds_flutter_example/pages/components/nested_flow.dart';
-import 'package:zds_flutter_example/pages/components/speed_scrollable_list.dart';
-import 'package:zds_flutter_example/pages/theme/colors.dart';
-import 'package:zds_flutter_example/pages/theme/text.dart';
 
 import 'home.dart';
 import 'pages/assets/animations.dart';
 import 'pages/assets/icons.dart';
 import 'pages/assets/images.dart';
 import 'pages/components/app_bar.dart';
+import 'pages/components/audio_player.dart';
+import 'pages/components/audio_recorder.dart';
 import 'pages/components/big_toggle_button.dart';
 import 'pages/components/block_table.dart';
 import 'pages/components/bottom_bar.dart';
@@ -42,8 +37,10 @@ import 'pages/components/interactive_viewer.dart';
 import 'pages/components/list_tile_wrapper.dart';
 import 'pages/components/list_tile.dart';
 import 'pages/components/list.dart';
+import 'pages/components/message_input.dart';
 import 'pages/components/modal.dart';
 import 'pages/components/navigation_menu.dart';
+import 'pages/components/nested_flow.dart';
 import 'pages/components/popover.dart';
 import 'pages/components/profile.dart';
 import 'pages/components/properties_list.dart';
@@ -52,6 +49,7 @@ import 'pages/components/radio_list.dart';
 import 'pages/components/search.dart';
 import 'pages/components/sheet_header.dart';
 import 'pages/components/slidable_list_tile.dart';
+import 'pages/components/speed_scrollable_list.dart';
 import 'pages/components/speed_slider.dart';
 import 'pages/components/split_navigator.dart';
 import 'pages/components/star_rating.dart';
@@ -63,6 +61,8 @@ import 'pages/components/text_field.dart';
 import 'pages/components/toast.dart';
 import 'pages/components/toolbar.dart';
 import 'pages/components/vertical_nav.dart';
+import 'pages/theme/colors.dart';
+import 'pages/theme/text.dart';
 import 'pages/utils/color_utils.dart';
 
 final kRoutes = {
@@ -309,12 +309,6 @@ final kRoutes = {
       child: NestedFlowDemo(),
     ),
   ],
-  'Animations': [
-    const DemoRoute(
-      title: 'Colors generator',
-      child: ColorUtilsDemo(),
-    ),
-  ],
   'Assets': [
     const DemoRoute(
       title: 'Animations',
@@ -329,13 +323,15 @@ final kRoutes = {
       child: IconsDemo(),
     )
   ],
-  'Colors': [
+  'Theme': [
+    const DemoRoute(
+      title: 'Colors generator',
+      child: ColorUtilsDemo(),
+    ),
     const DemoRoute(
       title: 'Colors',
       child: ColorsDemo(),
     ),
-  ],
-  'Typography': [
     const DemoRoute(
       title: 'Typography',
       child: TextDemo(),

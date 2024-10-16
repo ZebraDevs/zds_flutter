@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../zds_flutter.dart';
 
-// TODO(colors): Add zeta
-
 /// Determines foreground and background color of toast to comply with design rules.
 ///
 /// * `success` = green background / grey foreground
