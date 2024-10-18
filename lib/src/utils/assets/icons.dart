@@ -24,8 +24,9 @@ import '../../../zds_flutter.dart';
 ///
 /// See also:
 ///  * [Icon]
-
+@Deprecated('Use ZetaIcons instead')
 class ZdsIcons {
+  @Deprecated('Use ZetaIcons instead')
   ZdsIcons._();
 
   static const String _family = 'zds-icons';
