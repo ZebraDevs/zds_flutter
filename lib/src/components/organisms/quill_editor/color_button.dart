@@ -4,11 +4,15 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart' hide ColorExtension1;
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/translations.dart';
 
 import '../../../utils/localizations/translation.dart';
+import '../../../utils/tools/utils.dart';
+import '../../atoms.dart';
+import '../../molecules.dart';
+import 'material_picker.dart';
 
 /// Controls color styles.
 ///
@@ -212,19 +216,18 @@ class ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton> 
       await customCallback(_controller, widget.isBackground);
       return;
     }
-    unawaited(
-      showDialog<String>(
-        context: context,
-        barrierColor:
-            _options.dialogBarrierColor ?? context.quillSharedConfigurations?.dialogBarrierColor ?? Colors.black54,
-        builder: (_) => _ColorPickerDialog(
-          isBackground: widget.isBackground,
-          onRequestChangeColor: _changeColor,
-          isToggledColor: _isToggledColor,
-          selectionStyle: _selectionStyle,
-        ),
+
+    final color = await showZdsBottomSheet<Color>(
+      context: context,
+      enableDrag: false,
+      builder: (_) => _ColorPickerDialog(
+        isBackground: widget.isBackground,
+        isToggledColor: _isToggledColor,
+        selectionStyle: _selectionStyle,
       ),
     );
+
+    _changeColor(context, color);
   }
 
   @override
@@ -251,7 +254,6 @@ enum _PickerType {
 class _ColorPickerDialog extends StatefulWidget {
   const _ColorPickerDialog({
     required this.isBackground,
-    required this.onRequestChangeColor,
     required this.isToggledColor,
     required this.selectionStyle,
   });
@@ -259,7 +261,6 @@ class _ColorPickerDialog extends StatefulWidget {
   final bool isBackground;
 
   final bool isToggledColor;
-  final void Function(BuildContext context, Color? color) onRequestChangeColor;
   final Style selectionStyle;
 
   @override
@@ -269,12 +270,6 @@ class _ColorPickerDialog extends StatefulWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(
-        ObjectFlagProperty<void Function(BuildContext context, Color? color)>.has(
-          'onRequestChangeColor',
-          onRequestChangeColor,
-        ),
-      )
       ..add(DiagnosticsProperty<bool>('isBackground', isBackground))
       ..add(DiagnosticsProperty<bool>('isToggledColor', isToggledColor))
       ..add(DiagnosticsProperty<Style>('selectionStyle', selectionStyle));
@@ -286,6 +281,7 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
   Color selectedColor = Colors.black;
 
   late final TextEditingController hexController;
+  final focusNode = FocusNode();
   late void Function(void Function()) colorBoxSetState;
 
   @override
@@ -300,117 +296,137 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    hexController.dispose();
+    focusNode.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final strings = ComponentStrings.of(context);
-    return AlertDialog(
-      actions: [
-        TextButton(
-          onPressed: () {
-            widget.onRequestChangeColor(context, null);
-            Navigator.of(context).pop();
-          },
-          child: Text(strings.get('CLEAR', 'Clear')),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(strings.get('OK', 'Ok')),
-        ),
-      ],
-      backgroundColor: Theme.of(context).canvasColor,
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      pickerType = _PickerType.material;
-                    });
-                  },
-                  child: Text(strings.get('MATERIAL', 'Material')),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      pickerType = _PickerType.color;
-                    });
-                  },
-                  child: Text(strings.get('COLOR', 'Color')),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Column(
-              children: [
-                if (pickerType == _PickerType.material)
-                  MaterialPicker(
-                    pickerColor: selectedColor,
-                    onColorChanged: (color) {
-                      widget.onRequestChangeColor(context, color);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                if (pickerType == _PickerType.color)
-                  Column(
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, box) {
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      ColorPicker(
-                        pickerColor: selectedColor,
-                        displayThumbColor: true,
-                        onColorChanged: (color) {
-                          widget.onRequestChangeColor(context, color);
-                          hexController.text = _colorToHex(color);
-                          selectedColor = color;
-                          colorBoxSetState(() {});
+                      ZdsToggleButton(
+                        values: [
+                          strings.get('MATERIAL', 'Material'),
+                          strings.get('COLOR', 'Color'),
+                        ],
+                        onToggleCallback: (value) {
+                          if (value == 0) {
+                            setState(() {
+                              pickerType = _PickerType.material;
+                            });
+                          } else {
+                            setState(() {
+                              pickerType = _PickerType.color;
+                            });
+                          }
                         },
                       ),
-                      const SizedBox(height: 10),
-                      Row(
+                      const SizedBox(height: 6),
+                      Column(
                         children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: hexController,
-                              onChanged: (value) {
-                                selectedColor = hexToColor(value);
-                                widget.onRequestChangeColor(context, selectedColor);
-                                colorBoxSetState(() {});
+                          if (pickerType == _PickerType.material)
+                            ZdsMaterialPicker(
+                              pickerColor: selectedColor,
+                              enableLabel: true,
+                              height: box.maxHeight,
+                              width: box.maxWidth,
+                              onColorChanged: (color) {
+                                Navigator.of(context).pop(color);
                               },
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.fromLTRB(12, 20, 12, 20),
-                                labelText: strings.get('HEX', 'Hex'),
-                                border: const OutlineInputBorder(),
-                              ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          StatefulBuilder(
-                            builder: (context, mcolorBoxSetState) {
-                              colorBoxSetState = mcolorBoxSetState;
-                              return Container(
-                                width: 38,
-                                height: 38,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black45,
-                                  ),
-                                  color: selectedColor,
-                                  borderRadius: BorderRadius.circular(5),
+                          if (pickerType == _PickerType.color)
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextFormField(
+                                        focusNode: focusNode,
+                                        controller: hexController,
+                                        onChanged: (value) {
+                                          selectedColor = hexToColor(value);
+                                          colorBoxSetState(() {});
+                                        },
+                                        decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.fromLTRB(12, 20, 12, 20),
+                                          labelText: strings.get('HEX', 'Hex'),
+                                          border: const OutlineInputBorder(),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    StatefulBuilder(
+                                      builder: (context, setState) {
+                                        colorBoxSetState = setState;
+                                        return Container(
+                                          width: 38,
+                                          height: 38,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.black45),
+                                            color: selectedColor,
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
-                              );
-                            },
-                          ),
+                                ColorPicker(
+                                  pickerColor: selectedColor,
+                                  displayThumbColor: true,
+                                  hexInputController: hexController,
+                                  labelTypes: List.empty(),
+                                  colorPickerWidth: context.isPhone() ? box.maxWidth : 300,
+                                  onColorChanged: (color) {
+                                    hexController.text = _colorToHex(color);
+                                    selectedColor = color;
+                                    colorBoxSetState(() {});
+                                  },
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ],
                   ),
-                const SizedBox(height: 10),
-              ],
-            ),
-          ],
-        ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(14),
+                child: Row(
+                  children: [
+                    const Spacer(),
+                    ZdsButton.text(
+                      child: Text(strings.get('CLEAR', 'Clear')),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    ZdsButton(
+                      child: Text(strings.get('OK', 'Ok')),
+                      onTap: () {
+                        Navigator.of(context).pop(selectedColor);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -422,7 +438,8 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
       ..add(EnumProperty<_PickerType>('pickerType', pickerType))
       ..add(ColorProperty('selectedColor', selectedColor))
       ..add(DiagnosticsProperty<TextEditingController>('hexController', hexController))
-      ..add(ObjectFlagProperty<void Function(void Function() p1)>.has('colorBoxSetState', colorBoxSetState));
+      ..add(ObjectFlagProperty<void Function(void Function() p1)>.has('colorBoxSetState', colorBoxSetState))
+      ..add(DiagnosticsProperty<FocusNode>('focusNode', focusNode));
   }
 }
 
