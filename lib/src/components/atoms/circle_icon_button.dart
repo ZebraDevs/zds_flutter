@@ -168,7 +168,8 @@ class _CircleIconButton extends State<CircleIconButton> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Zeta.of(context).colors;
+    final zeta = Zeta.of(context);
+    final colors = zeta.colors;
     final bool toggled = type == CircleButtonType.toggled;
 
     return Column(
@@ -180,9 +181,9 @@ class _CircleIconButton extends State<CircleIconButton> {
             decoration: _animatedStyle(colors, isPressed),
             child: Icon(
               toggled ? widget.activeIcon : widget.icon,
-              size: _iconSize,
+              size: _iconSize(zeta),
               color: type.foregroundColor(colors),
-            ).padding(_iconPadding),
+            ).padding(_iconPadding(zeta)),
           ),
         ),
         Text(
@@ -192,35 +193,29 @@ class _CircleIconButton extends State<CircleIconButton> {
             fontSize: widget.size == ButtonSize.small ? 14 : 16,
           ),
         ),
-      ]
-          .divide(
-            const SizedBox(
-              height: ZetaSpacing.minimum,
-            ),
-          )
-          .toList(),
+      ].divide(SizedBox(height: zeta.spacing.minimum)).toList(),
     );
   }
 
-  double get _iconPadding {
+  double _iconPadding(Zeta zeta) {
     switch (widget.size) {
       case ButtonSize.large:
-        return ZetaSpacing.xl_1;
+        return zeta.spacing.xl;
       case ButtonSize.medium:
         return 15;
       case ButtonSize.small:
-        return ZetaSpacing.minimum;
+        return zeta.spacing.minimum;
     }
   }
 
-  double get _iconSize {
+  double _iconSize(Zeta zeta) {
     switch (widget.size) {
       case ButtonSize.large:
-        return ZetaSpacing.xl_6;
+        return zeta.spacing.xl_6;
       case ButtonSize.medium:
-        return ZetaSpacingBase.x7_5;
+        return zeta.spacing.xl_3;
       case ButtonSize.small:
-        return ZetaSpacing.xl_1;
+        return zeta.spacing.xl;
     }
   }
 
