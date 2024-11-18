@@ -7,6 +7,26 @@
 * update to flutter 3.22.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 * update to zeta_flutter 0.9.1 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
 
+## [2.0.0-alpha.2](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.1...v2.0.0-alpha.2) (2024-11-18)
+
+
+### 🪲 Bug Fixes
+
+* adjusted the divider color ([6a36df0](https://github.com/ZebraDevs/zds_flutter/commit/6a36df01411253c279b2661daeef759ca957ebb2))
+* Fix progress theme and use latest version of the Zeta ([#38](https://github.com/ZebraDevs/zds_flutter/issues/38)) ([fba70d7](https://github.com/ZebraDevs/zds_flutter/commit/fba70d7e95de0067a59767288a15514715d7f631))
+* move quill-default color picker from dialog to bottom-sheet ([6a36df0](https://github.com/ZebraDevs/zds_flutter/commit/6a36df01411253c279b2661daeef759ca957ebb2))
+* quill editor color picker improvements ([#36](https://github.com/ZebraDevs/zds_flutter/issues/36)) ([6a36df0](https://github.com/ZebraDevs/zds_flutter/commit/6a36df01411253c279b2661daeef759ca957ebb2))
+
+
+### ⛓️ Dependencies
+
+* Update to latest version of zeta ([#39](https://github.com/ZebraDevs/zds_flutter/issues/39)) ([de00607](https://github.com/ZebraDevs/zds_flutter/commit/de006075835ee1ee31947053771d5782377c5949))
+
+
+### 🧹 Miscellaneous Chores
+
+* release 2.0.0-alpha.2 ([2914c8a](https://github.com/ZebraDevs/zds_flutter/commit/2914c8a4acc186210e43e70770b1655d9f07a843))
+
 ## [2.0.0-alpha.1](https://github.com/ZebraDevs/zds_flutter/compare/v1.3.1...v2.0.0-alpha.1) (2024-10-16)
 
 
