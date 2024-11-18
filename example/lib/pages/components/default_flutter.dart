@@ -47,7 +47,10 @@ class DefaultFlutter extends StatelessWidget {
               ),
               Card(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    LinearProgressIndicator(),
+                    CircularProgressIndicator(),
                     Slider(
                       value: 50,
                       onChanged: (value) {},
@@ -62,7 +65,7 @@ class DefaultFlutter extends StatelessWidget {
                       min: 0,
                       max: 100,
                     ),
-                  ],
+                  ].divide(const SizedBox(height: 8)).toList(growable: false),
                 ),
               ),
               Card(
@@ -144,7 +147,7 @@ class DefaultFlutter extends StatelessWidget {
                     TextButton(onPressed: () {}, child: Text("Cancel")),
                     const Spacer(),
                     OutlinedButton(onPressed: () {}, child: Text("Reset")),
-                    SizedBox(width: ZetaSpacing.small),
+                    SizedBox(width: Zeta.of(context).spacing.small),
                     ElevatedButton(onPressed: () {}, child: Text("Next")),
                   ],
                 ),
