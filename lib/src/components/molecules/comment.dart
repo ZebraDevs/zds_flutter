@@ -126,36 +126,46 @@ class ZdsComment extends StatelessWidget {
                       ),
                     ),
                   ),
-                  padding: EdgeInsets.all(spacing.large),
+                  padding: EdgeInsets.symmetric(
+                    vertical: spacing.large,
+                    horizontal: spacing.medium,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          if (avatar != null)
-                            Padding(
-                              padding: EdgeInsets.only(right: spacing.small),
-                              child: avatar,
-                            ),
-                          Text(
-                            author,
-                            style: ZetaTextStyles.labelLarge.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const Spacer(),
-                          if (timeStamp != null)
-                            Padding(
-                              padding: EdgeInsets.only(left: spacing.small),
-                              child: Text(
-                                timeStamp!,
-                                style: ZetaTextStyles.bodyXSmall.copyWith(color: colors.textSubtle),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: spacing.minimum),
+                        child: Row(
+                          children: [
+                            if (avatar != null)
+                              Padding(
+                                padding: EdgeInsets.only(right: spacing.small),
+                                child: avatar,
+                              ),
+                            Text(
+                              author,
+                              style: ZetaTextStyles.labelLarge.copyWith(
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                        ],
+                            const Spacer(),
+                            if (timeStamp != null)
+                              Padding(
+                                padding: EdgeInsets.only(left: spacing.small),
+                                child: Text(
+                                  timeStamp!,
+                                  style: ZetaTextStyles.bodyXSmall.copyWith(color: colors.textSubtle),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: spacing.small),
+                        padding: EdgeInsets.only(
+                          top: spacing.small,
+                          left: spacing.minimum,
+                          right: spacing.minimum,
+                        ),
                         child: Text(
                           comment,
                           style: Theme.of(context).textTheme.bodyMedium,
@@ -163,7 +173,7 @@ class ZdsComment extends StatelessWidget {
                       ),
                       if (attachment != null)
                         Padding(
-                          padding: EdgeInsets.only(top: spacing.large),
+                          padding: EdgeInsets.only(top: spacing.medium),
                           child: _AttachmentRow(
                             attachment: attachment!,
                             downloadCallback: downloadCallback,
@@ -219,37 +229,40 @@ class _AttachmentRow extends StatelessWidget {
       child: InkWell(
         borderRadius: radius.minimal,
         onTap: downloadCallback,
-        child: Row(
-          children: [
-            if (customThumbnail != null)
-              SizedBox(
-                width: 44,
-                height: 44,
-                child: customThumbnail,
-              )
-            else
-              ZetaIcon(
-                extensionIcon('.${attachment.fileType}'),
-                color: iconColor('.${attachment.fileType}'),
-                size: 40,
-              ),
-            SizedBox(width: spacing.small),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  attachment.name,
-                  style: ZetaTextStyles.bodySmall,
+        child: Padding(
+          padding: EdgeInsets.all(spacing.minimum),
+          child: Row(
+            children: [
+              if (customThumbnail != null)
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: customThumbnail,
+                )
+              else
+                ZetaIcon(
+                  extensionIcon('.${attachment.fileType}'),
+                  color: iconColor('.${attachment.fileType}'),
+                  size: 40,
                 ),
-                if (attachment.size != null)
+              SizedBox(width: spacing.small),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Text(
-                    attachment.size!,
-                    style: ZetaTextStyles.bodySmall.copyWith(color: colors.textSubtle),
+                    attachment.name,
+                    style: ZetaTextStyles.bodySmall,
                   ),
-              ],
-            ),
-          ],
+                  if (attachment.size != null)
+                    Text(
+                      attachment.size!,
+                      style: ZetaTextStyles.bodySmall.copyWith(color: colors.textSubtle),
+                    ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

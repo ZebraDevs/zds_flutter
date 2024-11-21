@@ -21,6 +21,7 @@ class _CommentDemoState extends State<CommentDemo> {
               size: ZetaAvatarSize.xxxs,
             ),
             author: 'John Doe',
+            downloadCallback: () {},
             comment: 'This is a comment',
             onReply: () {},
             replySemanticLabel: 'Reply to comment',
