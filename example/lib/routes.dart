@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:zds_flutter_example/pages/components/chat.dart';
+import 'package:zds_flutter_example/pages/components/comment.dart';
 
 import 'home.dart';
 import 'pages/assets/animations.dart';
@@ -91,6 +93,14 @@ final kRoutes = {
     const DemoRoute(
       title: 'Card Actions',
       child: CardActionsDemo(),
+    ),
+    const DemoRoute(
+      title: 'Chat',
+      child: ChatDemo(),
+    ),
+    const DemoRoute(
+      title: 'Comments',
+      child: CommentDemo(),
     ),
     const DemoRoute(
       title: 'Interactive Viewer',

@@ -5,6 +5,7 @@ export 'molecules/bottom_sheet.dart';
 export 'molecules/card_actions.dart';
 export 'molecules/card_header.dart';
 export 'molecules/check_button.dart';
+export 'molecules/comment.dart';
 export 'molecules/date_range_picker.dart';
 export 'molecules/date_time_picker.dart';
 export 'molecules/dropdown.dart';
