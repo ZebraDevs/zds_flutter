@@ -451,6 +451,7 @@ class ZdsChatAttachment {
     this.content,
     this.url,
     this.localPath,
+    this.size,
     this.id,
   });
 
@@ -461,6 +462,9 @@ class ZdsChatAttachment {
   ///
   /// If not provided, [name] will be parsed for extensions.
   final String? extension;
+
+  /// The size of the file
+  final String? size;
 
   /// Content of attachment encoded in base64.
   final String? content;
