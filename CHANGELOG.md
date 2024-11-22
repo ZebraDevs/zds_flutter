@@ -1,3 +1,9 @@
+## [2.0.0-alpha.4](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2024-11-22)
+
+### 🪲 Bug Fixes
+
+- Attachment names on comments now elipsize correctly ([#44](https://github.com/ZebraDevs/zds_flutter/issues/44)) ([6f26ea6](https://github.com/ZebraDevs/zds_flutter/commit/6f26ea6df2e2a3454660cbc784f5daaf86f23904))
+
 ## [2.0.0-alpha.3](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2024-11-22)
 
 ### ✨ New Features
