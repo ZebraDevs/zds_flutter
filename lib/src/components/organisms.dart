@@ -24,6 +24,7 @@ export 'organisms/properties_list.dart';
 export 'organisms/quill_editor/quill.dart';
 export 'organisms/radio_list.dart';
 export 'organisms/search_app_bar.dart';
+export 'organisms/selectable_widget.dart';
 export 'organisms/tab_scaffold.dart';
 export 'organisms/tags_list.dart';
 export 'organisms/temp_directory/resolver.dart' show clearUiTempDirectory;

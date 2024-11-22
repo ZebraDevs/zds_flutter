@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zds_flutter_example/pages/components/chat.dart';
 import 'package:zds_flutter_example/pages/components/comment.dart';
+import 'package:zds_flutter_example/pages/components/selectable_widget.dart';
 
 import 'home.dart';
 import 'pages/assets/animations.dart';
@@ -317,6 +318,10 @@ final kRoutes = {
     const DemoRoute(
       title: 'Nested Flow',
       child: NestedFlowDemo(),
+    ),
+    const DemoRoute(
+      title: 'SelectableWidget',
+      child: SelectableWidgetDemo(),
     ),
   ],
   'Assets': [
