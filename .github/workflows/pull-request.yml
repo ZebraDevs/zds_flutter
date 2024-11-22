@@ -22,7 +22,6 @@ jobs:
       - uses: ZebraDevs/flutter-code-quality@main
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          run-tests: false
           run-coverage: false
 
   check-secret:
@@ -34,7 +33,7 @@ jobs:
         id: check
         run: |
           echo "defined=true" >> $GITHUB_OUTPUT;
-          if [ "${{ secrets.FIREBASE_SERVICE_ACCOUNT_ZETA_DS }}" == '' ]; then
+          if [ "${{ secrets.FIREBASE_SERVICE_ACCOUNT_ZDS_FLUTTER }}" == '' ]; then
             echo "defined=false" >> $GITHUB_OUTPUT;
           fi
 

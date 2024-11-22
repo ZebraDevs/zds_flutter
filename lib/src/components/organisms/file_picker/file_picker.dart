@@ -1056,7 +1056,14 @@ class _MultiInputDialogState extends State<_MultiInputDialog> {
                         widget.textFields[index].value = value;
                       });
                     },
-                    onFieldSubmitted: (String value) => widget.textFields[index].value = value,
+                    onFieldSubmitted: (String value) {
+                      setState(() {
+                        widget.textFields[index].value = value;
+                      });
+                      if (isValid) {
+                        unawaited(Navigator.maybePop(context, widget.textFields));
+                      }
+                    },
                     validator: (String? value) => widget.onValidate?.call(widget.textFields[index]),
                     decoration: ZdsInputDecoration(
                       hintText: widget.textFields[index].hint,

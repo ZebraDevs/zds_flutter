@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import '../../../../zds_flutter.dart';
 import 'quill_toolbar.dart';
 
 /// A custom widget for the Quill editor.
@@ -91,7 +92,7 @@ class ZdsQuillEditor extends StatelessWidget {
         placeholder: placeholder,
         editorKey: editorKey,
       ),
-    );
+    ).semantics(identifier: 'TEXT_EDITOR');
 
     // If readOnly, return just editor
     if (readOnly) return editor;
