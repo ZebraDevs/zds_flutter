@@ -246,20 +246,26 @@ class _AttachmentRow extends StatelessWidget {
                   size: 40,
                 ),
               SizedBox(width: spacing.small),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    attachment.name,
-                    style: ZetaTextStyles.bodySmall,
-                  ),
-                  if (attachment.size != null)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Text(
-                      attachment.size!,
-                      style: ZetaTextStyles.bodySmall.copyWith(color: colors.textSubtle),
+                      attachment.name,
+                      style: ZetaTextStyles.bodySmall,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                ],
+                    if (attachment.size != null)
+                      Text(
+                        attachment.size!,
+                        style: ZetaTextStyles.bodySmall.copyWith(color: colors.textSubtle),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
+                ),
               ),
             ],
           ),
