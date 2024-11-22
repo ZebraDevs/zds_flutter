@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,6 +44,7 @@ class ZdsSelectableWidget extends StatefulWidget {
 
 class _ZdsSelectableWidgetState extends State<ZdsSelectableWidget> {
   bool isSelected = false;
+  Timer? _selectionTimer;
 
   void toggleSelection() {
     setState(() {
@@ -55,12 +58,19 @@ class _ZdsSelectableWidgetState extends State<ZdsSelectableWidget> {
   }
 
   @override
+  void dispose() {
+    _selectionTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (!(widget.copyable ?? false)) return widget.child;
     final zeta = Zeta.of(context).colors;
     return GestureDetector(
       child: ColoredBox(color: isSelected ? zeta.primary.surface : Colors.transparent, child: widget.child),
       onLongPress: () async {
+        if (isSelected) return;
         toggleSelection();
         if (isSelected) {
           var copiedText = widget.textToCopy;
@@ -88,8 +98,8 @@ class _ZdsSelectableWidgetState extends State<ZdsSelectableWidget> {
               ),
             ),
           );
+          _selectionTimer = Timer(const Duration(seconds: 4), toggleSelection);
         }
-        Future.delayed(const Duration(seconds: 4), toggleSelection);
       },
     );
   }
