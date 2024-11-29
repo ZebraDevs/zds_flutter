@@ -1,3 +1,10 @@
+## [2.0.0-alpha.5](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2024-11-29)
+
+### 🪲 Bug Fixes
+
+- onDelete now gets invoked correctly for ZdsComment ([#46](https://github.com/ZebraDevs/zds_flutter/issues/46)) ([b9cca28](https://github.com/ZebraDevs/zds_flutter/commit/b9cca284d6ced6e8d3732d8d0abcf3ca58e46fcf))
+- Voice notes can now be disabled without the assertion failing ([#46](https://github.com/ZebraDevs/zds_flutter/issues/46)) ([b9cca28](https://github.com/ZebraDevs/zds_flutter/commit/b9cca284d6ced6e8d3732d8d0abcf3ca58e46fcf))
+
 ## [2.0.0-alpha.4](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2024-11-22)
 
 ### 🪲 Bug Fixes
