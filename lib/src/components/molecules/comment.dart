@@ -112,7 +112,7 @@ class ZdsComment extends StatelessWidget {
                     ZdsSlidableAction(
                       icon: ZetaIcons.delete,
                       semanticLabel: deleteSemanticLabel,
-                      onPressed: (_) {},
+                      onPressed: (_) => onDelete!(),
                       backgroundColor: colors.surfaceNegativeSubtle,
                       foregroundColor: colors.error,
                     ),
