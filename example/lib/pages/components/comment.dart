@@ -23,9 +23,13 @@ class _CommentDemoState extends State<CommentDemo> {
             author: 'John Doe',
             downloadCallback: () {},
             comment: 'This is a comment',
-            onReply: () {},
+            onReply: () {
+              print('reply');
+            },
             replySemanticLabel: 'Reply to comment',
-            onDelete: () {},
+            onDelete: () {
+              print('delete');
+            },
             deleteSemanticLabel: 'Delete',
             timeStamp: '09:30 AM',
             attachment: ZdsChatAttachment(

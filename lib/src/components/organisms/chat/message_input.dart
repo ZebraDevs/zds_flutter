@@ -29,7 +29,7 @@ class ZdsMessageInput extends StatefulWidget {
     this.allowVoiceNotes = false,
     super.key,
   }) : assert(
-          allowVoiceNotes && voiceNoteFileName != null,
+          (allowVoiceNotes && voiceNoteFileName != null) || !allowVoiceNotes,
           'A value for voiceNoteFileName must be provided if allowVoiceNotes is enabled',
         );
 
