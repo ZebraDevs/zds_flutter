@@ -5,6 +5,119 @@
 - onDelete now gets invoked correctly for ZdsComment ([#46](https://github.com/ZebraDevs/zds_flutter/issues/46)) ([b9cca28](https://github.com/ZebraDevs/zds_flutter/commit/b9cca284d6ced6e8d3732d8d0abcf3ca58e46fcf))
 - Voice notes can now be disabled without the assertion failing ([#46](https://github.com/ZebraDevs/zds_flutter/issues/46)) ([b9cca28](https://github.com/ZebraDevs/zds_flutter/commit/b9cca284d6ced6e8d3732d8d0abcf3ca58e46fcf))
 
+## [2.0.0-alpha.4](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.5...v2.0.0-alpha.4) (2024-11-29)
+
+
+### ✨ New Features
+
+* Add selected date to calendar ([98c291d](https://github.com/ZebraDevs/zds_flutter/commit/98c291dcb4bc08b1397fe033bd64ae22d4786b9f))
+* Audio player feat: Camera view feat: Video player feat: Star rating feat: Interactive viewer feat: Speed scroll list fix: Add semantics to SplitTabNavigator chore: enable GitHub actions for code quality, preview, release fix: html viewer bugs chore: update dependencies chore: Update icons chore: Update flutter_quill  chore: Update translations ([8c86b9c](https://github.com/ZebraDevs/zds_flutter/commit/8c86b9ce527ea64124c4f675bb7752ee0f6144b2))
+* Flutter 3.24.3 upgrade ([#33](https://github.com/ZebraDevs/zds_flutter/issues/33)) ([588ec2f](https://github.com/ZebraDevs/zds_flutter/commit/588ec2f8f9b35e0c33b56d351031c8194335906a))
+* New Icons added - available, away, busy, do-no-disturb, offline, on-shift, star-circle ([#29](https://github.com/ZebraDevs/zds_flutter/issues/29)) ([a3e8857](https://github.com/ZebraDevs/zds_flutter/commit/a3e885753c20ea4cd33673538ea6bd7b7196af95))
+* **TM-38113:** Restructure Quill Editor ([b2450c6](https://github.com/ZebraDevs/zds_flutter/commit/b2450c6d93812f031c8945d18ce1671dd37ffc68))
+* **TM-48272:** Widget locator updated for quill editor ([7fc6bef](https://github.com/ZebraDevs/zds_flutter/commit/7fc6bef8b4e0d1239d57680eaf9977321683665c))
+* **TM-48504:** Creating custom widget having copying capability ([7fc6bef](https://github.com/ZebraDevs/zds_flutter/commit/7fc6bef8b4e0d1239d57680eaf9977321683665c))
+* Update to match internal repo ([#6](https://github.com/ZebraDevs/zds_flutter/issues/6)) ([8e04f23](https://github.com/ZebraDevs/zds_flutter/commit/8e04f238c831884750c1dafd08bef9ea060bf0d4))
+* **UX-1314:** Created comment component ([#41](https://github.com/ZebraDevs/zds_flutter/issues/41)) ([30395b0](https://github.com/ZebraDevs/zds_flutter/commit/30395b0427f64e9b9170f17ca80303ce05c1e8dd))
+
+
+### 🪲 Bug Fixes
+
+* [TM-34144] Changed the background color to white and added boundary to the cells ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-34144] Changed the background color to white and added boundary to the cells ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-34144] Code improvement-&gt; Changed the background color to primary surface color ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-34144] Code improvement-&gt; Changed the border width to 1.5 ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-42004] added flv to set ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-42004] added set to hold compress ext for videos ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-42004] added set to hold compress ext for videos ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-42004] optimized code to throw exception ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-42004] removed flv as supported file for compression ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-42170] Support links in table ([bceb856](https://github.com/ZebraDevs/zds_flutter/commit/bceb8562fe1b05c5df7a9eeab85177b07874e4b1))
+* [TM-42460] Reset resetPreferredOrientations after camera dispose ([bceb856](https://github.com/ZebraDevs/zds_flutter/commit/bceb8562fe1b05c5df7a9eeab85177b07874e4b1))
+* [TM-42654] Show error message when maximum attachment limit reached ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-42656] Allow Multiple Gif files to send in filePicker ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* [TM-43252] taking time to capture an image ([bceb856](https://github.com/ZebraDevs/zds_flutter/commit/bceb8562fe1b05c5df7a9eeab85177b07874e4b1))
+* [TM-43436] Angular bracket "&lt;&gt;" is not in alignment in Quill editor ([64b4688](https://github.com/ZebraDevs/zds_flutter/commit/64b4688f4d222e8c416d9c5ee5b325baa7a8df4a))
+* Adding All supporting tag in table to render the data correctly as precautionary action ([f49b1e3](https://github.com/ZebraDevs/zds_flutter/commit/f49b1e3f9164fac5f1cfb0380f0e9d5851b6aba8))
+* adding more files to pubignore to make package smaller ([#8](https://github.com/ZebraDevs/zds_flutter/issues/8)) ([5ec2561](https://github.com/ZebraDevs/zds_flutter/commit/5ec2561fa85162993a343dc29bad6d29a65900f5))
+* adjusted the divider color ([6a36df0](https://github.com/ZebraDevs/zds_flutter/commit/6a36df01411253c279b2661daeef759ca957ebb2))
+* Attachment names on comments now elipsize correctly ([#44](https://github.com/ZebraDevs/zds_flutter/issues/44)) ([6f26ea6](https://github.com/ZebraDevs/zds_flutter/commit/6f26ea6df2e2a3454660cbc784f5daaf86f23904))
+* Fix progress theme and use latest version of the Zeta ([#38](https://github.com/ZebraDevs/zds_flutter/issues/38)) ([fba70d7](https://github.com/ZebraDevs/zds_flutter/commit/fba70d7e95de0067a59767288a15514715d7f631))
+* move quill-default color picker from dialog to bottom-sheet ([6a36df0](https://github.com/ZebraDevs/zds_flutter/commit/6a36df01411253c279b2661daeef759ca957ebb2))
+* onDelete now gets invoked correctly for ZdsComment ([#46](https://github.com/ZebraDevs/zds_flutter/issues/46)) ([b9cca28](https://github.com/ZebraDevs/zds_flutter/commit/b9cca284d6ced6e8d3732d8d0abcf3ca58e46fcf))
+* quill editor color picker improvements ([#36](https://github.com/ZebraDevs/zds_flutter/issues/36)) ([6a36df0](https://github.com/ZebraDevs/zds_flutter/commit/6a36df01411253c279b2661daeef759ca957ebb2))
+* remove voice note option on web ([#7](https://github.com/ZebraDevs/zds_flutter/issues/7)) ([f30410e](https://github.com/ZebraDevs/zds_flutter/commit/f30410e2fb6ad84de85c72c13fdef5efaf7c3937))
+* Table inserted in project notes/task notes along with data is not properly shown at Project Notes/Task Notes summery section. ([eb65465](https://github.com/ZebraDevs/zds_flutter/commit/eb6546568380a23481525392f9588c805534b761))
+* TM-32728 Locator Issue for MYWORK app part 1 ([64b4688](https://github.com/ZebraDevs/zds_flutter/commit/64b4688f4d222e8c416d9c5ee5b325baa7a8df4a))
+* TM-42498 : MYWORK 23.11.1 [UK/ROI] - Embedded Wistia videos not visible on mobile app ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* **TM-43187:** QWalk - take a photo on iPad is sideways ([0734b24](https://github.com/ZebraDevs/zds_flutter/commit/0734b24746eafdbc7de06b9c804cd20e274f3724))
+* **TM-43864:** Fixed delta formatting in new version of quill-editor ([43016ef](https://github.com/ZebraDevs/zds_flutter/commit/43016efc70d37cfb4bcce30f16ff5f42d026ad9a))
+* **TM-47414:** Setting the value of the text box on submit and closing the dialog box ([7fc6bef](https://github.com/ZebraDevs/zds_flutter/commit/7fc6bef8b4e0d1239d57680eaf9977321683665c))
+* update interval time picker to work with flutter 3.22.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* update quill. Readonly prop moves to quill controller ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* update to flutter 3.22.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* update to zeta_flutter 0.9.1 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* update zeta_flutter ([#16](https://github.com/ZebraDevs/zds_flutter/issues/16)) ([695064b](https://github.com/ZebraDevs/zds_flutter/commit/695064b6c0f8d82b8fdc4917cbe153d8178429e3))
+* Updated file picker to delegate the file picked events ([e1ed80d](https://github.com/ZebraDevs/zds_flutter/commit/e1ed80d97bc21350bd8d0a25c9778ab97c47b86b))
+* Updated zetaColors. ([2f49efb](https://github.com/ZebraDevs/zds_flutter/commit/2f49efb75517ec0e6250920f78a17c2fe7dfedaa))
+* Voice notes can now be disabled without the assertion failing ([#46](https://github.com/ZebraDevs/zds_flutter/issues/46)) ([b9cca28](https://github.com/ZebraDevs/zds_flutter/commit/b9cca284d6ced6e8d3732d8d0abcf3ca58e46fcf))
+* **WFM-37003:** validation in inputdialog onSetText ([1c81bf4](https://github.com/ZebraDevs/zds_flutter/commit/1c81bf4efab79efd65d332a71bfff78809d472c3))
+
+
+### 📈 Documentation
+
+* Update documentation and remove some ignores ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* update version in readme ([9faea52](https://github.com/ZebraDevs/zds_flutter/commit/9faea52f13576be130a957cd56690232bec2c8d3))
+
+
+### ⛓️ Dependencies
+
+* manually updating some deps ([9faea52](https://github.com/ZebraDevs/zds_flutter/commit/9faea52f13576be130a957cd56690232bec2c8d3))
+* Update dependencies ([5a4d182](https://github.com/ZebraDevs/zds_flutter/commit/5a4d1820163362d000525449ddb87a38342fa038))
+* update package dependencies. deps:  zeta_flutter: 0.8.1 ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* Update to intl 0.19.0 ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* Update to latest version of image_editor_plus ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* Update to latest version of zeta ([#39](https://github.com/ZebraDevs/zds_flutter/issues/39)) ([de00607](https://github.com/ZebraDevs/zds_flutter/commit/de006075835ee1ee31947053771d5782377c5949))
+* update to latest zeta_flutter ([64b4688](https://github.com/ZebraDevs/zds_flutter/commit/64b4688f4d222e8c416d9c5ee5b325baa7a8df4a))
+* zeta_flutter 0.10.0 ([#25](https://github.com/ZebraDevs/zds_flutter/issues/25)) ([2f49efb](https://github.com/ZebraDevs/zds_flutter/commit/2f49efb75517ec0e6250920f78a17c2fe7dfedaa))
+
+
+### 🧪 Tests
+
+* **TM-48505:** Widget Test case for custom widget having copying capability ([7fc6bef](https://github.com/ZebraDevs/zds_flutter/commit/7fc6bef8b4e0d1239d57680eaf9977321683665c))
+
+
+### 🧹 Miscellaneous Chores
+
+* add version to example app ([#23](https://github.com/ZebraDevs/zds_flutter/issues/23)) ([bc84094](https://github.com/ZebraDevs/zds_flutter/commit/bc84094aa02434c60ff309ecccc31a12322d4a40))
+* autoformat json files ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* dependencies ([#18](https://github.com/ZebraDevs/zds_flutter/issues/18)) ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* Fix routes in example app ([609fc83](https://github.com/ZebraDevs/zds_flutter/commit/609fc83e5083afa00e386cbbd8fd6b481802fc64))
+* Internal updates ([#43](https://github.com/ZebraDevs/zds_flutter/issues/43)) ([7fc6bef](https://github.com/ZebraDevs/zds_flutter/commit/7fc6bef8b4e0d1239d57680eaf9977321683665c))
+* **main:** release 1.1.0 ([#5](https://github.com/ZebraDevs/zds_flutter/issues/5)) ([c96367c](https://github.com/ZebraDevs/zds_flutter/commit/c96367ce86d8e2acfd01df77b24b5bb4a0532e19))
+* **main:** release 1.2.0 ([#9](https://github.com/ZebraDevs/zds_flutter/issues/9)) ([c06d8b6](https://github.com/ZebraDevs/zds_flutter/commit/c06d8b618e99e2803882251493e0bb362a016b6c))
+* **main:** release 1.2.1 ([#13](https://github.com/ZebraDevs/zds_flutter/issues/13)) ([10be88e](https://github.com/ZebraDevs/zds_flutter/commit/10be88e9aa3912774aae04c396cacb81f88a36af))
+* **main:** release 1.2.2 ([#15](https://github.com/ZebraDevs/zds_flutter/issues/15)) ([5d9d296](https://github.com/ZebraDevs/zds_flutter/commit/5d9d296cfc84119efdae8c2d541d2a60af7a2f36))
+* **main:** release 1.2.3 ([#17](https://github.com/ZebraDevs/zds_flutter/issues/17)) ([b93033f](https://github.com/ZebraDevs/zds_flutter/commit/b93033f07f9207764f0da900dacbba0e56e91ae3))
+* **main:** release 1.2.4 ([#19](https://github.com/ZebraDevs/zds_flutter/issues/19)) ([054de9c](https://github.com/ZebraDevs/zds_flutter/commit/054de9cb2dd286a72fad020520faeba8f3c4fd1d))
+* **main:** release 1.2.5 ([#22](https://github.com/ZebraDevs/zds_flutter/issues/22)) ([377078e](https://github.com/ZebraDevs/zds_flutter/commit/377078eb40f7c3d29bf194cd75a0b20cda6a94ac))
+* **main:** release 1.3.0 ([#28](https://github.com/ZebraDevs/zds_flutter/issues/28)) ([2fd4ec1](https://github.com/ZebraDevs/zds_flutter/commit/2fd4ec1d90fc77debf28ec863a94e22da6f2eef6))
+* **main:** release 1.3.1 ([#31](https://github.com/ZebraDevs/zds_flutter/issues/31)) ([b16f4cc](https://github.com/ZebraDevs/zds_flutter/commit/b16f4cc8455173b3a45e807334fd3295fcdec8ed))
+* **main:** release 2.0.0-alpha.1 ([#35](https://github.com/ZebraDevs/zds_flutter/issues/35)) ([79b0061](https://github.com/ZebraDevs/zds_flutter/commit/79b00613447ac2025f370df504d6745a70e71cf8))
+* **main:** release 2.0.0-alpha.2 ([#37](https://github.com/ZebraDevs/zds_flutter/issues/37)) ([6440318](https://github.com/ZebraDevs/zds_flutter/commit/64403184e6a14e2b913eee2f2b2d432112fa1d18))
+* **main:** release 2.0.0-alpha.3 ([#42](https://github.com/ZebraDevs/zds_flutter/issues/42)) ([1365251](https://github.com/ZebraDevs/zds_flutter/commit/1365251a299ba46e9c4f631c5eaab6121d520250))
+* **main:** release 2.0.0-alpha.4 ([#45](https://github.com/ZebraDevs/zds_flutter/issues/45)) ([8c85877](https://github.com/ZebraDevs/zds_flutter/commit/8c85877596dfed2fe3311898975c13355adbb0a3))
+* **main:** release 2.0.0-alpha.5 ([#47](https://github.com/ZebraDevs/zds_flutter/issues/47)) ([3752c60](https://github.com/ZebraDevs/zds_flutter/commit/3752c60415859f686d97154533a20cf2ffd48089))
+* release 1.3.1 ([b53e34b](https://github.com/ZebraDevs/zds_flutter/commit/b53e34b4385c75e8a3cef07bcbec8375d6cf0fab))
+* release 2.0.0-alpha.2 ([2914c8a](https://github.com/ZebraDevs/zds_flutter/commit/2914c8a4acc186210e43e70770b1655d9f07a843))
+* release-as 2.0.0-alpha.3 ([890ff1a](https://github.com/ZebraDevs/zds_flutter/commit/890ff1a0dd4cfcd54fa542a4a125e490c0b362e3))
+* release-as 2.0.0-alpha.4 ([0fa6b73](https://github.com/ZebraDevs/zds_flutter/commit/0fa6b736cdf4872dee9f0d3c734bbf209235eae8))
+* Update licenses ([8fa214e](https://github.com/ZebraDevs/zds_flutter/commit/8fa214e71dcc0dd8309aca6c9787e45782c345f9))
+* Update to match internal repo ([#10](https://github.com/ZebraDevs/zds_flutter/issues/10)) ([f2b67c0](https://github.com/ZebraDevs/zds_flutter/commit/f2b67c0d2c3a9241c563cbca0943d57da39d209b))
+* update to match internal repo ([#14](https://github.com/ZebraDevs/zds_flutter/issues/14)) ([e5c7ca7](https://github.com/ZebraDevs/zds_flutter/commit/e5c7ca715b562c435e97cf4c14bc7327953fa702))
+* update to match internal repo ([#24](https://github.com/ZebraDevs/zds_flutter/issues/24)) ([bceb856](https://github.com/ZebraDevs/zds_flutter/commit/bceb8562fe1b05c5df7a9eeab85177b07874e4b1))
+* update to upstream 543c885bc118726b5d56f39ddc6179f4304c1f65  ([#26](https://github.com/ZebraDevs/zds_flutter/issues/26)) ([64b4688](https://github.com/ZebraDevs/zds_flutter/commit/64b4688f4d222e8c416d9c5ee5b325baa7a8df4a))
+
 ## [2.0.0-alpha.4](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2024-11-22)
 
 ### 🪲 Bug Fixes
