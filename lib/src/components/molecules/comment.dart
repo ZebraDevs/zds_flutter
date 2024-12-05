@@ -8,8 +8,8 @@ import '../../../zds_flutter.dart';
 class ZdsComment extends StatelessWidget {
   /// Constructs a [ZdsComment] widget.
   const ZdsComment({
-    required this.comment,
-    required this.author,
+    this.author,
+    this.comment,
     this.isReply = false,
     this.avatar,
     this.timeStamp,
@@ -31,7 +31,7 @@ class ZdsComment extends StatelessWidget {
         );
 
   /// The comment text.
-  final String comment;
+  final String? comment;
 
   /// The avatar widget to display.
   /// Should be a [ZetaAvatar]
@@ -41,7 +41,7 @@ class ZdsComment extends StatelessWidget {
   final String? timeStamp;
 
   /// The author of the comment.
-  final String author;
+  final String? author;
 
   /// Whether the comment is a reply.
   /// If this is true, the reply action will automatically be hidden.
@@ -142,12 +142,13 @@ class ZdsComment extends StatelessWidget {
                                 padding: EdgeInsets.only(right: spacing.small),
                                 child: avatar,
                               ),
-                            Text(
-                              author,
-                              style: ZetaTextStyles.labelLarge.copyWith(
-                                fontWeight: FontWeight.w500,
+                            if (author != null)
+                              Text(
+                                author!,
+                                style: ZetaTextStyles.labelLarge.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
                             const Spacer(),
                             if (timeStamp != null)
                               Padding(
@@ -160,17 +161,18 @@ class ZdsComment extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: spacing.small,
-                          left: spacing.minimum,
-                          right: spacing.minimum,
+                      if (comment != null)
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: spacing.small,
+                            left: spacing.minimum,
+                            right: spacing.minimum,
+                          ),
+                          child: Text(
+                            comment!,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ),
-                        child: Text(
-                          comment,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ),
                       if (attachment != null)
                         Padding(
                           padding: EdgeInsets.only(top: spacing.medium),
