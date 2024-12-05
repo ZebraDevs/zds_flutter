@@ -23,7 +23,7 @@ Add the following as a dependency in your pubspec.yaml file.
 <!-- x-release-please-start-version -->
 
 ```yaml
-zds-flutter: ^2.0.0-alpha.5
+zds-flutter: ^2.0.1-alpha.5
 ```
 
 <!-- x-release-please-end -->
