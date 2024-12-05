@@ -1,3 +1,9 @@
+## [2.0.0-alpha.6](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2024-12-05)
+
+### 🪲 Bug Fixes
+
+- Made comment and author text optional for ZdsComment ([#50](https://github.com/ZebraDevs/zds_flutter/issues/50)) ([34ef2f5](https://github.com/ZebraDevs/zds_flutter/commit/34ef2f5789e5d246255b8ceca7c66befe46f6efc))
+
 ## [2.0.0-alpha.5](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2024-11-29)
 
 ### 🪲 Bug Fixes
