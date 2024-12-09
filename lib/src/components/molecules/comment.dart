@@ -21,6 +21,8 @@ class ZdsComment extends StatelessWidget {
     this.deleteSemanticLabel,
     this.replySemanticLabel,
     this.attachmentThumbnail,
+    this.menuItems,
+    this.onMenuItemSelected,
   })  : assert(
           onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
           'replySemanticLabel must be not null if onReply is defined',
@@ -72,6 +74,14 @@ class ZdsComment extends StatelessWidget {
   /// The custom thumbnail to display for the attachment.
   final Widget? attachmentThumbnail;
 
+  /// The menu items to display in the popup menu.
+  /// If defined, the pouup menu will be shown when the user taps on the comment.
+  final List<ZdsPopupMenuItem<int>>? menuItems;
+
+  /// The callback to be called when a menu item is selected.
+  /// Menu items must be given a value for the callback to trigger.
+  final ValueChanged<int>? onMenuItemSelected;
+
   @override
   Widget build(BuildContext context) {
     final colors = Zeta.of(context).colors;
@@ -117,73 +127,94 @@ class ZdsComment extends StatelessWidget {
                       foregroundColor: colors.error,
                     ),
                 ],
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: colors.surfaceDefault,
-                    border: Border(
-                      bottom: BorderSide(
-                        color: colors.borderSubtle,
-                      ),
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: spacing.large,
-                    horizontal: spacing.medium,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: spacing.minimum),
-                        child: Row(
-                          children: [
-                            if (avatar != null)
-                              Padding(
-                                padding: EdgeInsets.only(right: spacing.small),
-                                child: avatar,
-                              ),
-                            if (author != null)
-                              Text(
-                                author!,
-                                style: ZetaTextStyles.labelLarge.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            const Spacer(),
-                            if (timeStamp != null)
-                              Padding(
-                                padding: EdgeInsets.only(left: spacing.small),
-                                child: Text(
-                                  timeStamp!,
-                                  style: ZetaTextStyles.bodyXSmall.copyWith(color: colors.textSubtle),
-                                ),
-                              ),
-                          ],
+                child: Builder(
+                  builder: (context) {
+                    final child = Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: colors.borderSubtle,
+                          ),
                         ),
                       ),
-                      if (comment != null)
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: spacing.small,
-                            left: spacing.minimum,
-                            right: spacing.minimum,
+                      padding: EdgeInsets.symmetric(
+                        vertical: spacing.large,
+                        horizontal: spacing.medium,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: spacing.minimum),
+                            child: Row(
+                              children: [
+                                if (avatar != null)
+                                  Padding(
+                                    padding: EdgeInsets.only(right: spacing.small),
+                                    child: avatar,
+                                  ),
+                                if (author != null)
+                                  Text(
+                                    author!,
+                                    style: ZetaTextStyles.labelLarge.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                const Spacer(),
+                                if (timeStamp != null)
+                                  Padding(
+                                    padding: EdgeInsets.only(left: spacing.small),
+                                    child: Text(
+                                      timeStamp!,
+                                      style: ZetaTextStyles.bodyXSmall.copyWith(color: colors.textSubtle),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
-                          child: Text(
-                            comment!,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                      if (attachment != null)
-                        Padding(
-                          padding: EdgeInsets.only(top: spacing.medium),
-                          child: _AttachmentRow(
-                            attachment: attachment!,
-                            downloadCallback: downloadCallback,
-                            customThumbnail: attachmentThumbnail,
-                          ),
-                        ),
-                    ],
-                  ),
+                          if (comment != null)
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: spacing.small,
+                                left: spacing.minimum,
+                                right: spacing.minimum,
+                              ),
+                              child: Text(
+                                comment!,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          if (attachment != null)
+                            Padding(
+                              padding: EdgeInsets.only(top: spacing.medium),
+                              child: _AttachmentRow(
+                                attachment: attachment!,
+                                downloadCallback: downloadCallback,
+                                customThumbnail: attachmentThumbnail,
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                    if (menuItems != null) {
+                      return ZdsPopupMenu<int>(
+                        menuPosition: ZdsPopupMenuPosition.topRight,
+                        verticalOffset: spacing.small,
+                        items: menuItems ?? [],
+                        onSelected: onMenuItemSelected,
+                        builder: (context, open) {
+                          return Material(
+                            color: colors.surfaceDefault,
+                            child: InkWell(
+                              onTap: open,
+                              child: child,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return ColoredBox(color: colors.surfaceDefault, child: child);
+                  },
                 ),
               );
             },
@@ -206,7 +237,8 @@ class ZdsComment extends StatelessWidget {
       ..add(DiagnosticsProperty<ZdsChatAttachment?>('attachment', attachment))
       ..add(ObjectFlagProperty<VoidCallback?>.has('downloadCallback', downloadCallback))
       ..add(StringProperty('deleteSemanticLabel', deleteSemanticLabel))
-      ..add(StringProperty('replySemanticLabel', replySemanticLabel));
+      ..add(StringProperty('replySemanticLabel', replySemanticLabel))
+      ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected));
   }
 }
 
