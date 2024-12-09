@@ -4,6 +4,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../../zds_flutter.dart';
 
+/// Defines the position of a [ZdsPopupMenu].
+enum ZdsPopupMenuPosition {
+  /// The menu will appear at the top left of the button.
+  topLeft,
+
+  /// The menu will appear at the top right of the button.
+  topRight,
+
+  /// The menu will appear at the bottom left below the button.
+  bottomLeft,
+
+  /// The menu will appear at the bottom right below the button.
+  bottomRight,
+}
+
 /// Creates a popup menu.
 ///
 /// This component is typically used to display more options that do not fit in a [ZdsAppBar], or to show more
@@ -34,15 +49,19 @@ import '../../../../zds_flutter.dart';
 /// See also:
 ///
 ///  * [ZdsPopupMenuItem], used to create the options that appear in this menu.
+///  * [ZdsPopupMenuPosition], defines the position of a menu.
 ///  * [ZdsAppBar], where this component is used to show more actions that do not typically fit.
 class ZdsPopupMenu<T> extends StatefulWidget {
   /// Creates a pop up menu.
   const ZdsPopupMenu({
     required this.builder,
     required this.items,
+    this.menuPosition = ZdsPopupMenuPosition.bottomLeft,
     super.key,
     this.onCanceled,
     this.onSelected,
+    this.verticalOffset = 0,
+    this.horizontalOffset = 0,
   }) : assert(items.length > 0, 'Must have at least 1 item');
 
   /// Defines how this component will appear on screen.
@@ -60,6 +79,15 @@ class ZdsPopupMenu<T> extends StatefulWidget {
   /// A function called whenever an item is selected.
   final PopupMenuItemSelected<T>? onSelected;
 
+  /// The position of the menu.
+  final ZdsPopupMenuPosition menuPosition;
+
+  /// The vertical offset of the menu.
+  final double verticalOffset;
+
+  /// The horizontal offset of the menu.
+  final double horizontalOffset;
+
   /// A function called whenever the user doesn't select an item and instead closes the menu.
   final PopupMenuCanceled? onCanceled;
 
@@ -71,7 +99,10 @@ class ZdsPopupMenu<T> extends StatefulWidget {
     properties
       ..add(ObjectFlagProperty<Widget Function(BuildContext p1, VoidCallback p2)>.has('builder', builder))
       ..add(ObjectFlagProperty<PopupMenuItemSelected<T>?>.has('onSelected', onSelected))
-      ..add(ObjectFlagProperty<PopupMenuCanceled?>.has('onCanceled', onCanceled));
+      ..add(ObjectFlagProperty<PopupMenuCanceled?>.has('onCanceled', onCanceled))
+      ..add(EnumProperty<ZdsPopupMenuPosition>('menuPosition', menuPosition))
+      ..add(DoubleProperty('verticalOffset', verticalOffset))
+      ..add(DoubleProperty('horizontalOffset', horizontalOffset));
   }
 }
 
@@ -89,9 +120,26 @@ class ZdsPopupMenuState<T> extends State<ZdsPopupMenu<T>> {
         }
         final RenderBox button = _key.currentContext!.findRenderObject()! as RenderBox;
         final RenderBox overlay = Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
+
+        final double verticalPosition = switch (widget.menuPosition) {
+          ZdsPopupMenuPosition.topLeft || ZdsPopupMenuPosition.topRight => 0,
+          ZdsPopupMenuPosition.bottomLeft || ZdsPopupMenuPosition.bottomRight => button.size.height,
+        };
+
+        final double horizontalPosition = switch (widget.menuPosition) {
+          ZdsPopupMenuPosition.topLeft || ZdsPopupMenuPosition.bottomLeft => 0,
+          ZdsPopupMenuPosition.topRight || ZdsPopupMenuPosition.bottomRight => button.size.width,
+        };
+
         final RelativeRect position = RelativeRect.fromRect(
           Rect.fromPoints(
-            button.localToGlobal(Offset(0, button.size.height), ancestor: overlay),
+            button.localToGlobal(
+              Offset(
+                horizontalPosition + widget.horizontalOffset,
+                verticalPosition + widget.verticalOffset,
+              ),
+              ancestor: overlay,
+            ),
             button.localToGlobal(
               button.size.bottomRight(Offset.zero) + Offset(0, button.size.height),
               ancestor: overlay,

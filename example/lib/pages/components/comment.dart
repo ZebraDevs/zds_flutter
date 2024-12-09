@@ -22,6 +22,29 @@ class _CommentDemoState extends State<CommentDemo> {
             ),
             author: 'John Doe',
             downloadCallback: () {},
+            onMenuItemSelected: (val) {
+              print(val);
+            },
+            menuItems: [
+              ZdsPopupMenuItem(
+                value: 1,
+                child: Row(
+                  children: [
+                    Icon(ZdsIcons.delete),
+                    Text('Delete'),
+                  ],
+                ),
+              ),
+              ZdsPopupMenuItem(
+                value: 2,
+                child: Row(
+                  children: [
+                    Icon(ZetaIcons.reply),
+                    Text('Reply'),
+                  ],
+                ),
+              ),
+            ],
             comment: 'This is a comment',
             onReply: () {
               print('reply');
