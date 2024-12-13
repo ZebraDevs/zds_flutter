@@ -4,6 +4,13 @@
 
 - Made comment and author text optional for ZdsComment ([#50](https://github.com/ZebraDevs/zds_flutter/issues/50)) ([34ef2f5](https://github.com/ZebraDevs/zds_flutter/commit/34ef2f5789e5d246255b8ceca7c66befe46f6efc))
 
+## [2.1.0-alpha.6](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.6...v2.1.0-alpha.6) (2024-12-13)
+
+
+### ✨ New Features
+
+* **UX-1342:** Added popup menu to ZdsComment ([#52](https://github.com/ZebraDevs/zds_flutter/issues/52)) ([f153842](https://github.com/ZebraDevs/zds_flutter/commit/f153842a3acd1486de961e167c2c049af4f3eac3))
+
 ## [2.0.0-alpha.5](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2024-11-29)
 
 ### 🪲 Bug Fixes
