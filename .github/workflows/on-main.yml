@@ -24,6 +24,10 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
       - uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          channel: stable
+          flutter-version: 3.24.x # TODO UX-1347
       - name: Setup flutter
         run: flutter pub get
       - name: Lint and format
