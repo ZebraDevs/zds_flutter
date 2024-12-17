@@ -1,4 +1,4 @@
-## [2.0.0-alpha.7](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.6...v2.1.0-alpha.6) (2024-12-13)
+## [2.0.0-alpha.7](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0-alpha.7...v2.0.0-alpha.7) (2024-12-17)
 
 ### ✨ New Features
 
