@@ -66,6 +66,7 @@ class ZdsSearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   const ZdsSearchAppBar({
     super.key,
     this.hintText,
+    this.searchboxSemanticIdentifier,
     this.onChange,
     this.onSubmit,
     this.leading,
@@ -131,6 +132,9 @@ class ZdsSearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   /// Set custom top padding .
   final double? topPadding;
 
+  /// Set semantic identifier for Search text field
+  final String? searchboxSemanticIdentifier;
+
   @override
   ZdsSearchAppBarState createState() => ZdsSearchAppBarState();
 
@@ -142,6 +146,7 @@ class ZdsSearchAppBar extends StatefulWidget implements PreferredSizeWidget {
     properties
       ..add(StringProperty('hintText', hintText))
       ..add(StringProperty('initValue', initValue))
+      ..add(StringProperty('searchboxSemanticIdentifier', searchboxSemanticIdentifier))
       ..add(ObjectFlagProperty<void Function(String value)?>.has('onChange', onChange))
       ..add(ObjectFlagProperty<void Function(String value)?>.has('onSubmit', onSubmit))
       ..add(ObjectFlagProperty<VoidCallback?>.has('onClear', onClear))
@@ -285,6 +290,7 @@ class ZdsSearchAppBarState extends State<ZdsSearchAppBar> {
               if (widget.leading != null) widget.leading!,
               Expanded(
                 child: ZdsSearchField(
+                  semanticIdentifier: widget.searchboxSemanticIdentifier ?? '',
                   key: _searchKey,
                   variant: ZdsSearchFieldVariant.outlined,
                   textFormFieldKey: _searchKey,

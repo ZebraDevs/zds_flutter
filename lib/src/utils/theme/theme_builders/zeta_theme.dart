@@ -67,9 +67,11 @@ extension AppBarColor on ZetaAppBarStyle {
         // Applying secondary color of color scheme
         return colorScheme.secondary;
       case ZetaAppBarStyle.surface:
+        // Applying surface color of color scheme
+        return colorScheme.surface;
       // ignore: deprecated_member_use_from_same_package
       case ZetaAppBarStyle.background:
-        // Applying surface color of color scheme
+        // Applying background color of color scheme
         return colorScheme.surface;
     }
   }
@@ -139,7 +141,7 @@ extension ZetaThemeBuilder on ZetaColorScheme {
       primaryTextTheme: primaryTextTheme,
       progressIndicatorTheme: progressIndicatorTheme(),
       radioTheme: radioThemeData(),
-      scaffoldBackgroundColor: surface,
+      scaffoldBackgroundColor: zetaColors.surfaceTertiary,
       searchBarTheme: searchBarTheme(textTheme),
       shadowColor: zetaColors.borderDisabled.withOpacity(0.7),
       sliderTheme: sliderTheme(),

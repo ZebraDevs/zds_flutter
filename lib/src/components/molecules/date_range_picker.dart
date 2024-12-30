@@ -2318,7 +2318,8 @@ class MonthItem extends StatefulWidget {
   ///
   /// See also:
   ///
-  ///  * [DragStartBehavior], which gives an example for the different behaviors.
+  ///  * [DragStartBehavior], which gives an example for
+  ///    the different behaviors.
   final DragStartBehavior dragStartBehavior;
 
   @override

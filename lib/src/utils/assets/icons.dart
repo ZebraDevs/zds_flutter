@@ -378,28 +378,20 @@ const Map<String, IconData> _extensions = <String, IconData>{
 /// Spreadsheets: #1F802E
 /// Misc: #888888
 Color iconColor(String ext, {BuildContext? context}) {
-  final String ext1;
-  if (!ext.contains('.')) {
-    ext1 = '.$ext';
-  } else if (ext.split('.').length > 2) {
-    ext1 = ".${ext.split('.').last}";
-  } else {
-    ext1 = ext;
-  }
+  final ZetaColors? colors = context != null ? Zeta.of(context).colors : null;
+  final String ext1 = ext._safeExt;
   switch (ext1) {
     case '.doc':
     case '.docx':
     case '.rtf':
     case '.ttf':
     case '.txt':
-      if (context != null) return Zeta.of(context).colors.blue;
-      return '#376FC9'.colorFromHex();
+      return colors?.blue ?? const Color(0xFF376FC9);
 
     case '.pdf':
     case '.ppt':
     case '.pptx':
-      if (context != null) return Zeta.of(context).colors.red;
-      return '#DB0D00'.colorFromHex();
+      return colors?.red ?? const Color(0xFFDB0D00);
 
     case '.gif':
     case '.ico':
@@ -409,8 +401,7 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.tif':
     case '.tiff':
     case '.bmp':
-      if (context != null) return Zeta.of(context).colors.orange;
-      return '#F56200'.colorFromHex();
+      return colors?.orange ?? const Color(0xFFF56200);
 
     case '.flv':
     case '.m4v':
@@ -418,8 +409,7 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.mpeg':
     case '.mpg':
     case '.qt':
-      if (context != null) return Zeta.of(context).colors.purple;
-      return '#6F00C6'.colorFromHex();
+      return colors?.purple ?? const Color(0xFF6F00C6);
 
     case '.au':
     case '.avi':
@@ -427,39 +417,27 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.mp3':
     case '.mp4':
     case '.wav':
-      if (context != null) return Zeta.of(context).colors.teal;
-      return '#70A300'.colorFromHex();
+      return colors?.teal ?? const Color(0xFF70A300);
 
     case '.csv':
     case '.xml':
     case '.xls':
     case '.xlsx':
-      if (context != null) return Zeta.of(context).colors.green;
-      return '#1F802E'.colorFromHex();
+      return colors?.green ?? const Color(0xFF1F802E);
 
     case '.htm':
     case '.rar':
     case '.url':
     case '.zip':
-      if (context != null) return Zeta.of(context).colors.warm;
-
-      return '#888888'.colorFromHex();
+      return colors?.warm ?? const Color(0xFF888888);
 
     default:
-      return '#888888'.colorFromHex();
+      return colors?.iconDefault ?? const Color(0xFF1d1e23);
   }
 }
 
 IconData extensionIcon(String ext) {
-  final String ext1;
-  if (!ext.contains('.')) {
-    ext1 = '.$ext';
-  } else if (ext.split('.').length > 2) {
-    ext1 = ".${ext.split('.').last}";
-  } else {
-    ext1 = ext;
-  }
-  return _extensions[ext1] ?? ZdsIcons.file_o;
+  return _extensions[ext._safeExt] ?? ZdsIcons.file_o;
 }
 
 extension IconDataFromExt on String {
@@ -478,22 +456,23 @@ extension IconDataFromExt on String {
   ///
   /// If the string does not contain a file type, or contains an unrecognized filetype, [ZdsIcons.file_o] will be returned.
   IconData fileIcon() {
-    return _resolveFileIcon(this);
+    if (isEmpty) return ZdsIcons.file_o;
+    return _extensions[_safeExt] ?? ZdsIcons.file_o;
   }
 
+  @Deprecated('Use fileIconColor instead.')
   Icon coloredFileIcon() {
-    return Icon(_resolveFileIcon(this), color: _resolveFileColor(this));
+    return Icon(fileIcon(), color: iconColor(_safeExt));
   }
-}
 
-IconData _resolveFileIcon(String? name) {
-  if (name == null) return ZdsIcons.file_o;
-  final String ext = path.extension(name).toLowerCase();
-  return _extensions[ext] ?? ZdsIcons.file_o;
-}
+  Color fileIconColor(BuildContext context) {
+    return iconColor(_safeExt, context: context);
+  }
 
-Color? _resolveFileColor(String? name) {
-  if (name == null) return null;
-  final String ext = path.extension(name).toLowerCase();
-  return iconColor(ext);
+  String get _safeExt {
+    final s = toLowerCase();
+    if (_extensions.keys.contains(s)) return s;
+    final ext = path.extension(s);
+    return ext.isNotEmpty ? ext : s;
+  }
 }

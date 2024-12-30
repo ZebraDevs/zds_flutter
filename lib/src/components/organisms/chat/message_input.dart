@@ -17,6 +17,7 @@ class ZdsMessageInput extends StatefulWidget {
     this.onChange,
     this.onSubmit,
     this.onUploadFiles,
+    this.onUploadError,
     this.initialValue = '',
     this.allowAttachments = false,
     this.msgLimit,
@@ -27,9 +28,10 @@ class ZdsMessageInput extends StatefulWidget {
     this.maxVoiceNoteDuration = const Duration(minutes: 1),
     this.voiceNoteFileName,
     this.allowVoiceNotes = false,
+    this.postProcessors = const [ZdsFileCompressPostProcessor()],
     super.key,
   }) : assert(
-          allowVoiceNotes && voiceNoteFileName != null,
+          (allowVoiceNotes && voiceNoteFileName != null) || !allowVoiceNotes,
           'A value for voiceNoteFileName must be provided if allowVoiceNotes is enabled',
         );
 
@@ -54,6 +56,14 @@ class ZdsMessageInput extends StatefulWidget {
 
   /// Called whenever a file is uploaded.
   final void Function(List<XFile> file)? onUploadFiles;
+
+  /// Called when file uploading fales.
+  final void Function(BuildContext context, ZdsFilePickerConfig config, Exception exception)? onUploadError;
+
+  /// List of processes a file should undergo post getting picked from file picker
+  ///
+  /// Defaults to [ZdsFileCompressPostProcessor()]
+  final List<ZdsFilePostProcessor> postProcessors;
 
   /// Enables voice notes to be sent as messages
   ///
@@ -113,7 +123,14 @@ class ZdsMessageInput extends StatefulWidget {
       ..add(IntProperty('msgLimit', msgLimit))
       ..add(IntProperty('maxAttachSize', maxAttachSize))
       ..add(IterableProperty<String>('allowedFileTypes', allowedFileTypes))
-      ..add(IntProperty('maxPixelSize', maxPixelSize));
+      ..add(IntProperty('maxPixelSize', maxPixelSize))
+      ..add(
+        ObjectFlagProperty<void Function(BuildContext context, ZdsFilePickerConfig config, Exception exception)?>.has(
+          'onUploadError',
+          onUploadError,
+        ),
+      )
+      ..add(IterableProperty<ZdsFilePostProcessor>('postProcessors', postProcessors));
   }
 }
 
@@ -174,23 +191,6 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
   void dispose() {
     _messageController.dispose();
     super.dispose();
-  }
-
-  void _showErrorToast(String message) {
-    ScaffoldMessenger.of(context).showZdsToast(
-      ZdsToast(
-        title: Text(message),
-        actions: [
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            },
-            icon: const Icon(ZdsIcons.close),
-          ),
-        ],
-        color: ZdsToastColors.error,
-      ),
-    );
   }
 
   void _onFileSelected(XFile? file) {
@@ -331,6 +331,8 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                                     controller: _inlineController,
                                     optionDisplay: ZdsOptionDisplay.plain,
                                     displayStyle: ZdsFilePickerDisplayStyle.horizontal,
+                                    postProcessors: widget.postProcessors,
+                                    onError: widget.onUploadError,
                                     onChange: (files) {
                                       _onFilesChanged([...files]);
                                       _inlineController.items.clear();
@@ -387,44 +389,43 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
         backgroundColor: zetaColors.surfacePrimary,
         context: context,
         builder: (_) {
-          return Material(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: 48,
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(ZdsIcons.close, size: 24),
-                        onPressed: Navigator.of(context).pop,
-                        color: zetaColors.iconSubtle,
-                      ),
-                      Text(
-                        ComponentStrings.of(context).get('ATTACHMENTS', 'Attachments'),
-                        style: themeData.textTheme.headlineMedium,
-                      ),
-                      const SizedBox(width: 48),
-                    ],
+          return Scaffold(
+            body: Material(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height: 48,
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(ZdsIcons.close, size: 24),
+                          onPressed: Navigator.of(context).pop,
+                          color: zetaColors.iconSubtle,
+                        ),
+                        Text(
+                          ComponentStrings.of(context).get('ATTACHMENTS', 'Attachments'),
+                          style: themeData.textTheme.headlineMedium,
+                        ),
+                        const SizedBox(width: 48),
+                      ],
+                    ),
                   ),
-                ),
-                ZdsFilePicker(
-                  useCard: false,
-                  config: _moreConfig,
-                  showSelected: false,
-                  controller: modalController,
-                  onChange: (files) {
-                    if (files.isNotEmpty) Navigator.of(context).pop(files.first);
-                  },
-                  onError: (context, fileConfig, exception) {
-                    if (exception is FilePickerException) {
-                      _showErrorToast(exception.type.message(context, args: exception.args));
-                    }
-                  },
-                ).paddingOnly(top: 24, bottom: 24),
-              ],
+                  ZdsFilePicker(
+                    useCard: false,
+                    config: _moreConfig,
+                    showSelected: false,
+                    controller: modalController,
+                    onChange: (files) {
+                      if (files.isNotEmpty) Navigator.of(context).pop(files.first);
+                    },
+                    onError: widget.onUploadError,
+                    postProcessors: widget.postProcessors,
+                  ).paddingOnly(top: 24, bottom: 24),
+                ],
+              ),
             ),
           );
         },

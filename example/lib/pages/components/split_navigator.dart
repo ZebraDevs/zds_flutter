@@ -39,6 +39,10 @@ class _SplitNavigatorDemoState extends State<SplitNavigatorDemo> {
                 ? ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 56),
                     child: Scaffold(
+                      appBar: AppBar(
+                        titleSpacing: 0,
+                        centerTitle: true,
+                      ),
                       body: ZdsVerticalNav(
                         barWidth: 56,
                         items: items,
@@ -60,6 +64,7 @@ class _SplitNavigatorDemoState extends State<SplitNavigatorDemo> {
               },
               primaryWidget: Scaffold(
                 appBar: AppBar(
+                  leading: context.isTablet() ? SizedBox.shrink() : null,
                   titleSpacing: 0,
                   centerTitle: true,
                   title: const Text('Primary'),
@@ -68,18 +73,22 @@ class _SplitNavigatorDemoState extends State<SplitNavigatorDemo> {
                   right: false,
                   child: ZdsList.builder(
                     itemCount: 20,
+                    padding: EdgeInsets.all(14),
                     itemBuilder: (context, index) {
-                      return ZdsListTile(
-                        title: Text('Feed ${index + 1}'),
-                        onTap: () {
-                          final route = ZdsNoAnimationPageRouteBuilder(
-                            builder: (context) {
-                              return FeedPage(feedTitle: 'Feed ${index + 1}');
-                            },
-                          );
+                      return ZdsCard(
+                        padding: EdgeInsets.zero,
+                        child: ZdsListTile(
+                          title: Text('Feed ${index + 1}'),
+                          onTap: () {
+                            final route = ZdsNoAnimationPageRouteBuilder(
+                              builder: (context) {
+                                return FeedPage(feedTitle: 'Feed ${index + 1}');
+                              },
+                            );
 
-                          ZdsSplitNavigator.pushDetails(context, route);
-                        },
+                            ZdsSplitNavigator.pushDetails(context, route);
+                          },
+                        ),
                       );
                     },
                   ),

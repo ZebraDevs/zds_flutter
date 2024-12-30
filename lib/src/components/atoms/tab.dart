@@ -7,7 +7,7 @@ import '../molecules/tab_bar.dart';
 /// A [Tab] with Zebra styling.
 class ZdsTab extends StatelessWidget {
   /// Creates a [ZdsResponsiveTabBar] or [ZdsTabBar] tab. At least one of [icon], [label], or [child] must not be null
-  const ZdsTab({super.key, this.icon, this.label, this.child, this.semanticLabel})
+  const ZdsTab({super.key, this.icon, this.label, this.child, this.semanticLabel, this.semanticIdentifier})
       : assert(
           icon != null || label != null || child != null,
           'At least one of icon, label, or child must be defined.',
@@ -31,10 +31,14 @@ class ZdsTab extends StatelessWidget {
   /// Semantic label for tab.
   final String? semanticLabel;
 
+  /// Semantic label for tab.
+  final String? semanticIdentifier;
+
   @override
   Widget build(BuildContext context) {
     return Semantics(
       label: semanticLabel,
+      identifier: semanticIdentifier ?? '',
       child: Tab(
         icon: icon,
         text: label,
@@ -49,6 +53,7 @@ class ZdsTab extends StatelessWidget {
     super.debugFillProperties(properties);
     properties
       ..add(StringProperty('label', label))
-      ..add(StringProperty('semanticLabel', semanticLabel));
+      ..add(StringProperty('semanticLabel', semanticLabel))
+      ..add(StringProperty('semanticIdentifier', semanticIdentifier));
   }
 }

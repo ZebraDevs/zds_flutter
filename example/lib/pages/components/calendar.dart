@@ -28,7 +28,6 @@ class _CalendarDemoState extends State<CalendarDemo> {
                 child: const Text('increase day')),
             ZdsCalendar(
               selectedDay: focusedDate,
-              showSelectedDateHeader: true,
               events: [
                 CalendarEvent(id: 'a', date: DateTime.now()),
                 CalendarEvent(id: 'b', date: DateTime.now().subtract(const Duration(days: 1))),
@@ -44,7 +43,6 @@ class _CalendarDemoState extends State<CalendarDemo> {
             ),
             const SizedBox(height: 50),
             ZdsCalendar.monthly(
-              showSelectedDateHeader: true,
               isRangeSelectable: true,
               events: [
                 CalendarEvent(id: 'a', date: DateTime.now()),
@@ -59,7 +57,6 @@ class _CalendarDemoState extends State<CalendarDemo> {
               height: 50,
             ),
             ZdsCalendar.weekly(
-              showSelectedDateHeader: true,
               startingDayOfWeek: StartingDayOfWeek.thursday,
               initialSelectedDay: DateTime(currentDate.year, currentDate.month, currentDate.day + 1),
               events: [
@@ -78,7 +75,6 @@ class _CalendarDemoState extends State<CalendarDemo> {
             const SizedBox(height: 50),
             ZdsCalendar.weekly(
               initialSelectedWeek: DateTime(2022, 09, 10),
-              showSelectedDateHeader: true,
               startingDayOfWeek: StartingDayOfWeek.wednesday,
               showAllButton: true,
               events: const [],
@@ -92,7 +88,6 @@ class _CalendarDemoState extends State<CalendarDemo> {
             ),
             const SizedBox(height: 50),
             ZdsCalendar.monthly(
-              showSelectedDateHeader: true,
               headerPadding: const EdgeInsets.fromLTRB(4, 14, 8, 14),
               events: [
                 CalendarEvent(id: 'a', date: DateTime.now()),

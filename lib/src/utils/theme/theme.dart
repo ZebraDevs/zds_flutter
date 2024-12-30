@@ -11,7 +11,7 @@ ZdsBottomBarThemeData buildZdsBottomBarThemeData(BuildContext context) {
     shadows: <BoxShadow>[
       BoxShadow(
         offset: const Offset(0, -1),
-        color: themeData.colorScheme.onSurface.withOpacity(0.1),
+        color: Zeta.of(context).colors.textDefault.withOpacity(0.1),
         blurRadius: 2,
       ),
     ],

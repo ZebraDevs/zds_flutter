@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter_quill/src/widgets/toolbar/buttons/alignment/select_alignment_buttons.dart';
-import 'package:flutter_quill/src/widgets/toolbar/buttons/arrow_indicated_list_button.dart';
 import 'package:flutter_quill/translations.dart';
 
 import '../../../../zds_flutter.dart';
@@ -236,7 +234,6 @@ class ZdsQuillToolbar extends QuillToolbar {
     final showCenterAlignment = toolbarOptions.contains(QuillToolbarOption.centerAlignment);
     final showRightAlignment = toolbarOptions.contains(QuillToolbarOption.rightAlignment);
     final showJustifyAlignment = toolbarOptions.contains(QuillToolbarOption.justifyAlignment);
-    final showAlignmentButtons = showLeftAlignment || showCenterAlignment || showRightAlignment || showJustifyAlignment;
 
     final showDirection = toolbarOptions.contains(QuillToolbarOption.direction);
     final showSubscript = toolbarOptions.contains(QuillToolbarOption.subscript);
@@ -321,351 +318,353 @@ class ZdsQuillToolbar extends QuillToolbar {
               ),
               child: Material(
                 color: effectiveColor,
-                child: QuillToolbarArrowIndicatedButtonList(
-                  axis: Axis.horizontal,
-                  buttons: [
-                    if (showUndo)
-                      QuillToolbarHistoryButton(
-                        controller: controller,
-                        isUndo: true,
-                        options: QuillToolbarHistoryButtonOptions(
-                          iconButtonFactor: toolbarSectionSpacing,
-                          iconData: Icons.undo_outlined,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.undo],
-                        ),
-                      ),
-                    if (showRedo) ...<Widget>[
-                      QuillToolbarHistoryButton(
-                        controller: controller,
-                        isUndo: false,
-                        options: QuillToolbarHistoryButtonOptions(
-                          iconData: Icons.redo_outlined,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.redo],
-                        ),
-                      ),
-                      if (showDividers)
-                        QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                    ],
-                    if (showHeaderStyle) ...<Widget>[
-                      QuillToolbarSelectHeaderStyleButtons(
-                        controller: controller,
-                        options: QuillToolbarSelectHeaderStyleButtonsOptions(
-                          tooltip: buttonTooltips[QuillToolbarOption.headerStyle],
-                          axis: axis,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                        ),
-                      ),
-                      if (showDividers)
-                        QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                    ],
-                    if (showBoldButton)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.bold,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.format_bold,
-                          iconSize: effectiveIconSize,
-                          tooltip: buttonTooltips[QuillToolbarOption.bold],
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                        ),
-                      ),
-                    if (showSubscript)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.subscript,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.subscript,
-                          iconSize: effectiveIconSize,
-                          tooltip: buttonTooltips[QuillToolbarOption.subscript],
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                        ),
-                      ),
-                    if (showSuperscript)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.superscript,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.superscript,
-                          iconSize: effectiveIconSize,
-                          tooltip: buttonTooltips[QuillToolbarOption.superscript],
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                        ),
-                      ),
-                    if (showItalicButton)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.italic,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.format_italic,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          tooltip: buttonTooltips[QuillToolbarOption.italic],
-                          afterButtonPressed: afterButtonPressed,
-                        ),
-                      ),
-                    if (showUnderLineButton)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.underline,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.format_underline,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.underline],
-                        ),
-                      ),
-                    if (showStrikeThrough)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.strikeThrough,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.format_strikethrough,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.strikeThrough],
-                        ),
-                      ),
-                    if (showSmallButton)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.small,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.format_size,
-                          iconSize: effectiveIconSize,
-                          tooltip: buttonTooltips[QuillToolbarOption.small],
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                        ),
-                      ),
-                    if (showInlineCode)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.inlineCode,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.code,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.inlineCode],
-                        ),
-                      ),
-                    if (showDividers) QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                    if (showColorButton)
-                      ZdsQuillToolbarColorButton(
-                        controller: controller,
-                        isBackground: false,
-                        options: QuillToolbarColorButtonOptions(
-                          iconData: Icons.color_lens,
-                          iconSize: effectiveIconSize,
-                          tooltip: buttonTooltips[QuillToolbarOption.color],
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                        ),
-                      ),
-                    if (showBackgroundColorButton)
-                      ZdsQuillToolbarColorButton(
-                        controller: controller,
-                        isBackground: true,
-                        options: QuillToolbarColorButtonOptions(
-                          iconData: Icons.format_color_fill,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.backgroundColor],
-                        ),
-                      ),
-                    if (showClearFormat)
-                      QuillToolbarClearFormatButton(
-                        controller: controller,
-                        options: QuillToolbarBaseButtonOptions(
-                          iconData: Icons.format_clear,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.clearFormat],
-                        ),
-                      ),
-                    if (embedButtons != null)
-                      for (final EmbedButtonBuilder builder in embedButtons)
-                        builder(controller, effectiveIconSize, effectiveIconTheme, dialogTheme),
-                    if (showDividers &&
-                        isButtonGroupShown[0] &&
-                        (isButtonGroupShown[1] ||
-                            isButtonGroupShown[2] ||
-                            isButtonGroupShown[3] ||
-                            isButtonGroupShown[4] ||
-                            isButtonGroupShown[5]))
-                      QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                    if (showAlignmentButtons)
-                      QuillToolbarSelectAlignmentButtons(
-                        controller: controller,
-                        options: QuillToolbarSelectAlignmentButtonOptions(
-                          tooltips: QuillSelectAlignmentValues(
-                            leftAlignment: buttonTooltips[QuillToolbarOption.leftAlignment] ?? context.loc.alignLeft,
-                            centerAlignment:
-                                buttonTooltips[QuillToolbarOption.centerAlignment] ?? context.loc.alignCenter,
-                            rightAlignment: buttonTooltips[QuillToolbarOption.rightAlignment] ?? context.loc.alignRight,
-                            justifyAlignment:
-                                buttonTooltips[QuillToolbarOption.justifyAlignment] ?? context.loc.justifyWinWidth,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      if (showUndo)
+                        QuillToolbarHistoryButton(
+                          controller: controller,
+                          isUndo: true,
+                          options: QuillToolbarHistoryButtonOptions(
+                            iconButtonFactor: toolbarSectionSpacing,
+                            iconData: Icons.undo_outlined,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.undo],
                           ),
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          showLeftAlignment: showLeftAlignment,
-                          showCenterAlignment: showCenterAlignment,
-                          showRightAlignment: showRightAlignment,
-                          showJustifyAlignment: showJustifyAlignment,
-                          afterButtonPressed: afterButtonPressed,
                         ),
-                      ),
-                    if (showDirection)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.rtl,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.format_textdirection_r_to_l,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.direction],
+                      if (showRedo) ...<Widget>[
+                        QuillToolbarHistoryButton(
+                          controller: controller,
+                          isUndo: false,
+                          options: QuillToolbarHistoryButtonOptions(
+                            iconData: Icons.redo_outlined,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.redo],
+                          ),
                         ),
-                      ),
-                    if (showDividers &&
-                        isButtonGroupShown[1] &&
-                        (isButtonGroupShown[2] ||
-                            isButtonGroupShown[3] ||
-                            isButtonGroupShown[4] ||
-                            isButtonGroupShown[5]))
-                      QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                    if (showDividers &&
-                        showHeaderStyle &&
-                        isButtonGroupShown[2] &&
-                        (isButtonGroupShown[3] || isButtonGroupShown[4] || isButtonGroupShown[5]))
-                      QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                    if (showListNumbers)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.ol,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.format_list_numbered,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.numberList],
+                        if (showDividers)
+                          QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
+                      ],
+                      if (showHeaderStyle) ...<Widget>[
+                        QuillToolbarSelectHeaderStyleButtons(
+                          controller: controller,
+                          options: QuillToolbarSelectHeaderStyleButtonsOptions(
+                            tooltip: buttonTooltips[QuillToolbarOption.headerStyle],
+                            axis: axis,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                          ),
                         ),
-                      ),
-                    if (showListBullets)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.ul,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.format_list_bulleted,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.bullets],
+                        if (showDividers)
+                          QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
+                      ],
+                      if (showBoldButton)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.bold,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.format_bold,
+                            iconSize: effectiveIconSize,
+                            tooltip: buttonTooltips[QuillToolbarOption.bold],
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                          ),
                         ),
-                      ),
-                    if (showListCheck)
-                      QuillToolbarToggleCheckListButton(
-                        controller: controller,
-                        options: QuillToolbarToggleCheckListButtonOptions(
-                          iconData: Icons.check_box,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.checkBox],
+                      if (showSubscript)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.subscript,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.subscript,
+                            iconSize: effectiveIconSize,
+                            tooltip: buttonTooltips[QuillToolbarOption.subscript],
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                          ),
                         ),
-                      ),
-                    if (showCodeBlock)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.codeBlock,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.code,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.codeBlock],
+                      if (showSuperscript)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.superscript,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.superscript,
+                            iconSize: effectiveIconSize,
+                            tooltip: buttonTooltips[QuillToolbarOption.superscript],
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                          ),
                         ),
-                      ),
-                    if (showDividers && isButtonGroupShown[3] && (isButtonGroupShown[4] || isButtonGroupShown[5]))
-                      QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                    if (showQuote)
-                      QuillToolbarToggleStyleButton(
-                        attribute: Attribute.blockQuote,
-                        controller: controller,
-                        options: QuillToolbarToggleStyleButtonOptions(
-                          iconData: Icons.format_quote,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.quotes],
+                      if (showItalicButton)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.italic,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.format_italic,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            tooltip: buttonTooltips[QuillToolbarOption.italic],
+                            afterButtonPressed: afterButtonPressed,
+                          ),
                         ),
-                      ),
-                    if (showIndentIncrease)
-                      QuillToolbarIndentButton(
-                        controller: controller,
-                        isIncrease: true,
-                        options: QuillToolbarIndentButtonOptions(
-                          iconData: Icons.format_indent_increase,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.indentIncrease],
+                      if (showUnderLineButton)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.underline,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.format_underline,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.underline],
+                          ),
                         ),
-                      ),
-                    if (showIndentDecrease)
-                      QuillToolbarIndentButton(
-                        controller: controller,
-                        isIncrease: false,
-                        options: QuillToolbarIndentButtonOptions(
-                          iconData: Icons.format_indent_decrease,
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          tooltip: buttonTooltips[QuillToolbarOption.indentDecrease],
+                      if (showStrikeThrough)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.strikeThrough,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.format_strikethrough,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.strikeThrough],
+                          ),
                         ),
-                      ),
-                    if (showDividers && isButtonGroupShown[4] && isButtonGroupShown[5])
-                      QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                    if (showLink)
-                      QuillToolbarLinkStyleButton(
-                        controller: controller,
-                        options: QuillToolbarLinkStyleButtonOptions(
-                          iconSize: effectiveIconSize,
-                          iconTheme: effectiveIconTheme,
-                          dialogTheme: dialogTheme,
-                          afterButtonPressed: afterButtonPressed,
-                          linkRegExp: linkRegExp ??
-                              RegExp(
-                                r'(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?',
-                              ),
-                          linkDialogAction: linkDialogAction,
-                          tooltip: buttonTooltips[QuillToolbarOption.link],
+                      if (showSmallButton)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.small,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.format_size,
+                            iconSize: effectiveIconSize,
+                            tooltip: buttonTooltips[QuillToolbarOption.small],
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                          ),
                         ),
-                      ),
-                    if (customButtons.isNotEmpty)
+                      if (showInlineCode)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.inlineCode,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.code,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.inlineCode],
+                          ),
+                        ),
                       if (showDividers)
                         QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
-                    for (final customButton in customButtons)
-                      QuillToolbarCustomButton(
-                        options: customButton.options,
-                        controller: controller,
-                      ),
-                  ],
+                      if (showColorButton)
+                        ZdsQuillToolbarColorButton(
+                          controller: controller,
+                          isBackground: false,
+                          options: QuillToolbarColorButtonOptions(
+                            iconData: Icons.color_lens,
+                            iconSize: effectiveIconSize,
+                            tooltip: buttonTooltips[QuillToolbarOption.color],
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                          ),
+                        ),
+                      if (showBackgroundColorButton)
+                        ZdsQuillToolbarColorButton(
+                          controller: controller,
+                          isBackground: true,
+                          options: QuillToolbarColorButtonOptions(
+                            iconData: Icons.format_color_fill,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.backgroundColor],
+                          ),
+                        ),
+                      if (showClearFormat)
+                        QuillToolbarClearFormatButton(
+                          controller: controller,
+                          options: QuillToolbarBaseButtonOptions(
+                            iconData: Icons.format_clear,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.clearFormat],
+                          ),
+                        ),
+                      if (embedButtons != null)
+                        for (final EmbedButtonBuilder builder in embedButtons)
+                          builder(controller, effectiveIconSize, effectiveIconTheme, dialogTheme),
+                      if (showDividers &&
+                          isButtonGroupShown[0] &&
+                          (isButtonGroupShown[1] ||
+                              isButtonGroupShown[2] ||
+                              isButtonGroupShown[3] ||
+                              isButtonGroupShown[4] ||
+                              isButtonGroupShown[5]))
+                        QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
+                      if (showLeftAlignment)
+                        QuillToolbarToggleStyleButton(
+                          controller: controller,
+                          attribute: Attribute.leftAlignment,
+                        ),
+                      if (showCenterAlignment)
+                        QuillToolbarToggleStyleButton(
+                          controller: controller,
+                          attribute: Attribute.centerAlignment,
+                        ),
+                      if (showRightAlignment)
+                        QuillToolbarToggleStyleButton(
+                          controller: controller,
+                          attribute: Attribute.rightAlignment,
+                        ),
+                      if (showJustifyAlignment)
+                        QuillToolbarToggleStyleButton(
+                          controller: controller,
+                          attribute: Attribute.justifyAlignment,
+                        ),
+                      if (showDirection)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.rtl,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.format_textdirection_r_to_l,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.direction],
+                          ),
+                        ),
+                      if (showDividers &&
+                          isButtonGroupShown[1] &&
+                          (isButtonGroupShown[2] ||
+                              isButtonGroupShown[3] ||
+                              isButtonGroupShown[4] ||
+                              isButtonGroupShown[5]))
+                        QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
+                      if (showDividers &&
+                          showHeaderStyle &&
+                          isButtonGroupShown[2] &&
+                          (isButtonGroupShown[3] || isButtonGroupShown[4] || isButtonGroupShown[5]))
+                        QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
+                      if (showListNumbers)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.ol,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.format_list_numbered,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.numberList],
+                          ),
+                        ),
+                      if (showListBullets)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.ul,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.format_list_bulleted,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.bullets],
+                          ),
+                        ),
+                      if (showListCheck)
+                        QuillToolbarToggleCheckListButton(
+                          controller: controller,
+                          options: QuillToolbarToggleCheckListButtonOptions(
+                            iconData: Icons.check_box,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.checkBox],
+                          ),
+                        ),
+                      if (showCodeBlock)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.codeBlock,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.code,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.codeBlock],
+                          ),
+                        ),
+                      if (showDividers && isButtonGroupShown[3] && (isButtonGroupShown[4] || isButtonGroupShown[5]))
+                        QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
+                      if (showQuote)
+                        QuillToolbarToggleStyleButton(
+                          attribute: Attribute.blockQuote,
+                          controller: controller,
+                          options: QuillToolbarToggleStyleButtonOptions(
+                            iconData: Icons.format_quote,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.quotes],
+                          ),
+                        ),
+                      if (showIndentIncrease)
+                        QuillToolbarIndentButton(
+                          controller: controller,
+                          isIncrease: true,
+                          options: QuillToolbarIndentButtonOptions(
+                            iconData: Icons.format_indent_increase,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.indentIncrease],
+                          ),
+                        ),
+                      if (showIndentDecrease)
+                        QuillToolbarIndentButton(
+                          controller: controller,
+                          isIncrease: false,
+                          options: QuillToolbarIndentButtonOptions(
+                            iconData: Icons.format_indent_decrease,
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            tooltip: buttonTooltips[QuillToolbarOption.indentDecrease],
+                          ),
+                        ),
+                      if (showDividers && isButtonGroupShown[4] && isButtonGroupShown[5])
+                        QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
+                      if (showLink)
+                        QuillToolbarLinkStyleButton(
+                          controller: controller,
+                          options: QuillToolbarLinkStyleButtonOptions(
+                            iconSize: effectiveIconSize,
+                            iconTheme: effectiveIconTheme,
+                            dialogTheme: dialogTheme,
+                            afterButtonPressed: afterButtonPressed,
+                            linkRegExp: linkRegExp ??
+                                RegExp(
+                                  r'(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?',
+                                ),
+                            linkDialogAction: linkDialogAction,
+                            tooltip: buttonTooltips[QuillToolbarOption.link],
+                          ),
+                        ),
+                      if (customButtons.isNotEmpty)
+                        if (showDividers)
+                          QuillToolbarDivider(axis, color: sectionDividerColor, space: sectionDividerSpace),
+                      for (final customButton in customButtons)
+                        QuillToolbarCustomButton(
+                          options: customButton.options,
+                          controller: controller,
+                        ),
+                    ],
+                  ),
                 ),
               ),
             );

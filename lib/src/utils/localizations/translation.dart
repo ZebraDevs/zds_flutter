@@ -164,12 +164,9 @@ class ComponentStrings {
         // Check if strings with lang-code and country code are present
         strings = await rootBundle.loadString('$assetPath${locale.languageCode}_${locale.countryCode}.json');
       } catch (e) {
-        debugPrint(e.toString());
         try {
           strings = await rootBundle.loadString('$assetPath${locale.languageCode}.json');
-        } catch (e2) {
-          debugPrint(e2.toString());
-        }
+        } catch (_) {}
       }
     }
 
@@ -178,9 +175,7 @@ class ComponentStrings {
       try {
         // Check if strings with lang-code and country code are present
         strings = await rootBundle.loadString('$assetPath${locale.languageCode}.json');
-      } catch (e) {
-        debugPrint(e.toString());
-      }
+      } catch (_) {}
     }
 
     if (strings.isEmpty) {

@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use_from_same_package
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -188,8 +186,7 @@ class ZdsThemeData {
   ///
   /// Returns a new [ZdsThemeData] object from JSON data.
   factory ZdsThemeData.fromJsonString(String json) {
-    final x = ZdsThemeData.fromJson(_parseJson(json));
-    return x;
+    return ZdsThemeData.fromJson(_parseJson(json));
   }
 
   /// Asynchronously creates an instance of [ZdsThemeData] from the JSON file at the given [path].
@@ -282,6 +279,7 @@ class ZdsThemeData {
     return appBarStyleString == 'surface'
         ? ZetaAppBarStyle.surface
         : appBarStyleString == 'background'
+            // ignore: deprecated_member_use_from_same_package
             ? ZetaAppBarStyle.background
             : appBarStyleString == 'secondary'
                 ? ZetaAppBarStyle.secondary
@@ -356,6 +354,7 @@ class ZdsThemeData {
     switch (appBarStyle) {
       case ZetaAppBarStyle.surface:
         return 'surface';
+      // ignore: deprecated_member_use_from_same_package
       case ZetaAppBarStyle.background:
         return 'background';
       case ZetaAppBarStyle.secondary:
