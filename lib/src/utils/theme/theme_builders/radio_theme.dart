@@ -34,7 +34,7 @@ extension RadioExtension on ZetaColorScheme {
 
       /// Defines the overlay color for hover state of radio button.
       overlayColor: widgetStatePropertyResolver(
-        hoveredValue: zetaColors.secondary.hover,
+        hoveredValue: zetaColors.surfaceHover,
       ),
 
       /// Defines the size of the material tap target.

@@ -39,7 +39,7 @@ class ZdsInteractiveViewer extends StatefulWidget {
   final Clip clipBehavior;
 
   @override
-  State<ZdsInteractiveViewer> createState() => _ZdsInteractiveViewerState();
+  ZdsInteractiveViewerState createState() => ZdsInteractiveViewerState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -55,7 +55,7 @@ class ZdsInteractiveViewer extends StatefulWidget {
 ///
 /// This class manages the interaction and transformation of the child widget
 /// in a [ZdsInteractiveViewer].
-class _ZdsInteractiveViewerState extends State<ZdsInteractiveViewer> {
+class ZdsInteractiveViewerState extends State<ZdsInteractiveViewer> {
   late TransformationController _transformationController;
   double _scale = 1;
 

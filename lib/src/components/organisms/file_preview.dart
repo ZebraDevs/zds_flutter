@@ -103,11 +103,8 @@ class ZdsFilePreview extends StatelessWidget {
 
   Widget _getPreview(double size) {
     return file.content is GiphyGif
-        ? _getImage(
-            // ignore: avoid_dynamic_calls
-            Uri.parse(file.content.images!.previewGif.url as String),
-            size,
-          )
+        // ignore: avoid_dynamic_calls
+        ? _getImage(Uri.parse(file.content.images!.previewGif.url as String), size)
         : file.isImage()
             ? _getImage(file.content, size)
             : _getFile(file);

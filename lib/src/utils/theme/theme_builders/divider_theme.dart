@@ -19,7 +19,7 @@ extension ZetaDividerTheme on ZetaColorScheme {
       space: 1,
 
       /// Using a color from the zetaColors for the divider color
-      color: zetaColors.borderDisabled,
+      color: zetaColors.borderSubtle,
     );
   }
 }

@@ -14,6 +14,8 @@ extension ProgressIndicatorExtension on ZetaColorScheme {
     return ProgressIndicatorThemeData(
       /// Setting up the color.
       color: secondary,
+      linearTrackColor: Colors.transparent,
+      circularTrackColor: Colors.transparent,
     );
   }
 }

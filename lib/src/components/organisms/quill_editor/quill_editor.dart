@@ -82,8 +82,8 @@ class ZdsQuillEditor extends StatelessWidget {
     // Base editor configuration
     final editor = QuillEditor.basic(
       focusNode: readOnly ? FocusNode(canRequestFocus: false) : focusNode,
+      controller: controller,
       configurations: QuillEditorConfigurations(
-        controller: controller,
         keyboardAppearance: keyboardAppearance ?? Brightness.light,
         embedBuilders: embedBuilders,
         padding: padding,
@@ -92,7 +92,7 @@ class ZdsQuillEditor extends StatelessWidget {
         placeholder: placeholder,
         editorKey: editorKey,
       ),
-    );
+    ).semantics(identifier: 'TEXT_EDITOR');
 
     // If readOnly, return just editor
     if (readOnly) return editor;

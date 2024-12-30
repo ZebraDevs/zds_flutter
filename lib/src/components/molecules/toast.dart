@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../zds_flutter.dart';
 
-// TODO(colors): Add zeta
-
 /// Determines foreground and background color of toast to comply with design rules.
 ///
 /// * `success` = green background / grey foreground
@@ -106,9 +104,9 @@ class ZdsToast extends StatelessWidget implements PreferredSizeWidget {
       case ZdsToastColors.info:
         return colors.surfaceInfoSubtle;
       case ZdsToastColors.error:
-        return colors.surfaceNegativeSubtle;
+        return colors.error.shade10;
       case ZdsToastColors.primary:
-        return colors.surfacePrimarySubtle;
+        return colors.primary.shade10;
       case ZdsToastColors.dark:
         return colors.textDefault;
     }
@@ -121,7 +119,7 @@ class ZdsToast extends StatelessWidget implements PreferredSizeWidget {
       case ZdsToastColors.warning:
         return colors.orange.shade60;
       case ZdsToastColors.info:
-        return colors.purple.shade60;
+        return colors.surfaceInfo.shade60;
       case ZdsToastColors.error:
         return colors.error.shade60;
       case ZdsToastColors.primary:

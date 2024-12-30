@@ -125,7 +125,6 @@ class _VideoWidgetState extends State<ZdsVideoWidget> with AutomaticKeepAliveCli
           _videoController = VideoPlayerController.file(File.fromUri(sourceUri));
         default:
           _videoController = VideoPlayerController.networkUrl(sourceUri);
-          break;
       }
 
       _chewieController = ChewieController(

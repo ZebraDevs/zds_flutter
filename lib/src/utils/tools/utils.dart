@@ -65,6 +65,17 @@ extension DateTimeFormatter on DateTime {
   /// Returns the last day of the month in this [DateTime].
   DateTime get endOfMonth => DateTime(year, month + 1, 0);
 
+  /// Gets the first day of the month, set to midnight.
+  DateTime firstDayOfMonth() {
+    return DateTime(year, month);
+  }
+
+  /// Gets the last day of the month, set to midnight.
+  DateTime lastDayOfMonth() {
+    final int lastDay = DateTime(year, month + 1, 0).day;
+    return DateTime(year, month, lastDay);
+  }
+
   /// Gets the week number within a year.
   int get weekNumberOfYear {
     final int dayOfYear = int.parse(DateFormat('D').format(this));
@@ -211,7 +222,7 @@ int numberOfWeeksInYear(int year) {
 }
 
 /// DateTime extension on [String].
-extension StringParser on String {
+extension DateTimeParser on String {
   /// Creates a [DateTime] from this [DateFormat].template string.
   DateTime? parseDate([String template = 'MM/dd/yyyy KK:mm a', String locale = 'en_US']) {
     try {
@@ -497,6 +508,9 @@ extension DeviceTypeFromContext on BuildContext {
 
   /// True if device orientation is landscape.
   bool isLandscape() => MediaQuery.of(this).orientation == Orientation.landscape;
+
+  /// True if the selected brightness is dark
+  bool isDark() => Theme.of(this).brightness == Brightness.dark;
 }
 
 TextPainter _textPainter(String text, TextStyle style, int maxLines, [double maxWidth = double.infinity]) {

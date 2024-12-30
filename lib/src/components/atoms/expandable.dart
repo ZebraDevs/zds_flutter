@@ -45,7 +45,7 @@ class ZdsExpandable extends StatelessWidget {
 
   /// The color to be used for the fadeout gradient indicating the widget is collapsed.
   ///
-  /// Defaults to [ColorScheme.surface].
+  /// Defaults to Zeta.surfaceTertiary.
   final Color? color;
 
   @override
@@ -53,7 +53,7 @@ class ZdsExpandable extends StatelessWidget {
     return child.readMore(
       collapsedButtonText: collapsedButtonText,
       expandedButtonText: expandedButtonText,
-      color: color ?? Theme.of(context).colorScheme.surface,
+      color: color ?? Zeta.of(context).colors.surfaceTertiary,
       minHeight: minHeight,
     );
   }
@@ -77,6 +77,7 @@ class _ExpandableContainer extends StatefulWidget {
     required this.child,
     required this.color,
   });
+
   final String collapsedButtonText;
   final String expandedButtonText;
   final double minHeight;
@@ -85,6 +86,7 @@ class _ExpandableContainer extends StatefulWidget {
 
   @override
   _ExpandableContainerState createState() => _ExpandableContainerState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -185,6 +187,7 @@ class _ExpandableClip extends StatelessWidget {
     this.contentKey,
     this.isExpanded = false,
   });
+
   final Widget child;
   final Widget button;
   final double height;
@@ -246,6 +249,7 @@ class _ExpandableClip extends StatelessWidget {
 
 class _FadeOpacity extends StatelessWidget {
   const _FadeOpacity({required this.color});
+
   final Color color;
 
   @override
@@ -258,7 +262,7 @@ class _FadeOpacity extends StatelessWidget {
           stops: const <double>[0, 1],
           colors: <Color>[
             color,
-            color.withOpacity(0),
+            color.withOpacity(0.1),
           ],
         ),
       ),
@@ -290,7 +294,7 @@ extension ExpandableTextExtension on Widget {
   ///
   /// [collapsedButtonText] and [expandedButtonText] define the button's text for when the widget is collapsed and
   /// expanded respectively. [color] defines the color to be used for the fadeout gradient indicating the widget is
-  /// collapsed, and defaults to [ColorScheme.surface].
+  /// collapsed, and defaults to Zeta.of(context).colors.surfaceTertiary.
   ///
   /// See also:
   ///
@@ -313,7 +317,7 @@ extension ExpandableTextExtension on Widget {
               collapsedButtonText.isEmpty ? strings.get('READ_MORE', 'Read more') : collapsedButtonText,
           expandedButtonText: expandedButtonText.isEmpty ? strings.get('COLLAPSE', 'Collapse') : expandedButtonText,
           minHeight: minHeight,
-          color: color ?? Theme.of(context).colorScheme.surface,
+          color: color ?? Zeta.of(context).colors.surfaceTertiary,
           child: this,
         );
       },

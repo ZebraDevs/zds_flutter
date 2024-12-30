@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
-import '../../../zds_flutter.dart';
+import '../../../../zds_flutter.dart';
 
 /// Defines a header for a [ZdsBlockTable]
 class ZdsBlockTableHeader {
@@ -409,7 +409,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
               color: isSelected
                   ? themeData.colorScheme.secondary.withLight(
                       0.1,
-                      background: themeData.colorScheme.surface,
+                      background: zetaColors.surfaceTertiary,
                     )
                   : tableCell.backgroundColor ?? themeData.colorScheme.surface,
             ),

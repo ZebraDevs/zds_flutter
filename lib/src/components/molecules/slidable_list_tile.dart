@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 /// A widget that creates a slidable list tile, which can be slid right-to-left to reveal further actions.
 /// Takes a [child] which can be any widget, although a [Row] is recommended to use like so:
@@ -47,6 +48,7 @@ class ZdsSlidableListTile extends StatelessWidget {
     this.slideButtonWidth = 100,
     this.minHeight = 80,
     this.onTap,
+    this.elevation = 1,
     this.slideEnabled = true,
     this.semanticDescription,
     this.excludeSemantics = false,
@@ -54,6 +56,9 @@ class ZdsSlidableListTile extends StatelessWidget {
 
   /// The tile's main content. Usually a [Row]
   final Widget child;
+
+  /// The elevation of the tile. Defaults to 1.
+  final double elevation;
 
   /// The length of the tile. On vertical displays this usually is `MediaQuery.of(context).size.width`.
   /// Must exceed or be equal to [slideButtonWidth] * [actions].length.
@@ -94,7 +99,7 @@ class ZdsSlidableListTile extends StatelessWidget {
     final Map<CustomSemanticsAction, VoidCallback> semanticActions = <CustomSemanticsAction, VoidCallback>{};
 
     for (final ZdsSlidableAction action in <ZdsSlidableAction>[...?actions, ...?leadingActions]) {
-      semanticActions[CustomSemanticsAction(label: action.label)] = () {
+      semanticActions[CustomSemanticsAction(label: action.semanticLabel ?? action.label!)] = () {
         action.onPressed!(context);
       };
     }
@@ -122,6 +127,7 @@ class ZdsSlidableListTile extends StatelessWidget {
               )
             : null,
         child: Card(
+          elevation: elevation,
           shape: const ContinuousRectangleBorder(),
           color: backgroundColor ?? Theme.of(context).colorScheme.surface,
           margin: EdgeInsets.zero,
@@ -151,7 +157,8 @@ class ZdsSlidableListTile extends StatelessWidget {
       ..add(DiagnosticsProperty<bool>('slideEnabled', slideEnabled))
       ..add(DoubleProperty('minHeight', minHeight))
       ..add(StringProperty('semanticDescription', semanticDescription))
-      ..add(DiagnosticsProperty<bool>('excludeSemantics', excludeSemantics));
+      ..add(DiagnosticsProperty<bool>('excludeSemantics', excludeSemantics))
+      ..add(DoubleProperty('elevation', elevation));
   }
 }
 
@@ -192,14 +199,14 @@ class _ActionBuilderState extends State<_ActionBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
+    final zetaColors = Zeta.of(context).colors;
     return FlutterSlidableAction(
       key: _key,
       onPressed: widget.action.onPressed,
       label: size.height < 60 && widget.action.icon != null ? null : widget.action.label,
       icon: widget.action.icon,
-      backgroundColor: widget.action.backgroundColor ?? themeData.colorScheme.surface,
-      foregroundColor: widget.action.foregroundColor ?? themeData.colorScheme.onSurface,
+      backgroundColor: widget.action.backgroundColor ?? zetaColors.surfaceTertiary,
+      foregroundColor: widget.action.foregroundColor ?? zetaColors.textSubtle,
       autoClose: widget.action.autoclose,
       spacing: 16,
       padding: EdgeInsets.zero,
@@ -217,10 +224,10 @@ class _ActionBuilderState extends State<_ActionBuilder> {
 /// Defines an action that will be shown when sliding on a ZdsSlidableListTile.
 class ZdsSlidableAction {
   /// Defines an action that will be shown when sliding on a ZdsSlidableListTile.
-  /// [label] must not be empty.
   /// [backgroundColor], [foregroundColor], and [autoclose] must not be null
   ZdsSlidableAction({
-    required this.label,
+    this.label,
+    this.semanticLabel,
     this.onPressed,
     this.icon,
     this.backgroundColor,
@@ -228,13 +235,21 @@ class ZdsSlidableAction {
     this.autoclose = true,
     this.padding = EdgeInsets.zero,
     this.textOverflow,
-  }) : assert(label.isNotEmpty, 'Label must have content as it acts as the semantic button description');
+  }) : assert(
+          label != null || semanticLabel != null,
+          'Slideable actions must define either a label or semantic label to meet accessability standards.',
+        );
 
   /// Function called on press of the widget.
   final void Function(BuildContext)? onPressed;
 
-  /// The text that will be shown above the icon. It can't be empty.
-  final String label;
+  /// The text that will be shown above the icon.
+  /// If this is not set, [semanticLabel] must be set.
+  final String? label;
+
+  /// The semantic label for the action.
+  /// If this is not set, [label] must be set.
+  final String? semanticLabel;
 
   /// An optional icon that will be shown below the label.
   final IconData? icon;

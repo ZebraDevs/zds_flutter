@@ -23,7 +23,7 @@ extension ZetaCheckboxTheme on ZetaColorScheme {
       /// Setting up custom fill color for different material states.
       fillColor: widgetStatePropertyResolver(
         selectedValue: zetaColors.secondary,
-        hoveredValue: zetaColors.secondary.hover,
+        hoveredValue: zetaColors.secondary,
         focusedValue: zetaColors.secondary.hover,
         disabledValue: zetaColors.secondary.subtle,
         defaultValue: Colors.transparent,
@@ -35,13 +35,13 @@ extension ZetaCheckboxTheme on ZetaColorScheme {
       /// Setting up custom checkColor for different material states.
       checkColor: widgetStatePropertyResolver(
         selectedValue: onSecondary,
-        hoveredValue: secondary,
+        hoveredValue: onSecondary,
         defaultValue: zetaColors.secondary.onColor,
       ),
 
       /// Setting up custom overlayColor for different material states.
       overlayColor: widgetStatePropertyResolver(
-        hoveredValue: zetaColors.secondary.hover,
+        hoveredValue: zetaColors.surfaceHover,
       ),
 
       /// Setting tap target size to "padded".

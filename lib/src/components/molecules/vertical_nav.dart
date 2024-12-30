@@ -232,6 +232,7 @@ class _SelectedBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+    final colors = Zeta.of(context).colors;
     return SizedBox(
       width: width,
       height: height,
@@ -240,7 +241,7 @@ class _SelectedBackground extends StatelessWidget {
         padding: const EdgeInsets.only(left: 1),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: <Color>[themeData.colorScheme.surface, themeData.colorScheme.surface],
+            colors: <Color>[colors.surfaceTertiary, colors.surfacePrimary],
           ),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(4),

@@ -33,7 +33,7 @@ extension SwitchExtension on ZetaColorScheme {
 
       /// Defines the overlay [Color] for the [Switch] when it's hovered.
       overlayColor: widgetStatePropertyResolver(
-        hoveredValue: zetaColors.secondary,
+        hoveredValue: zetaColors.black.withOpacity(0.1),
       ),
 
       /// The smallest detectable part of [Switch] that can lead to a tap event.

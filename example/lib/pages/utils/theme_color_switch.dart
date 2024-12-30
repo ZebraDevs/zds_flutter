@@ -5,29 +5,22 @@ class ZetaThemeColorSwitch extends StatelessWidget {
   ZetaThemeColorSwitch({super.key});
 
   late final _themes = {
-    "default": ZetaThemeData(
-      primary: ZetaColorBase.blue,
-      secondary: ZetaColorBase.blue,
-    ),
+    "default": ZetaThemeData(),
     "teal": ZetaThemeData(
       identifier: 'teal',
       primary: ZetaColorBase.teal,
-      secondary: ZetaColorBase.teal,
     ),
     "yellow": ZetaThemeData(
       identifier: 'yellow',
       primary: ZetaColorBase.yellow,
-      secondary: ZetaColorBase.yellow,
     ),
     "red": ZetaThemeData(
       identifier: 'red',
       primary: ZetaColorBase.red,
-      secondary: ZetaColorBase.red,
     ),
     "purple": ZetaThemeData(
       identifier: 'purple',
       primary: ZetaColorBase.purple,
-      secondary: ZetaColorBase.purple,
     ),
   };
 
@@ -49,8 +42,7 @@ class ZetaThemeColorSwitch extends StatelessWidget {
         elevation: 0,
         isDense: true,
         alignment: Alignment.center,
-        icon: SizedBox(width: 0),
-        padding: EdgeInsets.all(ZetaSpacing.small),
+        icon: SizedBox(width: 8),
         dropdownColor: zeta.colors.borderDisabled,
         items: _themes.entries.map((e) {
           var zetaColors = primary(_themes[e.key]!).apply(contrast: zeta.contrast);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../utils/theme.dart';
+import '../../utils/tools/modifiers.dart';
 
 /// A large text button that can toggle between multiple values with Zds style.
 class ZdsToggleButton extends StatefulWidget with Diagnosticable {
@@ -135,9 +136,9 @@ class ZdsToggleButtonState extends State<ZdsToggleButton> {
                               color: (index == _selectedValue)
                                   ? widget.foregroundColor ??
                                       (widget.backgroundColor ?? Theme.of(context).colorScheme.primary).onColor
-                                  : Theme.of(context).colorScheme.onSurface,
+                                  : Zeta.of(context).colors.textSubtle,
                             ),
-                            child: Text(widget.values[index]),
+                            child: Text(widget.values[index]).semantics(identifier: 'TOGGLED_TAB_$index'),
                           ),
                         ),
                       ),
