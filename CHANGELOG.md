@@ -1,3 +1,43 @@
+## [2.0.0](https://github.com/ZebraDevs/zds_flutter/compare/v1.3.1...v2.0.0) (2024-12-30)
+
+### ✨ New Features
+
+- **UX-1342:** Added popup menu to ZdsComment ([#52](https://github.com/ZebraDevs/zds_flutter/issues/52)) ([f153842](https://github.com/ZebraDevs/zds_flutter/commit/f153842a3acd1486de961e167c2c049af4f3eac3))
+- **TM-48272:** Widget locator updated for quill editor ([7fc6bef](https://github.com/ZebraDevs/zds_flutter/commit/7fc6bef8b4e0d1239d57680eaf9977321683665c))
+- **TM-48504:** Creating custom widget having copying capability ([7fc6bef](https://github.com/ZebraDevs/zds_flutter/commit/7fc6bef8b4e0d1239d57680eaf9977321683665c))
+- Update to match internal repo ([#6](https://github.com/ZebraDevs/zds_flutter/issues/6)) ([8e04f23](https://github.com/ZebraDevs/zds_flutter/commit/8e04f238c831884750c1dafd08bef9ea060bf0d4))
+- **UX-1314:** Created comment component ([#41](https://github.com/ZebraDevs/zds_flutter/issues/41)) ([30395b0](https://github.com/ZebraDevs/zds_flutter/commit/30395b0427f64e9b9170f17ca80303ce05c1e8dd))
+- Flutter 3.24.3 upgrade ([#33](https://github.com/ZebraDevs/zds_flutter/issues/33)) ([588ec2f](https://github.com/ZebraDevs/zds_flutter/commit/588ec2f8f9b35e0c33b56d351031c8194335906a))
+-
+
+### 🪲 Bug Fixes
+
+- Made comment and author text optional for ZdsComment ([#50](https://github.com/ZebraDevs/zds_flutter/issues/50)) ([34ef2f5](https://github.com/ZebraDevs/zds_flutter/commit/34ef2f5789e5d246255b8ceca7c66befe46f6efc))
+- onDelete now gets invoked correctly for ZdsComment ([#46](https://github.com/ZebraDevs/zds_flutter/issues/46)) ([b9cca28](https://github.com/ZebraDevs/zds_flutter/commit/b9cca284d6ced6e8d3732d8d0abcf3ca58e46fcf))
+- Voice notes can now be disabled without the assertion failing ([#46](https://github.com/ZebraDevs/zds_flutter/issues/46)) ([b9cca28](https://github.com/ZebraDevs/zds_flutter/commit/b9cca284d6ced6e8d3732d8d0abcf3ca58e46fcf))
+- Attachment names on comments now elipsize correctly ([#44](https://github.com/ZebraDevs/zds_flutter/issues/44)) ([6f26ea6](https://github.com/ZebraDevs/zds_flutter/commit/6f26ea6df2e2a3454660cbc784f5daaf86f23904))
+- **TM-47414:** Setting the value of the text box on submit and closing the dialog box ([7fc6bef](https://github.com/ZebraDevs/zds_flutter/commit/7fc6bef8b4e0d1239d57680eaf9977321683665c))
+- adjusted the divider color ([6a36df0](https://github.com/ZebraDevs/zds_flutter/commit/6a36df01411253c279b2661daeef759ca957ebb2))
+- Fix progress theme and use latest version of the Zeta ([#38](https://github.com/ZebraDevs/zds_flutter/issues/38)) ([fba70d7](https://github.com/ZebraDevs/zds_flutter/commit/fba70d7e95de0067a59767288a15514715d7f631))
+- move quill-default color picker from dialog to bottom-sheet ([6a36df0](https://github.com/ZebraDevs/zds_flutter/commit/6a36df01411253c279b2661daeef759ca957ebb2))
+- quill editor color picker improvements ([#36](https://github.com/ZebraDevs/zds_flutter/issues/36)) ([6a36df0](https://github.com/ZebraDevs/zds_flutter/commit/6a36df01411253c279b2661daeef759ca957ebb2))
+- Removed default behavior for upload errors on ZdsMessageInput
+- Toasts will now display above the ZdsFilePicker sheet from ZdsMessageInput
+- **WFCNG-16393** Message input no longer renames file by default
+
+### 🧪 Tests
+
+- **TM-48505:** Widget Test case for custom widget having copying capability ([7fc6bef](https://github.com/ZebraDevs/zds_flutter/commit/7fc6bef8b4e0d1239d57680eaf9977321683665c))
+
+### ⛓️ Dependencies
+
+- Update to latest version of zeta ([#39](https://github.com/ZebraDevs/zds_flutter/issues/39)) ([de00607](https://github.com/ZebraDevs/zds_flutter/commit/de006075835ee1ee31947053771d5782377c5949))
+- Update dependencies ([5a4d182](https://github.com/ZebraDevs/zds_flutter/commit/5a4d1820163362d000525449ddb87a38342fa038))
+
+### 🧹 Miscellaneous Chores
+
+- Fix routes in example app ([609fc83](https://github.com/ZebraDevs/zds_flutter/commit/609fc83e5083afa00e386cbbd8fd6b481802fc64))
+
 ## [1.3.1](https://github.com/ZebraDevs/zds_flutter/compare/v1.3.0...v1.3.1) (2024-07-17)
 
 ### ✨ New Features
