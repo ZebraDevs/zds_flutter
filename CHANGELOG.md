@@ -38,6 +38,13 @@
 
 - Fix routes in example app ([609fc83](https://github.com/ZebraDevs/zds_flutter/commit/609fc83e5083afa00e386cbbd8fd6b481802fc64))
 
+## [2.0.1](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0...v2.0.1) (2025-01-02)
+
+
+### 🪲 Bug Fixes
+
+* Fixed height of attachments sheet on message input ([#59](https://github.com/ZebraDevs/zds_flutter/issues/59)) ([7b7aca1](https://github.com/ZebraDevs/zds_flutter/commit/7b7aca1416f6a127e6151c46842c4756e25180f6))
+
 ## [1.3.1](https://github.com/ZebraDevs/zds_flutter/compare/v1.3.0...v1.3.1) (2024-07-17)
 
 ### ✨ New Features
