@@ -84,7 +84,7 @@ class ZdsSplitNavigator extends StatefulWidget {
   /// If no [ZdsSplitNavigatorState] ancestor is found, a [FlutterError] is thrown.
   ///
   /// Usage:
-  /// ```
+  /// ```dart
   /// final ZdsSplitNavigatorState = ZdsSplitNavigatorState.of(context);
   /// ```
   ///
@@ -238,10 +238,10 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
   /// An integer value to keep track of the number of routes in the nested navigator.
   int routesCount = 0;
 
-  /// A GlobalKey<NavigatorState> used to access the nested navigator's state.
+  /// A GlobalKey used to access the nested navigator's state.
   late GlobalKey<NavigatorState> navigatorKey;
 
-  /// A ValueNotifier<String> that holds the current route's name. By default, it is initialized
+  /// A ValueNotifier that holds the current route's name. By default, it is initialized
   /// with ZdsSplitNavigator.emptyRoute.
   final ValueNotifier<String> currentRoute = ValueNotifier<String>(ZdsSplitNavigator.emptyRoute);
 

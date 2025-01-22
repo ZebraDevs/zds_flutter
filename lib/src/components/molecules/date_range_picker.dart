@@ -2050,7 +2050,7 @@ class _DayHeaders extends StatelessWidget {
   ///
   /// Examples:
   ///
-  /// ```
+  /// ```none
   /// ┌ [firsDayOfWeek] is 0 then its point to Sunday which is the first day of week in the US (en_US)
   /// |
   /// S M T W T F S  <-- the returned list contains these widgets

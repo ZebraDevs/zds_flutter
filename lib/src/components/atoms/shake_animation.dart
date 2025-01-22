@@ -57,7 +57,6 @@ class ZdsShakeAnimation extends StatefulWidget {
   final Widget child;
 
   /// Horizontal shake offset
-  /// ...<- [Widget] ->...
   final double shakeOffset;
 
   /// No of repetitions.

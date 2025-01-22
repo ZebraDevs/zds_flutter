@@ -799,6 +799,7 @@ class _RenderInputPadding extends RenderShiftedBox {
     );
     if (child != null) {
       final BoxParentData childParentData = child!.parentData! as BoxParentData;
+      // Ignored as we need to set the offset whilst keeping childParentData as its own object.
       // ignore: cascade_invocations
       childParentData.offset = Alignment.center.alongOffset(size - child!.size as Offset);
     }
