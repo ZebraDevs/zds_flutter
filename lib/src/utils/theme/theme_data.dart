@@ -373,7 +373,7 @@ class ZdsThemeData {
   ///
   /// [path] is the location of the JSON file.
   ///
-  /// Returns a Future that completes with a Map<String, dynamic> once the file has been loaded and decoded.
+  /// Returns a Future that completes with a Map once the file has been loaded and decoded.
   /// If an error occurs during loading or decoding, it catches the exception and returns an empty Map.
   static Future<String> _readAsset(String path) async {
     try {
@@ -385,7 +385,7 @@ class ZdsThemeData {
 
   /// Parses a JSON string and returns it as a Map.
   ///
-  /// The [jsonString] argument is a JSON string that will be parsed into a Map<String, dynamic>.
+  /// The [jsonString] argument is a JSON string that will be parsed into a Map.
   ///
   /// This method tries to decode the given JSON string. If an error occurs during decoding,
   /// it catches the exception and returns an empty Map.

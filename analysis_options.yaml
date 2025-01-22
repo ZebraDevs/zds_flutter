@@ -2,3 +2,4 @@ include: package:zds_analysis/analysis_options_lib.yaml
 linter:
   rules:
     use_build_context_synchronously: false
+    document_ignores: false

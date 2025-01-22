@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 /// If any of the insets (parameters) change, the clipping area will be recalculated.
 ///
 /// # Example
-/// ```
+/// ```dart
 /// ZdsBorderClipper clipper = ZdsBorderClipper(
 ///   top: 10,
 ///   bottom: 10,

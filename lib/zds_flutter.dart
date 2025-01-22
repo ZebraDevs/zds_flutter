@@ -1,5 +1,5 @@
 /// A library of Flutter components made by Zebra Technologies based on the Zebra Design System, or ZDS.
-library zds_flutter;
+library;
 
 export 'package:zeta_flutter/zeta_flutter.dart' hide DeviceType, ListDivider;
 

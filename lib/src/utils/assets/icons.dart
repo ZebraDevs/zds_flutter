@@ -1,3 +1,4 @@
+// Ignored as to not break other packages using this file.
 // ignore_for_file: constant_identifier_names, public_member_api_docs
 
 // To add new icons, follow the instructions in https://confluence.zebra.com/display/IDD/Internal+developer+resources

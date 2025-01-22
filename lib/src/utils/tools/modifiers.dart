@@ -406,7 +406,7 @@ extension RowLayout on Row {
   /// Center aligning row's children perfectly on the horizontal AND on the vertical axis
   /// when used in a vertical MultichildRenderObject.
   ///
-  /// ```
+  /// ```none
   /// e.g. normal Column or ListView with rows inside
   ///  750000   187
   ///  245000   14501
