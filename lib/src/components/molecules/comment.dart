@@ -154,13 +154,16 @@ class ZdsComment extends StatelessWidget {
                                     child: avatar,
                                   ),
                                 if (author != null)
-                                  Text(
-                                    author!,
-                                    style: ZetaTextStyles.labelLarge.copyWith(
-                                      fontWeight: FontWeight.w500,
+                                  Expanded(
+                                    child: Text(
+                                      author!,
+                                      style: ZetaTextStyles.labelLarge.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                const Spacer(),
                                 if (timeStamp != null)
                                   Padding(
                                     padding: EdgeInsets.only(left: spacing.small),

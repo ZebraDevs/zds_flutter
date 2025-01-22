@@ -20,7 +20,7 @@ class _CommentDemoState extends State<CommentDemo> {
               initials: 'JP',
               size: ZetaAvatarSize.xxxs,
             ),
-            author: 'John Doe',
+            author: 'John Doe with a really really long name',
             downloadCallback: () {},
             onMenuItemSelected: (val) {
               print(val);
