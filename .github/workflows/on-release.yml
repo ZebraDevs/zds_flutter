@@ -49,6 +49,4 @@ jobs:
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_ZDS_FLUTTER }}"
-          expires: 7d
-          projectId: zds-c9c24
-          channelId: "release"
+          channelId: "live"
