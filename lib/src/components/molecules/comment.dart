@@ -246,7 +246,7 @@ class ZdsComment extends StatelessWidget {
       ..add(StringProperty('deleteSemanticLabel', deleteSemanticLabel))
       ..add(StringProperty('replySemanticLabel', replySemanticLabel))
       ..add(EnumProperty<ZdsPopupMenuPosition>('menuPosition', menuPosition))
-    ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected));
+      ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected));
   }
 }
 
