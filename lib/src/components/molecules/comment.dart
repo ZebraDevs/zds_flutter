@@ -22,6 +22,7 @@ class ZdsComment extends StatelessWidget {
     this.replySemanticLabel,
     this.attachmentThumbnail,
     this.menuItems,
+    this.menuPosition = ZdsPopupMenuPosition.bottomRight,
     this.onMenuItemSelected,
   })  : assert(
           onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
@@ -77,6 +78,9 @@ class ZdsComment extends StatelessWidget {
   /// The menu items to display in the popup menu.
   /// If defined, the pouup menu will be shown when the user taps on the comment.
   final List<ZdsPopupMenuItem<int>>? menuItems;
+
+  /// The popup menu position to display in the popup menu items.
+  final ZdsPopupMenuPosition? menuPosition;
 
   /// The callback to be called when a menu item is selected.
   /// Menu items must be given a value for the callback to trigger.
@@ -201,13 +205,13 @@ class ZdsComment extends StatelessWidget {
                     );
                     if (menuItems != null) {
                       return ZdsPopupMenu<int>(
-                        menuPosition: ZdsPopupMenuPosition.topRight,
+                        menuPosition: menuPosition ?? ZdsPopupMenuPosition.topRight,
                         verticalOffset: spacing.small,
                         items: menuItems ?? [],
                         onSelected: onMenuItemSelected,
                         builder: (context, open) {
                           return Material(
-                            color: colors.surfaceDefault,
+                            color: colors.white,
                             child: InkWell(
                               onTap: open,
                               child: child,
@@ -216,7 +220,7 @@ class ZdsComment extends StatelessWidget {
                         },
                       );
                     }
-                    return ColoredBox(color: colors.surfaceDefault, child: child);
+                    return ColoredBox(color: colors.white, child: child);
                   },
                 ),
               );
@@ -241,7 +245,8 @@ class ZdsComment extends StatelessWidget {
       ..add(ObjectFlagProperty<VoidCallback?>.has('downloadCallback', downloadCallback))
       ..add(StringProperty('deleteSemanticLabel', deleteSemanticLabel))
       ..add(StringProperty('replySemanticLabel', replySemanticLabel))
-      ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected));
+      ..add(EnumProperty<ZdsPopupMenuPosition>('menuPosition', menuPosition))
+    ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected));
   }
 }
 
