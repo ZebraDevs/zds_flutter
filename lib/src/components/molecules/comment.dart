@@ -211,7 +211,7 @@ class ZdsComment extends StatelessWidget {
                         onSelected: onMenuItemSelected,
                         builder: (context, open) {
                           return Material(
-                            color: colors.white,
+                            color: colors.surfacePrimary,
                             child: InkWell(
                               onTap: open,
                               child: child,
@@ -220,7 +220,7 @@ class ZdsComment extends StatelessWidget {
                         },
                       );
                     }
-                    return ColoredBox(color: colors.white, child: child);
+                    return ColoredBox(color: colors.surfacePrimary, child: child);
                   },
                 ),
               );
