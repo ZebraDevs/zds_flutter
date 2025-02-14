@@ -25,12 +25,12 @@ class ZdsComment extends StatelessWidget {
     this.menuPosition = ZdsPopupMenuPosition.bottomRight,
     this.onMenuItemSelected,
   })  : assert(
-  onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
-  'replySemanticLabel must be not null if onReply is defined',
-  ),
+          onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
+          'replySemanticLabel must be not null if onReply is defined',
+        ),
         assert(
-        onDelete != null && deleteSemanticLabel != null || onDelete == null && deleteSemanticLabel == null,
-        'deleteSemanticLabel must be not null if onDelete is defined',
+          onDelete != null && deleteSemanticLabel != null || onDelete == null && deleteSemanticLabel == null,
+          'deleteSemanticLabel must be not null if onDelete is defined',
         );
 
   /// The comment text.
