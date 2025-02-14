@@ -79,6 +79,7 @@ class ZdsComment extends StatelessWidget {
   /// If defined, the pouup menu will be shown when the user taps on the comment.
   final List<ZdsPopupMenuItem<int>>? menuItems;
 
+  /// The popup menu position to display in the popup menu items.
   final ZdsPopupMenuPosition menuPosition;
 
   /// The callback to be called when a menu item is selected.
