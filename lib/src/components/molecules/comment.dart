@@ -22,14 +22,15 @@ class ZdsComment extends StatelessWidget {
     this.replySemanticLabel,
     this.attachmentThumbnail,
     this.menuItems,
+    this.menuPosition = ZdsPopupMenuPosition.bottomRight,
     this.onMenuItemSelected,
   })  : assert(
-          onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
-          'replySemanticLabel must be not null if onReply is defined',
-        ),
+  onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
+  'replySemanticLabel must be not null if onReply is defined',
+  ),
         assert(
-          onDelete != null && deleteSemanticLabel != null || onDelete == null && deleteSemanticLabel == null,
-          'deleteSemanticLabel must be not null if onDelete is defined',
+        onDelete != null && deleteSemanticLabel != null || onDelete == null && deleteSemanticLabel == null,
+        'deleteSemanticLabel must be not null if onDelete is defined',
         );
 
   /// The comment text.
@@ -78,6 +79,8 @@ class ZdsComment extends StatelessWidget {
   /// If defined, the pouup menu will be shown when the user taps on the comment.
   final List<ZdsPopupMenuItem<int>>? menuItems;
 
+  final ZdsPopupMenuPosition menuPosition;
+
   /// The callback to be called when a menu item is selected.
   /// Menu items must be given a value for the callback to trigger.
   final ValueChanged<int>? onMenuItemSelected;
@@ -87,143 +90,146 @@ class ZdsComment extends StatelessWidget {
     final colors = Zeta.of(context).colors;
     final spacing = Zeta.of(context).spacing;
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (isReply)
-          Padding(
-            padding: EdgeInsets.only(
-              left: spacing.large,
-              right: spacing.minimum,
-              top: spacing.minimum,
+    return Container(
+      color: colors.surfacePrimary,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (isReply)
+            Padding(
+              padding: EdgeInsets.only(
+                left: spacing.large,
+                right: spacing.minimum,
+                top: spacing.minimum,
+              ),
+              child: const ZetaIcon(
+                ZetaIcons.reply,
+                size: 24,
+                applyTextScaling: true,
+              ),
             ),
-            child: const ZetaIcon(
-              ZetaIcons.reply,
-              size: 24,
-              applyTextScaling: true,
-            ),
-          ),
-        Expanded(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return ZdsSlidableListTile(
-                width: constraints.maxWidth,
-                elevation: 0,
-                actions: [
-                  if (!isReply && onReply != null && replySemanticLabel != null)
-                    ZdsSlidableAction(
-                      icon: ZetaIcons.reply,
-                      semanticLabel: replySemanticLabel,
-                      foregroundColor: colors.primary,
-                      backgroundColor: colors.surfacePrimarySubtle,
-                      onPressed: (_) => onReply!(),
-                    ),
-                  if (onDelete != null && deleteSemanticLabel != null)
-                    ZdsSlidableAction(
-                      icon: ZetaIcons.delete,
-                      semanticLabel: deleteSemanticLabel,
-                      onPressed: (_) => onDelete!(),
-                      backgroundColor: colors.surfaceNegativeSubtle,
-                      foregroundColor: colors.error,
-                    ),
-                ],
-                child: Builder(
-                  builder: (context) {
-                    final child = Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: colors.borderSubtle,
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return ZdsSlidableListTile(
+                  width: constraints.maxWidth,
+                  elevation: 0,
+                  actions: [
+                    if (!isReply && onReply != null && replySemanticLabel != null)
+                      ZdsSlidableAction(
+                        icon: ZetaIcons.reply,
+                        semanticLabel: replySemanticLabel,
+                        foregroundColor: colors.primary,
+                        backgroundColor: colors.surfacePrimarySubtle,
+                        onPressed: (_) => onReply!(),
+                      ),
+                    if (onDelete != null && deleteSemanticLabel != null)
+                      ZdsSlidableAction(
+                        icon: ZetaIcons.delete,
+                        semanticLabel: deleteSemanticLabel,
+                        onPressed: (_) => onDelete!(),
+                        backgroundColor: colors.surfaceNegativeSubtle,
+                        foregroundColor: colors.error,
+                      ),
+                  ],
+                  child: Builder(
+                    builder: (context) {
+                      final child = Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: colors.borderSubtle,
+                            ),
                           ),
                         ),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        vertical: spacing.large,
-                        horizontal: spacing.medium,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: spacing.minimum),
-                            child: Row(
-                              children: [
-                                if (avatar != null)
-                                  Padding(
-                                    padding: EdgeInsets.only(right: spacing.small),
-                                    child: avatar,
-                                  ),
-                                if (author != null)
-                                  Expanded(
-                                    child: Text(
-                                      author!,
-                                      style: ZetaTextStyles.labelLarge.copyWith(
-                                        fontWeight: FontWeight.w500,
+                        padding: EdgeInsets.symmetric(
+                          vertical: spacing.large,
+                          horizontal: spacing.medium,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: spacing.minimum),
+                              child: Row(
+                                children: [
+                                  if (avatar != null)
+                                    Padding(
+                                      padding: EdgeInsets.only(right: spacing.small),
+                                      child: avatar,
+                                    ),
+                                  if (author != null)
+                                    Expanded(
+                                      child: Text(
+                                        author!,
+                                        style: ZetaTextStyles.labelLarge.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                if (timeStamp != null)
-                                  Padding(
-                                    padding: EdgeInsets.only(left: spacing.small),
-                                    child: Text(
-                                      timeStamp!,
-                                      style: ZetaTextStyles.bodyXSmall.copyWith(color: colors.textSubtle),
+                                  if (timeStamp != null)
+                                    Padding(
+                                      padding: EdgeInsets.only(left: spacing.small),
+                                      child: Text(
+                                        timeStamp!,
+                                        style: ZetaTextStyles.bodyXSmall.copyWith(color: colors.textSubtle),
+                                      ),
                                     ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          if (comment != null)
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: spacing.small,
-                                left: spacing.minimum,
-                                right: spacing.minimum,
-                              ),
-                              child: Text(
-                                comment!,
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                ],
                               ),
                             ),
-                          if (attachment != null)
-                            Padding(
-                              padding: EdgeInsets.only(top: spacing.medium),
-                              child: _AttachmentRow(
-                                attachment: attachment!,
-                                downloadCallback: downloadCallback,
-                                customThumbnail: attachmentThumbnail,
+                            if (comment != null)
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: spacing.small,
+                                  left: spacing.minimum,
+                                  right: spacing.minimum,
+                                ),
+                                child: Text(
+                                  comment!,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
                               ),
-                            ),
-                        ],
-                      ),
-                    );
-                    if (menuItems != null) {
-                      return ZdsPopupMenu<int>(
-                        menuPosition: ZdsPopupMenuPosition.topRight,
-                        verticalOffset: spacing.small,
-                        items: menuItems ?? [],
-                        onSelected: onMenuItemSelected,
-                        builder: (context, open) {
-                          return Material(
-                            color: colors.surfaceDefault,
-                            child: InkWell(
-                              onTap: open,
-                              child: child,
-                            ),
-                          );
-                        },
+                            if (attachment != null)
+                              Padding(
+                                padding: EdgeInsets.only(top: spacing.medium),
+                                child: _AttachmentRow(
+                                  attachment: attachment!,
+                                  downloadCallback: downloadCallback,
+                                  customThumbnail: attachmentThumbnail,
+                                ),
+                              ),
+                          ],
+                        ),
                       );
-                    }
-                    return ColoredBox(color: colors.surfaceDefault, child: child);
-                  },
-                ),
-              );
-            },
+                      if (menuItems != null) {
+                        return ZdsPopupMenu<int>(
+                          verticalOffset: spacing.small,
+                          menuPosition: menuPosition,
+                          items: menuItems ?? [],
+                          onSelected: onMenuItemSelected,
+                          builder: (context, open) {
+                            return Material(
+                              color: colors.surfacePrimary,
+                              child: InkWell(
+                                onTap: open,
+                                child: child,
+                              ),
+                            );
+                          },
+                        );
+                      }
+                      return ColoredBox(color: colors.surfacePrimary, child: child);
+                    },
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -241,6 +247,7 @@ class ZdsComment extends StatelessWidget {
       ..add(ObjectFlagProperty<VoidCallback?>.has('downloadCallback', downloadCallback))
       ..add(StringProperty('deleteSemanticLabel', deleteSemanticLabel))
       ..add(StringProperty('replySemanticLabel', replySemanticLabel))
+      ..add(EnumProperty<ZdsPopupMenuPosition>('menuPosition', menuPosition))
       ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected));
   }
 }
