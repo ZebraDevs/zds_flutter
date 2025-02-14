@@ -91,7 +91,7 @@ class ZdsComment extends StatelessWidget {
     final colors = Zeta.of(context).colors;
     final spacing = Zeta.of(context).spacing;
 
-    return Container(
+    return ColoredBox(
       color: colors.surfacePrimary,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
