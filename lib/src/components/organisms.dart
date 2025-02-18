@@ -13,6 +13,7 @@ export 'organisms/file_picker/file_picker.dart';
 export 'organisms/file_preview.dart';
 export 'organisms/fiscal_date_picker.dart';
 export 'organisms/html_preview/html_container.dart';
+export 'organisms/image_editor/image_editor_home.dart';
 export 'organisms/image_picker.dart';
 export 'organisms/infinite_list.dart';
 export 'organisms/list_group.dart';
