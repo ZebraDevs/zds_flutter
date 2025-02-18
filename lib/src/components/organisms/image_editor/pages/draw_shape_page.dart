@@ -53,6 +53,9 @@ class _DrawShapePageState extends State<DrawShapePage> {
 
   /// The color of the shapes being drawn.
   Color shapeColor = Colors.black;
+
+  Shape? _previewShape;
+
   @override
   Widget build(BuildContext context) {
     final strings = ComponentStrings.of(context);
@@ -78,18 +81,40 @@ class _DrawShapePageState extends State<DrawShapePage> {
                 const Expanded(child: SizedBox.shrink()),
                 GestureDetector(
                   onPanStart: (details) {
+                    _previewShape = Shape(
+                      type: _selectedShapeType, // Change to desired shape type
+                      start: details.localPosition,
+                      end: details.localPosition,
+                      color: shapeColor,
+                    );
                     setState(() {
                       _startPoint = details.localPosition;
                     });
                   },
                   onPanUpdate: (details) {
                     setState(() {
+                      _previewShape = _previewShape?.copyWith(
+                        end: details.localPosition,
+                        color: shapeColor,
+                      );
                       _endPoint = details.localPosition;
                     });
                   },
                   onPanEnd: (_) {
                     if (_startPoint != null && _endPoint != null) {
                       setState(() {
+                        if (_previewShape != null) {
+                          _shapes.add(
+                            _previewShape ??
+                                Shape(
+                                  type: ShapeType.square,
+                                  start: Offset.zero,
+                                  end: Offset.zero,
+                                  color: Colors.black,
+                                ),
+                          );
+                          _previewShape = null;
+                        }
                         _shapes.add(
                           Shape(
                             type: _selectedShapeType,
@@ -108,7 +133,7 @@ class _DrawShapePageState extends State<DrawShapePage> {
                     child: Stack(
                       children: [
                         widget.image,
-                        CustomPaint(painter: ShapePainter(shapes: _shapes)),
+                        CustomPaint(painter: ShapePainter(shapes: _shapes, previewShape: _previewShape)),
                       ],
                     ),
                   ),

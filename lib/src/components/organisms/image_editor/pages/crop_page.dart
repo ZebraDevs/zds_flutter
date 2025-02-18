@@ -120,37 +120,35 @@ class _CropPageState extends State<CropPage> {
   }
 
   /// Rotates the image 90 degrees to the right.
-  Future<void> _rotateRight() async => controller.rotateRight();
+  Future<void> _rotateRight() async {
+    controller.rotateRight();
+  }
 
   /// Flips the image horizontally.
   Future<void> _flipImage() async {
-    final Image image = await controller.croppedImage();
     try {
-      // Get the image's raw bytes
-      final ImageStream stream = image.image.resolve(ImageConfiguration.empty);
-      final Completer<ui.Image> completer = Completer();
-      stream.addListener(
-        ImageStreamListener((ImageInfo info, _) {
-          completer.complete(info.image);
-        }),
-      );
-      final ui.Image originalImage = await completer.future;
-      // Create a canvas to flip the image
-      final ByteData? byteData = await originalImage.toByteData(format: ui.ImageByteFormat.png);
-      if (byteData == null) {
-        return;
+      final ui.Image? originalImage = controller.getImage();
+      if (originalImage != null) {
+        final recorder = ui.PictureRecorder();
+        final canvas = Canvas(recorder);
+        final paint = Paint();
+        final width = originalImage.width.toDouble();
+        final height = originalImage.height.toDouble();
+        if (controller.rotation == CropRotation.up || controller.rotation == CropRotation.down) {
+          canvas
+            ..translate(width, 0)
+            ..scale(-1, 1);
+        } else {
+          canvas
+            ..translate(0, height)
+            ..scale(1, -1);
+        }
+        final Rect rect = Rect.fromLTWH(0, 0, originalImage.width.toDouble(), originalImage.height.toDouble());
+        canvas.drawImageRect(originalImage, rect, rect, paint);
+        final picture = recorder.endRecording();
+        final flippedImage = await picture.toImage(width.toInt(), height.toInt());
+        controller.image = flippedImage;
       }
-      final ui.PictureRecorder recorder = ui.PictureRecorder();
-      final Canvas canvas = Canvas(recorder);
-      final Paint paint = Paint();
-      // Flip the image horizontally
-      canvas
-        ..translate(originalImage.width.toDouble(), 0)
-        ..scale(-1, 1);
-      final Rect rect = Rect.fromLTWH(0, 0, originalImage.width.toDouble(), originalImage.height.toDouble());
-      canvas.drawImageRect(originalImage, rect, rect, paint);
-      final ui.Image flippedImage = await recorder.endRecording().toImage(originalImage.width, originalImage.height);
-      controller.image = flippedImage;
     } catch (e) {
       if (kDebugMode) {
         print(e);
