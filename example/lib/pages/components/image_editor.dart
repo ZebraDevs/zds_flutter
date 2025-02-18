@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zds_flutter/zds_flutter.dart';
 import 'dart:async';
@@ -20,22 +21,28 @@ class ImageEditorExample extends StatelessWidget {
     final ComponentStrings strings = ComponentStrings.of(context);
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            // Pick an image from the gallery.
-            final file = await picker.ImagePicker().pickImage(source: picker.ImageSource.gallery);
-            if (file != null) {
-              // Navigate to the ImageEditorHome page with the selected image.
-              unawaited(
-                Navigator.of(context).push(
-                  MaterialPageRoute<dynamic>(
-                    builder: (context) => ImageEditorHome.file(File(file.path)),
-                  ),
-                ),
-              );
-            }
-          },
-          child: Text(strings.get('PICK_IMAGE', 'Pick Image')),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // if (kIsWeb) Text('This example does not work on web').paddingBottom(40),
+            ElevatedButton(
+              onPressed: () async {
+                // Pick an image from the gallery.
+                final file = await picker.ImagePicker().pickImage(source: picker.ImageSource.gallery);
+                if (file != null) {
+                  // Navigate to the ImageEditorHome page with the selected image.
+                  unawaited(
+                    Navigator.of(context).push(
+                      MaterialPageRoute<dynamic>(
+                        builder: (context) => ImageEditorHome.file(File(file.path)),
+                      ),
+                    ),
+                  );
+                }
+              },
+              child: Text(strings.get('PICK_IMAGE', 'Pick Image')),
+            ),
+          ],
         ),
       ),
     );
