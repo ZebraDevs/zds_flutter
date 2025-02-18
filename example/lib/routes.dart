@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zds_flutter_example/pages/components/chat.dart';
 import 'package:zds_flutter_example/pages/components/comment.dart';
+import 'package:zds_flutter_example/pages/components/image_editor.dart';
 import 'package:zds_flutter_example/pages/components/selectable_widget.dart';
 
 import 'home.dart';
@@ -243,6 +244,10 @@ final kRoutes = {
     const DemoRoute(
       title: 'ImagePicker',
       child: ImagePickerDemo(),
+    ),
+    const DemoRoute(
+      title: 'Image Editor',
+      child: ImageEditorExample(),
     ),
     const DemoRoute(
       title: 'IconTextButton',
