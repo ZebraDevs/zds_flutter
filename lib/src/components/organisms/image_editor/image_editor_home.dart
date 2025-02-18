@@ -15,6 +15,8 @@ import 'utils/utils.dart';
 ///
 /// This widget is responsible for displaying the image and providing options
 /// to edit the image using various tools like draw, shape, crop, and text.
+///
+/// The image editor does not work on the web platform.
 class ImageEditorHome extends StatefulWidget {
   /// Creates an instance of [ImageEditorHome] with the given file.
   ///
