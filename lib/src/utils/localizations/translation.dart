@@ -191,6 +191,12 @@ class ComponentStrings {
 }
 
 /// Abstract class for the component delta strings
+// This ignore is used because the `ComponentDeltaProvider` class has only one method,
+// triggering the `one_member_abstracts` lint. However, the class is intentionally
+// designed to be abstract with the purpose of enforcing the implementation of
+// the `loadDelta` method in subclasses. This structure follows a design pattern
+// for loading locale-specific delta strings, and refactoring to a class with
+// multiple members is unnecessary at this point.
 // ignore: one_member_abstracts
 abstract class ComponentDeltaProvider {
   ///Load delta string of the locale.

@@ -69,6 +69,12 @@ extension AppBarColor on ZetaAppBarStyle {
       case ZetaAppBarStyle.surface:
         // Applying surface color of color scheme
         return colorScheme.surface;
+      // This ignore is used because the `ZetaAppBarStyle.background` value is marked
+      // as deprecated within the same package. However, it is still in use in the
+      // codebase as part of the conversion process. Refactoring to remove the
+      // deprecated value requires replacing all instances of it, which will be done
+      // in a future update. This usage of the deprecated member is temporary until
+      // the transition is complete.
       // ignore: deprecated_member_use_from_same_package
       case ZetaAppBarStyle.background:
         // Applying background color of color scheme

@@ -1,3 +1,10 @@
+// This ignore is applied due to the use of deprecated members within the same
+// package. The deprecated members are still in use as they are part of a
+// legacy implementation that has not yet been fully refactored or replaced.
+// While it is generally recommended to avoid deprecated members, this
+// decision is made to ensure backward compatibility and avoid breaking
+// changes in the current version. The refactor to remove deprecated members
+// will be planned for the next major release.
 // ignore_for_file: deprecated_member_use_from_same_package
 
 import 'dart:async';

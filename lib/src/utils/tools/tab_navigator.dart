@@ -10,7 +10,6 @@ import '../../../zds_flutter.dart';
 /// By default the primary widget will be visible in the tablet portrait mode and in the tablet landscape mode screen will be
 /// split into two part and secondary widget will be displayed on the right side of of the the screen.
 /// The push operation will push the page only on the right side of the part.
-///
 
 class ZdsSplitNavigator extends StatefulWidget {
   /// Creates a split navigator.
@@ -32,7 +31,7 @@ class ZdsSplitNavigator extends StatefulWidget {
 
   /// Flag used to decide whether split navigator should be used or not.
   ///
-  /// Typical use ```shouldSplit: kIsWeb || context.isTablet()```
+  /// Typical use `shouldSplit: kIsWeb || context.isTablet()`
   ///
   /// Making this mandatory so that existing implementations do not miss this change.
   ///
@@ -238,10 +237,10 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
   /// An integer value to keep track of the number of routes in the nested navigator.
   int routesCount = 0;
 
-  /// A GlobalKey used to access the nested navigator's state.
+  /// A `GlobalKey<NavigatorState>` used to access the nested navigator's state.
   late GlobalKey<NavigatorState> navigatorKey;
 
-  /// A ValueNotifier that holds the current route's name. By default, it is initialized
+  /// A `ValueNotifier<String>` that holds the current route's name. By default, it is initialized
   /// with ZdsSplitNavigator.emptyRoute.
   final ValueNotifier<String> currentRoute = ValueNotifier<String>(ZdsSplitNavigator.emptyRoute);
 

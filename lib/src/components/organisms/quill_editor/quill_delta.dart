@@ -1,3 +1,9 @@
+// This ignore is applied because dynamic calls are used throughout this file due to
+// the necessity of handling data structures or APIs that are not strongly typed.
+// While dynamic calls are generally discouraged for type safety reasons, they are
+// essential in this case for flexibility and compatibility with certain data models.
+// This approach is temporary, and future updates may refactor the code to provide
+// stronger type safety, where applicable, without compromising functionality.
 // ignore_for_file: avoid_dynamic_calls
 
 import 'package:flutter_quill/flutter_quill.dart';
