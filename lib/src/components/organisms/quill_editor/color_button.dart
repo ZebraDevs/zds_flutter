@@ -1,3 +1,9 @@
+// This ignore is applied to bypass the lint rule enforcing stricter type checking
+// for raw types in this file. The use of raw types is intentional and necessary
+// due to specific implementation requirements that cannot be easily refactored
+// without introducing significant changes. While raw types are typically discouraged,
+// this decision is made to support the current functionality. Future updates may
+// address type safety concerns where feasible.
 // ignore_for_file: strict_raw_type
 
 import 'dart:async';

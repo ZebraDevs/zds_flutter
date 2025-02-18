@@ -1,3 +1,10 @@
+// This ignore is applied because some imports in this file are from internal
+// implementation files. While the rule recommends avoiding such imports,
+// these are necessary for accessing shared components and utilities specific
+// to the internal project structure. The use of these imports is intentional
+// and aligned with the current architecture. Future refactoring may explore
+// alternative ways to organize and expose these dependencies, but for now,
+// they are required for the file's functionality.
 // ignore_for_file: implementation_imports
 
 import 'package:flutter/material.dart';

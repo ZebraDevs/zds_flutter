@@ -1,4 +1,14 @@
 // Ignored as to not break other packages using this file.
+// This ignore is applied for two reasons:
+// 1. **constant_identifier_names**: The naming convention for constants in this file
+//    does not adhere to the typical all-uppercase style with underscores. This is
+//    a temporary decision due to specific naming requirements or style preferences
+//    that are not easily refactorable without introducing significant changes.
+// 2. **public_member_api_docs**: The public members of this file do not currently
+//    have API documentation. This is acknowledged and will be addressed in future
+//    updates, but for now, the focus is on functionality and implementation.
+//    Documentation will be added in the next release to improve code clarity and
+//    maintainability, especially for public-facing components.
 // ignore_for_file: constant_identifier_names, public_member_api_docs
 
 // To add new icons, follow the instructions in https://confluence.zebra.com/display/IDD/Internal+developer+resources

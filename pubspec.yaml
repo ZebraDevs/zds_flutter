@@ -84,7 +84,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   lottie: ^3.1.2
-  zds_analysis: ^1.0.0
+  zds_analysis: ^1.1.1
 
 flutter:
   uses-material-design: true
