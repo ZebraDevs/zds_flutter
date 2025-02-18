@@ -91,7 +91,7 @@ class _ZdsSelectableWidgetState extends State<ZdsSelectableWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      ComponentStrings.of(context).get('COPIED_TO_CLIPBOARD', 'Copied to Clipboard'),
+                      ComponentStrings.of(context).get('COP_CLIP_MESSAGE', 'Copied to Clipboard'),
                     ),
                   ],
                 ),
