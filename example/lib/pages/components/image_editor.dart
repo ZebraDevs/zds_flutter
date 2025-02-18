@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:zds_flutter/zds_flutter.dart';
 import 'dart:async';
@@ -23,7 +24,7 @@ class ImageEditorExample extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // if (kIsWeb) Text('This example does not work on web').paddingBottom(40),
+            if (kIsWeb) Text('This example does not work on web').paddingBottom(40),
             ElevatedButton(
               onPressed: () async {
                 // Pick an image from the gallery.

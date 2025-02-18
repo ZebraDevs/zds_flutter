@@ -8,6 +8,42 @@
 
 - Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
 
+## [2.1.0](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.2...v2.1.0) (2025-02-18)
+
+
+### ✨ New Features
+
+* **TM-48551:** Add image editor ([2a5b67b](https://github.com/ZebraDevs/zds_flutter/commit/2a5b67ba30fa6a88e2b7eccfaf2e4822418d0539))
+* **TM-48569:** Date type question for future, past and range declarations ([8f67ef5](https://github.com/ZebraDevs/zds_flutter/commit/8f67ef549dd818117a688e5ec000e56d12a08f1d))
+
+
+### 🪲 Bug Fixes
+
+* **TM-48487:** Video link added through media url is not visible ([db57bfd](https://github.com/ZebraDevs/zds_flutter/commit/db57bfd804d3c32f8c8124a93a04ea412a36b800))
+* **TM-48969:** File type icon aac is not showing ([e61d8d3](https://github.com/ZebraDevs/zds_flutter/commit/e61d8d369c5afd93ff53a9cdaef89145c7c9605c))
+* **TM-49022:** Horizontal line is not showing in table ([77f0fbe](https://github.com/ZebraDevs/zds_flutter/commit/77f0fbe076aaac4438c944a5b8e3eee9a0b41b6e))
+* **TM-50072:** Fixed issues in image editor, rotation issue, shape preview issue and text font issue ([6bb50de](https://github.com/ZebraDevs/zds_flutter/commit/6bb50de475f673f2ef5d6cb68b53623a2bf0ef86))
+* **TM-50111:** Unexpected code is pasted while copying notes content ([9f24989](https://github.com/ZebraDevs/zds_flutter/commit/9f24989a30c946f7b644430de29c4f536fb1a295))
+* **TM-50120:** Next line text is not copied correctly from notes content ([9f24989](https://github.com/ZebraDevs/zds_flutter/commit/9f24989a30c946f7b644430de29c4f536fb1a295))
+* **WFCNG-18672:** The "Delete" and "Reply" option UI is not as per figma for Coment ([#65](https://github.com/ZebraDevs/zds_flutter/issues/65)) ([6bbdc29](https://github.com/ZebraDevs/zds_flutter/commit/6bbdc296f3f4440e765c505db1f9d544d31b5cdf))
+* **WFM-49388:** Added text style for displaying selected item in dropdown ([a333cb8](https://github.com/ZebraDevs/zds_flutter/commit/a333cb8515034755c253b62e0f9566ef05341f87))
+* **WFM-57386:** Published icon not displayed in monthly schedule for january ([a49449c](https://github.com/ZebraDevs/zds_flutter/commit/a49449cf398bfafb8864a73c9551a3c14456e5e0))
+
+
+### ⛓️ Dependencies
+
+* **TM-49697:** Update file_picker package ([f2dc732](https://github.com/ZebraDevs/zds_flutter/commit/f2dc732619d67c435d9507b3fa6068bbbe42a146))
+* **TM-50667:** Remove READ_MEDIA_IMAGES and READ_MEDIA_VIDEO permissions ([41e650d](https://github.com/ZebraDevs/zds_flutter/commit/41e650ddc99fdfb7b75b3f780356beca8d716985))
+* Update dependencies ([f2dc732](https://github.com/ZebraDevs/zds_flutter/commit/f2dc732619d67c435d9507b3fa6068bbbe42a146))
+
+
+### 🧹 Miscellaneous Chores
+
+* **automated:** Lint commit and format ([4474140](https://github.com/ZebraDevs/zds_flutter/commit/4474140264c1af3fb9c82e84e2a6c7a21850f1c5))
+* **TM-49099:** Add new Strings to localization ([3167cd3](https://github.com/ZebraDevs/zds_flutter/commit/3167cd37b0954da5583e242209b0e2c8bf6586ac))
+* **WFM-23087:** Fix lint issues and formatting ([120be7b](https://github.com/ZebraDevs/zds_flutter/commit/120be7b66133c19c1b7b90ca5007e2afe455eb84))
+* **WFM-57386:** Fix issues reported by dart analyze ([120be7b](https://github.com/ZebraDevs/zds_flutter/commit/120be7b66133c19c1b7b90ca5007e2afe455eb84))
+
 ## [2.0.1](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0...v2.0.1) (2025-01-02)
 
 ### 🪲 Bug Fixes
