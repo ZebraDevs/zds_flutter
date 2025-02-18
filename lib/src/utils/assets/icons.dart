@@ -337,6 +337,7 @@ class ZdsIcons {
 }
 
 const Map<String, IconData> _extensions = <String, IconData>{
+  '.aac': ZdsIcons.file_audio_o,
   '.au': ZdsIcons.file_audio_o,
   '.avi': ZdsIcons.file_video_o,
   '.csv': ZdsIcons.file_text_o,
@@ -422,6 +423,7 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.qt':
       return colors?.purple ?? const Color(0xFF6F00C6);
 
+    case '.aac':
     case '.au':
     case '.avi':
     case '.midi':
