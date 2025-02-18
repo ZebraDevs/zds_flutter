@@ -1,3 +1,19 @@
+## [2.0.2](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.1...v2.0.2) (2025-01-22)
+
+### 🪲 Bug Fixes
+
+- **WFCNG-18145:** Long names no longer overlap the timestamp on ZdsComment ([#61](https://github.com/ZebraDevs/zds_flutter/issues/61)) ([014aed1](https://github.com/ZebraDevs/zds_flutter/commit/014aed184aa3c517781bcb43f95e1fbd2aa929b3))
+
+### 🧹 Miscellaneous Chores
+
+- Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
+
+## [2.0.1](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0...v2.0.1) (2025-01-02)
+
+### 🪲 Bug Fixes
+
+- Fixed height of attachments sheet on message input ([#59](https://github.com/ZebraDevs/zds_flutter/issues/59)) ([7b7aca1](https://github.com/ZebraDevs/zds_flutter/commit/7b7aca1416f6a127e6151c46842c4756e25180f6))
+
 ## [2.0.0](https://github.com/ZebraDevs/zds_flutter/compare/v1.3.1...v2.0.0) (2024-12-30)
 
 ### ✨ New Features
@@ -8,7 +24,6 @@
 - Update to match internal repo ([#6](https://github.com/ZebraDevs/zds_flutter/issues/6)) ([8e04f23](https://github.com/ZebraDevs/zds_flutter/commit/8e04f238c831884750c1dafd08bef9ea060bf0d4))
 - **UX-1314:** Created comment component ([#41](https://github.com/ZebraDevs/zds_flutter/issues/41)) ([30395b0](https://github.com/ZebraDevs/zds_flutter/commit/30395b0427f64e9b9170f17ca80303ce05c1e8dd))
 - Flutter 3.24.3 upgrade ([#33](https://github.com/ZebraDevs/zds_flutter/issues/33)) ([588ec2f](https://github.com/ZebraDevs/zds_flutter/commit/588ec2f8f9b35e0c33b56d351031c8194335906a))
--
 
 ### 🪲 Bug Fixes
 
@@ -37,25 +52,6 @@
 ### 🧹 Miscellaneous Chores
 
 - Fix routes in example app ([609fc83](https://github.com/ZebraDevs/zds_flutter/commit/609fc83e5083afa00e386cbbd8fd6b481802fc64))
-
-## [2.0.2](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.1...v2.0.2) (2025-01-22)
-
-
-### 🪲 Bug Fixes
-
-* **WFCNG-18145:** Long names no longer overlap the timestamp on ZdsComment ([#61](https://github.com/ZebraDevs/zds_flutter/issues/61)) ([014aed1](https://github.com/ZebraDevs/zds_flutter/commit/014aed184aa3c517781bcb43f95e1fbd2aa929b3))
-
-
-### 🧹 Miscellaneous Chores
-
-* Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
-
-## [2.0.1](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.0...v2.0.1) (2025-01-02)
-
-
-### 🪲 Bug Fixes
-
-* Fixed height of attachments sheet on message input ([#59](https://github.com/ZebraDevs/zds_flutter/issues/59)) ([7b7aca1](https://github.com/ZebraDevs/zds_flutter/commit/7b7aca1416f6a127e6151c46842c4756e25180f6))
 
 ## [1.3.1](https://github.com/ZebraDevs/zds_flutter/compare/v1.3.0...v1.3.1) (2024-07-17)
 
