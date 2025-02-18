@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/shape.dart';
 
 /// A custom painter class for drawing various shapes on a canvas.
@@ -25,10 +26,13 @@ import '../models/shape.dart';
 /// - [ShapeType], which defines the types of shapes that can be drawn.
 class ShapePainter extends CustomPainter {
   /// Creates a [ShapePainter] with the given list of shapes and background image.
-  ShapePainter({required this.shapes});
+  ShapePainter({required this.shapes, this.previewShape});
 
   /// A list of shapes to be drawn on the canvas.
   final List<Shape> shapes;
+
+  /// The shape being previewed during interaction.
+  final Shape? previewShape;
 
   /// Paints the shapes on the given canvas.
   ///
@@ -37,32 +41,37 @@ class ShapePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.black
       ..strokeWidth = 3
       ..style = PaintingStyle.stroke;
+
     for (final shape in shapes) {
-      switch (shape.type) {
-        case ShapeType.square:
-          paint.color = shape.color;
-          canvas.drawRect(
-            Rect.fromPoints(shape.start, shape.end),
-            paint,
-          );
-        case ShapeType.circle:
-          final radius = (shape.end - shape.start).distance / 2;
-          final center = Offset(
-            (shape.start.dx + shape.end.dx) / 2,
-            (shape.start.dy + shape.end.dy) / 2,
-          );
-          paint.color = shape.color;
-          canvas.drawCircle(center, radius, paint);
-        case ShapeType.line:
-          paint.color = shape.color;
-          canvas.drawLine(shape.start, shape.end, paint);
-        case ShapeType.arrow:
-          paint.color = shape.color;
-          _drawArrow(canvas, paint, shape.start, shape.end);
-      }
+      paint.color = shape.color;
+      _drawShape(canvas, paint, shape);
+    }
+
+    // Draw the preview shape if it exists
+    if (previewShape != null) {
+      paint.color = previewShape!.color.withOpacity(0.5); // Semi-transparent preview
+      _drawShape(canvas, paint, previewShape!);
+    }
+  }
+
+  /// Draws a shape on the canvas based on its type.
+  void _drawShape(Canvas canvas, Paint paint, Shape shape) {
+    switch (shape.type) {
+      case ShapeType.square:
+        canvas.drawRect(Rect.fromPoints(shape.start, shape.end), paint);
+      case ShapeType.circle:
+        final radius = (shape.end - shape.start).distance / 2;
+        final center = Offset(
+          (shape.start.dx + shape.end.dx) / 2,
+          (shape.start.dy + shape.end.dy) / 2,
+        );
+        canvas.drawCircle(center, radius, paint);
+      case ShapeType.line:
+        canvas.drawLine(shape.start, shape.end, paint);
+      case ShapeType.arrow:
+        _drawArrow(canvas, paint, shape.start, shape.end);
     }
   }
 
@@ -74,9 +83,11 @@ class ShapePainter extends CustomPainter {
     canvas.drawLine(start, end, paint);
     const arrowLength = 20.0;
     const arrowAngle = 25 * 3.14159 / 180;
+
     final angle = (end - start).direction;
     final arrowPoint1 = end - Offset.fromDirection(angle + arrowAngle, arrowLength);
     final arrowPoint2 = end - Offset.fromDirection(angle - arrowAngle, arrowLength);
+
     canvas
       ..drawLine(end, arrowPoint1, paint)
       ..drawLine(end, arrowPoint2, paint);

@@ -45,4 +45,14 @@ class Shape {
 
   /// The color of the shape.
   final Color color;
+
+  /// Creates a copy of this shape with the given end point and color.
+  Shape? copyWith({required Offset end, required Color color}) {
+    return Shape(
+      type: type,
+      start: start,
+      end: end,
+      color: color,
+    );
+  }
 }

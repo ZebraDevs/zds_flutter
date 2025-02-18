@@ -3,8 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:text_editor/text_editor.dart';
-import '../../../../utils/localizations.dart';
-import '../../../atoms/button.dart';
+import '../../../../../zds_flutter.dart';
 import '../models/text_overlay.dart';
 import '../utils/draggable_resizable_text.dart';
 import '../utils/utils.dart';
@@ -49,6 +48,9 @@ class _TextPageState extends State<TextPage> {
   @override
   Widget build(BuildContext context) {
     final strings = ComponentStrings.of(context);
+    final zetaColors = Zeta.of(context).colors;
+    final backgroundColor = widget.image.color ?? zetaColors.black.withAlpha(110);
+
     return PopScope(
       canPop: false,
       child: Theme(
@@ -118,12 +120,12 @@ class _TextPageState extends State<TextPage> {
             ),
             if (isEditing)
               Scaffold(
-                backgroundColor: Colors.black87,
+                backgroundColor: backgroundColor,
                 body: Padding(
                   padding: const EdgeInsets.only(top: 24),
                   child: SafeArea(
                     child: TextEditor(
-                      fonts: const ['', ''],
+                      fonts: const [''],
                       onEditCompleted: (style, align, text) {
                         if (text.isNotEmpty) {
                           _addText(
