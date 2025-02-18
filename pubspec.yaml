@@ -60,7 +60,7 @@ dependencies:
   linked_scroll_controller: ^0.2.0
   mime: ^2.0.0
   modal_bottom_sheet: ^3.0.0-pre
-  open_filex: ^4.1.1
+  open_file: ^3.5.10
   painter: ^2.0.0
   path: ^1.9.0
   path_provider: ^2.1.3
