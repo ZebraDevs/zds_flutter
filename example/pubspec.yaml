@@ -23,6 +23,10 @@ dependencies:
 
   url_launcher: any
   cross_file: any
+  zeta_flutter: any
+  flutter_quill: any
+  flutter_quill_extensions: any
+  image_picker: any
 flutter:
   uses-material-design: true
   assets:
