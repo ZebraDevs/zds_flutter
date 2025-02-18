@@ -734,15 +734,6 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
         : const SizedBox.shrink();
 
     final List<int> weekNumbers = _focusedDay.getWeeksNumbersInMonth(startingDayOfWeek, _focusedDay);
-    final List<DateTime> weekStartDays = () {
-      DateTime firstDayOfWeeks = _focusedDay.startOfMonth.getFirstDayOfWeek();
-      final List<DateTime> startDays = [];
-      while (firstDayOfWeeks.month == _focusedDay.month || firstDayOfWeeks.month == _focusedDay.month - 1) {
-        startDays.add(firstDayOfWeeks);
-        firstDayOfWeeks = DateTime(firstDayOfWeeks.year, firstDayOfWeeks.month, firstDayOfWeeks.day + 7);
-      }
-      return startDays;
-    }();
 
     final allButtonBody = [
       Container(
@@ -831,6 +822,13 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                           final bool isFirstDayOfWeek =
                               widget.weekIcons!.every((weekIcon) => weekIcon.firstDayOfWeek != null);
                           if (isWeekNumber || isFirstDayOfWeek) {
+                            final List<DateTime> weekStartDays = [];
+                            final firstDayOfMonth = DateTime(_focusedDay.year, _focusedDay.month);
+                            var firstDayOfWeek = firstDayOfMonth.getFirstDayOfWeek();
+                            while (firstDayOfWeek.month == _focusedDay.month || weekStartDays.isEmpty) {
+                              weekStartDays.add(firstDayOfWeek);
+                              firstDayOfWeek = firstDayOfWeek.add(const Duration(days: 7));
+                            }
                             final items = isWeekNumber ? weekNumbers : weekStartDays;
                             return Column(
                               children: [
@@ -849,11 +847,24 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                                             );
                                           }
                                         } else {
-                                          if (widget.weekIcons!.any(
-                                            (weeks) => weeks.firstDayOfWeek?.isSameDay(index as DateTime) ?? false,
-                                          )) {
-                                            return widget.weekIcons!
-                                                .firstWhere((weeks) => weeks.firstDayOfWeek == index);
+                                          if (widget.weekIcons!.any((weeks) {
+                                            final weekStart = index as DateTime;
+                                            final weekEnd = weekStart.add(const Duration(days: 6));
+                                            return weeks.firstDayOfWeek != null &&
+                                                (weeks.firstDayOfWeek!.isSameDay(weekStart) ||
+                                                    (weeks.firstDayOfWeek!.isAfter(weekStart) &&
+                                                        weeks.firstDayOfWeek!
+                                                            .isBefore(weekEnd.add(const Duration(days: 1)))));
+                                          })) {
+                                            return widget.weekIcons!.firstWhere((weeks) {
+                                              final weekStart = index as DateTime;
+                                              final weekEnd = weekStart.add(const Duration(days: 6));
+                                              return weeks.firstDayOfWeek != null &&
+                                                  (weeks.firstDayOfWeek!.isSameDay(weekStart) ||
+                                                      (weeks.firstDayOfWeek!.isAfter(weekStart) &&
+                                                          weeks.firstDayOfWeek!
+                                                              .isBefore(weekEnd.add(const Duration(days: 1)))));
+                                            });
                                           }
                                         }
                                       }();
