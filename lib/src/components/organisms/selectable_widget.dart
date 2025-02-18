@@ -54,7 +54,14 @@ class _ZdsSelectableWidgetState extends State<ZdsSelectableWidget> {
 
   String htmlToPlainText(String htmlString) {
     final dom.Document document = html_parser.parse(htmlString);
-    return document.body?.text ?? '';
+    // Replace <br> tags with \n
+    // Find all <br> elements and replace them with newline nodes
+    document.body?.querySelectorAll('br').forEach((br) {
+      br.replaceWith(dom.Text('\n')); // Use Text from the html package
+    });
+    // Remove all script tags
+    document.querySelectorAll('script').forEach((element) => element.remove());
+    return document.body?.text.trim() ?? '';
   }
 
   @override
