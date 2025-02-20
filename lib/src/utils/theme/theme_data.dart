@@ -279,6 +279,12 @@ class ZdsThemeData {
     return appBarStyleString == 'surface'
         ? ZetaAppBarStyle.surface
         : appBarStyleString == 'background'
+            // This ignore is used because the `ZetaAppBarStyle.background`,
+            // `ZetaAppBarStyle.secondary`, and `ZetaAppBarStyle.primary` values are marked
+            // as deprecated within the same package. However, they are still in use in the
+            // codebase, and replacing them requires refactoring to a new style system.
+            // The deprecated usage is temporary, and a future update will remove it once
+            // the new styles are fully integrated and tested.
             // ignore: deprecated_member_use_from_same_package
             ? ZetaAppBarStyle.background
             : appBarStyleString == 'secondary'
@@ -354,6 +360,12 @@ class ZdsThemeData {
     switch (appBarStyle) {
       case ZetaAppBarStyle.surface:
         return 'surface';
+      // This ignore is used because the `ZetaAppBarStyle.background` value is marked
+      // as deprecated within the same package. However, it is still in use in the
+      // codebase as part of the conversion process. Refactoring to remove the
+      // deprecated value requires replacing all instances of it, which will be done
+      // in a future update. This usage of the deprecated member is temporary until
+      // the transition is complete.
       // ignore: deprecated_member_use_from_same_package
       case ZetaAppBarStyle.background:
         return 'background';
@@ -373,7 +385,7 @@ class ZdsThemeData {
   ///
   /// [path] is the location of the JSON file.
   ///
-  /// Returns a Future that completes with a Map once the file has been loaded and decoded.
+  /// Returns a Future that completes with a `Map<String, dynamic>` once the file has been loaded and decoded.
   /// If an error occurs during loading or decoding, it catches the exception and returns an empty Map.
   static Future<String> _readAsset(String path) async {
     try {
@@ -385,7 +397,7 @@ class ZdsThemeData {
 
   /// Parses a JSON string and returns it as a Map.
   ///
-  /// The [jsonString] argument is a JSON string that will be parsed into a Map.
+  /// The [jsonString] argument is a JSON string that will be parsed into a `Map<String, dynamic>`.
   ///
   /// This method tries to decode the given JSON string. If an error occurs during decoding,
   /// it catches the exception and returns an empty Map.

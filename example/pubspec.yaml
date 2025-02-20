@@ -8,13 +8,10 @@ environment:
   flutter: ">=3.7.0"
 
 dependencies:
-  css_colors: ^1.1.4
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_quill: ^10.8.2
-  flutter_quill_extensions: ^10.8.2
   intl: ^0.19.0
   lottie: ^3.1.2
   path_provider: ^2.1.2
@@ -23,10 +20,13 @@ dependencies:
   table_calendar: ^3.0.9
   zds_flutter:
     path: ../
-  zeta_flutter: ^0.19.0
 
   url_launcher: any
   cross_file: any
+  zeta_flutter: any
+  flutter_quill: any
+  flutter_quill_extensions: any
+  image_picker: any
 flutter:
   uses-material-design: true
   assets:

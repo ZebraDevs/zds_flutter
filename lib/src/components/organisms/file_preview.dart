@@ -103,6 +103,10 @@ class ZdsFilePreview extends StatelessWidget {
 
   Widget _getPreview(double size) {
     return file.content is GiphyGif
+        // This ignore is used because the `previewGif.url` field is accessed dynamically.
+        // The dynamic call is necessary here due to the data structure returned by the API,
+        // which does not provide a strongly-typed model. Refactoring to a strongly-typed model
+        // should be considered in the future to eliminate this lint ignore.
         // ignore: avoid_dynamic_calls
         ? _getImage(Uri.parse(file.content.images!.previewGif.url as String), size)
         : file.isImage()
@@ -184,6 +188,10 @@ class ZdsFileSize extends StatelessWidget {
   Widget build(BuildContext context) {
     if (file != null) {
       return FutureBuilder<int>(
+        // This ignore is used because the `file!.length()` method returns a Future that is
+        // handled directly by the FutureBuilder. Although the lint rule warns about discarded
+        // futures, in this case, the Future is not discarded but used appropriately in the
+        // FutureBuilder's builder function. No additional handling is required here.
         // ignore: discarded_futures
         future: file!.length(),
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {

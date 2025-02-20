@@ -27,12 +27,7 @@ class ZdsFileEditPostProcessor implements ZdsFilePostProcessor {
         ZdsFadePageRouteBuilder(
           fullscreenDialog: true,
           builder: (context) {
-            return ImageEditor(
-              image: originalFile.readAsBytesSync(),
-              emojiOption: null,
-              textOption: null,
-              blurOption: null,
-            );
+            return ImageEditorHome.file(originalFile);
           },
         ),
       );

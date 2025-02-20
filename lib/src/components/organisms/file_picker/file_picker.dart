@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
-import 'package:open_filex/open_filex.dart';
+import 'package:open_file/open_file.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
 
@@ -973,7 +973,7 @@ class ZdsFilePickerController extends ChangeNotifier {
           onUpdate?.call(index);
         }
       } else {
-        await OpenFilex.open(fileToOpen.path);
+        await OpenFile.open(fileToOpen.path);
       }
     }
   }

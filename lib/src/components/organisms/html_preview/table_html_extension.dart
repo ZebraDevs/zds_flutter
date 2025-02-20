@@ -317,6 +317,23 @@ class ZdsTableHtmlExtension extends HtmlExtension {
           return _processInteractableChild(context, childSpan);
         }).toList(),
       );
+    } else if (context.elementName == 'hr') {
+      return WidgetSpan(
+        child: Builder(
+          builder: (context) {
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Zeta.of(context).colors.borderDefault,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      );
     }
 
     return WidgetSpan(
