@@ -470,9 +470,10 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
     final TextStyle? style = Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16, height: 16 / 12);
     final zetaColors = Zeta.of(context).colors;
     return Semantics(
+      container: true,
       button: true,
       enabled: true,
-      child: InkResponse(
+      child: InkWell(
         onTap: () async => handleOptionAction(context, option),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -491,7 +492,7 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
                   overflow: TextOverflow.ellipsis,
                   style: style?.copyWith(color: zetaColors.textDefault),
                   textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2.7),
-                ),
+                ).semantics(identifier: option.getLabel(context)),
               ],
             ),
           ),

@@ -414,7 +414,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
             ),
           );
         },
-        maxHeight: optionItemStyle == ZdsFilePickerOptionItemStyle.horizontal ? 200 : _moreConfig.options.length * 62,
+        maxHeight: optionItemStyle == ZdsFilePickerOptionItemStyle.horizontal ? 200 : _moreConfig.options.length * 67,
         builder: (_) {
           return Scaffold(
             body: Material(
