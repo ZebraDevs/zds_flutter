@@ -477,24 +477,22 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
         onTap: () async => handleOptionAction(context, option),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Expanded(
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  option.icon,
-                  size: 24 + ((widget.visualDensity?.horizontal ?? 0) * 4),
-                  color: zetaColors.iconSubtle,
-                ),
-                const SizedBox(width: 20),
-                Text(
-                  option.getLabel(context),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: style?.copyWith(color: zetaColors.textDefault),
-                  textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2.7),
-                ).semantics(identifier: option.getLabel(context)),
-              ],
-            ),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                option.icon,
+                size: 24 + ((widget.visualDensity?.horizontal ?? 0) * 4),
+                color: zetaColors.iconSubtle,
+              ),
+              const SizedBox(width: 20),
+              Text(
+                option.getLabel(context),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: style?.copyWith(color: zetaColors.textDefault),
+                textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2.7),
+              ).semantics(identifier: option.getLabel(context)),
+            ],
           ),
         ),
       ),
