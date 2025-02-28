@@ -383,6 +383,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     final themeData = Theme.of(context);
     final modalController = ZdsFilePickerController();
     final zetaColors = Zeta.of(context).colors;
+    const optionItemStyle = ZdsFilePickerOptionItemStyle.vertical;
     unawaited(
       showZdsBottomSheet<ZdsFileWrapper>(
         enforceSheet: true,
@@ -413,11 +414,12 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
             ),
           );
         },
-        maxHeight: 200,
+        maxHeight: optionItemStyle == ZdsFilePickerOptionItemStyle.horizontal ? 200 : _moreConfig.options.length * 67,
         builder: (_) {
           return Scaffold(
             body: Material(
               child: ZdsFilePicker(
+                displayOptionItemStyle: optionItemStyle,
                 useCard: false,
                 config: _moreConfig,
                 showSelected: false,
