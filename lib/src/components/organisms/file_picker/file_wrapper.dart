@@ -1,3 +1,10 @@
+// This ignore is applied because some constants in this file do not follow
+// the typical naming convention for constant identifiers (i.e., uppercase with
+// underscores). The decision to ignore this lint is intentional as these constants
+// are part of a specific design or naming pattern that does not align with the
+// default convention but is necessary for the project's consistency. Future
+// updates will reassess the use of constant naming conventions and might refactor
+// them if needed.
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/cupertino.dart';
@@ -123,6 +130,11 @@ class ZdsFileWrapper {
 
   @override
   bool operator ==(covariant ZdsFileWrapper other) {
+    // This ignore is used because the `runtimeType` and `content` checks involve dynamic
+    // calls that are necessary for comparing content types dynamically at runtime.
+    // The use of dynamic calls is unavoidable in this case due to the heterogeneous nature
+    // of the `content` property, which can be of different types (e.g., `XFile` or `XUri`).
+    // Refactoring to a more strongly-typed structure would require changes to the design.
     // ignore: avoid_dynamic_calls
     if (other.content.runtimeType != content.runtimeType) return false;
     if (content is XFile && other.content is XFile) {

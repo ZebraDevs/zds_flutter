@@ -314,7 +314,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
       final newTime = await _showTimePicker(context, currentValue);
       newValue = newTime != null ? _convert(newTime) : null;
     } else {
-      final date = await _showDatePicker(context, currentValue ?? DateTime.now());
+      final date = await _showDatePicker(context, currentValue);
       if (date != null) {
         if (mounted) {
           final time = await _showTimePicker(context, currentValue ?? DateTime.now());
@@ -337,8 +337,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
     return showZdsFiscalDatePicker(
       format: widget.format,
       context: context,
-      initialDate: currentValue ??
-          (widget.minDate != null && DateTime.now().isBefore(widget.minDate!) ? widget.minDate! : DateTime.now()),
+      initialDate: currentValue ?? getInitialDate(),
       firstDate: widget.minDate ?? DateTime(1900),
       lastDate: widget.maxDate ?? DateTime(2100),
       titleText: widget.helpText ?? componentString.get('SELECT_DATE', 'Select Date'),
@@ -419,4 +418,38 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
       );
 
   DateTime? _convert(TimeOfDay? time) => time == null ? null : DateTime(1, 1, 1, time.hour, time.minute);
+
+  /// This method is used for getting the initial date for the date picker.
+  /// if current date is in between min and max date then it will return current date.
+  /// else if range is before current date it will return max date.
+  /// else if range is after current date it will return min date.
+  DateTime getInitialDate() {
+    final DateTime currentDateTime = DateTime.now();
+    final DateTime startOfDay = DateTime(currentDateTime.year, currentDateTime.month, currentDateTime.day);
+    if (widget.minDate != null && widget.maxDate != null) {
+      if ((widget.minDate!.isBefore(startOfDay) || widget.minDate!.isAtSameMomentAs(startOfDay)) &&
+          (widget.maxDate!.isAfter(startOfDay) || widget.maxDate!.isAtSameMomentAs(startOfDay))) {
+        return startOfDay;
+      } else if (widget.minDate!.isBefore(startOfDay)) {
+        return widget.maxDate!;
+      } else if (widget.maxDate!.isAfter(startOfDay)) {
+        return widget.minDate!;
+      } else {
+        return startOfDay;
+      }
+    } else if (widget.minDate != null) {
+      if (widget.minDate!.isBefore(startOfDay) || widget.minDate!.isAtSameMomentAs(startOfDay)) {
+        return startOfDay;
+      } else {
+        widget.minDate!;
+      }
+    } else if (widget.maxDate != null) {
+      if (widget.maxDate!.isAfter(startOfDay) || widget.maxDate!.isAtSameMomentAs(startOfDay)) {
+        return startOfDay;
+      } else {
+        return widget.maxDate!;
+      }
+    }
+    return startOfDay;
+  }
 }

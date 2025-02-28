@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:html/dom.dart' as css;
+import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
 import 'package:http_client_helper/http_client_helper.dart';
 
@@ -22,7 +22,10 @@ enum MediaType {
   video,
 
   /// webUrl
-  webUrl
+  webUrl,
+
+  ///tinyUrl
+  tinyUrl
 }
 
 /// Map of colors Swatch
@@ -234,6 +237,8 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
         return '<p><video src="$mediaUrl" $attributes></video></p>';
       } else if (mediaType == MediaType.audio) {
         return '<p><audio src="$mediaUrl" $attributes></audio></p>';
+      } else if (mediaType == MediaType.tinyUrl) {
+        return '<p><a target="_blank" rel="noopener noreferrer" href=$mediaUrl>$mediaUrl</a></p>';
       } else {
         return '<p><mediacontainer src="$mediaUrl"></mediacontainer></p>';
       }
@@ -253,6 +258,11 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
 
   Future<void> _cacheMediaType(String url) async {
     if (_mediaTypeCache.containsKey(url)) return;
+
+    if (url.startsWith('http') && url.toLowerCase().contains('_/tiny/')) {
+      _mediaTypeCache[url] = MediaType.tinyUrl;
+      return;
+    }
     try {
       final Response? response = await HttpClientHelper.head(Uri.parse(url), retries: 2);
       if (response != null) {

@@ -130,6 +130,11 @@ extension HtmlToDelta on String {
               webView.dispose();
               // Parse the Delta from the callback arguments.
               final dynamic resp = jsonDecode(args.first as String);
+              // This ignore is used because the `resp['ops']` value is accessed dynamically.
+              // The data structure of `resp` is not strongly typed, requiring dynamic casting
+              // to extract the `List<dynamic>` for the `Delta.fromJson` method.
+              // A more strongly-typed model for `resp` could eliminate this lint, but this
+              // approach is necessary to handle the response structure as it is.
               // ignore: avoid_dynamic_calls
               final Delta delta = Delta.fromJson(resp['ops'] as List<dynamic>);
               completer.complete(delta);

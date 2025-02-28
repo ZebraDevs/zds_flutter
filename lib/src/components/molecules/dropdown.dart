@@ -30,6 +30,7 @@ class ZdsDropdownList<T> extends StatefulWidget {
     this.onTap,
     this.hint,
     this.labelStyle,
+    this.textStyle,
     this.borderColor,
     this.options = const <ZdsDropdownListItem<Never>>[],
     super.key,
@@ -64,6 +65,9 @@ class ZdsDropdownList<T> extends StatefulWidget {
   /// Defaults to [TextTheme.headlineSmall].
   final TextStyle? labelStyle;
 
+  /// Te textStyle used for dropdown label.
+  final TextStyle? textStyle;
+
   /// The hint shown when the dropdown has no value.
   final String? hint;
 
@@ -85,7 +89,8 @@ class ZdsDropdownList<T> extends StatefulWidget {
       ..add(DiagnosticsProperty<T?>('value', value))
       ..add(DiagnosticsProperty<TextStyle?>('labelStyle', labelStyle))
       ..add(StringProperty('hint', hint))
-      ..add(ColorProperty('borderColor', borderColor));
+      ..add(ColorProperty('borderColor', borderColor))
+      ..add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle));
   }
 }
 
@@ -172,6 +177,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
                 _isOpen = isOpen;
               }),
               customButton: TextFormField(
+                style: widget.textStyle,
                 controller: _formFieldController,
                 decoration: ZdsInputDecoration.withNoLabel(
                   suffixPadding: const EdgeInsets.only(right: 8),

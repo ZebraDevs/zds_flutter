@@ -800,6 +800,8 @@ class _RenderInputPadding extends RenderShiftedBox {
     if (child != null) {
       final BoxParentData childParentData = child!.parentData! as BoxParentData;
       // Ignored as we need to set the offset whilst keeping childParentData as its own object.
+      // This ignore is used because the cascade invocation warning does not apply here
+      // as the offset is being set explicitly and is necessary for proper alignment.
       // ignore: cascade_invocations
       childParentData.offset = Alignment.center.alongOffset(size - child!.size as Offset);
     }
