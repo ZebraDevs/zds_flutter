@@ -8,6 +8,15 @@
 
 - Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
 
+## [2.1.2](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.1...v2.1.2) (2025-03-05)
+
+
+### 🪲 Bug Fixes
+
+* Add prop for message input more options ([7aa114b](https://github.com/ZebraDevs/zds_flutter/commit/7aa114bd755b6b771df441737adbdcf53a38d58e))
+* style on message input sheet ([7aa114b](https://github.com/ZebraDevs/zds_flutter/commit/7aa114bd755b6b771df441737adbdcf53a38d58e))
+* **WFCNG-18981:** Add vertical style for comments message input ([#70](https://github.com/ZebraDevs/zds_flutter/issues/70)) ([7aa114b](https://github.com/ZebraDevs/zds_flutter/commit/7aa114bd755b6b771df441737adbdcf53a38d58e))
+
 ## [2.1.1](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.0...v2.1.1) (2025-02-28)
 
 
