@@ -29,6 +29,9 @@ class ZdsMessageInput extends StatefulWidget {
     this.voiceNoteFileName,
     this.allowVoiceNotes = false,
     this.postProcessors = const [ZdsFileCompressPostProcessor()],
+    this.moreConfig,
+    this.inlineConfig,
+    this.moreOptionItemStyle = ZdsFilePickerOptionItemStyle.vertical,
     super.key,
   }) : assert(
           (allowVoiceNotes && voiceNoteFileName != null) || !allowVoiceNotes,
@@ -57,7 +60,7 @@ class ZdsMessageInput extends StatefulWidget {
   /// Called whenever a file is uploaded.
   final void Function(List<XFile> file)? onUploadFiles;
 
-  /// Called when file uploading fales.
+  /// Called when file uploading fails.
   final void Function(BuildContext context, ZdsFilePickerConfig config, Exception exception)? onUploadError;
 
   /// List of processes a file should undergo post getting picked from file picker
@@ -97,6 +100,35 @@ class ZdsMessageInput extends StatefulWidget {
   /// The maximum pixel size of any image sent as an attachment.
   final int maxPixelSize;
 
+  /// Custom configuration for the file picker that appears when the attachment button is clicked.
+  ///
+  /// If not provided, a default configuration will be used.
+  ///
+  /// Default config includes:
+  /// maxFilesAllowed: 1,
+  /// maxFileSize: widget.maxAttachSize,
+  /// allowedExtensions: widget.allowedFileTypes,
+  /// maxPixelSize: widget.maxPixelSize,
+  /// options: [ ZdsFilePickerOptions.FILE, ZdsFilePickerOptions.GIF, ZdsFilePickerOptions.GALLERY, ZdsFilePickerOptions.VIDEO, ZdsFilePickerOptions.CAMERA],
+  ///
+  /// NOTE: To add a Giphy key, this object must be provided with the key.
+  final ZdsFilePickerConfig? moreConfig;
+
+  /// Custom configuration for the file picker that appears inline on the message input
+  ///
+  /// If not provided, a default configuration will be used.
+  ///
+  /// Default config includes:
+  /// maxFilesAllowed: 1,
+  /// maxFileSize: widget.maxAttachSize,
+  /// allowedExtensions: widget.allowedFileTypes,
+  /// maxPixelSize: widget.maxPixelSize,
+  /// options: [ ZdsFilePickerOptions.CAMERA],
+  final ZdsFilePickerConfig? inlineConfig;
+
+  /// The style of the option items in the file picker.
+  final ZdsFilePickerOptionItemStyle moreOptionItemStyle;
+
   @override
   ZdsMessageInputState createState() => ZdsMessageInputState();
 
@@ -130,7 +162,10 @@ class ZdsMessageInput extends StatefulWidget {
           onUploadError,
         ),
       )
-      ..add(IterableProperty<ZdsFilePostProcessor>('postProcessors', postProcessors));
+      ..add(IterableProperty<ZdsFilePostProcessor>('postProcessors', postProcessors))
+      ..add(DiagnosticsProperty<ZdsFilePickerConfig?>('moreConfig', moreConfig))
+      ..add(DiagnosticsProperty<ZdsFilePickerConfig?>('inlineConfig', inlineConfig))
+      ..add(EnumProperty<ZdsFilePickerOptionItemStyle>('optionItemStyle', moreOptionItemStyle));
   }
 }
 
@@ -151,31 +186,33 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     setState(() => __hasText = value);
   }
 
-  late final _moreConfig = ZdsFilePickerConfig(
-    maxFilesAllowed: 1,
-    maxFileSize: widget.maxAttachSize,
-    allowedExtensions: widget.allowedFileTypes,
-    maxPixelSize: widget.maxPixelSize,
-    options: [
-      ZdsFilePickerOptions.FILE,
-      ZdsFilePickerOptions.GIF,
-      ZdsFilePickerOptions.GALLERY,
-      ZdsFilePickerOptions.VIDEO,
-      ZdsFilePickerOptions.CAMERA,
-    ],
-  );
+  ZdsFilePickerConfig get _moreConfig =>
+      widget.moreConfig ??
+      ZdsFilePickerConfig(
+        maxFilesAllowed: 1,
+        maxFileSize: widget.maxAttachSize,
+        allowedExtensions: widget.allowedFileTypes,
+        maxPixelSize: widget.maxPixelSize,
+        options: [
+          ZdsFilePickerOptions.FILE,
+          ZdsFilePickerOptions.GIF,
+          ZdsFilePickerOptions.GALLERY,
+          ZdsFilePickerOptions.VIDEO,
+          ZdsFilePickerOptions.CAMERA,
+        ],
+      );
 
-  ZdsFilePickerConfig get _inlineConfig {
-    return ZdsFilePickerConfig(
-      maxFilesAllowed: 1,
-      maxFileSize: widget.maxAttachSize,
-      allowedExtensions: widget.allowedFileTypes,
-      maxPixelSize: widget.maxPixelSize,
-      options: [
-        ZdsFilePickerOptions.CAMERA,
-      ],
-    );
-  }
+  ZdsFilePickerConfig get _inlineConfig =>
+      widget.inlineConfig ??
+      ZdsFilePickerConfig(
+        maxFilesAllowed: 1,
+        maxFileSize: widget.maxAttachSize,
+        allowedExtensions: widget.allowedFileTypes,
+        maxPixelSize: widget.maxPixelSize,
+        options: [
+          ZdsFilePickerOptions.CAMERA,
+        ],
+      );
 
   @override
   void initState() {
@@ -380,56 +417,85 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
   }
 
   void _pickAttachments(BuildContext context) {
-    final themeData = Theme.of(context);
     final modalController = ZdsFilePickerController();
     final zetaColors = Zeta.of(context).colors;
-    const optionItemStyle = ZdsFilePickerOptionItemStyle.vertical;
+
+    int moreItemsLength = _moreConfig.options.length;
+    if (_moreConfig.options.contains(ZdsFilePickerOptions.GIF) && _moreConfig.giphyKey == null) {
+      debugPrint('A Giphy key must be provided in the moreConfig object to use the Giphy option');
+      moreItemsLength--;
+    }
+
+    const titleHeaderHeight = 54;
+    const handleSize = 11;
+    const itemHeightVertical = 84;
+    const itemHeightHorizontalIndividual = 56;
+    final itemHeightHorizontalTotal = itemHeightHorizontalIndividual * moreItemsLength;
+    final dividerHeight = _moreConfig.options.length - 1;
+
+    final maxSheetHeight = handleSize +
+        titleHeaderHeight +
+        (widget.moreOptionItemStyle == ZdsFilePickerOptionItemStyle.vertical
+            ? itemHeightHorizontalTotal + dividerHeight
+            : itemHeightVertical);
+
     unawaited(
       showZdsBottomSheet<ZdsFileWrapper>(
         enforceSheet: true,
         backgroundColor: zetaColors.surfacePrimary,
         context: context,
-        headerBuilder: (context) {
-          return PreferredSize(
-            preferredSize: const Size.fromHeight(48),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(ZdsIcons.close, size: 20),
-                  onPressed: Navigator.of(context).pop,
-                  color: zetaColors.iconSubtle,
-                ),
-                FittedBox(
-                  fit: BoxFit.cover,
-                  child: Text(
-                    ComponentStrings.of(context).get('ATTACHMENTS', 'Attachments'),
-                    style: themeData.textTheme.titleMedium,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(width: 48),
-              ],
-            ),
-          );
-        },
-        maxHeight: optionItemStyle == ZdsFilePickerOptionItemStyle.horizontal ? 200 : _moreConfig.options.length * 67,
+        maxHeight: maxSheetHeight.toDouble(),
         builder: (_) {
           return Scaffold(
             body: Material(
-              child: ZdsFilePicker(
-                displayOptionItemStyle: optionItemStyle,
-                useCard: false,
-                config: _moreConfig,
-                showSelected: false,
-                controller: modalController,
-                onChange: (files) {
-                  if (files.isNotEmpty) Navigator.of(context).pop(files.first);
-                },
-                onError: widget.onUploadError,
-                postProcessors: widget.postProcessors,
-              ).paddingOnly(top: 24, bottom: 24),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 54,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Semantics(
+                              identifier: 'drawer_title',
+                              container: true,
+                              child: Text(
+                                ComponentStrings.of(context).get('ADD_ATTACHMENTS', 'Add Attachments'),
+                                style: ZetaTextStyles.h5,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Semantics(
+                              identifier: 'drawer_close',
+                              container: true,
+                              child: IconButton(
+                                icon: const Icon(ZdsIcons.close, size: 20),
+                                onPressed: Navigator.of(context).pop,
+                                color: zetaColors.iconSubtle,
+                                splashRadius: 24,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    ZdsFilePicker(
+                      displayOptionItemStyle: widget.moreOptionItemStyle,
+                      useCard: false,
+                      config: _moreConfig,
+                      showSelected: false,
+                      controller: modalController,
+                      onChange: (files) {
+                        if (files.isNotEmpty) Navigator.of(context).pop(files.first);
+                      },
+                      onError: widget.onUploadError,
+                      postProcessors: widget.postProcessors,
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         },
