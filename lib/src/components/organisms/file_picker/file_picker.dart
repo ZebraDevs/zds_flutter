@@ -189,6 +189,15 @@ enum ZdsFilePickerDisplayStyle {
   vertical,
 }
 
+/// Whether to display the [ZdsFilePickerOptions] Option items as a horizontal row or vertical column.
+enum ZdsFilePickerOptionItemStyle {
+  ///Displays [ZdsFilePickerOptions] as a horizontal row.
+  horizontal,
+
+  ///Displays [ZdsFilePickerOptions] as a vertical column.
+  vertical,
+}
+
 /// UI Variants of the [ZdsFilePicker].
 enum ZdsOptionDisplay {
   /// Shows an icon above text for each File option.
@@ -228,6 +237,7 @@ class ZdsFilePicker extends StatefulWidget {
     this.showSelected = true,
     this.useCard = true,
     this.visualDensity = VisualDensity.standard,
+    this.displayOptionItemStyle = ZdsFilePickerOptionItemStyle.horizontal,
   });
 
   /// Whether to use a default card background. If false, uses a transparent background.
@@ -247,6 +257,9 @@ class ZdsFilePicker extends StatefulWidget {
 
   /// Whether to show the attachments in a horizontal or vertical list.
   final ZdsFilePickerDisplayStyle? displayStyle;
+
+  /// Whether to show the attachments in a horizontal or vertical list.
+  final ZdsFilePickerOptionItemStyle? displayOptionItemStyle;
 
   /// The visual density of this card.
   ///
@@ -309,7 +322,8 @@ class ZdsFilePicker extends StatefulWidget {
           'onError',
           onError,
         ),
-      );
+      )
+      ..add(EnumProperty<ZdsFilePickerOptionItemStyle?>('displayOptionItemStyle', displayOptionItemStyle));
   }
 }
 
@@ -380,14 +394,28 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
                 ],
                 ZdsAbsorbPointer(
                   absorbing: !kIsWeb && disableWidget,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: _allowedOptions
-                        .map((ZdsFilePickerOptions option) => _buildOption(context, option))
-                        .toList()
-                        .divide(_divider)
-                        .toList(),
-                  ),
+                  child: widget.displayOptionItemStyle == ZdsFilePickerOptionItemStyle.horizontal
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: _allowedOptions
+                              .map((ZdsFilePickerOptions option) => _buildOption(context, option))
+                              .toList()
+                              .divide(_divider)
+                              .toList(),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: _allowedOptions
+                              .map((ZdsFilePickerOptions option) => _buildOptionVertical(context, option))
+                              .toList()
+                              .divide(
+                                const Divider(
+                                  height: 1,
+                                ),
+                              )
+                              .toList(),
+                        ),
                 ),
               ],
             ),
@@ -433,6 +461,40 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
             ],
           );
         },
+      ),
+    );
+  }
+
+  /// Builds a [ZdsFilePicker] as a vertical column.
+  Widget _buildOptionVertical(BuildContext context, ZdsFilePickerOptions option) {
+    final TextStyle? style = Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16, height: 16 / 12);
+    final zetaColors = Zeta.of(context).colors;
+    return Semantics(
+      container: true,
+      button: true,
+      enabled: true,
+      child: InkWell(
+        onTap: () async => handleOptionAction(context, option),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                option.icon,
+                size: 24 + ((widget.visualDensity?.horizontal ?? 0) * 4),
+                color: zetaColors.iconSubtle,
+              ),
+              const SizedBox(width: 20),
+              Text(
+                option.getLabel(context),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: style?.copyWith(color: zetaColors.textDefault),
+                textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2.7),
+              ).semantics(identifier: option.getLabel(context)),
+            ],
+          ),
+        ),
       ),
     );
   }

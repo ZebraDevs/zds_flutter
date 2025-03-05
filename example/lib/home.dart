@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
         leadingWidth: 20,
         leading: SizedBox(width: 20),
         // x-release-please-start-version
-        title: const Text('zds_flutter v2.1.0'),
+        title: const Text('zds_flutter v2.1.1'),
         // x-release-please-end
         centerTitle: false,
         actions: [

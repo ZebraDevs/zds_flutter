@@ -8,6 +8,18 @@
 
 - Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
 
+## [2.1.1](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.0...v2.1.1) (2025-02-28)
+
+
+### 🪲 Bug Fixes
+
+* **WFCNG -18980:** Add vertical filepicker ([bef65e3](https://github.com/ZebraDevs/zds_flutter/commit/bef65e37e1d85a047138b31f6d94d0f5a8f10e0f))
+
+
+### ⛓️ Dependencies
+
+* **icons:** Update icons with request holiday ([7c9c09a](https://github.com/ZebraDevs/zds_flutter/commit/7c9c09a3bf6a7da469c284592f5c551c8999e075))
+
 ## [2.1.0](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.2...v2.1.0) (2025-02-18)
 
 

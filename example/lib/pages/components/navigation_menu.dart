@@ -103,7 +103,7 @@ class NavigationMenuDemo extends StatelessWidget {
           children: [
             ZdsMenuItem(
               title: const Text('How do I'),
-              leading: const Icon(ZdsIcons.how_do_I),
+              leading: const Icon(ZdsIcons.how_do_i),
               onTap: () {},
               trailing: const Icon(ZdsIcons.chevron_right),
             ),
