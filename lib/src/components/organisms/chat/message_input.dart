@@ -158,10 +158,8 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     maxPixelSize: widget.maxPixelSize,
     options: [
       ZdsFilePickerOptions.FILE,
-      ZdsFilePickerOptions.GIF,
-      ZdsFilePickerOptions.GALLERY,
-      ZdsFilePickerOptions.VIDEO,
       ZdsFilePickerOptions.CAMERA,
+      ZdsFilePickerOptions.GALLERY,
     ],
   );
 
@@ -380,56 +378,64 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
   }
 
   void _pickAttachments(BuildContext context) {
-    final themeData = Theme.of(context);
     final modalController = ZdsFilePickerController();
     final zetaColors = Zeta.of(context).colors;
     const optionItemStyle = ZdsFilePickerOptionItemStyle.vertical;
+    const titleHeaderHeight = 77;
     unawaited(
       showZdsBottomSheet<ZdsFileWrapper>(
         enforceSheet: true,
         backgroundColor: zetaColors.surfacePrimary,
         context: context,
-        headerBuilder: (context) {
-          return PreferredSize(
-            preferredSize: const Size.fromHeight(48),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(ZdsIcons.close, size: 20),
-                  onPressed: Navigator.of(context).pop,
-                  color: zetaColors.iconSubtle,
-                ),
-                FittedBox(
-                  fit: BoxFit.cover,
-                  child: Text(
-                    ComponentStrings.of(context).get('ATTACHMENTS', 'Attachments'),
-                    style: themeData.textTheme.titleMedium,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(width: 48),
-              ],
-            ),
-          );
-        },
-        maxHeight: optionItemStyle == ZdsFilePickerOptionItemStyle.horizontal ? 200 : _moreConfig.options.length * 67,
+        maxHeight: titleHeaderHeight + _moreConfig.options.length * 57,
         builder: (_) {
           return Scaffold(
             body: Material(
-              child: ZdsFilePicker(
-                displayOptionItemStyle: optionItemStyle,
-                useCard: false,
-                config: _moreConfig,
-                showSelected: false,
-                controller: modalController,
-                onChange: (files) {
-                  if (files.isNotEmpty) Navigator.of(context).pop(files.first);
-                },
-                onError: widget.onUploadError,
-                postProcessors: widget.postProcessors,
-              ).paddingOnly(top: 24, bottom: 24),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: PreferredSize(
+                      preferredSize: const Size.fromHeight(28),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Semantics(
+                            identifier: 'drawer_title',
+                            container: true,
+                            child: Text(
+                              ComponentStrings.of(context).get('ADD_ATTACHMENTS', 'Add Attachments'),
+                              style: ZetaTextStyles.h5,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Semantics(
+                            identifier: 'drawer_close',
+                            container: true,
+                            child: IconButton(
+                              icon: const Icon(ZdsIcons.close, size: 20),
+                              onPressed: Navigator.of(context).pop,
+                              color: zetaColors.iconSubtle,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ZdsFilePicker(
+                    displayOptionItemStyle: optionItemStyle,
+                    useCard: false,
+                    config: _moreConfig,
+                    showSelected: false,
+                    controller: modalController,
+                    onChange: (files) {
+                      if (files.isNotEmpty) Navigator.of(context).pop(files.first);
+                    },
+                    onError: widget.onUploadError,
+                    postProcessors: widget.postProcessors,
+                  ),
+                ],
+              ),
             ),
           );
         },
