@@ -65,6 +65,7 @@ class ZdsCalendar extends StatefulWidget {
     this.previousTooltip,
     this.nextTooltip,
     this.selectedRange,
+    this.backgroundColor,
     @Deprecated('This parameter is no longer used and will be removed in the next major version.')
     bool showSelectedDateHeader = false,
   })  : _variant = _ZdsCalendarVariant.switchable,
@@ -103,6 +104,7 @@ class ZdsCalendar extends StatefulWidget {
     this.previousTooltip,
     this.nextTooltip,
     this.selectedRange,
+    this.backgroundColor,
     @Deprecated('This parameter is no longer used and will be removed in the next major version.')
     bool showSelectedDateHeader = false,
   }) : _variant = _ZdsCalendarVariant.monthly;
@@ -133,6 +135,7 @@ class ZdsCalendar extends StatefulWidget {
     this.calendarHeaderIconColor,
     this.calendarHeaderTextColor,
     this.calendarTextColor,
+    this.backgroundColor,
     this.holidayEvents = const [],
     this.allCustomLabel,
     this.calendarRowHeight,
@@ -246,6 +249,11 @@ class ZdsCalendar extends StatefulWidget {
   /// Applies to both weekdays and weekends.
   final Color? calendarTextColor;
 
+  /// Custom color override for the background of the calendar.
+  ///
+  /// Defaults to [ColorScheme.surface].
+  final Color? backgroundColor;
+
   /// A list of holiday dates. holiday will be shown on calendar with grey circle.
   ///
   /// /// Defaults to empty list
@@ -313,7 +321,8 @@ class ZdsCalendar extends StatefulWidget {
       ..add(IterableProperty<DateTime>('holidayEvents', holidayEvents))
       ..add(StringProperty('allCustomLabel', allCustomLabel))
       ..add(DoubleProperty('calendarRowHeight', calendarRowHeight))
-      ..add(DiagnosticsProperty<DateTimeRange?>('selectedRange', selectedRange));
+      ..add(DiagnosticsProperty<DateTimeRange?>('selectedRange', selectedRange))
+      ..add(ColorProperty('calendarBackgroundColor', backgroundColor));
   }
 }
 
@@ -544,7 +553,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
           bottom: (widget._variant == _ZdsCalendarVariant.weekly) ? 6 : 10,
           top: (widget._variant == _ZdsCalendarVariant.weekly) ? 10 : 0,
         )
-        .backgroundColor(Theme.of(context).colorScheme.surface);
+        .backgroundColor(widget.backgroundColor ?? Theme.of(context).colorScheme.surface);
 
     final VoidCallback? previousMonthTap = _focusedDay.firstDayOfMonth().isAfter(_firstDay)
         ? () => setState(() => _focusedDay = _safePrevious(_focusedDay.startOfMonth.subtract(const Duration(days: 1))))
@@ -560,9 +569,10 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
 
     final calendarHeader = widget.hasHeader
         ? Container(
-            color: Theme.of(context).colorScheme.surface,
+            color: widget.backgroundColor ?? Theme.of(context).colorScheme.surface,
             padding: widget.headerPadding,
             child: Material(
+              color: Colors.transparent,
               child: Column(
                 children: [
                   Row(
@@ -787,7 +797,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
       label: ComponentStrings.of(context).get('ALL', 'All'),
       excludeSemantics: true,
       child: Container(
-        color: Theme.of(context).colorScheme.surface,
+        color: widget.backgroundColor ?? Theme.of(context).colorScheme.surface,
         height: context.isSmallScreen() ? null : calendarDaysOfWeekHeight + calendarRowHeight,
         width: context.isSmallScreen() ? null : 48,
         child: context.isSmallScreen()
@@ -797,7 +807,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
     );
 
     return Material(
-      color: Theme.of(context).colorScheme.surface,
+      color: widget.backgroundColor ?? Theme.of(context).colorScheme.surface,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -812,7 +822,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                 children: [
                   if (widget.weekIcons != null)
                     Container(
-                      color: Theme.of(context).colorScheme.surface,
+                      color: widget.backgroundColor ?? Theme.of(context).colorScheme.surface,
                       width: context.isSmallScreen() ? 36 : 48,
                       child: () {
                         if (widget.weekIcons != null) {
