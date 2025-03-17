@@ -44,6 +44,7 @@ class _CalendarDemoState extends State<CalendarDemo> {
             const SizedBox(height: 50),
             ZdsCalendar.monthly(
               isRangeSelectable: true,
+              backgroundColor: Colors.purple.shade200,
               events: [
                 CalendarEvent(id: 'a', date: DateTime.now()),
                 CalendarEvent(id: 'b', date: DateTime.now().subtract(const Duration(days: 1))),
