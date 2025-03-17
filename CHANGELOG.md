@@ -8,6 +8,19 @@
 
 - Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
 
+## [2.1.3](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.2...v2.1.3) (2025-03-17)
+
+
+### 🪲 Bug Fixes
+
+* **UX-1405:** Add prop to change background color of calendar ([#72](https://github.com/ZebraDevs/zds_flutter/issues/72)) ([4df5d2d](https://github.com/ZebraDevs/zds_flutter/commit/4df5d2da227630167fa5f563f4523c8f268ece89))
+* **WFCNG-19791:** Attachments sheet hidden behind keyboard ([4df5d2d](https://github.com/ZebraDevs/zds_flutter/commit/4df5d2da227630167fa5f563f4523c8f268ece89))
+
+
+### ⛓️ Dependencies
+
+* Update Android axample app build deps ([4df5d2d](https://github.com/ZebraDevs/zds_flutter/commit/4df5d2da227630167fa5f563f4523c8f268ece89))
+
 ## [2.1.2](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.1...v2.1.2) (2025-03-05)
 
 
