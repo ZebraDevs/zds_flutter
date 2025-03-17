@@ -417,6 +417,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
   }
 
   void _pickAttachments(BuildContext context) {
+    unawaited(SystemChannels.textInput.invokeMethod('TextInput.hide'));
     final modalController = ZdsFilePickerController();
     final zetaColors = Zeta.of(context).colors;
 
