@@ -21,6 +21,7 @@
     "SEND_MESSAGE": "Send message",
     "ADD_VOICE_NOTE": "Add voice note",
     "ATTACHMENTS": "Attachments",
+    "ADD_ATTACHMENTS": "Add Attachments",
     "SEL_DATE": "Selected date",
     "SEL_DATE_RANGE": "Selected date range"
 }
