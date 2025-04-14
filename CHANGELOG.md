@@ -8,6 +8,20 @@
 
 - Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
 
+## [2.1.4](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.3...v2.1.4) (2025-04-14)
+
+
+### 🪲 Bug Fixes
+
+* Add background color prop to ZdsComment ([#74](https://github.com/ZebraDevs/zds_flutter/issues/74)) ([5d75010](https://github.com/ZebraDevs/zds_flutter/commit/5d75010103fcd5a9db0c931536fdf325aeb009c0))
+* Attachments sheet iOS scroll height ([5d75010](https://github.com/ZebraDevs/zds_flutter/commit/5d75010103fcd5a9db0c931536fdf325aeb009c0))
+* Comment popup background color; ([5d75010](https://github.com/ZebraDevs/zds_flutter/commit/5d75010103fcd5a9db0c931536fdf325aeb009c0))
+
+
+### ⛓️ Dependencies
+
+* Fix verson of camerawesome as newer versions dont support flutter 3.24 ([5d75010](https://github.com/ZebraDevs/zds_flutter/commit/5d75010103fcd5a9db0c931536fdf325aeb009c0))
+
 ## [2.1.3](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.2...v2.1.3) (2025-03-17)
 
 
