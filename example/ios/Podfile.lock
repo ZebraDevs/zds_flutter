@@ -65,6 +65,7 @@ PODS:
   - JPSVolumeButtonHandler (1.0.5)
   - just_audio (0.0.1):
     - Flutter
+    - FlutterMacOS
   - libwebp (1.3.2):
     - libwebp/demux (= 1.3.2)
     - libwebp/mux (= 1.3.2)
@@ -80,7 +81,7 @@ PODS:
   - Mantle (2.2.0):
     - Mantle/extobjc (= 2.2.0)
   - Mantle/extobjc (2.2.0)
-  - open_filex (0.0.2):
+  - open_file_ios (0.0.1):
     - Flutter
   - OrderedSet (6.0.3)
   - package_info_plus (0.4.5):
@@ -90,11 +91,10 @@ PODS:
     - FlutterMacOS
   - permission_handler_apple (9.3.0):
     - Flutter
-  - quill_native_bridge (0.0.1):
+  - quill_native_bridge_ios (0.0.1):
     - Flutter
   - record_darwin (1.0.0):
     - Flutter
-    - FlutterMacOS
   - SDWebImage (5.19.7):
     - SDWebImage/Core (= 5.19.7)
   - SDWebImage/Core (5.19.7)
@@ -134,12 +134,12 @@ DEPENDENCIES:
   - gal (from `.symlinks/plugins/gal/darwin`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - irondash_engine_context (from `.symlinks/plugins/irondash_engine_context/ios`)
-  - just_audio (from `.symlinks/plugins/just_audio/ios`)
-  - open_filex (from `.symlinks/plugins/open_filex/ios`)
+  - just_audio (from `.symlinks/plugins/just_audio/darwin`)
+  - open_file_ios (from `.symlinks/plugins/open_file_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
-  - quill_native_bridge (from `.symlinks/plugins/quill_native_bridge/ios`)
+  - quill_native_bridge_ios (from `.symlinks/plugins/quill_native_bridge_ios/ios`)
   - record_darwin (from `.symlinks/plugins/record_darwin/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -186,17 +186,17 @@ EXTERNAL SOURCES:
   irondash_engine_context:
     :path: ".symlinks/plugins/irondash_engine_context/ios"
   just_audio:
-    :path: ".symlinks/plugins/just_audio/ios"
-  open_filex:
-    :path: ".symlinks/plugins/open_filex/ios"
+    :path: ".symlinks/plugins/just_audio/darwin"
+  open_file_ios:
+    :path: ".symlinks/plugins/open_file_ios/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
-  quill_native_bridge:
-    :path: ".symlinks/plugins/quill_native_bridge/ios"
+  quill_native_bridge_ios:
+    :path: ".symlinks/plugins/quill_native_bridge_ios/ios"
   record_darwin:
     :path: ".symlinks/plugins/record_darwin/ios"
   share_plus:
@@ -217,42 +217,42 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/wakelock_plus/ios"
 
 SPEC CHECKSUMS:
-  audio_session: 088d2483ebd1dc43f51d253d4a1c517d9a2e7207
+  audio_session: 19e9480dbdd4e5f6c4543826b2e8b0e4ab6145fe
   camerawesome: 1e06540f60158809bc70f398ed1ac2cf93fe4188
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
-  file_picker: 09aa5ec1ab24135ccd7a1621c46c84134bfd6655
+  file_picker: b159e0c068aef54932bb15dc9fd1571818edaf49
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_image_compress_common: ec1d45c362c9d30a3f6a0426c297f47c52007e3e
   flutter_inappwebview_ios: 6f63631e2c62a7c350263b13fa5427aedefe81d4
-  flutter_keyboard_visibility_temp_fork: 442dadca3b81868a225cd6a2f605bffff1215844
-  gal: 61e868295d28fe67ffa297fae6dacebf56fd53e1
+  flutter_keyboard_visibility_temp_fork: 8a8809c4129e31d25fca77446e0f3fd548122ced
+  gal: 6a522c75909f1244732d4596d11d6a2f86ff37a5
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   irondash_engine_context: 3458bf979b90d616ffb8ae03a150bafe2e860cc9
   JPSVolumeButtonHandler: 53110330c9168ed325def93eabff39f0fe3e8082
-  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
+  just_audio: a42c63806f16995daf5b219ae1d679deb76e6a79
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
-  open_filex: 6e26e659846ec990262224a12ef1c528bb4edbe4
+  open_file_ios: 461db5853723763573e140de3193656f91990d9e
   OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
-  package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
+  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
-  quill_native_bridge: e5afa7d49c08cf68c52a5e23bc272eba6925c622
-  record_darwin: df0a677188e5fed18472550298e675f19ddaffbe
+  quill_native_bridge_ios: 2b01d585fcc73d0f5eed78c0bd244ee564b06f5a
+  record_darwin: 3b1a8e7d5c0cbf45ad6165b4d83a6ca643d929c3
   SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
-  share_plus: 8875f4f2500512ea181eef553c3e27dba5135aad
+  share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
-  sqflite_darwin: a553b1fd6fe66f53bbb0fe5b4f5bab93f08d7a13
+  sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
   super_native_extensions: 4916b3c627a9c7fffdc48a23a9eca0b1ac228fa7
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
   video_compress: fce97e4fb1dfd88175aa07d2ffc8a2f297f87fbe
   video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
-  wakelock_plus: 78ec7c5b202cab7761af8e2b2b3d0671be6c4ae1
+  wakelock_plus: 373cfe59b235a6dd5837d0fb88791d2f13a90d56
 
 PODFILE CHECKSUM: ef2759a31e8883d6b534c00ef22a7f4104f8de0d
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
