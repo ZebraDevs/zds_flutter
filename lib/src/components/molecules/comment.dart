@@ -24,6 +24,7 @@ class ZdsComment extends StatelessWidget {
     this.menuItems,
     this.menuPosition = ZdsPopupMenuPosition.bottomRight,
     this.onMenuItemSelected,
+    this.backgroundColor,
   })  : assert(
           onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
           'replySemanticLabel must be not null if onReply is defined',
@@ -86,13 +87,20 @@ class ZdsComment extends StatelessWidget {
   /// Menu items must be given a value for the callback to trigger.
   final ValueChanged<int>? onMenuItemSelected;
 
+  /// The background color of the comment.
+  ///
+  /// Defaults to [ZetaColors.surfacePrimary].
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     final colors = Zeta.of(context).colors;
     final spacing = Zeta.of(context).spacing;
 
+    final backgroundColor = this.backgroundColor ?? colors.surfacePrimary;
+
     return ColoredBox(
-      color: colors.surfacePrimary,
+      color: backgroundColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -121,7 +129,6 @@ class ZdsComment extends StatelessWidget {
                         icon: ZetaIcons.reply,
                         semanticLabel: replySemanticLabel,
                         foregroundColor: colors.primary,
-                        backgroundColor: colors.surfacePrimarySubtle,
                         onPressed: (_) => onReply!(),
                       ),
                     if (onDelete != null && deleteSemanticLabel != null)
@@ -200,6 +207,7 @@ class ZdsComment extends StatelessWidget {
                                   attachment: attachment!,
                                   downloadCallback: downloadCallback,
                                   customThumbnail: attachmentThumbnail,
+                                  backgroundColor: backgroundColor,
                                 ),
                               ),
                           ],
@@ -213,7 +221,7 @@ class ZdsComment extends StatelessWidget {
                           onSelected: onMenuItemSelected,
                           builder: (context, open) {
                             return Material(
-                              color: colors.surfacePrimary,
+                              color: backgroundColor,
                               child: InkWell(
                                 onTap: open,
                                 child: child,
@@ -222,7 +230,7 @@ class ZdsComment extends StatelessWidget {
                           },
                         );
                       }
-                      return ColoredBox(color: colors.surfacePrimary, child: child);
+                      return ColoredBox(color: backgroundColor, child: child);
                     },
                   ),
                 );
@@ -249,7 +257,8 @@ class ZdsComment extends StatelessWidget {
       ..add(StringProperty('deleteSemanticLabel', deleteSemanticLabel))
       ..add(StringProperty('replySemanticLabel', replySemanticLabel))
       ..add(EnumProperty<ZdsPopupMenuPosition>('menuPosition', menuPosition))
-      ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected));
+      ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected))
+      ..add(ColorProperty('backgroundColor', backgroundColor));
   }
 }
 
@@ -258,11 +267,13 @@ class _AttachmentRow extends StatelessWidget {
     required this.attachment,
     this.customThumbnail,
     this.downloadCallback,
+    required this.backgroundColor,
   });
 
   final ZdsChatAttachment attachment;
   final VoidCallback? downloadCallback;
   final Widget? customThumbnail;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -271,6 +282,7 @@ class _AttachmentRow extends StatelessWidget {
     final radius = Zeta.of(context).radius;
 
     return Material(
+      color: backgroundColor,
       child: InkWell(
         borderRadius: radius.minimal,
         onTap: downloadCallback,
@@ -324,6 +336,7 @@ class _AttachmentRow extends StatelessWidget {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<ZdsChatAttachment>('attachment', attachment))
-      ..add(ObjectFlagProperty<VoidCallback?>.has('downloadCallback', downloadCallback));
+      ..add(ObjectFlagProperty<VoidCallback?>.has('downloadCallback', downloadCallback))
+      ..add(ColorProperty('backgroundColor', backgroundColor));
   }
 }

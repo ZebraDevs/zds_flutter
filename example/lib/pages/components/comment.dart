@@ -16,6 +16,7 @@ class _CommentDemoState extends State<CommentDemo> {
       child: Column(
         children: [
           ZdsComment(
+            backgroundColor: Colors.amber,
             avatar: ZetaAvatar.initials(
               initials: 'JP',
               size: ZetaAvatarSize.xxxs,
