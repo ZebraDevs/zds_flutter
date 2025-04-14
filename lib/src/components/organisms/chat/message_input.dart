@@ -433,8 +433,9 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     const itemHeightHorizontalIndividual = 56;
     final itemHeightHorizontalTotal = itemHeightHorizontalIndividual * moreItemsLength;
     final dividerHeight = _moreConfig.options.length - 1;
-
-    final maxSheetHeight = handleSize +
+    final viewInsets = MediaQuery.of(context).padding.bottom;
+    final maxSheetHeight = viewInsets +
+        handleSize +
         titleHeaderHeight +
         (widget.moreOptionItemStyle == ZdsFilePickerOptionItemStyle.vertical
             ? itemHeightHorizontalTotal + dividerHeight
@@ -445,7 +446,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
         enforceSheet: true,
         backgroundColor: zetaColors.surfacePrimary,
         context: context,
-        maxHeight: maxSheetHeight.toDouble(),
+        maxHeight: maxSheetHeight,
         builder: (_) {
           return Scaffold(
             body: Material(

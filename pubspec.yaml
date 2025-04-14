@@ -20,7 +20,7 @@ environment:
 dependencies:
   any_link_preview: ^3.0.2
   cached_network_image: ^3.4.1
-  camerawesome: ^2.1.0
+  camerawesome: 2.1.0 # TODO: Update this once repo is on 3.27.x
   chewie: ^1.8.5
   collection: ^1.18.0
   crop_image: ^1.0.15
