@@ -25,6 +25,7 @@ class ZdsComment extends StatelessWidget {
     this.menuPosition = ZdsPopupMenuPosition.bottomRight,
     this.onMenuItemSelected,
     this.backgroundColor,
+    this.popupMenuBackgroundColor,
   })  : assert(
           onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
           'replySemanticLabel must be not null if onReply is defined',
@@ -77,7 +78,7 @@ class ZdsComment extends StatelessWidget {
   final Widget? attachmentThumbnail;
 
   /// The menu items to display in the popup menu.
-  /// If defined, the pouup menu will be shown when the user taps on the comment.
+  /// If defined, the popup menu will be shown when the user taps on the comment.
   final List<ZdsPopupMenuItem<int>>? menuItems;
 
   /// The popup menu position to display in the popup menu items.
@@ -91,6 +92,11 @@ class ZdsComment extends StatelessWidget {
   ///
   /// Defaults to [ZetaColors.surfacePrimary].
   final Color? backgroundColor;
+
+  /// The background color of the popup menu.
+  ///
+  /// Defaults to [ZetaColors.surfacePrimary].
+  final Color? popupMenuBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -214,20 +220,25 @@ class ZdsComment extends StatelessWidget {
                         ),
                       );
                       if (menuItems != null) {
-                        return ZdsPopupMenu<int>(
-                          verticalOffset: spacing.small,
-                          menuPosition: menuPosition,
-                          items: menuItems ?? [],
-                          onSelected: onMenuItemSelected,
-                          builder: (context, open) {
-                            return Material(
-                              color: backgroundColor,
-                              child: InkWell(
-                                onTap: open,
-                                child: child,
-                              ),
-                            );
-                          },
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+                            popupMenuTheme: PopupMenuThemeData(color: popupMenuBackgroundColor),
+                          ),
+                          child: ZdsPopupMenu<int>(
+                            verticalOffset: spacing.small,
+                            menuPosition: menuPosition,
+                            items: menuItems ?? [],
+                            onSelected: onMenuItemSelected,
+                            builder: (context, open) {
+                              return Material(
+                                color: backgroundColor,
+                                child: InkWell(
+                                  onTap: open,
+                                  child: child,
+                                ),
+                              );
+                            },
+                          ),
                         );
                       }
                       return ColoredBox(color: backgroundColor, child: child);
@@ -258,7 +269,8 @@ class ZdsComment extends StatelessWidget {
       ..add(StringProperty('replySemanticLabel', replySemanticLabel))
       ..add(EnumProperty<ZdsPopupMenuPosition>('menuPosition', menuPosition))
       ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected))
-      ..add(ColorProperty('backgroundColor', backgroundColor));
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(ColorProperty('popupMenuBackgroundColor', popupMenuBackgroundColor));
   }
 }
 
