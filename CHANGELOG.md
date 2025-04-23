@@ -8,6 +8,13 @@
 
 - Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
 
+## [2.1.5](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.4...v2.1.5) (2025-04-23)
+
+
+### 👀 Reverts
+
+* Reply background color ([#76](https://github.com/ZebraDevs/zds_flutter/issues/76)) ([86b72fb](https://github.com/ZebraDevs/zds_flutter/commit/86b72fb636a4fc901f46b41e8a18f446d91bef09))
+
 ## [2.1.4](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.3...v2.1.4) (2025-04-14)
 
 
