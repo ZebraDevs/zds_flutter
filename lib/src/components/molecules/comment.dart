@@ -135,6 +135,7 @@ class ZdsComment extends StatelessWidget {
                         icon: ZetaIcons.reply,
                         semanticLabel: replySemanticLabel,
                         foregroundColor: colors.primary,
+                        backgroundColor: colors.surfacePrimarySubtle,
                         onPressed: (_) => onReply!(),
                       ),
                     if (onDelete != null && deleteSemanticLabel != null)
