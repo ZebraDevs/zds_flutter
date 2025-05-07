@@ -108,11 +108,10 @@ class ZdsHtml extends StatelessWidget {
 
   Map<String, Style> _buildStyles(BuildContext context, ColorScheme colorscheme, BoxConstraints box) {
     final zetaColors = Zeta.of(context).colors;
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
-    final fSize = fontSize ?? bodyMedium?.fontSize;
+
     return <String, Style>{
       'p': Style(
-        fontSize: fSize != null ? FontSize(fSize) : null,
+        fontSize: fontSize != null ? FontSize(fontSize!) : null,
         maxLines: maxLines,
         before: '\n',
         lineHeight: LineHeight.percent(125),
