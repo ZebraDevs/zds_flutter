@@ -351,7 +351,7 @@ class _ZdsHtmlContainerState extends State<ZdsHtmlContainer> with FrameCallbackM
                                   ? ComponentStrings.of(context).get('READ_LESS', 'Read Less')
                                   : ComponentStrings.of(context).get('READ_MORE', 'Read More'),
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor.secondary),
-                            ),
+                            ).semantics(focusable: true, identifier: 'read_more_less'),
                           ),
                         ),
                       ],
