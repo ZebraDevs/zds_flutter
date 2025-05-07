@@ -1,13 +1,24 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:painter/painter.dart';
 import 'package:screenshot/screenshot.dart';
-import '../../../../utils/localizations.dart';
-import '../../../atoms/button.dart';
+
+import '../../../../../zds_flutter.dart';
+
 import '../utils/editor_icon.dart';
 import '../utils/utils.dart';
+
+///
+enum DrawOptions {
+  ///
+  pen,
+
+  ///
+  highlight,
+}
 
 /// A page that allows users to draw on an image.
 ///
@@ -21,6 +32,7 @@ class DrawPage extends StatefulWidget {
 
   /// The image to be edited.
   final Image image;
+
   @override
   State<DrawPage> createState() => _DrawPageState();
 }
@@ -35,8 +47,12 @@ class _DrawPageState extends State<DrawPage> {
 
   /// Controller for managing the painter.
   final PainterController _painterController = PainterController();
+
+  late DrawOptions selectedTab;
+
   @override
   void initState() {
+    selectedTab = DrawOptions.pen;
     _painterController
       ..thickness = 5.0
       ..backgroundColor = Colors.transparent;
@@ -92,9 +108,11 @@ class _DrawPageState extends State<DrawPage> {
             builder: (context) => AlertDialog(
               title: Text(strings.get('SELECT_COLOR', 'Select Color')),
               content: BlockPicker(
-                pickerColor: _painterController.drawColor,
+                pickerColor: selectedTab == DrawOptions.pen
+                    ? _painterController.drawColor
+                    : _painterController.drawColor.withAlpha(100),
                 onColorChanged: (value) {
-                  _painterController.drawColor = value;
+                  _painterController.drawColor = selectedTab == DrawOptions.pen ? value : value.withAlpha(100);
                   Navigator.pop(context);
                   setState(() {});
                 },
@@ -108,7 +126,9 @@ class _DrawPageState extends State<DrawPage> {
           Icon(
             Icons.circle,
             size: 48,
-            color: _painterController.drawColor,
+            color: selectedTab == DrawOptions.pen
+                ? _painterController.drawColor
+                : _painterController.drawColor.withAlpha(100),
           ),
           const Icon(
             Icons.circle_outlined,
@@ -123,6 +143,7 @@ class _DrawPageState extends State<DrawPage> {
   ///
   /// This method returns a widget that contains buttons for different drawing tools.
   Widget _buildBottomNavigationBar(ComponentStrings strings) {
+    final zetaColors = Zeta.of(context).colors;
     return Padding(
       padding: const EdgeInsets.all(8),
       child: SizedBox(
@@ -134,27 +155,42 @@ class _DrawPageState extends State<DrawPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 EditorIcon(
-                  icon: const Icon(Icons.edit),
+                  isSelected: selectedTab == DrawOptions.pen,
+                  icon: Icon(
+                    Icons.edit,
+                    color: selectedTab == DrawOptions.pen ? zetaColors.primary : null,
+                  ),
                   label: strings.get('PEN', 'Pen'),
                   onPressed: () {
+                    setState(() {
+                      selectedTab = DrawOptions.pen;
+                    });
                     _painterController
+                      ..drawColor = _painterController.drawColor.withAlpha(255)
                       ..thickness = 5.0
                       ..backgroundColor = Colors.transparent;
                   },
                 ),
                 EditorIcon(
-                  icon: const Icon(Icons.highlight),
+                  isSelected: selectedTab == DrawOptions.highlight,
+                  icon: Icon(
+                    Icons.highlight,
+                    color: selectedTab == DrawOptions.highlight ? zetaColors.primary : null,
+                  ),
                   label: strings.get('HIGHLIGHT', 'Highlight'),
                   onPressed: () {
+                    setState(() {
+                      selectedTab = DrawOptions.highlight;
+                    });
                     _painterController
                       ..thickness = 20
-                      ..drawColor = _painterController.drawColor.withAlpha(50);
+                      ..drawColor = _painterController.drawColor.withAlpha(100);
                   },
                 ),
               ],
             ),
             const SizedBox(
-              height: 12,
+              height: 8,
             ),
             Row(
               children: [
@@ -196,6 +232,8 @@ class _DrawPageState extends State<DrawPage> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ScreenshotController>('screenshotController', screenshotController));
+    properties
+      ..add(DiagnosticsProperty<ScreenshotController>('screenshotController', screenshotController))
+      ..add(EnumProperty<DrawOptions>('selectedTab', selectedTab));
   }
 }
