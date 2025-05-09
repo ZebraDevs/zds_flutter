@@ -46,14 +46,14 @@ class ZdsChatTextMessage extends StatelessWidget {
       [...urls].map((e) {
         return MapEntry(
           e,
-          HighlightedWord(textStyle: textStyle?.apply(color: zetaColors.blue.shade70), onTap: onLinkTapped),
+          HighlightedWord(textStyle: textStyle?.apply(color: zetaColors.primitives.blue.shade70), onTap: onLinkTapped),
         );
       }),
     );
 
     if (searchTerm != null && searchTerm!.isNotEmpty) {
       wordsMapping[searchTerm!] = HighlightedWord(
-        decoration: BoxDecoration(color: zetaColors.yellow, borderRadius: BorderRadius.circular(2)),
+        decoration: BoxDecoration(color: zetaColors.primitives.yellow, borderRadius: BorderRadius.circular(2)),
       );
     }
     return Padding(

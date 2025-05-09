@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
-/// This is an extension method on [ZetaColorScheme] which is used to customize the [DividerThemeData].
-extension ZetaDividerTheme on ZetaColorScheme {
+/// This is an extension method on [ZetaSemantics] which is used to customize the [DividerThemeData].
+extension ZetaDividerTheme on ZetaSemantics {
   /// This function returns a [DividerThemeData] customized with properties
-  /// taken from the [ZetaColorScheme].
+  /// taken from the [ZetaSemantics].
   ///
   /// Returns:
   ///   A [DividerThemeData] with the applied properties.
@@ -19,7 +19,7 @@ extension ZetaDividerTheme on ZetaColorScheme {
       space: 1,
 
       /// Using a color from the zetaColors for the divider color
-      color: zetaColors.borderSubtle,
+      color: colors.borderSubtle,
     );
   }
 }

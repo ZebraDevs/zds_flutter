@@ -245,14 +245,14 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
             ZdsListTile(
               leading: Text('Urgent'),
               trailing: ZdsIndex(
-                color: Zeta.of(context).colors.red,
+                color: Zeta.of(context).colors.mainNegative,
                 child: Text('U'),
               ),
             ),
             ZdsListTile(
               leading: Text('Height'),
               trailing: ZdsIndex(
-                color: Zeta.of(context).colors.orange,
+                color: Zeta.of(context).colors.mainWarning,
                 child: Text('1'),
               ),
             ),
@@ -266,7 +266,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
             ZdsListTile(
               leading: Text('Low'),
               trailing: ZdsIndex(
-                color: Zeta.of(context).colors.green,
+                color: Zeta.of(context).colors.mainPositive,
                 child: Text('3'),
               ),
             ),
@@ -308,7 +308,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
                   ExcludeSemantics(
                     child: Text(
                       'Date range',
-                      style: themeData.textTheme.titleSmall?.copyWith(color: zetaColors.textSubtle),
+                      style: themeData.textTheme.titleSmall?.copyWith(color: zetaColors.mainSubtle),
                     ).paddingOnly(left: 8),
                   ),
                   const SizedBox(height: 8),
@@ -323,7 +323,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
                         child: Text(
                           'Type',
                           style: themeData.textTheme.titleSmall?.copyWith(
-                            color: zetaColors.textSubtle,
+                            color: zetaColors.mainSubtle,
                           ),
                         ).paddingOnly(left: 8),
                       ),
@@ -398,7 +398,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
                     child: Text(
                       'Date range',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Zeta.of(context).colors.textSubtle,
+                            color: Zeta.of(context).colors.mainSubtle,
                           ),
                     ).paddingOnly(left: 10),
                   ),
@@ -414,7 +414,7 @@ class _BottomSheetDemoState extends State<BottomSheetDemo> with SingleTickerProv
                         child: Text(
                           'Type',
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: Zeta.of(context).colors.textSubtle,
+                                color: Zeta.of(context).colors.mainSubtle,
                               ),
                         ).paddingOnly(left: 10),
                       ),

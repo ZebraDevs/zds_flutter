@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                     title: Text(route.title),
                     trailing: Icon(
                       Icons.keyboard_arrow_right,
-                      color: zeta.colors.iconSubtle,
+                      color: zeta.colors.mainSubtle,
                     ),
                     onTap: () => Navigator.of(context).pushNamed(route.routeName));
               }).toList(),

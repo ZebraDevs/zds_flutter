@@ -57,7 +57,7 @@ class ZdsAvatar extends StatelessWidget implements PreferredSizeWidget {
 
   /// The background color of the avatar if [initials] are used.
   ///
-  /// Defaults to [ColorScheme.secondary].
+  /// Defaults to [ColorScheme.mainSecondary].
   final Color? backgroundColor;
 
   @override

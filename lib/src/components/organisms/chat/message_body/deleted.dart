@@ -24,7 +24,7 @@ class ZdsChatDeletedText extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .bodyLarge
-            ?.copyWith(fontStyle: FontStyle.italic, color: Zeta.of(context).colors.textSubtle),
+            ?.copyWith(fontStyle: FontStyle.italic, color: Zeta.of(context).colors.mainSubtle),
       ),
     );
   }

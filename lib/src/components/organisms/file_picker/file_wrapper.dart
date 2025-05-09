@@ -13,12 +13,6 @@ import 'package:mime/mime.dart' as mime;
 import 'package:path/path.dart' as path;
 import 'file_picker.dart';
 
-/// Extension on FilePickerException to show message
-
-/// Types of files the [ZdsFilePicker] can be used to pick.
-@Deprecated('Use ZdsFilePickerOptions instead of FilePickerOptions.')
-typedef FilePickerOptions = ZdsFilePickerOptions;
-
 /// Types of files the [ZdsFilePicker] can be used to pick.
 enum ZdsFilePickerOptions {
   /// Opens native video file picker.
@@ -39,10 +33,6 @@ enum ZdsFilePickerOptions {
   /// Opens Giphy gif picker.
   GIF
 }
-
-/// Wrapper around files picked using [ZdsFilePicker].
-@Deprecated('Use ZdsFileWrapper instead of FileWrapper.')
-typedef FileWrapper = ZdsFileWrapper;
 
 /// Wrapper around files picked using [ZdsFilePicker].
 @immutable

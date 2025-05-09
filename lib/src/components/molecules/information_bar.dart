@@ -117,7 +117,7 @@ class ZdsInformationBar extends StatelessWidget {
 Color _getBarColor(ZdsInformationBarTheme color, ZetaColors colors) {
   switch (color) {
     case ZdsInformationBarTheme.neutral:
-      return colors.cool.surface;
+      return colors.surfaceCool;
     case ZdsInformationBarTheme.positive:
       return colors.surfacePositiveSubtle;
     case ZdsInformationBarTheme.inProgress:
@@ -130,7 +130,7 @@ Color _getBarColor(ZdsInformationBarTheme color, ZetaColors colors) {
 Color _getIconColor(ZdsInformationBarTheme color, ZetaColors colors) {
   switch (color) {
     case ZdsInformationBarTheme.neutral:
-      return colors.iconDefault;
+      return colors.mainDefault;
     case ZdsInformationBarTheme.positive:
       return colors.borderPositive;
     case ZdsInformationBarTheme.inProgress:

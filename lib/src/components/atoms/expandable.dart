@@ -53,7 +53,7 @@ class ZdsExpandable extends StatelessWidget {
     return child.readMore(
       collapsedButtonText: collapsedButtonText,
       expandedButtonText: expandedButtonText,
-      color: color ?? Zeta.of(context).colors.surfaceTertiary,
+      color: color ?? Zeta.of(context).colors.surfaceDefault,
       minHeight: minHeight,
     );
   }
@@ -317,7 +317,7 @@ extension ExpandableTextExtension on Widget {
               collapsedButtonText.isEmpty ? strings.get('READ_MORE', 'Read more') : collapsedButtonText,
           expandedButtonText: expandedButtonText.isEmpty ? strings.get('COLLAPSE', 'Collapse') : expandedButtonText,
           minHeight: minHeight,
-          color: color ?? Zeta.of(context).colors.surfaceTertiary,
+          color: color ?? Zeta.of(context).colors.surfacePrimary,
           child: this,
         );
       },

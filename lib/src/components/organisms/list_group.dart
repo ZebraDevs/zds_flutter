@@ -85,15 +85,15 @@ class ZdsListGroup extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: DefaultTextStyle(
-                      style: safeTextStyle(themeData.textTheme.titleSmall).copyWith(color: zetaColors.textSubtle),
+                      style: safeTextStyle(themeData.textTheme.titleSmall).copyWith(color: zetaColors.mainSubtle),
                       child: headerLabel != null ? headerLabel! : const SizedBox(),
                     ),
                   ),
                   if (headerActions?.isNotEmpty ?? false)
                     IconTheme.merge(
-                      data: IconThemeData(color: zetaColors.secondary.icon, size: 20),
+                      data: IconThemeData(color: zetaColors.mainSecondary, size: 20),
                       child: DefaultTextStyle(
-                        style: safeTextStyle(themeData.textTheme.titleSmall).copyWith(color: zetaColors.secondary.text),
+                        style: safeTextStyle(themeData.textTheme.titleSmall).copyWith(color: zetaColors.mainSecondary),
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Row(

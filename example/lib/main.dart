@@ -10,31 +10,36 @@ import 'routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final preferences = await SharedPreferences.getInstance();
-  final themeService = ZdsThemeService(assetPath: 'assets/colors.json', preferences: preferences);
-  final themeData = await themeService.load();
+  // final themeService = ZdsThemeService(assetPath: 'assets/colors.json', preferences: preferences);
+  // final themeData = await themeService.load();
   HttpOverrides.global = MyHttpOverrides();
   runApp(
     DemoApp(
-      data: themeData,
-      themeService: themeService,
-    ),
+        // data: themeData,
+        // themeService: themeService,
+        ),
   );
 }
 
 class DemoApp extends StatelessWidget {
-  const DemoApp({Key? key, required this.data, required this.themeService}) : super(key: key);
+  const DemoApp({
+    Key? key,
+    // this.data,
+    this.themeService,
+  }) : super(key: key);
 
-  final ZetaThemeService themeService;
-  final ZdsThemeData data;
+  final ZetaThemeService? themeService;
+  // final ZdsThemeData data;
 
   @override
   Widget build(BuildContext context) {
     return ZetaProvider(
-      themeService: themeService,
-      initialThemeMode: data.themeMode,
-      initialThemeData: data.themeData,
-      initialContrast: data.contrast,
-      builder: (context, themeData, themeMode) {
+      themeService: themeService ?? const ZetaDefaultThemeService(),
+      // initialThemeMode: data.themeMode,
+
+      // initialThemeData: data.themeData,
+      // initialContrast: data.contrast,
+      builder: (context, themeData, darkTheme, themeMode) {
         return MaterialApp(
           title: 'Zds Demo',
           localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) {
@@ -56,14 +61,9 @@ class DemoApp extends StatelessWidget {
           ],
           routes: kAllRoutes,
           themeMode: themeMode,
-          theme: themeData.colorsLight.toScheme().toTheme(
-                fontFamily: themeData.fontFamily,
-                appBarStyle: data.lightAppBarStyle,
-              ),
-          darkTheme: themeData.colorsDark.toScheme().toTheme(
-                fontFamily: themeData.fontFamily,
-                appBarStyle: data.darkAppBarStyle,
-              ),
+          // theme: themeData,
+          theme: themeData.copyWith(scaffoldBackgroundColor: Colors.red),
+          darkTheme: darkTheme,
         );
       },
     );

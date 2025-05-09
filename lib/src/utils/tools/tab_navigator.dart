@@ -356,6 +356,11 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
       ..add(DiagnosticsProperty<GlobalKey<NavigatorState>>('navigatorKey', navigatorKey))
       ..add(DiagnosticsProperty<ValueNotifier<String>>('currentRoute', currentRoute));
   }
+
+  @override
+  void didChangeTop(Route topRoute, Route? previousTopRoute) {
+    // TODO: implement didChangeTop
+  }
 }
 
 class _SplitContent extends StatelessWidget {

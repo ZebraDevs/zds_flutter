@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 /// ZetaIconTheme extension on ZetaColorScheme.
 /// Provides an IconThemeData instance with predefined size and color.
-extension ZetaIconTheme on ZetaColorScheme {
+extension ZetaIconTheme on ZetaSemantics {
   /// Returns a [IconThemeData] object taking the given parameters into account.
   ///
   /// [color] is used to define the icon color.

@@ -76,10 +76,6 @@ const double calendarDaysOfWeekHeight = 36;
 /// Width / height of circular buttons in [ZdsCheckableButton].
 const double kZdsCheckableButtonSize = 48;
 
-/// Width / height of circular buttons in [ZdsCheckableButton].
-@Deprecated('Use kZdsCheckableButtonSize instead')
-const double checkableButtonSize = 48;
-
 /// ListTile theme
 const ZdsListTileTheme kZdsListTileTheme = ZdsListTileTheme(
   contentPadding: EdgeInsets.only(left: 24, top: 18, bottom: 18, right: 24),

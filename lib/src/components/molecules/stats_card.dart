@@ -111,7 +111,7 @@ class ZdsStatCard extends StatelessWidget {
                       subtitle ?? '',
                       textAlign: TextAlign.end,
                       style: themeData.textTheme.bodySmall?.copyWith(
-                        color: Zeta.of(context).colors.textSubtle,
+                        color: Zeta.of(context).colors.mainSubtle,
                       ),
                     ),
                   )

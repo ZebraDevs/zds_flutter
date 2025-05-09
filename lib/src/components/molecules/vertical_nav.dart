@@ -121,7 +121,7 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
                             data: IconThemeData(
                               color: selected
                                   ? Theme.of(context).colorScheme.secondary
-                                  : Zeta.of(context).colors.iconSubtle,
+                                  : Zeta.of(context).colors.mainSubtle,
                               size: 24,
                             ),
                             child: item.icon,
@@ -241,7 +241,7 @@ class _SelectedBackground extends StatelessWidget {
         padding: const EdgeInsets.only(left: 1),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: <Color>[colors.surfaceTertiary, colors.surfacePrimary],
+            colors: <Color>[colors.surfaceDefault, colors.surfacePrimary],
           ),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(4),

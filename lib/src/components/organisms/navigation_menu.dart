@@ -63,7 +63,7 @@ class ZdsNavigationMenu extends StatelessWidget {
                   .toList(),
             ),
           ),
-          if (withSpacer) Container(height: 12, color: Zeta.of(context).colors.surfaceTertiary),
+          if (withSpacer) Container(height: 12, color: Zeta.of(context).colors.surfaceDefault),
         ],
       ),
     );
@@ -91,7 +91,7 @@ class ZdsNavigationMenuLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return child.textStyle(
-      Theme.of(context).textTheme.titleSmall?.copyWith(color: Zeta.of(context).colors.textSubtle),
+      Theme.of(context).textTheme.titleSmall?.copyWith(color: Zeta.of(context).colors.mainSubtle),
     );
   }
 }

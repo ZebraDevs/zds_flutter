@@ -115,7 +115,7 @@ class _FontGroup extends StatelessWidget {
                   Text(e['header'].toString(), style: style),
                   Text(
                     'Font: ${style.fontFamily}\nSize: ${style.fontSize?.toInt()}\nLine height: ${((style.height ?? 1) * style.fontSize!).toInt()}',
-                    style: TextStyle(color: Zeta.of(context).colors.textSubtle),
+                    style: TextStyle(color: Zeta.of(context).colors.mainSubtle),
                   ),
                   const _Spacer(),
                 ],

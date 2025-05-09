@@ -203,7 +203,7 @@ class ZdsInputDialogState extends State<ZdsInputDialog> {
                           hintText: widget.hint,
                           errorText: _error,
                           errorStyle: theme.textTheme.bodyMedium?.copyWith(
-                            color: zetaColors.error,
+                            color: zetaColors.mainNegative,
                           ),
                         ),
                       ),

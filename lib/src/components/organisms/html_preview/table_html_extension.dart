@@ -269,7 +269,7 @@ class ZdsTableHtmlExtension extends HtmlExtension {
         children: children,
         href: context.attributes['href'],
         style: Style(
-          color: ZetaColorBase.blue.shade50,
+          color: const ZetaPrimitivesLight().blue.shade50,
           textDecoration: TextDecoration.underline,
         ),
         node: context.node,

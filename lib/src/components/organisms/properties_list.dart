@@ -122,7 +122,7 @@ class ZdsPropertiesList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          label.textStyle(themeData.textTheme.titleSmall?.copyWith(color: zetaColors.textSubtle)).space(8),
+          label.textStyle(themeData.textTheme.titleSmall?.copyWith(color: zetaColors.mainSubtle)).space(8),
           value.textStyle(
             themeData.textTheme.bodyLarge?.copyWith(color: zetaColors.textDefault),
             overflow: TextOverflow.clip,

@@ -42,7 +42,7 @@ class ZdsStarRating extends StatefulWidget {
 
   /// Optional color for the stars.
   ///
-  /// Defaults to [ZetaColors.iconDefault].
+  /// Defaults to [ZetaColors.mainDefault].
   final Color? color;
 
   @override
@@ -118,8 +118,8 @@ class _ZdsStarRatingState extends State<ZdsStarRating> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               decoration: BoxDecoration(
-                color: colors.cool.shade30.withOpacity(_selected ? 1 : 0),
-                borderRadius: borderRadius,
+                color: colors.primitives.cool.shade30.withOpacity(_selected ? 1 : 0),
+                borderRadius: BorderRadius.all(borderRadius),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -128,8 +128,8 @@ class _ZdsStarRatingState extends State<ZdsStarRating> {
                   (int index) => SizedBox.square(
                     dimension: _boxSize,
                     child: InkWell(
-                      borderRadius: borderRadius,
-                      splashColor: colors.cool.shade30,
+                      borderRadius: BorderRadius.all(borderRadius),
+                      splashColor: colors.primitives.cool.shade30,
                       onTap: () {
                         if (widget.halfIncrements && index + 0.5 == _valueTapped) {
                           setValue(index.toDouble());
@@ -144,7 +144,7 @@ class _ZdsStarRatingState extends State<ZdsStarRating> {
                       child: Icon(
                         _starValue(index).icon(rounded: widget.rounded),
                         size: _starSize,
-                        color: widget.color ?? colors.iconDefault,
+                        color: widget.color ?? colors.mainDefault,
                       ),
                     ),
                   ),

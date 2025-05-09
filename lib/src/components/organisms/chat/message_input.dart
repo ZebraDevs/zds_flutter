@@ -321,7 +321,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                   IconButton(
                     padding: EdgeInsets.zero,
                     icon: const Icon(ZdsIcons.add),
-                    color: zetaColors.iconSubtle,
+                    color: zetaColors.mainSubtle,
                     tooltip: ComponentStrings.of(context).get(
                       'EXPAND_MESSAGE_OPTIONS',
                       'Expand message options',
@@ -388,7 +388,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                                 ),
                                 if (widget.allowVoiceNotes && !kIsWeb)
                                   IconButton(
-                                    icon: Icon(Icons.mic, size: 24, color: zetaColors.iconSubtle),
+                                    icon: Icon(Icons.mic, size: 24, color: zetaColors.mainSubtle),
                                     tooltip: ComponentStrings.of(context).get(
                                       'ADD_VOICE_NOTE',
                                       'Add voice note',
@@ -485,7 +485,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                               child: IconButton(
                                 icon: const Icon(ZdsIcons.close, size: 20),
                                 onPressed: Navigator.of(context).pop,
-                                color: zetaColors.iconSubtle,
+                                color: zetaColors.mainSubtle,
                                 splashRadius: 24,
                               ),
                             ),

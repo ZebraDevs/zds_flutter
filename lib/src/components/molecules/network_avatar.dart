@@ -53,7 +53,7 @@ class ZdsNetworkAvatar extends StatelessWidget implements PreferredSizeWidget {
 
   /// The background color of this avatar if the [initials] are shown.
   ///
-  /// Defaults to [ColorScheme.secondary].
+  /// Defaults to [ColorScheme.mainSecondary].
   final Color? backgroundColor;
 
   /// Semantic label for description of image

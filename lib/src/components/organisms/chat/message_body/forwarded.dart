@@ -17,13 +17,13 @@ class ZdsChatForwarded extends StatelessWidget {
         children: [
           Icon(
             ZdsIcons.email_forward,
-            color: zetaColors.iconSubtle,
+            color: zetaColors.mainSubtle,
             size: 16,
           ),
           const SizedBox(width: 4),
           Text(
             ComponentStrings.of(context).get('FORWARDED', 'Forwarded'),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: zetaColors.textSubtle),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: zetaColors.mainSubtle),
           ),
         ],
       ),

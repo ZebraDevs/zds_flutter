@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
-/// This is an extension method on [ZetaColorScheme] which is used to customize the [ChipThemeData].
-extension ZetaChipTheme on ZetaColorScheme {
+/// This is an extension method on [ZetaSemantics] which is used to customize the [ChipThemeData].
+extension ZetaChipTheme on ZetaSemantics {
   /// This function requires a [TextTheme] object as a parameter, and
-  /// returns a [ChipThemeData] customized with properties taken from the [ZetaColorScheme] and the passed TextTheme.
+  /// returns a [ChipThemeData] customized with properties taken from the [ZetaSemantics] and the passed TextTheme.
   ///
   /// Parameter:
   ///   [textTheme] : A TextTheme object used to copy styles for label and secondary label.
@@ -17,31 +17,28 @@ extension ZetaChipTheme on ZetaColorScheme {
     /// checkmarkColor, labelStyle, secondaryLabelStyle and iconTheme.
     return ChipThemeData(
       /// Setting up the background color.
-      backgroundColor: zetaColors.secondary.surface,
+      backgroundColor: colors.surfaceSecondary,
 
       /// Setting up the selected color.
-      selectedColor: zetaColors.secondary.surface,
+      selectedColor: colors.surfaceSecondary,
 
       /// Setting up the disabled color.
-      disabledColor: zetaColors.borderDisabled,
+      disabledColor: colors.borderDisabled,
 
       /// Setting up the delete icon color.
-      deleteIconColor: zetaColors.secondary.selected,
+      deleteIconColor: colors.stateSecondarySelected,
 
       /// Setting up the checkmark color.
-      checkmarkColor: zetaColors.secondary.selected,
+      checkmarkColor: colors.stateSecondarySelected,
 
       /// Defining the label style using the provided textTheme.
-      labelStyle: textTheme.bodyMedium?.copyWith(color: zetaColors.secondary.selected),
+      labelStyle: textTheme.bodyMedium?.copyWith(color: colors.stateSecondarySelected),
 
       /// Defining the secondary label style using the provided textTheme.
-      secondaryLabelStyle: textTheme.bodyMedium?.copyWith(color: zetaColors.textSubtle),
+      secondaryLabelStyle: textTheme.bodyMedium?.copyWith(color: colors.mainSubtle),
 
       // Defining an icon theme data.
-      iconTheme: IconThemeData(
-        size: 24,
-        color: zetaColors.secondary.selected,
-      ),
+      iconTheme: IconThemeData(size: 24, color: colors.stateSecondarySelected),
     );
   }
 }

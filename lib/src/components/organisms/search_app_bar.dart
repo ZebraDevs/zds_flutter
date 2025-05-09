@@ -269,7 +269,7 @@ class ZdsSearchAppBarState extends State<ZdsSearchAppBar> {
             icon: Icon(
               ZdsIcons.close_circle,
               size: 20,
-              color: Zeta.of(context).colors.iconSubtle,
+              color: Zeta.of(context).colors.mainSubtle,
             ),
             onPressed: () {
               _textEditingController.clear();

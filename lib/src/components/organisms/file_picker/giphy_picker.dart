@@ -146,7 +146,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
               ]
             : [],
       ),
-      backgroundColor: Zeta.of(context).colors.surfaceTertiary,
+      backgroundColor: Zeta.of(context).colors.surfaceDefault,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints box) {
           return Column(

@@ -70,7 +70,7 @@ class ZdsSelectionPill extends StatelessWidget {
   ///
   /// Custom color to override pill background color.
   ///
-  ///Defaults to `colorScheme.secondary.withOpacity(0.1)`
+  ///Defaults to `colorScheme.mainSecondary.withOpacity(0.1)`
   final Color? selectedColor;
 
   ///Use [color] instead. Will be deprecated in future release.
@@ -89,20 +89,20 @@ class ZdsSelectionPill extends StatelessWidget {
     final Color background = disabled
         ? zetaColors.surfaceDisabled
         : selected
-            ? color?.surface ?? selectedColor?.withOpacity(0.2) ?? zetaColors.secondary.surface
+            ? selectedColor?.withOpacity(0.2) ?? zetaColors.surfaceSecondary
             : themeData.colorScheme.surface;
 
     final Color foreground = disabled
-        ? zetaColors.iconDisabled
+        ? zetaColors.mainDisabled
         : selected
-            ? color?.icon ?? selectedColor ?? zetaColors.secondary.icon
-            : zetaColors.iconSubtle;
+            ? selectedColor ?? zetaColors.mainSecondary
+            : zetaColors.mainSubtle;
 
     final Color border = borderColor ??
         (disabled
             ? zetaColors.borderDisabled
             : selected
-                ? color?.border ?? zetaColors.secondary.border
+                ? zetaColors.borderSecondary
                 : zetaColors.borderDefault);
 
     return ExpandTapWidget(
@@ -142,9 +142,9 @@ class ZdsSelectionPill extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: themeData.textTheme.bodyMedium?.copyWith(
                             color: disabled
-                                ? zetaColors.textDisabled
+                                ? zetaColors.mainDisabled
                                 : selected
-                                    ? color?.text ?? foreground
+                                    ? color ?? foreground
                                     : themeData.colorScheme.onSurface,
                             fontWeight: selected && !disabled ? FontWeight.w600 : null,
                           ),

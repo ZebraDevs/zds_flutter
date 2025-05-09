@@ -17,22 +17,22 @@ class ListTileDemo extends StatelessWidget {
             title: const Text('Urgent'),
             subTitle: const Text('32 hours available'),
             selected: true,
-            trailing: ZdsIndex(color: zeta.colors.red, child: const Text('U')),
+            trailing: ZdsIndex(color: zeta.colors.mainNegative, child: const Text('U')),
             onTap: () {},
           ),
           ZdsSelectableListTile(
             title: const Text('High'),
-            trailing: ZdsIndex(color: zeta.colors.orange, child: const Text('1')),
+            trailing: ZdsIndex(color: zeta.colors.mainWarning, child: const Text('1')),
             onTap: () {},
           ),
           ZdsSelectableListTile(
             title: const Text('Medium'),
-            trailing: ZdsIndex(color: zeta.colors.teal, child: const Text('2')),
+            trailing: ZdsIndex(color: zeta.colors.primitives.teal, child: const Text('2')),
             onTap: () {},
           ),
           ZdsSelectableListTile(
             title: const Text('Low'),
-            trailing: ZdsIndex(color: zeta.colors.green, child: const Text('3')),
+            trailing: ZdsIndex(color: zeta.colors.mainPositive, child: const Text('3')),
             onTap: () {},
           ),
           ZdsSelectableListTile.checkable(
@@ -235,7 +235,7 @@ class ListTileDemo extends StatelessWidget {
             leading: Container(
               width: 6,
               height: 65,
-              color: zeta.colors.red,
+              color: zeta.colors.mainNegative,
             ),
           ),
           ZdsNotificationTile(
@@ -248,7 +248,7 @@ class ListTileDemo extends StatelessWidget {
             content: 'Meeting with Jordan Smith at Jan 11 at 11:00 am',
             leadingData: Icon(
               ZdsIcons.lightbulb,
-              color: zeta.colors.orange,
+              color: zeta.colors.mainWarning,
               size: 16,
             ),
           ),

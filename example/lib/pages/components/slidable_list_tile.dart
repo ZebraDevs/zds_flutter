@@ -111,7 +111,7 @@ class SlidableListTileDemo extends StatelessWidget {
               height: 60,
               child: ZdsSlidableListTile(
                 slideButtonWidth: 120,
-                backgroundColor: zetaColors.red,
+                backgroundColor: zetaColors.mainNegative,
                 width: MediaQuery.of(context).size.width,
                 actions: [
                   ZdsSlidableAction(
@@ -121,13 +121,13 @@ class SlidableListTileDemo extends StatelessWidget {
                   ),
                   ZdsSlidableAction(
                     label: 'Direct swap',
-                    backgroundColor: zetaColors.purple,
-                    foregroundColor: zetaColors.purple.onColor,
+                    backgroundColor: zetaColors.mainInfo,
+                    foregroundColor: zetaColors.mainInfo.onColor,
                   ),
                   ZdsSlidableAction(
                       label: 'Swap with anyone',
-                      backgroundColor: themeData.colorScheme.secondaryContainer,
-                      foregroundColor: themeData.colorScheme.secondaryContainer.onColor,
+                      backgroundColor: themeData.colorScheme.secondary,
+                      foregroundColor: themeData.colorScheme.secondary.onColor,
                       textOverflow: TextOverflow.visible)
                 ],
                 child: const Center(child: Text('A list tile with 3 slidable action buttons')),

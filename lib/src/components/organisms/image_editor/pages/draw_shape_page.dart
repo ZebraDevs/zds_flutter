@@ -172,7 +172,7 @@ class _DrawShapePageState extends State<DrawShapePage> {
                   isSelected: _selectedShapeType == ShapeType.square,
                   icon: Icon(
                     Icons.square_outlined,
-                    color: _selectedShapeType == ShapeType.square ? zetaColors.primary : null,
+                    color: _selectedShapeType == ShapeType.square ? zetaColors.mainPrimary : null,
                   ),
                   label: strings.get('SQUARE', 'Square'),
                   onPressed: () {
@@ -185,7 +185,7 @@ class _DrawShapePageState extends State<DrawShapePage> {
                   isSelected: _selectedShapeType == ShapeType.circle,
                   icon: Icon(
                     Icons.circle_outlined,
-                    color: _selectedShapeType == ShapeType.circle ? zetaColors.primary : null,
+                    color: _selectedShapeType == ShapeType.circle ? zetaColors.mainPrimary : null,
                   ),
                   label: strings.get('CIRCLE', 'Circle'),
                   onPressed: () {
@@ -198,7 +198,7 @@ class _DrawShapePageState extends State<DrawShapePage> {
                   isSelected: _selectedShapeType == ShapeType.arrow,
                   icon: Icon(
                     Icons.arrow_forward,
-                    color: _selectedShapeType == ShapeType.arrow ? zetaColors.primary : null,
+                    color: _selectedShapeType == ShapeType.arrow ? zetaColors.mainPrimary : null,
                   ),
                   label: strings.get('ARROW', 'Arrow'),
                   onPressed: () {
@@ -211,7 +211,7 @@ class _DrawShapePageState extends State<DrawShapePage> {
                   isSelected: _selectedShapeType == ShapeType.line,
                   icon: Icon(
                     Icons.horizontal_rule,
-                    color: _selectedShapeType == ShapeType.line ? zetaColors.primary : null,
+                    color: _selectedShapeType == ShapeType.line ? zetaColors.mainPrimary : null,
                   ),
                   label: strings.get('LINE', 'Line'),
                   onPressed: () {
