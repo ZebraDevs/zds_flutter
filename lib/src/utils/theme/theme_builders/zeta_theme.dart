@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../text.dart';
 import 'app_bar_theme.dart';
@@ -25,7 +25,7 @@ import 'switch_theme.dart';
 import 'tab_bar_theme.dart';
 import 'text_selection_theme.dart';
 
-/// Enum to select the used AppBarTheme style in [ZetaColorScheme] based themes.
+/// Enum to select the used AppBarTheme style in [ZetaSemantics] based themes.
 enum ZetaAppBarStyle {
   /// Use the scheme primary color as the AppBar's themed background color.
   ///
@@ -40,54 +40,33 @@ enum ZetaAppBarStyle {
   /// Use scheme surface color as the AppBar's themed background color,
   /// including any blend (surface tint) color it may have.
   surface,
-
-  /// Use scheme background color as the AppBar's themed background color,
-  /// including any blend (surface tint) color it may have.
-  @Deprecated('Use surface instead. ' 'This feature was deprecated after v3.18.0-0.1.pre.')
-  background,
 }
 
 /// Extension method on ZetaAppBarStyle to add appBar color functionality.
 extension AppBarColor on ZetaAppBarStyle {
   /// Returns effective appBar color depending upon the color scheme.
   ///
-  /// [colorScheme] is the color palette maintained by the app/theme
-  /// for standard color consistency across the app.
-  ///
-  /// [ZetaAppBarStyle] is the style variant for AppBar, which determines
-  /// the colour that should be derived from the [colorScheme].
-  ///
-  /// Returns [Color], the final colour to be applied to the appBar.
-  Color effectiveAppBarColor(ZetaColorScheme colorScheme) {
+  /// Returns [Color], the final color to be applied to the appBar.
+  Color effectiveAppBarColor(ZetaColors colors) {
     switch (this) {
       case ZetaAppBarStyle.primary:
         // Applying primary color of color scheme
-        return colorScheme.primary;
+        return colors.mainPrimary;
       case ZetaAppBarStyle.secondary:
         // Applying secondary color of color scheme
-        return colorScheme.secondary;
+        return colors.mainSecondary;
       case ZetaAppBarStyle.surface:
         // Applying surface color of color scheme
-        return colorScheme.surface;
-      // This ignore is used because the `ZetaAppBarStyle.background` value is marked
-      // as deprecated within the same package. However, it is still in use in the
-      // codebase as part of the conversion process. Refactoring to remove the
-      // deprecated value requires replacing all instances of it, which will be done
-      // in a future update. This usage of the deprecated member is temporary until
-      // the transition is complete.
-      // ignore: deprecated_member_use_from_same_package
-      case ZetaAppBarStyle.background:
-        // Applying background color of color scheme
-        return colorScheme.surface;
+        return colors.surfaceDefault;
     }
   }
 }
 
-/// A Dart extension on [ZetaColorScheme]
+/// A Dart extension on [ZetaSemantics]
 ///
 /// Allows the client to easily interface with the more verbose ThemeData class of Flutter
 /// and generate a theme configuration based on the simpler ZetaColorScheme object.
-extension ZetaThemeBuilder on ZetaColorScheme {
+extension ZetaThemeBuilder on ZetaSemantics {
   /// Converts the ZetaColorScheme to a ThemeData object.
   ///
   /// Takes optional parameters [fontFamily] , a string representing
@@ -103,55 +82,55 @@ extension ZetaThemeBuilder on ZetaColorScheme {
   }) {
     // A TextTheme object for the colors onPrimary.
     final primaryTextTheme = buildZdsTextTheme(
-      textColor: onPrimary,
+      textColor: colors.mainInverse,
       fontFamily: fontFamily,
     );
 
     // A TextTheme object for the colors onSurface.
     final TextTheme textTheme = buildZdsTextTheme(
-      textColor: onSurface,
+      textColor: colors.mainDefault,
       fontFamily: fontFamily,
     );
 
     // The actual appBar color defined by the appBarStyle, based on the color scheme.
-    final effectiveAppBarColor = appBarStyle.effectiveAppBarColor(this);
+    final effectiveAppBarColor = appBarStyle.effectiveAppBarColor(colors);
 
     // Returns a ThemeData that is constructed from the ZetaColorScheme.
     final barTheme = appBarTheme(primaryTextTheme, effectiveAppBarColor);
 
     return ThemeData(
-      colorScheme: this,
+      colorScheme: ZetaSemanticsAA(primitives: const ZetaPrimitivesLight()).colors.toColorScheme,
       appBarTheme: barTheme,
       useMaterial3: useMaterial3,
       bottomAppBarTheme: bottomAppBarTheme(),
       bottomNavigationBarTheme: bottomNavigationBarTheme(textTheme),
       bottomSheetTheme: bottomSheetTheme(),
-      brightness: brightness,
-      canvasColor: surface,
+      brightness: colors.primitives.brightness,
+      canvasColor: colors.surfaceDefault,
       cardTheme: cardTheme(),
       checkboxTheme: checkboxTheme(),
       chipTheme: chipThemeData(textTheme),
       datePickerTheme: datePickerTheme(barTheme),
-      dividerColor: zetaColors.borderSubtle,
+      dividerColor: colors.borderSubtle,
       dividerTheme: dividerTheme(),
       elevatedButtonTheme: elevatedButtonTheme(primaryTextTheme),
       fontFamily: fontFamily,
-      iconTheme: iconTheme(color: zetaColors.iconDefault),
-      indicatorColor: secondary,
+      iconTheme: iconTheme(color: colors.mainDefault),
+      indicatorColor: colors.mainSecondary,
       inputDecorationTheme: inputDecorationTheme(textTheme),
       listTileTheme: listTileTheme(textTheme),
       outlinedButtonTheme: outlinedButtonTheme(primaryTextTheme),
       popupMenuTheme: popupMenuTheme(textTheme),
-      primaryColor: primary,
-      primaryIconTheme: iconTheme(color: onPrimary),
+      primaryColor: colors.mainPrimary,
+      primaryIconTheme: iconTheme(color: colors.mainDefault),
       primaryTextTheme: primaryTextTheme,
       progressIndicatorTheme: progressIndicatorTheme(),
       radioTheme: radioThemeData(),
-      scaffoldBackgroundColor: zetaColors.surfaceTertiary,
+      scaffoldBackgroundColor: colors.surfaceDefault,
       searchBarTheme: searchBarTheme(textTheme),
-      shadowColor: zetaColors.borderDisabled.withOpacity(0.7),
+      shadowColor: colors.borderDisabled.withOpacity(0.7),
       sliderTheme: sliderTheme(),
-      splashColor: zetaColors.surfaceSelected,
+      splashColor: colors.surfaceSelected,
       switchTheme: switchTheme(),
       tabBarTheme: tabBarTheme(textTheme),
       textButtonTheme: textButtonTheme(primaryTextTheme),

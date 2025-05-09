@@ -49,7 +49,7 @@ class _TextPageState extends State<TextPage> {
   Widget build(BuildContext context) {
     final strings = ComponentStrings.of(context);
     final zetaColors = Zeta.of(context).colors;
-    final backgroundColor = widget.image.color ?? zetaColors.black.withAlpha(110);
+    final backgroundColor = widget.image.color ?? zetaColors.primitives.pure.shade1000.withAlpha(110);
 
     return PopScope(
       canPop: false,

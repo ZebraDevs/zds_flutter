@@ -134,7 +134,7 @@ class ZdsComment extends StatelessWidget {
                       ZdsSlidableAction(
                         icon: ZetaIcons.reply,
                         semanticLabel: replySemanticLabel,
-                        foregroundColor: colors.primary,
+                        foregroundColor: colors.mainPrimary,
                         backgroundColor: colors.surfacePrimarySubtle,
                         onPressed: (_) => onReply!(),
                       ),
@@ -144,7 +144,7 @@ class ZdsComment extends StatelessWidget {
                         semanticLabel: deleteSemanticLabel,
                         onPressed: (_) => onDelete!(),
                         backgroundColor: colors.surfaceNegativeSubtle,
-                        foregroundColor: colors.error,
+                        foregroundColor: colors.mainNegative,
                       ),
                   ],
                   child: Builder(
@@ -189,7 +189,7 @@ class ZdsComment extends StatelessWidget {
                                       padding: EdgeInsets.only(left: spacing.small),
                                       child: Text(
                                         timeStamp!,
-                                        style: ZetaTextStyles.bodyXSmall.copyWith(color: colors.textSubtle),
+                                        style: ZetaTextStyles.bodyXSmall.copyWith(color: colors.mainSubtle),
                                       ),
                                     ),
                                 ],
@@ -297,7 +297,7 @@ class _AttachmentRow extends StatelessWidget {
     return Material(
       color: backgroundColor,
       child: InkWell(
-        borderRadius: radius.minimal,
+        borderRadius: BorderRadius.all(radius.minimal),
         onTap: downloadCallback,
         child: Padding(
           padding: EdgeInsets.all(spacing.minimum),
@@ -330,7 +330,7 @@ class _AttachmentRow extends StatelessWidget {
                     if (attachment.size != null)
                       Text(
                         attachment.size!,
-                        style: ZetaTextStyles.bodySmall.copyWith(color: colors.textSubtle),
+                        style: ZetaTextStyles.bodySmall.copyWith(color: colors.mainSubtle),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

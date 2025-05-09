@@ -189,7 +189,7 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   splashRadius: 20,
                   visualDensity: VisualDensity.compact,
                   onPressed: open,
-                  color: Zeta.of(context).colors.iconSubtle,
+                  color: Zeta.of(context).colors.mainSubtle,
                   icon: const Icon(ZdsIcons.more_vert),
                 ),
                 items: const [
@@ -301,9 +301,9 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   ),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: Zeta.of(context).colors.iconDefault,
+                    buttonColor: Zeta.of(context).colors.mainDefault,
                     buttonText: 'Clock Out',
-                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
+                    buttonSliderColor: Zeta.of(context).colors.surfaceWarm,
                     buttonIcon: ZdsIcons.clock_stop,
                   ),
                   const SizedBox(height: 36),
@@ -332,10 +332,10 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   Text('Active, basic without animation', style: Theme.of(context).textTheme.headlineMedium),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: Zeta.of(context).colors.iconDefault,
+                    buttonColor: Zeta.of(context).colors.mainDefault,
                     buttonText: 'Clock Out',
                     buttonIcon: ZdsIcons.clock_stop,
-                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
+                    buttonSliderColor: Zeta.of(context).colors.surfaceWarm,
                     onSlideComplete: () async {
                       debugPrint('Done!');
                       return true;
@@ -348,13 +348,13 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   ),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: Zeta.of(context).colors.iconDefault,
+                    buttonColor: Zeta.of(context).colors.mainDefault,
                     buttonColorEnd: Theme.of(context).colorScheme.secondary,
                     buttonText: 'Clock Out',
                     buttonTextEnd: DateTime.now().format('KK:mm a'),
                     buttonIcon: ZdsIcons.clock_stop,
                     buttonIconEnd: ZdsIcons.check_circle,
-                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
+                    buttonSliderColor: Zeta.of(context).colors.surfaceWarm,
                     buttonSliderColorEnd: Theme.of(context).primaryColorLight,
                     onSlideComplete: () async {
                       debugPrint('Done!');
@@ -366,19 +366,19 @@ class _ButtonDemoState extends State<ButtonDemo> {
                   Text('Disabled, no message', style: Theme.of(context).textTheme.headlineMedium),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: Zeta.of(context).colors.iconDefault,
+                    buttonColor: Zeta.of(context).colors.mainDefault,
                     buttonText: 'Clock Out',
                     buttonIcon: ZdsIcons.clock_stop,
-                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
+                    buttonSliderColor: Zeta.of(context).colors.surfaceWarm,
                   ),
                   const SizedBox(height: 36),
                   Text('Disabled with message', style: Theme.of(context).textTheme.headlineMedium),
                   const SizedBox(height: 12),
                   ZdsSlidableButton(
-                    buttonColor: Zeta.of(context).colors.iconDefault,
+                    buttonColor: Zeta.of(context).colors.mainDefault,
                     buttonText: 'Clock Out',
                     buttonIcon: ZdsIcons.clock_stop,
-                    buttonSliderColor: Zeta.of(context).colors.warm.surface,
+                    buttonSliderColor: Zeta.of(context).colors.surfaceWarm,
                     disabledMessage: 'Disabled message that is quite long and goes over two lines',
                   ),
                 ],

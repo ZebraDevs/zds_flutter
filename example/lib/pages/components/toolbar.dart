@@ -32,7 +32,7 @@ class _ToolBarDemoState extends State<ToolBarDemo> {
               ),
             ),
             ZdsToolbar(
-              backgroundColor: zetaColors.iconDefault,
+              backgroundColor: zetaColors.mainDefault,
               title: ZdsDateRange(
                 emptyLabel: 'Select range',
                 isSelectable: false,
@@ -47,7 +47,7 @@ class _ToolBarDemoState extends State<ToolBarDemo> {
               ),
             ),
             ZdsToolbar(
-              backgroundColor: zetaColors.primary,
+              backgroundColor: zetaColors.mainPrimary,
               title: ZdsDateRange(
                 emptyLabel: 'Select range',
                 initialDateRange: r,
@@ -87,11 +87,11 @@ class _ToolBarDemoState extends State<ToolBarDemo> {
               ),
             ),
             ZdsToolbar(
-              backgroundColor: zetaColors.yellow.surface,
+              backgroundColor: zetaColors.surfaceSecondary,
               title: ZdsDateRange(
                 textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: zetaColors.yellow.selected,
+                      color: zetaColors.stateSecondarySelected,
                     ),
                 initialDateRange: DateTimeRange(
                   start: DateTime(2022, 05, 12),
@@ -110,7 +110,7 @@ class _ToolBarDemoState extends State<ToolBarDemo> {
                 ),
               ],
               child: Container(
-                color: Theme.of(context).colorScheme.surfacePrimary,
+                color: Theme.of(context).colorScheme.surface,
                 height: 400,
               ),
             ),

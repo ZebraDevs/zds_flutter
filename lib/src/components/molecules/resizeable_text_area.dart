@@ -174,7 +174,7 @@ class _ZdsResizableTextAreaState extends State<ZdsResizableTextArea> {
                   child: Icon(
                     ZdsIcons.expand,
                     size: 18,
-                    color: zetaColors.iconSubtle,
+                    color: zetaColors.mainSubtle,
                   ).padding(4),
                 ),
                 onVerticalDragUpdate: (DragUpdateDetails details) {
@@ -199,7 +199,7 @@ class _ZdsResizableTextAreaState extends State<ZdsResizableTextArea> {
             offset: const Offset(0, -8),
             child: Text(
               widget.footerText!,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: zetaColors.textDisabled),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: zetaColors.mainDisabled),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             ),

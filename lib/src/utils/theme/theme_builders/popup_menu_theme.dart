@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
-/// This extension on [ZetaColorScheme] allows to create and customize [PopupMenuThemeData].
-extension PopupMenuExtension on ZetaColorScheme {
+/// This extension on [ZetaSemantics] allows to create and customize [PopupMenuThemeData].
+extension PopupMenuExtension on ZetaSemantics {
   /// Creates a custom [PopupMenuThemeData] using the specified
-  /// properties and styles obtained from the [ZetaColorScheme] and [TextTheme].
+  /// properties and styles obtained from the [ZetaSemantics] and [TextTheme].
   ///
   /// Parameter:
   ///   [textTheme] : A TextTheme object to copy text styles from.
@@ -23,10 +23,10 @@ extension PopupMenuExtension on ZetaColorScheme {
       elevation: 5,
 
       /// Setting up the color.
-      color: surface,
+      color: colors.surfaceDefault,
 
       /// Setting up the tint color of the surface.
-      surfaceTintColor: onSurface,
+      surfaceTintColor: colors.mainDefault,
     );
   }
 }

@@ -266,7 +266,7 @@ class ZdsDateTimePickerState extends State<ZdsDateTimePicker> {
       textAlign: widget.textAlign,
       style: widget.textStyle ??
           textTheme.bodyLarge?.copyWith(
-            color: _dateTime == null ? zetaColors.textSubtle : textTheme.bodyLarge?.color,
+            color: _dateTime == null ? zetaColors.mainSubtle : textTheme.bodyLarge?.color,
           ),
     );
 

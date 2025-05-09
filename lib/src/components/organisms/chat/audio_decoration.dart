@@ -27,7 +27,7 @@ abstract class _AudioDecoration {
 
   /// Resolves the background color to the secondary container color if not defined
   Color resolveBackgroundColor(BuildContext context) {
-    return backgroundColor ?? Theme.of(context).colorScheme.secondaryContainer;
+    return backgroundColor ?? Zeta.of(context).colors.mainPrimary;
   }
 
   /// Resolves the foreground color to the on secondary container color if not defined
@@ -118,7 +118,7 @@ class ZdsAudioRecorderDecoration extends _AudioDecoration {
 
   /// Resolves the microphone icon color to orange if not defined
   Color resolveMicIconTint(BuildContext context) {
-    return micIconTint ?? Zeta.of(context).colors.orange;
+    return micIconTint ?? Zeta.of(context).colors.mainWarning;
   }
 
   /// Resolves the send icon color to the secondary color if not defined

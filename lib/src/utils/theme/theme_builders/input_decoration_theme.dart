@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../theme.dart' show ZdsInputBorder;
 
-/// This extension on [ZetaColorScheme] allows to create and customize [InputDecorationTheme].
-extension ZetaDividerTheme on ZetaColorScheme {
+/// This extension on [ZetaSemantics] allows to create and customize [InputDecorationTheme].
+extension ZetaDividerTheme on ZetaSemantics {
   /// Creates a custom [InputDecorationTheme] using the specified
-  /// properties and styles obtained from the [ZetaColorScheme] and [TextTheme].
+  /// properties and styles obtained from the [ZetaSemantics] and [TextTheme].
   ///
   /// Parameter:
   ///   [textTheme] : A TextTheme object to copy text styles from.
@@ -21,16 +21,16 @@ extension ZetaDividerTheme on ZetaColorScheme {
     /// labelStyle, and counterStyle.
     return InputDecorationTheme(
       /// Setting up the border using custom ZdsInputBorder.
-      border: ZdsInputBorder(borderSide: BorderSide(color: zetaColors.borderDefault)),
+      border: ZdsInputBorder(borderSide: BorderSide(color: colors.borderDefault)),
 
       /// Setting up the border when the input is focussed.
-      focusedBorder: ZdsInputBorder(borderSide: BorderSide(color: zetaColors.borderSelected)),
+      focusedBorder: ZdsInputBorder(borderSide: BorderSide(color: colors.borderSelected)),
 
       /// Setting up the border when the input is enabled.
-      enabledBorder: ZdsInputBorder(borderSide: BorderSide(color: zetaColors.borderDefault)),
+      enabledBorder: ZdsInputBorder(borderSide: BorderSide(color: colors.borderDefault)),
 
       /// Setting up the border when the input is disabled.
-      disabledBorder: ZdsInputBorder(borderSide: BorderSide(color: zetaColors.borderDisabled)),
+      disabledBorder: ZdsInputBorder(borderSide: BorderSide(color: colors.borderDisabled)),
 
       /// Always displaying the floating label.
       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -39,40 +39,40 @@ extension ZetaDividerTheme on ZetaColorScheme {
       contentPadding: const EdgeInsets.fromLTRB(12, 27, 12, 27),
 
       /// Setting up the border to indicate an error.
-      errorBorder: ZdsInputBorder(borderSide: BorderSide(color: errorContainer)),
+      errorBorder: ZdsInputBorder(borderSide: BorderSide(color: colors.borderNegative)),
 
-      /// Setting up the colour of input when focused.
-      focusColor: zetaColors.borderSelected,
+      /// Setting up the color of input when focused.
+      focusColor: colors.borderSelected,
 
       /// Custom border setup for when the input has focus and also has an error.
-      focusedErrorBorder: ZdsInputBorder(borderSide: BorderSide(color: error)),
+      focusedErrorBorder: ZdsInputBorder(borderSide: BorderSide(color: colors.mainNegative)),
 
       /// Setting up the label text style using the provided textTheme.
       labelStyle: textTheme.titleSmall?.copyWith(
         fontSize: 19,
         fontWeight: FontWeight.w500,
-        color: zetaColors.textSubtle,
+        color: colors.mainSubtle,
         height: 0,
       ),
 
       /// Setting up the Icon color for suffix
-      prefixIconColor: zetaColors.iconDefault,
+      prefixIconColor: colors.mainDefault,
 
       /// Setting up the Icon color for suffix
-      suffixIconColor: zetaColors.iconSubtle,
+      suffixIconColor: colors.mainSubtle,
 
       /// Setting up the label text style using the provided textTheme.
       suffixStyle: textTheme.titleSmall?.copyWith(
         fontSize: 19,
         fontWeight: FontWeight.w500,
-        color: zetaColors.textSubtle,
+        color: colors.mainSubtle,
         height: 0,
       ),
 
       /// Setting up the counter text style using the provided textTheme.
       counterStyle: textTheme.bodySmall?.copyWith(
         height: 0.1,
-        color: zetaColors.textSubtle,
+        color: colors.mainSubtle,
       ),
     );
   }

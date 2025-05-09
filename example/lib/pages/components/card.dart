@@ -80,7 +80,7 @@ class CardDemo extends StatelessWidget {
                           onPressed: () {},
                           icon: Transform.rotate(
                             angle: math.pi / 2,
-                            child: Icon(ZdsIcons.more_vert, color: Zeta.of(context).colors.iconSubtle),
+                            child: Icon(ZdsIcons.more_vert, color: Zeta.of(context).colors.mainSubtle),
                           ),
                         ),
                         child: const Text('With Header'),

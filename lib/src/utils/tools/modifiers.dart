@@ -443,27 +443,6 @@ extension RowLayout on Row {
   }
 }
 
-/// A selection of modifiers on TextTheme.
-extension TextThemeExtension on TextTheme {
-  /// TextStyle for tab item 1
-  @Deprecated('Use bodyTextLarge, or bodyTextMedium if tab has icons.')
-  TextStyle get tabItem1 {
-    return bodyLarge!.copyWith(letterSpacing: 0.2);
-  }
-
-  /// TextStyle tabitem2
-  @Deprecated('Use bodyTextLarge, or bodyTextMedium if tab has icons.')
-  TextStyle get tabItem2 {
-    return bodyMedium!;
-  }
-
-  /// TextStyle bodyText3
-  @Deprecated('Use bodyTextSmall')
-  TextStyle get bodyText3 {
-    return titleLarge!.copyWith(fontWeight: FontWeight.w400);
-  }
-}
-
 /// Applies Semanctics to [Widget]
 extension SemanticsModifier on Widget {
   /// Include Semantics with label this widget.

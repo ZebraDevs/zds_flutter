@@ -23,13 +23,13 @@ class IconTextButtonDemo extends StatelessWidget {
                 onTap: () => {onButtonTapped(context)},
                 icon: ZdsIcons.clock_switch,
                 label: 'Shift Trade',
-                backgroundColor: zeta.colors.orange,
+                backgroundColor: zeta.colors.mainWarning,
               ),
               ZdsIconTextButton(
                 onTap: () => {onButtonTapped(context)},
                 icon: ZdsIcons.clock_available,
                 label: 'Availability',
-                backgroundColor: zeta.colors.pink,
+                backgroundColor: zeta.colors.primitives.pink,
               )
             ],
           ),

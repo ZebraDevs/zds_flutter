@@ -74,7 +74,7 @@ class ZdsInputDecoration extends InputDecoration {
                             ),
                             Text(
                               ' *',
-                              style: TextStyle(color: Zeta.of(context).colors.error),
+                              style: TextStyle(color: Zeta.of(context).colors.mainNegative),
                             ).excludeSemantics(),
                           ],
                         );

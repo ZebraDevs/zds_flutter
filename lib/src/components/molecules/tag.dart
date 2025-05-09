@@ -207,30 +207,30 @@ class ZdsTag extends StatelessWidget {
       case ZdsTagColor.alert:
         return zetaColors.surfaceWarning;
       case ZdsTagColor.primary:
-        return zetaColors.primary;
+        return zetaColors.mainPrimary;
       case ZdsTagColor.secondary:
-        return zetaColors.secondary;
+        return zetaColors.mainSecondary;
       case ZdsTagColor.success:
         return zetaColors.surfacePositive;
       case ZdsTagColor.basic:
-        return zetaColors.warm.shade80;
+        return zetaColors.primitives.warm.shade80;
     }
   }
 
   Color _resolveBgColor(ZetaColors zetaColors, ZdsTagColor tagColor) {
     switch (tagColor) {
       case ZdsTagColor.error:
-        return zetaColors.error.surface;
+        return zetaColors.surfaceNegative;
       case ZdsTagColor.alert:
-        return zetaColors.orange.surface;
+        return zetaColors.surfaceWarning;
       case ZdsTagColor.primary:
-        return zetaColors.primary.surface;
+        return zetaColors.surfacePrimary;
       case ZdsTagColor.secondary:
-        return zetaColors.secondary.surface;
+        return zetaColors.surfaceSecondary;
       case ZdsTagColor.success:
-        return zetaColors.green.surface;
+        return zetaColors.surfacePositive;
       case ZdsTagColor.basic:
-        return zetaColors.warm.shade30;
+        return zetaColors.surfaceWarm;
     }
   }
 

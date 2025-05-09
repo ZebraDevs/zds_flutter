@@ -36,9 +36,9 @@ extension on CircleButtonType {
   ZetaColorSwatch color(ZetaColors colors) {
     switch (this) {
       case CircleButtonType.positive:
-        return colors.surfacePositive;
+        return colors.primitives.green;
       case CircleButtonType.negative:
-        return colors.surfaceNegative;
+        return colors.primitives.red;
       case CircleButtonType.alert:
         return ZetaColorSwatch.fromColor(Colors.white);
       case CircleButtonType.base:

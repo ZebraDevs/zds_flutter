@@ -158,7 +158,7 @@ class _DrawPageState extends State<DrawPage> {
                   isSelected: selectedTab == DrawOptions.pen,
                   icon: Icon(
                     Icons.edit,
-                    color: selectedTab == DrawOptions.pen ? zetaColors.primary : null,
+                    color: selectedTab == DrawOptions.pen ? zetaColors.mainPrimary : null,
                   ),
                   label: strings.get('PEN', 'Pen'),
                   onPressed: () {
@@ -175,7 +175,7 @@ class _DrawPageState extends State<DrawPage> {
                   isSelected: selectedTab == DrawOptions.highlight,
                   icon: Icon(
                     Icons.highlight,
-                    color: selectedTab == DrawOptions.highlight ? zetaColors.primary : null,
+                    color: selectedTab == DrawOptions.highlight ? zetaColors.mainPrimary : null,
                   ),
                   label: strings.get('HIGHLIGHT', 'Highlight'),
                   onPressed: () {

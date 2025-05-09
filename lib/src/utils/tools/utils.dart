@@ -417,13 +417,13 @@ Color getRandomColorFromTheme(Object? seed, {List<Color>? colors}) {
 
   if (colors == null || colors.isEmpty) {
     setColors = <ui.Color>[
-      ZetaColorBase.red,
-      ZetaColorBase.orange,
-      ZetaColorBase.yellow,
-      ZetaColorBase.green,
-      ZetaColorBase.blue,
-      ZetaColorBase.teal,
-      ZetaColorBase.pink,
+      const ZetaPrimitivesLight().red,
+      const ZetaPrimitivesLight().orange,
+      const ZetaPrimitivesLight().yellow,
+      const ZetaPrimitivesLight().green,
+      const ZetaPrimitivesLight().blue,
+      const ZetaPrimitivesLight().teal,
+      const ZetaPrimitivesLight().pink,
     ];
   } else {
     setColors = colors;

@@ -10,19 +10,19 @@ class InformationBarDemo extends StatelessWidget {
     return Scaffold(
       body: Column(children: [
         ZdsInformationBar(
-          zetaColorSwatch: zeta.colors.green,
+          zetaColorSwatch: zeta.colors.primitives.green,
           icon: ZdsIcons.check,
           label: 'Approved',
         ),
         SizedBox(height: 10),
         ZdsInformationBar(
-          zetaColorSwatch: zeta.colors.blue,
+          zetaColorSwatch: zeta.colors.primitives.blue,
           icon: ZdsIcons.hourglass,
           label: 'Pending',
         ),
         SizedBox(height: 10),
         ZdsInformationBar(
-          zetaColorSwatch: zeta.colors.red,
+          zetaColorSwatch: zeta.colors.primitives.red,
           icon: ZdsIcons.close,
           label: 'Declined',
         ),
@@ -30,7 +30,7 @@ class InformationBarDemo extends StatelessWidget {
         ZdsInformationBar(
           icon: Icons.category,
           label: 'Neutral text',
-          zetaColorSwatch: zeta.colors.warm,
+          zetaColorSwatch: zeta.colors.primitives.warm,
         )
       ]),
     );

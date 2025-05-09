@@ -56,7 +56,7 @@ class ZdsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color sheetBackgroundColor = backgroundColor ?? Zeta.of(context).colors.surfaceTertiary;
+    final Color sheetBackgroundColor = backgroundColor ?? Zeta.of(context).colors.surfacePrimary;
     final Color headerColor = header != null ? colorScheme.surface : sheetBackgroundColor;
     final _BottomSheetHeader headerWidget = _BottomSheetHeader(header: header, backgroundColor: headerColor);
     final MediaQueryData media = MediaQuery.of(context);

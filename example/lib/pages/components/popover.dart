@@ -48,11 +48,11 @@ class _PopOverDemoState extends State<PopOverDemo> {
           ),
           ZdsPopOverIconButton(
             icon: const Icon(ZdsIcons.sort),
-            backgroundColor: Zeta.of(context).colors.red,
+            backgroundColor: Zeta.of(context).colors.mainNegative,
             popOverBuilder: (context) {
               return Container(
                 child: const Text('Lorem ipsum dolor sit amet.').textStyle(
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(color: Zeta.of(context).colors.red.onColor),
+                  Theme.of(context).textTheme.bodyLarge?.copyWith(color: Zeta.of(context).colors.mainNegative.onColor),
                 ),
               ).paddingInsets(_contentPadding);
             },

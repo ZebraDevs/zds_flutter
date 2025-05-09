@@ -100,7 +100,7 @@ class ZdsToggleButtonState extends State<ZdsToggleButton> {
                 Container(
                   height: kBigToggleHeight,
                   decoration: ShapeDecoration(
-                    color: Zeta.of(context).colors.warm.shade30,
+                    color: Zeta.of(context).colors.primitives.warm.shade30,
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(28))),
                   ),
                 ),
@@ -136,7 +136,7 @@ class ZdsToggleButtonState extends State<ZdsToggleButton> {
                               color: (index == _selectedValue)
                                   ? widget.foregroundColor ??
                                       (widget.backgroundColor ?? Theme.of(context).colorScheme.primary).onColor
-                                  : Zeta.of(context).colors.textSubtle,
+                                  : Zeta.of(context).colors.mainSubtle,
                             ),
                             child: Text(widget.values[index]).semantics(identifier: 'TOGGLED_TAB_$index'),
                           ),

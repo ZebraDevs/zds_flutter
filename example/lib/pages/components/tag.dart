@@ -135,7 +135,7 @@ class TagDemo extends StatelessWidget {
             child: ZdsListTile(
               trailing: ZdsTag(
                 filled: true,
-                customColor: zetaColors.cool,
+                customColor: zetaColors.primitives.cool,
                 child: const Text('Custom onClose'),
                 onClose: () {},
               ),
@@ -188,7 +188,7 @@ class TagDemo extends StatelessWidget {
               trailing: ZdsTag(
                 rectangular: true,
                 color: ZdsTagColor.success,
-                prefix: Icon(Icons.check, size: 18, color: zetaColors.green),
+                prefix: Icon(Icons.check, size: 18, color: zetaColors.mainPositive),
                 child: const Text(
                   'Approved',
                 ),
@@ -212,7 +212,7 @@ class TagDemo extends StatelessWidget {
               trailing: ZdsTag(
                 rectangular: true,
                 color: ZdsTagColor.error,
-                prefix: Icon(Icons.close, size: 18, color: zetaColors.red),
+                prefix: Icon(Icons.close, size: 18, color: zetaColors.mainNegative),
                 child: const Text('Declined'),
               ),
             ),

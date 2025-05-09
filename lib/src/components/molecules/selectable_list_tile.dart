@@ -7,7 +7,7 @@ import '../../../../zds_flutter.dart';
 ///
 /// There are two variants:
 /// * [ZdsSelectableListTile], which returns a list tile that changes its color when selected.
-///   When a listTile is marked as selected, its background will be colored with the [ColorScheme.secondary] at 10%
+///   When a listTile is marked as selected, its background will be colored with the [ColorScheme.mainSecondary] at 10%
 ///   opacity. When it's unselected, the background will use [ColorScheme.surface]
 /// * [ZdsSelectableListTile.checkable], which returns a list tile that adds a check at the end of the tile when selected.
 ///
@@ -84,17 +84,17 @@ class ZdsSelectableListTile extends StatelessWidget {
     final zetaColors = Zeta.of(context).colors;
 
     return IconTheme(
-      data: themeData.iconTheme.copyWith(size: 24, color: zetaColors.secondary.icon),
+      data: themeData.iconTheme.copyWith(size: 24, color: zetaColors.mainSecondary),
       child: Padding(
         padding: kZdsSelectableListTilePadding,
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(kZdsSelectableListTileBorderRadius)),
           child: Material(
-            color: showSelected ? zetaColors.secondary.surface : themeData.colorScheme.surface,
+            color: showSelected ? zetaColors.surfaceSecondary : themeData.colorScheme.surface,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 border: showSelected
-                    ? Border.all(color: zetaColors.secondary.border)
+                    ? Border.all(color: zetaColors.borderSecondary)
                     : Border.all(color: zetaColors.borderSubtle),
                 borderRadius: const BorderRadius.all(Radius.circular(kZdsSelectableListTileBorderRadius)),
               ),
@@ -135,7 +135,7 @@ class ZdsSelectableListTile extends StatelessWidget {
                                     if (subTitle != null)
                                       Container(child: subTitle).textStyle(
                                         themeData.textTheme.titleSmall!
-                                            .copyWith(color: zetaColors.textSubtle, fontSize: 12),
+                                            .copyWith(color: zetaColors.mainSubtle, fontSize: 12),
                                       ),
                                   ],
                                 ),

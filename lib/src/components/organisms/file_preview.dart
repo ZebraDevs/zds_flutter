@@ -92,7 +92,7 @@ class ZdsFilePreview extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 splashRadius: 24,
                 visualDensity: VisualDensity.compact,
-                icon: Icon(ZdsIcons.close_circle, size: 24, color: Zeta.of(context).colors.error),
+                icon: Icon(ZdsIcons.close_circle, size: 24, color: Zeta.of(context).colors.mainNegative),
                 onPressed: onDelete,
               ),
             ),
@@ -180,7 +180,7 @@ class ZdsFileSize extends StatelessWidget {
   Widget _sizeText(BuildContext context, int size) {
     return Text(
       fileSizeWithUnit(size),
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Zeta.of(context).colors.textSubtle),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Zeta.of(context).colors.mainSubtle),
     );
   }
 

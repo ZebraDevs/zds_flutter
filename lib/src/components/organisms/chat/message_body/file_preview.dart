@@ -86,7 +86,7 @@ class _ZdsChatFilePreviewState extends State<ZdsChatFilePreview> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(ZdsIcons.download, size: 24, color: Zeta.of(context).colors.iconSubtle),
+            Icon(ZdsIcons.download, size: 24, color: Zeta.of(context).colors.mainSubtle),
             const SizedBox.square(dimension: 10),
             Text(
               ComponentStrings.of(context).get('DOWNLOAD', 'Download'),
@@ -234,12 +234,12 @@ class __VideoState extends State<_Video> {
                           : await _videoController!.play();
                       setState(() {});
                     },
-                    backgroundColor: Zeta.of(context).colors.cool.shade30.withOpacity(0.7),
-                    hoverColor: Zeta.of(context).colors.cool.shade30.withOpacity(0.5),
+                    backgroundColor: Zeta.of(context).colors.primitives.cool.shade30.withOpacity(0.7),
+                    hoverColor: Zeta.of(context).colors.primitives.cool.shade30.withOpacity(0.5),
                     hoverElevation: 0,
                     child: Icon(
                       _videoController!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Zeta.of(context).colors.cool.shade30.onColor,
+                      color: Zeta.of(context).colors.primitives.cool.shade30.onColor,
                     ),
                   ),
                 ),

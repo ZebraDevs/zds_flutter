@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart' show ZetaSemantics;
 
-/// An extension of the [ZetaColorScheme] that provides a BottomSheet theme design.
-extension ZetaBottomSheetTheme on ZetaColorScheme {
+/// An extension of the [ZetaSemantics] that provides a BottomSheet theme design.
+extension ZetaBottomSheetTheme on ZetaSemantics {
   /// Creates and returns a themed [BottomSheetThemeData].
   ///
   /// The [BottomSheetThemeData] uses a custom shape border for

@@ -50,7 +50,7 @@ class _SearchDemoState extends State<SearchDemo> {
   Widget build(BuildContext context) {
     final clearButton = _showSuffixClearButton
         ? IconButton(
-            icon: Icon(ZdsIcons.close_circle, color: Zeta.of(context).colors.iconSubtle),
+            icon: Icon(ZdsIcons.close_circle, color: Zeta.of(context).colors.mainSubtle),
             onPressed: _clearButtonFieldController.clear,
           )
         : null;

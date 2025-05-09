@@ -197,17 +197,17 @@ class _Letter extends StatelessWidget {
     final zeta = Zeta.of(context);
     final colors = zeta.colors;
 
-    Color color = colors.textSubtle;
+    Color color = colors.mainSubtle;
     final diff = (index - selectedIndex).abs();
 
     if (diff == 0) {
-      color = colors.primary;
+      color = colors.mainPrimary;
     } else if (diff == 1) {
-      color = colors.textDefault;
+      color = colors.mainDefault;
     } else if (diff > 1 && diff < 4) {
-      color = colors.textSubtle;
+      color = colors.mainSubtle;
     } else {
-      color = colors.textDisabled;
+      color = colors.mainDisabled;
     }
 
     return Padding(

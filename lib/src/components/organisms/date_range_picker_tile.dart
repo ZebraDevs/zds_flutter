@@ -534,7 +534,7 @@ class _DateField extends StatelessWidget {
                   isInitialDate
                       ? ComponentStrings.of(context).get('FROM', 'From')
                       : ComponentStrings.of(context).get('TO', 'To'),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: zetaColors.textSubtle),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: zetaColors.mainSubtle),
                 ).paddingOnly(left: 2),
                 InkWell(
                   onTap: () async {
@@ -589,7 +589,7 @@ class _DateField extends StatelessWidget {
                       ),
                       Icon(
                         ZdsIcons.calendar,
-                        color: zetaColors.iconSubtle,
+                        color: zetaColors.mainSubtle,
                         size: 22,
                       ),
                     ],

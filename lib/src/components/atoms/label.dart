@@ -39,14 +39,14 @@ class ZdsLabel extends StatelessWidget {
             Icon(
               icon,
               size: size,
-              color: zetaColors.secondary.icon,
+              color: zetaColors.mainSecondary,
             ),
             const SizedBox(width: 4),
           ],
           if (child != null)
             DefaultTextStyle(
               style: safeTextStyle(Theme.of(context).textTheme.titleSmall).copyWith(
-                color: zetaColors.textSubtle,
+                color: zetaColors.mainSubtle,
               ),
               child: child!,
             ),

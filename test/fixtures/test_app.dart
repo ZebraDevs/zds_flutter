@@ -16,7 +16,7 @@ class TestApp extends StatelessWidget {
         ComponentDelegate(testing: true),
       ],
       home: ZetaProvider(
-        builder: (context, themeData, themeMode) {
+        builder: (context, themeData, darkTheme, themeMode) {
           return Scaffold(body: builder.call(context));
         },
       ),

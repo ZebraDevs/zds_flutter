@@ -104,36 +104,36 @@ class ZdsToast extends StatelessWidget implements PreferredSizeWidget {
       case ZdsToastColors.info:
         return colors.surfaceInfoSubtle;
       case ZdsToastColors.error:
-        return colors.error.shade10;
+        return colors.surfaceNegativeSubtle;
       case ZdsToastColors.primary:
-        return colors.primary.shade10;
+        return colors.surfacePrimarySubtle;
       case ZdsToastColors.dark:
-        return colors.textDefault;
+        return colors.mainDefault;
     }
   }
 
   Color _iconColor(ZetaColors colors, ZdsToastColors toastColor) {
     switch (toastColor) {
       case ZdsToastColors.success:
-        return colors.green.shade60;
+        return colors.mainPositive;
       case ZdsToastColors.warning:
-        return colors.orange.shade60;
+        return colors.mainWarning;
       case ZdsToastColors.info:
-        return colors.surfaceInfo.shade60;
+        return colors.mainInfo;
       case ZdsToastColors.error:
-        return colors.error.shade60;
+        return colors.mainNegative;
       case ZdsToastColors.primary:
-        return colors.primary.shade60;
+        return colors.mainPrimary;
       case ZdsToastColors.dark:
-        return colors.textInverse;
+        return colors.mainInverse;
     }
   }
 
   Color _foregroundColor(ZetaColors colors, ZdsToastColors toastColor) {
     if (toastColor == ZdsToastColors.dark) {
-      return colors.textInverse;
+      return colors.mainInverse;
     } else {
-      return colors.textDefault;
+      return colors.mainDefault;
     }
   }
 

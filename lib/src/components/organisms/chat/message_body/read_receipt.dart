@@ -43,7 +43,7 @@ class ZdsReadReceipt extends StatelessWidget {
           children: [
             Text(
               timeString,
-              style: themeData.textTheme.bodySmall?.copyWith(color: zetaColors.textSubtle, fontWeight: FontWeight.w500),
+              style: themeData.textTheme.bodySmall?.copyWith(color: zetaColors.mainSubtle, fontWeight: FontWeight.w500),
             ),
             if (isLocalUser) const SizedBox(width: 6),
             if (isLocalUser && status != ZdsChatMessageStatus.notSent && !messageDeleted)
@@ -52,7 +52,7 @@ class ZdsReadReceipt extends StatelessWidget {
                     ? Icons.done_all
                     : Icons.done,
                 size: 16,
-                color: status == ZdsChatMessageStatus.read ? themeData.colorScheme.secondary : zetaColors.iconSubtle,
+                color: status == ZdsChatMessageStatus.read ? themeData.colorScheme.secondary : zetaColors.mainSubtle,
               ),
           ],
         ),

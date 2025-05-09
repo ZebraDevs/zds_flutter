@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../zds_flutter.dart';
 
-/// This is an extension method on [ZetaColorScheme] which is used to customize the [DatePickerThemeData].
-extension ZetaDatePickerTheme on ZetaColorScheme {
+/// This is an extension method on [ZetaSemantics] which is used to customize the [DatePickerThemeData].
+extension ZetaDatePickerTheme on ZetaSemantics {
   /// This function returns a [DatePickerThemeData] customized with properties
-  /// taken from the [ZetaColorScheme].
+  /// taken from the [ZetaSemantics].
   ///
   /// Returns:
   ///   A [DatePickerThemeData] with the applied properties.
@@ -15,10 +15,10 @@ extension ZetaDatePickerTheme on ZetaColorScheme {
     return DatePickerThemeData(
       headerBackgroundColor: appBarTheme.backgroundColor,
       headerForegroundColor: appBarTheme.foregroundColor,
-      backgroundColor: zetaColors.surfacePrimary,
-      rangePickerBackgroundColor: zetaColors.surfacePrimary,
+      backgroundColor: colors.surfacePrimary,
+      rangePickerBackgroundColor: colors.surfacePrimary,
       rangePickerHeaderForegroundColor: appBarTheme.foregroundColor,
-      rangeSelectionBackgroundColor: zetaColors.secondary.shade20,
+      rangeSelectionBackgroundColor: colors.primitives.secondary.shade20,
     );
   }
 }

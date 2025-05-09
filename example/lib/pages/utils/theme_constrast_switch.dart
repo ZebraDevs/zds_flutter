@@ -11,38 +11,31 @@ class ZetaThemeContrastSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var zeta = Zeta.of(context);
-
-    ZetaColors zetaColors(ZetaContrast contrast) {
-      if (zeta.brightness == Brightness.light) {
-        return zeta.themeData.apply(contrast: contrast).colorsLight;
-      } else {
-        return zeta.themeData.apply(contrast: contrast).colorsDark;
-      }
-    }
+    final zeta = Zeta.of(context);
 
     return DropdownButtonHideUnderline(
       child: DropdownButton<ZetaContrast>(
         value: zeta.contrast,
+        padding: EdgeInsets.all(8),
         elevation: 0,
-        isDense: true,
-        alignment: Alignment.center,
-        icon: SizedBox(width: 8),
+        icon: Nothing(),
         dropdownColor: zeta.colors.borderDisabled,
         items: _themes.map((e) {
-          final colors = zetaColors(e);
+          final ZetaColors colors = (e == ZetaContrast.aa
+              ? ZetaColorsAA(primitives: Zeta.of(context).colors.primitives)
+              : ZetaColorsAAA(primitives: Zeta.of(context).colors.primitives)) as ZetaColors;
           return DropdownMenuItem<ZetaContrast>(
             value: e,
             alignment: Alignment.center,
-            child: CircleAvatar(
-              backgroundColor: colors.primary.surface,
-              foregroundColor: colors.primary,
-              child: Text(
-                e == ZetaContrast.aa ? 'AA' : 'AAA',
-                style: ZetaTextStyles.bodyMedium.copyWith(
-                  color: colors.primary,
-                  fontWeight: FontWeight.w700,
-                ),
+            child: ZetaAvatar(
+              size: ZetaAvatarSize.xxs,
+              backgroundColor: colors.surfaceDefault,
+              initials: e.name.toUpperCase(),
+              initialTextStyle: TextStyle(
+                fontSize: 14,
+                letterSpacing: Zeta.of(context).spacing.none,
+                color: colors.mainPrimary,
+                fontWeight: FontWeight.w500,
               ),
             ),
           );

@@ -66,8 +66,6 @@ class ZdsCalendar extends StatefulWidget {
     this.nextTooltip,
     this.selectedRange,
     this.backgroundColor,
-    @Deprecated('This parameter is no longer used and will be removed in the next major version.')
-    bool showSelectedDateHeader = false,
   })  : _variant = _ZdsCalendarVariant.switchable,
         hasHeader = true;
 
@@ -105,8 +103,6 @@ class ZdsCalendar extends StatefulWidget {
     this.nextTooltip,
     this.selectedRange,
     this.backgroundColor,
-    @Deprecated('This parameter is no longer used and will be removed in the next major version.')
-    bool showSelectedDateHeader = false,
   }) : _variant = _ZdsCalendarVariant.monthly;
 
   /// Shows a calendar in a fixed weekly format.
@@ -142,8 +138,6 @@ class ZdsCalendar extends StatefulWidget {
     this.previousTooltip,
     this.nextTooltip,
     this.selectedRange,
-    @Deprecated('This parameter is no longer used and will be removed in the next major version.')
-    bool showSelectedDateHeader = false,
   })  : _variant = _ZdsCalendarVariant.weekly,
         hasHeader = false;
 
@@ -241,7 +235,7 @@ class ZdsCalendar extends StatefulWidget {
 
   /// Color of the text on the calendar header
   ///
-  /// Defaults to Zeta.of(context).colors.textSubtle
+  /// Defaults to Zeta.of(context).colors.mainSubtle
   final Color? calendarHeaderTextColor;
 
   /// Custom color override for unselected days.
@@ -474,7 +468,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                 text,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: colors.textSubtle,
+                      color: colors.mainSubtle,
                     ),
                 textAlign: TextAlign.center,
               ),
@@ -507,34 +501,34 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
         cellMargin: EdgeInsets.all(widget.weekIcons != null && widget.weekIcons!.isNotEmpty ? 5 : 8),
 
         defaultTextStyle: textTheme.copyWith(
-          color: widget.calendarTextColor ?? colors.textSubtle,
+          color: widget.calendarTextColor ?? colors.mainSubtle,
         ),
         weekendTextStyle: textTheme.copyWith(
-          color: widget.calendarTextColor ?? colors.textSubtle,
+          color: widget.calendarTextColor ?? colors.mainSubtle,
         ),
         holidayDecoration: BoxDecoration(
-          color: colors.warm.surface,
+          color: colors.surfaceWarm,
           shape: BoxShape.circle,
         ),
-        selectedTextStyle: textTheme.copyWith(color: colors.secondary.onColor),
-        outsideTextStyle: textTheme.copyWith(color: colors.textSubtle),
-        rangeStartTextStyle: textTheme.copyWith(color: colors.secondary.onColor),
-        rangeEndTextStyle: textTheme.copyWith(color: colors.secondary.onColor),
-        rangeHighlightColor: colors.secondary.surface,
+        selectedTextStyle: textTheme.copyWith(color: colors.mainSecondary.onColor),
+        outsideTextStyle: textTheme.copyWith(color: colors.mainSubtle),
+        rangeStartTextStyle: textTheme.copyWith(color: colors.mainSecondary.onColor),
+        rangeEndTextStyle: textTheme.copyWith(color: colors.mainSecondary.onColor),
+        rangeHighlightColor: colors.surfaceSecondary,
         rangeStartDecoration: BoxDecoration(
-          color: colors.secondary,
+          color: colors.mainSecondary,
           shape: BoxShape.circle,
         ),
         rangeEndDecoration: BoxDecoration(
-          color: colors.secondary,
+          color: colors.mainSecondary,
           shape: BoxShape.circle,
         ),
         markerDecoration: BoxDecoration(
-          color: colors.iconSubtle,
+          color: colors.mainSubtle,
           shape: BoxShape.circle,
         ),
         selectedDecoration: BoxDecoration(
-          color: colors.secondary,
+          color: colors.mainSecondary,
           shape: BoxShape.circle,
         ),
         todayTextStyle: textTheme,
@@ -619,7 +613,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                                 child: Text(
                                   _focusedDay.format('MMMM', languageCode),
                                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                                        color: widget.calendarHeaderTextColor ?? colors.textSubtle,
+                                        color: widget.calendarHeaderTextColor ?? colors.mainSubtle,
                                       ),
                                 ),
                               ),
@@ -670,7 +664,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                                 child: Text(
                                   _focusedDay.format('yyyy', languageCode),
                                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                                        color: widget.calendarHeaderTextColor ?? colors.textSubtle,
+                                        color: widget.calendarHeaderTextColor ?? colors.mainSubtle,
                                       ),
                                 ),
                               ),
@@ -753,7 +747,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
           widget.allCustomLabel ?? ComponentStrings.of(context).get('ALL', 'All'),
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
                 fontWeight: FontWeight.w500,
-                color: colors.textSubtle,
+                color: colors.mainSubtle,
               ),
         ),
       ),
@@ -883,7 +877,7 @@ class _ZdsCalendarState extends State<ZdsCalendar> {
                                           label: week.semanticLabel,
                                           child: IconTheme(
                                             data: IconThemeData(
-                                              color: colors.iconDefault,
+                                              color: colors.mainDefault,
                                               size: context.isSmallScreen() ? 18 : 24,
                                             ),
                                             child: week.child,

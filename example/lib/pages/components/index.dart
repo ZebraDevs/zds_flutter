@@ -15,14 +15,14 @@ class IndexDemo extends StatelessWidget {
             ZdsListTile(
               leading: ZdsIndex(
                 child: Text('2'),
-                color: Zeta.of(context).colors.blue,
+                color: Zeta.of(context).colors.mainPrimary,
               ),
               title: Text('Showcase Extravaganza'),
             ),
             ZdsListTile(
               leading: ZdsIndex(
                 child: Text('2'),
-                color: Zeta.of(context).colors.purple,
+                color: Zeta.of(context).colors.mainInfo,
               ),
               title: Text('Showcase Extravaganza'),
             ),

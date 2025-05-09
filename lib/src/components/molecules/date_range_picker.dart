@@ -1354,7 +1354,7 @@ class _ZdsDateRangePickerDialogState extends State<ZdsDateRangePickerDialog> wit
           shortMonthDayFormat: widget.shortMonthDayFormat,
           shortDateFormat: widget.shortDateFormat,
         );
-        final DialogTheme dialogTheme = Theme.of(context).dialogTheme;
+        final DialogThemeData dialogTheme = Theme.of(context).dialogTheme;
         size = orientation == Orientation.portrait ? _inputPortraitDialogSize : _inputRangeLandscapeDialogSize;
         insetPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 24);
         shape = dialogTheme.shape;
@@ -1443,8 +1443,8 @@ class _CalendarRangePickerDialog extends StatelessWidget {
     final zetaColors = Zeta.of(context).colors;
 
     final TextTheme textTheme = theme.textTheme;
-    final Color headerForeground = zetaColors.textDefault;
-    final Color headerDisabledForeground = zetaColors.textDisabled;
+    final Color headerForeground = zetaColors.mainDefault;
+    final Color headerDisabledForeground = zetaColors.mainDisabled;
 
     final String startDateText = _formatRangeStartDate(
       localizations,

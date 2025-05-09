@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../tools.dart' show widgetStatePropertyResolver;
 
-/// This extension on [ZetaColorScheme] allows to create and customize [ListTileThemeData].
-extension ListTileExtension on ZetaColorScheme {
+/// This extension on [ZetaSemantics] allows to create and customize [ListTileThemeData].
+extension ListTileExtension on ZetaSemantics {
   /// Creates a custom [ListTileThemeData] using the specified
-  /// properties and styles obtained from the [ZetaColorScheme] and [TextTheme].
+  /// properties and styles obtained from the [ZetaSemantics] and [TextTheme].
   ///
   /// Parameter:
   ///   [textTheme] : A TextTheme object to copy text styles from.
@@ -20,22 +20,22 @@ extension ListTileExtension on ZetaColorScheme {
     /// mouseCursor.
     return ListTileThemeData(
       /// Setting up the selected list tile color.
-      selectedColor: zetaColors.primary.selected,
+      selectedColor: colors.statePrimarySelected,
 
       /// Selected tile color
-      selectedTileColor: zetaColors.primary.surface,
+      selectedTileColor: colors.surfacePrimary,
 
       /// Setting up the icon color.
-      iconColor: zetaColors.iconDefault,
+      iconColor: colors.mainDefault,
 
       /// Setting up the title text style using the provided textTheme.
-      titleTextStyle: textTheme.bodyMedium?.copyWith(color: zetaColors.textDefault),
+      titleTextStyle: textTheme.bodyMedium?.copyWith(color: colors.mainDefault),
 
       /// Setting up the subtitle text style using the provided textTheme.
-      subtitleTextStyle: textTheme.bodySmall?.copyWith(color: zetaColors.textSubtle),
+      subtitleTextStyle: textTheme.bodySmall?.copyWith(color: colors.mainSubtle),
 
       /// Setting up the styles for both leading and trailing texts.
-      leadingAndTrailingTextStyle: textTheme.bodySmall?.copyWith(color: zetaColors.textSubtle),
+      leadingAndTrailingTextStyle: textTheme.bodySmall?.copyWith(color: colors.mainSubtle),
 
       /// Setting up custom mouse cursors for different material states.
       mouseCursor: widgetStatePropertyResolver(

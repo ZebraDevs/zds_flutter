@@ -36,11 +36,11 @@ class ColorsDemo extends StatelessWidget {
         'name': 'Tertiary',
         'subtitle': 'Theme.of(context).colorScheme.primaryContainer',
       },
-      {
-        'color': Theme.of(context).colorScheme.secondaryContainer,
-        'name': 'Quaternary',
-        'subtitle': 'Theme.of(context).colorScheme.secondaryContainer',
-      },
+      // {
+      //   'color': Theme.of(context).colorScheme.mainSecondaryContainer,
+      //   'name': 'Quaternary',
+      //   'subtitle': 'Theme.of(context).colorScheme.mainSecondaryContainer',
+      // },
     ];
 
     final theme = [
@@ -74,11 +74,11 @@ class ColorsDemo extends StatelessWidget {
         'name': 'onSecondary',
         'subtitle': 'Theme.of(context).colorScheme.onSecondary',
       },
-      {
-        'color': Theme.of(context).colorScheme.secondaryContainer,
-        'name': 'secondaryContainer',
-        'subtitle': 'Theme.of(context).colorScheme.secondaryContainer',
-      },
+      // {
+      //   'color': Theme.of(context).colorScheme.mainSecondaryContainer,
+      //   'name': 'secondaryContainer',
+      //   'subtitle': 'Theme.of(context).colorScheme.mainSecondaryContainer',
+      // },
       {
         'color': Theme.of(context).colorScheme.onSecondaryContainer,
         'name': 'onSecondaryContainer',
@@ -105,18 +105,18 @@ class ColorsDemo extends StatelessWidget {
         'subtitle': 'Theme.of(context).colorScheme.onError',
       },
     ];
-    final List<Map<String, Object>> greys = [
-      {
-        'color': Zeta.of(context).colors.black,
-        'name': 'Black',
-        'subtitle': 'Zeta.of(context).colors.black',
-      },
-      {
-        'color': Zeta.of(context).colors.white,
-        'name': 'White',
-        'subtitle': 'Zeta.of(context).colors.white',
-      },
-    ];
+    // final List<Map<String, Object>> greys = [
+    //   {
+    //     'color': Zeta.of(context).colors.black,
+    //     'name': 'Black',
+    //     'subtitle': 'Zeta.of(context).colors.black',
+    //   },
+    //   {
+    //     'color': Zeta.of(context).colors.white,
+    //     'name': 'White',
+    //     'subtitle': 'Zeta.of(context).colors.white',
+    //   },
+    // ];
     final alertColors = [
       {
         'color': Zeta.of(context).colors.surfacePositive,
@@ -151,7 +151,7 @@ class ColorsDemo extends StatelessWidget {
             children: [
               _ColorRow(colors: theme, title: 'Theme colors'),
               _ColorRow(colors: primaryColors, title: 'Primary colors'),
-              _ColorRow(colors: greys, title: 'Greys'),
+              // _ColorRow(colors: greys, title: 'Greys'),
               _ColorRow(colors: alertColors, title: 'Alert colors'),
               const _PrimarySwatches(),
               const _OtherSwatches(),
@@ -229,31 +229,31 @@ class _OtherSwatches extends StatelessWidget {
     final swatches = [
       {
         'key': 'Red',
-        'value': Zeta.of(context).colors.red,
+        'value': Zeta.of(context).colors.primitives.red,
       },
       {
         'key': 'Orange',
-        'value': Zeta.of(context).colors.orange,
+        'value': Zeta.of(context).colors.primitives.orange,
       },
       {
         'key': 'Yellow',
-        'value': Zeta.of(context).colors.yellow,
+        'value': Zeta.of(context).colors.primitives.yellow,
       },
       {
         'key': 'Green',
-        'value': Zeta.of(context).colors.green,
+        'value': Zeta.of(context).colors.primitives.green,
       },
       {
         'key': 'Blue',
-        'value': Zeta.of(context).colors.blue,
+        'value': Zeta.of(context).colors.primitives.blue,
       },
       {
         'key': 'Teal',
-        'value': Zeta.of(context).colors.teal,
+        'value': Zeta.of(context).colors.primitives.teal,
       },
       {
         'key': 'Pink',
-        'value': Zeta.of(context).colors.pink,
+        'value': Zeta.of(context).colors.primitives.pink,
       },
     ];
     return Column(
@@ -329,30 +329,30 @@ class _PrimarySwatches extends StatelessWidget {
             children: [
               const _Spacer(),
               _Swatch(
-                swatch: Zeta.of(context).colors.primary,
+                swatch: Zeta.of(context).colors.primitives.primary,
                 values: List.generate(10, (i) => {'val': (i + 1) * 10, 'display': '${(i + 1) * 10}%'}),
                 headColor: Theme.of(context).colorScheme.primary,
                 headText: 'Primary',
               ),
               const _Spacer(),
               _Swatch(
-                swatch: Zeta.of(context).colors.secondary,
+                swatch: Zeta.of(context).colors.primitives.secondary,
                 values: List.generate(10, (i) => {'val': (i + 1) * 10, 'display': '${(i + 1) * 10}%'}),
                 headColor: Theme.of(context).colorScheme.secondary,
                 headText: 'Secondary',
               ),
               const _Spacer(),
               _Swatch(
-                swatch: Zeta.of(context).colors.warm,
+                swatch: Zeta.of(context).colors.primitives.warm,
                 values: List.generate(10, (i) => {'val': (i + 1) * 10, 'display': '${(i + 1) * 10}%'}),
-                headColor: Zeta.of(context).colors.warm,
+                headColor: Zeta.of(context).colors.primitives.warm,
                 headText: 'Warm grey',
               ),
               const _Spacer(),
               _Swatch(
-                swatch: Zeta.of(context).colors.cool,
+                swatch: Zeta.of(context).colors.primitives.cool,
                 values: List.generate(10, (i) => {'val': (i + 1) * 10, 'display': '${(i + 1) * 10}%'}),
-                headColor: Zeta.of(context).colors.cool,
+                headColor: Zeta.of(context).colors.primitives.cool,
                 headText: 'Cool grey',
               ),
               const _Spacer(),
