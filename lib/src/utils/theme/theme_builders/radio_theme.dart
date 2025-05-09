@@ -26,7 +26,7 @@ extension RadioExtension on ZetaSemantics {
       /// Defines the fill color for the different states of radio button.
       fillColor: widgetStatePropertyResolver(
         selectedValue: colors.mainSecondary,
-        hoveredValue: colors.stateSecondaryHover,
+        hoveredValue: colors.mainDefault,
         focusedValue: colors.stateSecondaryHover,
         disabledValue: colors.surfaceSecondarySubtle,
         defaultValue: colors.mainDefault,

@@ -55,7 +55,6 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
         Expanded(
           child: Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: Zeta.of(context).colors.surfacePrimary,
             appBar: AppBar(
               title: const Text('Quill Editor'),
               actions: [
@@ -121,7 +120,6 @@ class _QuillEditorDemoState extends State<QuillEditorDemo> {
         Expanded(
           child: Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: Zeta.of(context).colors.surfacePrimary,
             body: Builder(builder: (context) {
               final html = ZdsQuillDelta(document: controller.document).toHtml();
               return SingleChildScrollView(

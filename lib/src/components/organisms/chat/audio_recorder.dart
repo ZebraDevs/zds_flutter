@@ -271,11 +271,11 @@ class ZdsVoiceNoteRecorderState extends State<ZdsVoiceNoteRecorder> {
                     },
                     child: CircleAvatar(
                       backgroundColor: widget.recorderDecoration.resolveMicIconTint(context),
-                      foregroundColor: zetaColors.surfacePrimary,
+                      foregroundColor: zetaColors.surfaceDefault,
                       radius: 27.5,
                       child: Icon(
                         _isRecording ? Icons.pause : Icons.mic,
-                        color: zetaColors.surfacePrimary,
+                        color: zetaColors.surfaceDefault,
                         size: 30,
                       ),
                     ),

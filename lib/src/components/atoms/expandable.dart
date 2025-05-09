@@ -317,7 +317,7 @@ extension ExpandableTextExtension on Widget {
               collapsedButtonText.isEmpty ? strings.get('READ_MORE', 'Read more') : collapsedButtonText,
           expandedButtonText: expandedButtonText.isEmpty ? strings.get('COLLAPSE', 'Collapse') : expandedButtonText,
           minHeight: minHeight,
-          color: color ?? Zeta.of(context).colors.surfacePrimary,
+          color: color ?? Zeta.of(context).colors.surfaceDefault,
           child: this,
         );
       },

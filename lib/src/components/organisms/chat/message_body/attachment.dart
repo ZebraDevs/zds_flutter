@@ -48,7 +48,7 @@ class ZdsChatAttachmentWidget extends StatelessWidget {
               height: 80,
               margin: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: colors.surfacePrimary,
+                color: colors.surfaceDefault,
                 borderRadius: BorderRadius.all(zeta.radius.rounded),
                 border: Border.all(color: colors.borderSubtle),
               ),

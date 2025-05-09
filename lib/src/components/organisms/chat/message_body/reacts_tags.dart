@@ -114,7 +114,7 @@ class _ChatReactionsPill extends StatelessWidget {
                 offset: const Offset(0, 1),
               ),
             ],
-            color: zetaColors.surfacePrimary,
+            color: zetaColors.surfaceDefault,
             border: Border.all(color: zetaColors.borderSubtle),
           ),
           child: Row(

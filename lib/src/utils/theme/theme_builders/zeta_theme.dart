@@ -79,6 +79,7 @@ extension ZetaThemeBuilder on ZetaSemantics {
     String? fontFamily,
     ZetaAppBarStyle appBarStyle = ZetaAppBarStyle.primary,
     bool useMaterial3 = false,
+    Brightness? brightness,
   }) {
     // A TextTheme object for the colors onPrimary.
     final primaryTextTheme = buildZdsTextTheme(
@@ -99,13 +100,13 @@ extension ZetaThemeBuilder on ZetaSemantics {
     final barTheme = appBarTheme(primaryTextTheme, effectiveAppBarColor);
 
     return ThemeData(
-      colorScheme: ZetaSemanticsAA(primitives: const ZetaPrimitivesLight()).colors.toColorScheme,
+      colorScheme: ZetaSemanticsAA(primitives: primitives).colors.toColorScheme,
       appBarTheme: barTheme,
       useMaterial3: useMaterial3,
       bottomAppBarTheme: bottomAppBarTheme(),
       bottomNavigationBarTheme: bottomNavigationBarTheme(textTheme),
       bottomSheetTheme: bottomSheetTheme(),
-      brightness: colors.primitives.brightness,
+      brightness: brightness ?? colors.primitives.brightness,
       canvasColor: colors.surfaceDefault,
       cardTheme: cardTheme(),
       checkboxTheme: checkboxTheme(),
@@ -126,7 +127,7 @@ extension ZetaThemeBuilder on ZetaSemantics {
       primaryTextTheme: primaryTextTheme,
       progressIndicatorTheme: progressIndicatorTheme(),
       radioTheme: radioThemeData(),
-      scaffoldBackgroundColor: colors.surfaceDefault,
+      scaffoldBackgroundColor: colors.surfaceWarm,
       searchBarTheme: searchBarTheme(textTheme),
       shadowColor: colors.borderDisabled.withOpacity(0.7),
       sliderTheme: sliderTheme(),

@@ -41,9 +41,7 @@ class _HomePageState extends State<HomePage> {
           return ZdsExpansionTile(
             title: Text(
               rec.key,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: zeta.colors.textDefault,
-                  ),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             child: ZdsListGroup(
               items: items.map((route) {

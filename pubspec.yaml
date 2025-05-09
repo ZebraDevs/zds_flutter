@@ -88,6 +88,8 @@ dev_dependencies:
 dependency_overrides:
   extended_image: ^10.0.1
   intl: ^0.20.2
+  zeta_flutter_theme:
+    path: ../../zeta/zeta_flutter/packages/zeta_flutter_theme
 
 flutter:
   uses-material-design: true

@@ -29,8 +29,6 @@ class ZdsSelectionPill extends StatelessWidget {
     this.onClose,
     this.padding = const EdgeInsets.all(9),
     this.color,
-    this.selectedColor,
-    this.borderColor,
   });
 
   /// The button's label.
@@ -66,44 +64,30 @@ class ZdsSelectionPill extends StatelessWidget {
   /// Defaults to primary.
   final ZetaColorSwatch? color;
 
-  ///Use [color] instead. Will be deprecated in future release.
-  ///
-  /// Custom color to override pill background color.
-  ///
-  ///Defaults to `colorScheme.mainSecondary.withOpacity(0.1)`
-  final Color? selectedColor;
-
-  ///Use [color] instead. Will be deprecated in future release.
-  ///
-  /// Custom color to override unselected pill border color.
-  ///
-  /// Defaults to `ZdsColors.greyCoolSwatch[100]`.
-  final Color? borderColor;
-
   @override
   Widget build(BuildContext context) {
     final zetaColors = Zeta.of(context).colors;
     final themeData = Theme.of(context);
     final bool disabled = onTap == null;
+    final ZetaColorSwatch _color = color ?? zetaColors.primitives.primary;
 
     final Color background = disabled
         ? zetaColors.surfaceDisabled
         : selected
-            ? selectedColor?.withOpacity(0.2) ?? zetaColors.surfaceSecondary
+            ? _color.shade10
             : themeData.colorScheme.surface;
 
     final Color foreground = disabled
         ? zetaColors.mainDisabled
         : selected
-            ? selectedColor ?? zetaColors.mainSecondary
+            ? _color.shade60
             : zetaColors.mainSubtle;
 
-    final Color border = borderColor ??
-        (disabled
-            ? zetaColors.borderDisabled
-            : selected
-                ? zetaColors.borderSecondary
-                : zetaColors.borderDefault);
+    final Color border = (disabled
+        ? zetaColors.borderDisabled
+        : selected
+            ? _color.shade60
+            : zetaColors.borderDefault);
 
     return ExpandTapWidget(
       onTap: onTap ?? () {},
@@ -179,8 +163,6 @@ class ZdsSelectionPill extends StatelessWidget {
       ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
       ..add(ObjectFlagProperty<VoidCallback?>.has('onClose', onClose))
       ..add(DiagnosticsProperty<EdgeInsets>('padding', padding))
-      ..add(ColorProperty('selectedColor', selectedColor))
-      ..add(ColorProperty('borderColor', borderColor))
       ..add(ColorProperty('color', color));
   }
 }

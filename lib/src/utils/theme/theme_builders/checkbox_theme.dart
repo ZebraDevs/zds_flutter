@@ -20,14 +20,18 @@ extension ZetaCheckboxTheme on ZetaSemantics {
         defaultValue: SystemMouseCursors.basic,
       ),
 
-      /// Setting up custom fill color for different material states.
-      fillColor: widgetStatePropertyResolver(
-        selectedValue: colors.mainSecondary,
-        hoveredValue: colors.mainSecondary,
-        focusedValue: colors.stateSecondaryHover,
-        disabledValue: colors.surfaceSecondarySubtle,
-        defaultValue: Colors.transparent,
-      ),
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return colors.mainSecondary;
+        }
+        if (states.contains(WidgetState.disabled)) {
+          return colors.mainDisabled;
+        }
+        if (states.contains(WidgetState.hovered)) {
+          return colors.stateDefaultHover;
+        }
+        return Colors.transparent;
+      }),
 
       /// Setting up the side property.
       side: BorderSide(color: colors.mainDefault, width: 2),
@@ -41,8 +45,8 @@ extension ZetaCheckboxTheme on ZetaSemantics {
 
       /// Setting up custom overlayColor for different material states.
       overlayColor: widgetStatePropertyResolver(
-        hoveredValue: colors.surfaceHover,
-      ),
+          // hoveredValue: colors.surfaceHover,
+          ),
 
       /// Setting tap target size to "padded".
       materialTapTargetSize: MaterialTapTargetSize.padded,
