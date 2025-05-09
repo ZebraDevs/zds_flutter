@@ -211,6 +211,7 @@ class ZdsHtml extends StatelessWidget {
         lineHeight: LineHeight.percent(100),
         color: zetaColors.mainPrimary,
       ),
+      'strong': Style(color: zetaColors.mainDefault),
       ...style,
     };
   }

@@ -90,12 +90,12 @@ class ZdsComment extends StatelessWidget {
 
   /// The background color of the comment.
   ///
-  /// Defaults to [ZetaColors.surfacePrimary].
+  /// Defaults to [ZetaColors.surfaceDefault].
   final Color? backgroundColor;
 
   /// The background color of the popup menu.
   ///
-  /// Defaults to [ZetaColors.surfacePrimary].
+  /// Defaults to [ZetaColors.surfaceDefault].
   final Color? popupMenuBackgroundColor;
 
   @override
@@ -103,7 +103,7 @@ class ZdsComment extends StatelessWidget {
     final colors = Zeta.of(context).colors;
     final spacing = Zeta.of(context).spacing;
 
-    final backgroundColor = this.backgroundColor ?? colors.surfacePrimary;
+    final backgroundColor = this.backgroundColor ?? colors.surfaceDefault;
 
     return ColoredBox(
       color: backgroundColor,

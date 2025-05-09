@@ -23,7 +23,7 @@ extension ListTileExtension on ZetaSemantics {
       selectedColor: colors.statePrimarySelected,
 
       /// Selected tile color
-      selectedTileColor: colors.surfacePrimary,
+      selectedTileColor: colors.surfacePrimarySubtle,
 
       /// Setting up the icon color.
       iconColor: colors.mainDefault,

@@ -17,10 +17,10 @@ extension ZetaChipTheme on ZetaSemantics {
     /// checkmarkColor, labelStyle, secondaryLabelStyle and iconTheme.
     return ChipThemeData(
       /// Setting up the background color.
-      backgroundColor: colors.surfaceSecondary,
+      backgroundColor: colors.surfaceSecondarySubtle,
 
       /// Setting up the selected color.
-      selectedColor: colors.surfaceSecondary,
+      selectedColor: colors.surfaceSecondarySubtle,
 
       /// Setting up the disabled color.
       disabledColor: colors.borderDisabled,

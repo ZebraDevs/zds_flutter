@@ -164,7 +164,7 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
         return _tabBarStyle(
           context,
           hasIcons,
-          background: zetaColors.surfacePrimary,
+          background: zetaColors.mainInverse,
           indicator: zetaColors.mainPrimary,
           selectedText: zetaColors.mainDefault,
           unselectedText: zetaColors.mainSubtle,

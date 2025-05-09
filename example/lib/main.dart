@@ -10,35 +10,36 @@ import 'routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final preferences = await SharedPreferences.getInstance();
-  // final themeService = ZdsThemeService(assetPath: 'assets/colors.json', preferences: preferences);
-  // final themeData = await themeService.load();
+  final themeService = ZdsThemeService(assetPath: 'assets/colors.json', preferences: preferences);
+  final themeData = await themeService.load();
   HttpOverrides.global = MyHttpOverrides();
   runApp(
     DemoApp(
-        // data: themeData,
-        // themeService: themeService,
-        ),
+      data: themeData,
+      themeService: themeService,
+    ),
   );
 }
 
 class DemoApp extends StatelessWidget {
   const DemoApp({
     Key? key,
-    // this.data,
+    required this.data,
     this.themeService,
   }) : super(key: key);
 
   final ZetaThemeService? themeService;
-  // final ZdsThemeData data;
+  final ZdsThemeData data;
 
   @override
   Widget build(BuildContext context) {
     return ZetaProvider(
       themeService: themeService ?? const ZetaDefaultThemeService(),
-      // initialThemeMode: data.themeMode,
-
+      initialThemeMode: data.themeMode,
       // initialThemeData: data.themeData,
-      // initialContrast: data.contrast,
+      initialTheme: 'zds',
+      initialContrast: data.contrast,
+      customThemes: [data.toCustomTheme()],
       builder: (context, themeData, darkTheme, themeMode) {
         return MaterialApp(
           title: 'Zds Demo',
@@ -62,8 +63,21 @@ class DemoApp extends StatelessWidget {
           routes: kAllRoutes,
           themeMode: themeMode,
           // theme: themeData,
-          theme: themeData.copyWith(scaffoldBackgroundColor: Colors.red),
-          darkTheme: darkTheme,
+          // theme: themeData.copyWith(scaffoldBackgroundColor: Colors.red),
+          // darkTheme: darkTheme,
+          theme: Zeta.of(context).semantics.toTheme(
+                // fontFamily: themeData.fontFamily,
+                appBarStyle: data.lightAppBarStyle,
+              ),
+          darkTheme: Zeta.of(context).semantics.toTheme(
+                // fontFamily: themeData.fontFamily,
+                appBarStyle: data.darkAppBarStyle,
+                // brightness: Brightness.dark,
+              ),
+          // darkTheme: themeData.colorsDark.toScheme().toTheme(
+          //       fontFamily: themeData.fontFamily,
+          //       appBarStyle: data.darkAppBarStyle,
+          //     ),
         );
       },
     );

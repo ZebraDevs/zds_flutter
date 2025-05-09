@@ -105,18 +105,6 @@ class ColorsDemo extends StatelessWidget {
         'subtitle': 'Theme.of(context).colorScheme.onError',
       },
     ];
-    // final List<Map<String, Object>> greys = [
-    //   {
-    //     'color': Zeta.of(context).colors.black,
-    //     'name': 'Black',
-    //     'subtitle': 'Zeta.of(context).colors.black',
-    //   },
-    //   {
-    //     'color': Zeta.of(context).colors.white,
-    //     'name': 'White',
-    //     'subtitle': 'Zeta.of(context).colors.white',
-    //   },
-    // ];
     final alertColors = [
       {
         'color': Zeta.of(context).colors.surfacePositive,
@@ -129,9 +117,9 @@ class ColorsDemo extends StatelessWidget {
         'subtitle': 'Zeta.of(context).colors.surfaceNegative',
       },
       {
-        'color': Zeta.of(context).colors.surfaceNegative,
+        'color': Zeta.of(context).colors.surfaceWarning,
         'name': 'Warning',
-        'subtitle': 'Zeta.of(context).colors.surfaceNegative',
+        'subtitle': 'Zeta.of(context).colors.surfaceWarning',
       },
       {
         'color': Zeta.of(context).colors.surfaceInfo,

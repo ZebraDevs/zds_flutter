@@ -260,7 +260,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     if (mounted) {
       return showZdsBottomSheet<ZdsRecording>(
         enforceSheet: true,
-        backgroundColor: Zeta.of(context).colors.surfacePrimary,
+        backgroundColor: Zeta.of(context).colors.surfaceDefault,
         context: context,
         builder: (context) {
           return SingleChildScrollView(
@@ -308,11 +308,11 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
               color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
               blurRadius: 2,
             ),
-            BoxShadow(offset: const Offset(0, 1), color: zetaColors.surfacePrimary, blurRadius: 2),
+            BoxShadow(offset: const Offset(0, 1), color: zetaColors.surfaceDefault, blurRadius: 2),
           ],
         ),
         child: Material(
-          color: zetaColors.surfacePrimary,
+          color: zetaColors.surfaceDefault,
           child: AnimatedSize(
             duration: const Duration(milliseconds: 250),
             child: Row(
@@ -454,7 +454,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     unawaited(
       showZdsBottomSheet<ZdsFileWrapper>(
         enforceSheet: widget.enforceSheet,
-        backgroundColor: zetaColors.surfacePrimary,
+        backgroundColor: zetaColors.surfaceDefault,
         context: context,
         maxHeight: maxSheetHeight,
         builder: (_) {

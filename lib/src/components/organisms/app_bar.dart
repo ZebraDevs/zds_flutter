@@ -229,7 +229,7 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
         );
       case ZdsTabBarColor.surface:
         final fgColor = zetaColors.mainDefault;
-        final bgColor = zetaColors.surfaceDefault;
+        final bgColor = zetaColors.mainInverse;
         return AppBarTheme(
           systemOverlayStyle: computeSystemOverlayStyle(bgColor),
           backgroundColor: bgColor,

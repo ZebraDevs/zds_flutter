@@ -485,7 +485,7 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
                 option.getLabel(context),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: style?.copyWith(color: zetaColors.textDefault),
+                style: style?.copyWith(color: zetaColors.mainDefault),
                 textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2.7),
               ).semantics(identifier: option.getLabel(context)),
             ],
