@@ -129,7 +129,7 @@ extension ZetaThemeBuilder on ZetaSemantics {
       radioTheme: radioThemeData(),
       scaffoldBackgroundColor: colors.surfaceWarm,
       searchBarTheme: searchBarTheme(textTheme),
-      shadowColor: colors.borderDisabled.withOpacity(0.7),
+      shadowColor: colors.borderDisabled.withValues(alpha: 0.7),
       sliderTheme: sliderTheme(),
       splashColor: colors.surfaceSelected,
       switchTheme: switchTheme(),

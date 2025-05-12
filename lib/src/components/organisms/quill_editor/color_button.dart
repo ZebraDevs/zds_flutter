@@ -466,9 +466,7 @@ Color _hexToColor(String? hexString) {
   return Color(int.tryParse(buffer.toString(), radix: 16) ?? 0xFF000000);
 }
 
-String _colorToHex(Color color) {
-  return color.value.toRadixString(16).padLeft(8, '0').toUpperCase();
-}
+String _colorToHex(Color color) => color.toHex();
 
 Color _stringToColor(String? colorString, [Color? originalColor]) {
   if (colorString == null) return originalColor ?? Colors.black;

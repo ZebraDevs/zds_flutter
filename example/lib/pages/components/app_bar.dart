@@ -94,7 +94,7 @@ class _AppBarDemoState extends State<AppBarDemo> with SingleTickerProviderStateM
               title: const Text('Basic color scheme'),
               icon: CircleAvatar(
                 radius: 15,
-                backgroundColor: zetaColors.iconInverse,
+                backgroundColor: zetaColors.mainInverse,
                 child: Text(
                   'DM',
                   style: TextStyle(

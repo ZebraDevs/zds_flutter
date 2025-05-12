@@ -664,7 +664,7 @@ class _CameraButtonPainter extends CustomPainter {
       ..isAntiAlias = true;
     final radius = size.width / 2;
     final center = Offset(size.width / 2, size.height / 2);
-    bgPainter.color = Colors.white.withOpacity(.5);
+    bgPainter.color = Colors.white.withValues(alpha: .5);
     canvas.drawCircle(center, radius, bgPainter);
 
     bgPainter.color = Colors.white;
@@ -687,11 +687,11 @@ class _VideoButtonPainter extends CustomPainter {
       ..isAntiAlias = true;
     final radius = size.width / 2;
     final center = Offset(size.width / 2, size.height / 2);
-    bgPainter.color = Colors.white.withOpacity(.5);
+    bgPainter.color = Colors.white.withValues(alpha: .5);
     canvas.drawCircle(center, radius, bgPainter);
 
     if (isRecording) {
-      bgPainter.color = ZetaPrimitivesLight().red;
+      bgPainter.color = const ZetaPrimitivesLight().red;
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(
@@ -705,7 +705,7 @@ class _VideoButtonPainter extends CustomPainter {
         bgPainter,
       );
     } else {
-      bgPainter.color = ZetaPrimitivesLight().red;
+      bgPainter.color = const ZetaPrimitivesLight().red;
       canvas.drawCircle(center, radius - 8, bgPainter);
     }
   }

@@ -126,7 +126,7 @@ class _ZdsChatFilePreviewState extends State<ZdsChatFilePreview> {
                             ? widget.attachment.content
                             : null,
                         imageUrl: widget.attachment.type == ZdsChatAttachmentType.imageNetwork
-                            ? widget.attachment.content
+                            ? widget.attachment.content ?? widget.attachment.url.toString()
                             : null,
                         body: heroWidget,
                       ),
@@ -234,8 +234,8 @@ class __VideoState extends State<_Video> {
                           : await _videoController!.play();
                       setState(() {});
                     },
-                    backgroundColor: Zeta.of(context).colors.primitives.cool.shade30.withOpacity(0.7),
-                    hoverColor: Zeta.of(context).colors.primitives.cool.shade30.withOpacity(0.5),
+                    backgroundColor: Zeta.of(context).colors.primitives.cool.shade30.withValues(alpha: 0.7),
+                    hoverColor: Zeta.of(context).colors.primitives.cool.shade30.withValues(alpha: 0.5),
                     hoverElevation: 0,
                     child: Icon(
                       _videoController!.value.isPlaying ? Icons.pause : Icons.play_arrow,
@@ -275,7 +275,7 @@ class _FullScreenViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black.withOpacity(0.8),
+      backgroundColor: Colors.black.withValues(alpha: 0.8),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -293,13 +293,13 @@ class _FullScreenViewer extends StatelessWidget {
                         const Base64Decoder().convert(imageBytes!.base64!),
                         mimeType: imageBytes!.base64Extension,
                       );
-                      await Share.shareXFiles([image]);
+                      await SharePlus.instance.share(ShareParams(files: [image]));
                     }
                     if (imagePath != null) {
-                      await Share.shareXFiles([XFile(imagePath!)]);
+                      await SharePlus.instance.share(ShareParams(files: [XFile(imagePath!)]));
                     }
                     if (imageUrl != null) {
-                      await Share.shareUri(Uri.parse(imageUrl!));
+                      await SharePlus.instance.share(ShareParams(uri: Uri.parse(imageUrl!)));
                     }
                   }
                 : null,

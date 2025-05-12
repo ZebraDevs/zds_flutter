@@ -262,7 +262,7 @@ class _FadeOpacity extends StatelessWidget {
           stops: const <double>[0, 1],
           colors: <Color>[
             color,
-            color.withOpacity(0.1),
+            color.withValues(alpha: 0.1),
           ],
         ),
       ),

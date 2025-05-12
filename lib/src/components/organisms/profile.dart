@@ -83,7 +83,7 @@ class ZdsProfile extends StatelessWidget {
                       label: semanticLabelTitle,
                       child: nameText.textStyle(
                         themeData.textTheme.displaySmall?.copyWith(
-                          color: zetaColors.textDefault,
+                          color: zetaColors.mainDefault,
                         ),
                       ),
                     ),

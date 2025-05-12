@@ -296,7 +296,7 @@ class ZdsMessage {
 
   /// Optional custom color used to display sender name.
   ///
-  /// Defaults to using [ZetaColors.textDefault].
+  /// Defaults to using [ZetaColors.mainDefault].
   final Color? senderColor;
 
   /// [ZdsChatMessageStatus] of message.

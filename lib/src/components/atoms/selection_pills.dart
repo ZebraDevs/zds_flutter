@@ -69,24 +69,24 @@ class ZdsSelectionPill extends StatelessWidget {
     final zetaColors = Zeta.of(context).colors;
     final themeData = Theme.of(context);
     final bool disabled = onTap == null;
-    final ZetaColorSwatch _color = color ?? zetaColors.primitives.primary;
+    final ZetaColorSwatch colorSwatch = color ?? zetaColors.primitives.primary;
 
     final Color background = disabled
         ? zetaColors.surfaceDisabled
         : selected
-            ? _color.shade10
+            ? colorSwatch.shade10
             : themeData.colorScheme.surface;
 
     final Color foreground = disabled
         ? zetaColors.mainDisabled
         : selected
-            ? _color.shade60
+            ? colorSwatch.shade60
             : zetaColors.mainSubtle;
 
     final Color border = (disabled
         ? zetaColors.borderDisabled
         : selected
-            ? _color.shade60
+            ? colorSwatch.shade60
             : zetaColors.borderDefault);
 
     return ExpandTapWidget(

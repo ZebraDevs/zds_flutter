@@ -56,7 +56,7 @@ class ZdsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color sheetBackgroundColor = backgroundColor ?? Zeta.of(context).colors.surfacePrimary;
+    final Color sheetBackgroundColor = backgroundColor ?? Zeta.of(context).colors.surfaceDefault;
     final Color headerColor = header != null ? colorScheme.surface : sheetBackgroundColor;
     final _BottomSheetHeader headerWidget = _BottomSheetHeader(header: header, backgroundColor: headerColor);
     final MediaQueryData media = MediaQuery.of(context);
@@ -345,7 +345,7 @@ class _BottomSheetHeader extends StatelessWidget implements PreferredSizeWidget 
     final zetaColors = Zeta.of(context).colors;
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: header != null ? Border(bottom: BorderSide(color: zetaColors.textDefault.withOpacity(0.1))) : null,
+        border: header != null ? Border(bottom: BorderSide(color: zetaColors.borderSubtle)) : null,
       ),
       child: Column(
         children: <Widget>[

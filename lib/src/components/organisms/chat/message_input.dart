@@ -305,7 +305,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
           boxShadow: [
             BoxShadow(
               offset: const Offset(0, -1),
-              color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
               blurRadius: 2,
             ),
             BoxShadow(offset: const Offset(0, 1), color: zetaColors.surfaceDefault, blurRadius: 2),
@@ -475,7 +475,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                               container: true,
                               child: Text(
                                 widget.addAttachment ?? ComponentStrings.of(context).get('ADD', 'Add'),
-                                style: ZetaTextStyles.h5,
+                                style: Zeta.of(context).textStyles.h5,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),

@@ -22,7 +22,7 @@ extension TextSelectionExtension on ZetaSemantics {
       cursorColor: colors.mainSecondary,
 
       /// Indicates the color of the text selection toolbar.
-      selectionColor: colors.surfaceSecondarySubtle.withOpacity(0.5),
+      selectionColor: colors.surfaceSecondarySubtle.withValues(alpha: 0.5),
 
       /// Color of the text selection handle.
       selectionHandleColor: colors.stateSecondarySelected,

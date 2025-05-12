@@ -64,7 +64,7 @@ class ZdsIconTextButton extends StatelessWidget with Diagnosticable {
         borderRadius: borderRadius,
         color: backgroundColor ?? zetaColors.mainPrimary,
         boxShadow: <BoxShadow>[
-          BoxShadow(blurRadius: 4, color: zetaColors.mainDefault.withOpacity(0.2)),
+          BoxShadow(blurRadius: 4, color: zetaColors.mainDefault..withValues(alpha: 0.2)),
         ],
       ),
       child: Material(

@@ -62,7 +62,7 @@ class ZdsFieldsListTile<T> extends StatelessWidget {
 
   /// The textStyle used for the starting elements of each field.
   ///
-  /// Defaults to [TextTheme.titleSmall] with [ZetaColorSwatch.text] color.
+  /// Defaults to [TextTheme.titleSmall] with [ZetaColors.mainDefault] color.
   final TextStyle? fieldsStartTextStyle;
 
   /// The textStyle used for the end elements of each field.

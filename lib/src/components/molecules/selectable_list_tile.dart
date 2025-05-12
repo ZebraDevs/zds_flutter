@@ -7,7 +7,7 @@ import '../../../../zds_flutter.dart';
 ///
 /// There are two variants:
 /// * [ZdsSelectableListTile], which returns a list tile that changes its color when selected.
-///   When a listTile is marked as selected, its background will be colored with the [ColorScheme.mainSecondary] at 10%
+///   When a listTile is marked as selected, its background will be colored with the [ColorScheme.secondary] at 10%
 ///   opacity. When it's unselected, the background will use [ColorScheme.surface]
 /// * [ZdsSelectableListTile.checkable], which returns a list tile that adds a check at the end of the tile when selected.
 ///

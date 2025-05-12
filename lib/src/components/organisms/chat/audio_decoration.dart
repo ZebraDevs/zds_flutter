@@ -123,7 +123,7 @@ class ZdsAudioRecorderDecoration extends _AudioDecoration {
 
   /// Resolves the send icon color to the secondary color if not defined
   Color resolveSendIconTint(BuildContext context) {
-    return sendIconTint ?? Theme.of(context).colorScheme.secondary;
+    return sendIconTint ?? Zeta.of(context).colors.mainSecondary;
   }
 
   /// Copies the given properties into a new [ZdsAudioRecorderDecoration]

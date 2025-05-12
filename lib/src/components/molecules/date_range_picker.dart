@@ -2378,7 +2378,7 @@ class MonthItemState extends State<MonthItem> {
   }
 
   Color _highlightColor(BuildContext context) {
-    return Theme.of(context).colorScheme.secondary.withOpacity(0.12);
+    return Theme.of(context).colorScheme.secondary.withValues(alpha: 0.12);
   }
 
   void _dayFocusChanged(bool focused) {
@@ -2456,7 +2456,7 @@ class MonthItemState extends State<MonthItem> {
         textDirection: textDirection,
       );
     } else if (isDisabled) {
-      itemStyle = textTheme.bodyMedium?.apply(color: colorScheme.onSurface.withOpacity(0.38));
+      itemStyle = textTheme.bodyMedium?.apply(color: colorScheme.onSurface.withValues(alpha: 0.38));
     } else if (DateUtils.isSameDay(widget.currentDate, dayToBuild)) {
       // The current day gets a different text color and a circle stroke
       // border.
@@ -2505,7 +2505,7 @@ class MonthItemState extends State<MonthItem> {
         focusNode: _dayFocusNodes[day - 1],
         onTap: () => widget.onChanged(dayToBuild),
         radius: _monthItemRowHeight / 2 + 4,
-        splashColor: colorScheme.primary.withOpacity(0.38),
+        splashColor: colorScheme.primary.withValues(alpha: 0.38),
         onFocusChange: _dayFocusChanged,
         child: dayWidget,
       );

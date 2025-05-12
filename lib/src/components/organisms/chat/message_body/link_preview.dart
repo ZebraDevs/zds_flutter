@@ -132,7 +132,7 @@ class _ZdsChatLinkPreviewState extends State<ZdsChatLinkPreview> {
                 borderRadius: const BorderRadius.all(Radius.circular(6)),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Zeta.of(context).colors.primitives.warm.shade30.withOpacity(0.2),
+                    color: Zeta.of(context).colors.primitives.warm.shade30.withValues(alpha: 0.2),
                     borderRadius: const BorderRadius.all(Radius.circular(6)),
                   ),
                   padding: const EdgeInsets.all(14),

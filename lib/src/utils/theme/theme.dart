@@ -11,7 +11,7 @@ ZdsBottomBarThemeData buildZdsBottomBarThemeData(BuildContext context) {
     shadows: <BoxShadow>[
       BoxShadow(
         offset: const Offset(0, -1),
-        color: Zeta.of(context).colors.mainDefault.withOpacity(0.1),
+        color: Zeta.of(context).colors.mainDefault.withValues(alpha: 0.1),
         blurRadius: 2,
       ),
     ],
@@ -328,7 +328,7 @@ extension ThemeExtension on ThemeData {
             ),
           ),
           textSelectionTheme: TextSelectionThemeData(cursorColor: colorScheme.onSurface),
-          hintColor: colorScheme.onSurface.withOpacity(0.5),
+          hintColor: colorScheme.onSurface.withValues(alpha: 0.5),
           cardTheme: cardTheme.copyWith(shadowColor: Colors.transparent),
         );
       case ZdsSearchFieldVariant.elevated:
@@ -338,7 +338,7 @@ extension ThemeExtension on ThemeData {
             cursorColor: colorScheme.onSurface,
           ),
           cardTheme: cardTheme,
-          hintColor: colorScheme.onSurface.withOpacity(0.5),
+          hintColor: colorScheme.onSurface.withValues(alpha: 0.5),
         );
     }
   }
@@ -346,7 +346,9 @@ extension ThemeExtension on ThemeData {
   /// Custom theme for [ZdsDateTimePicker].
   ThemeData get zdsDateTimePickerTheme {
     return copyWith(
-      dialogBackgroundColor: colorScheme.brightness == Brightness.dark ? colorScheme.surface : null,
+      dialogTheme: dialogTheme.copyWith(
+        backgroundColor: colorScheme.brightness == Brightness.dark ? colorScheme.surface : null,
+      ),
       colorScheme: colorScheme.copyWith(
         primary: colorScheme.secondary.withLight(colorScheme.brightness == Brightness.dark ? 0.75 : 1),
         onPrimary: colorScheme.onSecondary,

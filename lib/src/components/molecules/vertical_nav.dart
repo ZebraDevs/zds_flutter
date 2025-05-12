@@ -173,7 +173,7 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
             color: themeData.colorScheme.surface,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: themeData.colorScheme.onSurface.withOpacity(0.25),
+                color: themeData.colorScheme.onSurface.withValues(alpha: 0.25),
                 blurRadius: 1,
                 offset: const Offset(1, 0),
               ),
@@ -247,7 +247,7 @@ class _SelectedBackground extends StatelessWidget {
           ),
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: themeData.cardTheme.shadowColor ?? Colors.black.withOpacity(0.25),
+              color: themeData.cardTheme.shadowColor ?? Colors.black.withValues(alpha: 0.25),
               blurRadius: 1,
               spreadRadius: 1,
               offset: const Offset(-1, 1),

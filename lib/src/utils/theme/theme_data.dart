@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
@@ -447,6 +446,7 @@ class ZdsThemeData {
     );
   }
 
+  /// Converts ZDS legacy theme to Zeta theme.
   ZetaCustomTheme toCustomTheme() {
     return ZetaCustomTheme(
       id: 'zds',

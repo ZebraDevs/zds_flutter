@@ -76,7 +76,7 @@ class ZdsChatAttachmentWidget extends StatelessWidget {
                   const SizedBox.square(dimension: 2),
                   Text(
                     _fileName,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: colors.textDefault),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: colors.mainDefault),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),

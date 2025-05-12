@@ -177,9 +177,9 @@ class ZdsComment extends StatelessWidget {
                                     Expanded(
                                       child: Text(
                                         author!,
-                                        style: ZetaTextStyles.labelLarge.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Zeta.of(context).textStyles.labelLarge.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -189,7 +189,8 @@ class ZdsComment extends StatelessWidget {
                                       padding: EdgeInsets.only(left: spacing.small),
                                       child: Text(
                                         timeStamp!,
-                                        style: ZetaTextStyles.bodyXSmall.copyWith(color: colors.mainSubtle),
+                                        style:
+                                            Zeta.of(context).textStyles.bodyXSmall.copyWith(color: colors.mainSubtle),
                                       ),
                                     ),
                                 ],
@@ -323,14 +324,14 @@ class _AttachmentRow extends StatelessWidget {
                   children: [
                     Text(
                       attachment.name,
-                      style: ZetaTextStyles.bodySmall,
+                      style: Zeta.of(context).textStyles.bodySmall,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (attachment.size != null)
                       Text(
                         attachment.size!,
-                        style: ZetaTextStyles.bodySmall.copyWith(color: colors.mainSubtle),
+                        style: Zeta.of(context).textStyles.bodySmall.copyWith(color: colors.mainSubtle),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

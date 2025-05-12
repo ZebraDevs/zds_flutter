@@ -20,7 +20,7 @@ extension ZetaBottomAppBarTheme on ZetaSemantics {
 
       /// The shadow color of the `BottomAppBar` is set to the `mainSubtle` color of the `ZetaSemantics`,
       /// but with an opacity of 0.1.
-      shadowColor: colors.mainSubtle.withOpacity(0.1),
+      shadowColor: colors.mainSubtle.withValues(alpha: 0.1),
 
       /// Padding inside the `BottomAppBar`. This is constant and set to be symmetric both horizontally
       /// and vertically. When running on the web, vertical padding is 8, otherwise it's 4.

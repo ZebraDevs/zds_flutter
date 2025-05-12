@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../../../zds_flutter.dart';
-import '../../../components/atoms/button.dart' show ZdsButton, ZdsButtonVariant;
 
 /// An extension on [ZetaSemantics] class, offering methods for creating
 /// text, elevated, and outlined button themes for this [ZetaSemantics].

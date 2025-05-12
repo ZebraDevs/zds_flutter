@@ -19,7 +19,7 @@ extension ZetaCardTheme on ZetaSemantics {
       margin: EdgeInsets.all(primitives.x1),
 
       /// Setting shadowColor with a bit of opacity
-      shadowColor: colors.mainSubtle.withOpacity(0.1),
+      shadowColor: colors.mainSubtle.withValues(alpha: 0.1),
 
       /// Customizing the shape of the Card
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(primitives.x4)),

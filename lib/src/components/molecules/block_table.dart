@@ -365,10 +365,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     final zeta = Zeta.of(context);
 
     final zetaColors = zeta.colors;
-    // print('COLOR ' + zetaColors.mainPrimary.toARGB32().toString());
-    // print('COLOR ' + zetaColors.mainPrimary.toARGB32().toString());
-    // print('COLOR ' + zetaColors.primitives.brightness.toString());
-    //TODO: LUKE dark / light mode does not propegate proerly on PRIMARY / SECONDARY Swatches. this is happening in all places, not just this component
+
     for (int j = 0; j < rows[index].data.length; j++) {
       final List<Widget> columnWidgets = <Widget>[];
 

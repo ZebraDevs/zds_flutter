@@ -33,7 +33,7 @@ extension SwitchExtension on ZetaSemantics {
 
       /// Defines the overlay [Color] for the [Switch] when it's hovered.
       overlayColor: widgetStatePropertyResolver(
-        hoveredValue: Colors.black.withOpacity(0.1),
+        hoveredValue: Colors.black.withValues(alpha: 0.1),
       ),
 
       /// The smallest detectable part of [Switch] that can lead to a tap event.

@@ -149,7 +149,7 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
           background: zetaColors.mainPrimary,
           indicator: zetaColors.mainPrimary.onColor,
           selectedText: zetaColors.mainPrimary.onColor,
-          unselectedText: zetaColors.mainPrimary.onColor.withOpacity(0.7),
+          unselectedText: zetaColors.mainPrimary.onColor.withValues(alpha: 0.7),
         );
       case ZdsTabBarColor.basic:
         return _tabBarStyle(
@@ -177,7 +177,7 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
           background: appBarTheme.backgroundColor ?? zetaColors.surfacePrimary,
           indicator: appBarTheme.foregroundColor ?? zetaColors.mainPrimary,
           selectedText: appBarTheme.foregroundColor ?? zetaColors.mainDefault,
-          unselectedText: appBarTheme.foregroundColor?.withOpacity(0.7) ?? zetaColors.mainSubtle,
+          unselectedText: appBarTheme.foregroundColor?.withValues(alpha: 0.7) ?? zetaColors.mainSubtle,
         );
     }
   }

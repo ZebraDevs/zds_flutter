@@ -367,7 +367,7 @@ class ZdsExpansionTileState extends State<ZdsExpansionTile> with SingleTickerPro
                                     children: <Widget>[
                                       DefaultTextStyle(
                                         style: safeTextStyle(themeData.textTheme.bodyLarge)
-                                            .copyWith(color: zeta.colors.textDefault),
+                                            .copyWith(color: zeta.colors.mainDefault),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         child: widget.title,

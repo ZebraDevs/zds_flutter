@@ -276,7 +276,7 @@ class _ZdsDayPickerState extends State<ZdsDayPicker> {
                 if (widget.header != null)
                   Text(
                     widget.header!,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Zeta.of(context).colors.textDefault),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Zeta.of(context).colors.mainDefault),
                   ).paddingOnly(left: 6),
                 if (widget.allowMultiSelect)
                   SizedBox(
