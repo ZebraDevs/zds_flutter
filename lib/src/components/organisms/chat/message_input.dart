@@ -33,6 +33,7 @@ class ZdsMessageInput extends StatefulWidget {
     this.inlineConfig,
     this.moreOptionItemStyle = ZdsFilePickerOptionItemStyle.vertical,
     this.addAttachment,
+    this.enforceSheet = true,
     super.key,
   }) : assert(
           (allowVoiceNotes && voiceNoteFileName != null) || !allowVoiceNotes,
@@ -104,6 +105,9 @@ class ZdsMessageInput extends StatefulWidget {
   /// The value of Add Attachment in localised language.
   final String? addAttachment;
 
+  /// The value of enforceSheet is used to show bottom sheet.
+  final bool enforceSheet;
+
   /// Custom configuration for the file picker that appears when the attachment button is clicked.
   ///
   /// If not provided, a default configuration will be used.
@@ -170,7 +174,8 @@ class ZdsMessageInput extends StatefulWidget {
       ..add(DiagnosticsProperty<ZdsFilePickerConfig?>('moreConfig', moreConfig))
       ..add(DiagnosticsProperty<ZdsFilePickerConfig?>('inlineConfig', inlineConfig))
       ..add(EnumProperty<ZdsFilePickerOptionItemStyle>('optionItemStyle', moreOptionItemStyle))
-      ..add(StringProperty('addAttachment', addAttachment));
+      ..add(StringProperty('addAttachment', addAttachment))
+      ..add(DiagnosticsProperty<bool>('enforceSheet', enforceSheet));
   }
 }
 
@@ -448,7 +453,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
 
     unawaited(
       showZdsBottomSheet<ZdsFileWrapper>(
-        // enforceSheet: true,
+        enforceSheet: widget.enforceSheet,
         backgroundColor: zetaColors.surfacePrimary,
         context: context,
         maxHeight: maxSheetHeight,
