@@ -366,6 +366,7 @@ const Map<String, IconData> _extensions = <String, IconData>{
   '.png': ZdsIcons.file_image_o,
   '.bmp': ZdsIcons.file_image_o,
   '.ppt': ZdsIcons.file_powerpoint_o,
+  '.ppr': ZdsIcons.file_powerpoint_o,
   '.pptx': ZdsIcons.file_powerpoint_o,
   '.qt': ZdsIcons.file_o,
   '.rar': ZdsIcons.file_archive_o,
@@ -408,6 +409,7 @@ Color iconColor(String ext, {BuildContext? context}) {
 
     case '.pdf':
     case '.ppt':
+    case '.ppr':
     case '.pptx':
       return colors?.red ?? const Color(0xFFDB0D00);
 
