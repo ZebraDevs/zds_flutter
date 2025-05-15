@@ -24,6 +24,8 @@ class ZdsComment extends StatelessWidget {
     this.menuItems,
     this.menuPosition = ZdsPopupMenuPosition.bottomRight,
     this.onMenuItemSelected,
+    this.backgroundColor,
+    this.popupMenuBackgroundColor,
   })  : assert(
           onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
           'replySemanticLabel must be not null if onReply is defined',
@@ -76,7 +78,7 @@ class ZdsComment extends StatelessWidget {
   final Widget? attachmentThumbnail;
 
   /// The menu items to display in the popup menu.
-  /// If defined, the pouup menu will be shown when the user taps on the comment.
+  /// If defined, the popup menu will be shown when the user taps on the comment.
   final List<ZdsPopupMenuItem<int>>? menuItems;
 
   /// The popup menu position to display in the popup menu items.
@@ -86,13 +88,25 @@ class ZdsComment extends StatelessWidget {
   /// Menu items must be given a value for the callback to trigger.
   final ValueChanged<int>? onMenuItemSelected;
 
+  /// The background color of the comment.
+  ///
+  /// Defaults to [ZetaColors.surfacePrimary].
+  final Color? backgroundColor;
+
+  /// The background color of the popup menu.
+  ///
+  /// Defaults to [ZetaColors.surfacePrimary].
+  final Color? popupMenuBackgroundColor;
+
   @override
   Widget build(BuildContext context) {
     final colors = Zeta.of(context).colors;
     final spacing = Zeta.of(context).spacing;
 
+    final backgroundColor = this.backgroundColor ?? colors.surfacePrimary;
+
     return ColoredBox(
-      color: colors.surfacePrimary,
+      color: backgroundColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -200,29 +214,35 @@ class ZdsComment extends StatelessWidget {
                                   attachment: attachment!,
                                   downloadCallback: downloadCallback,
                                   customThumbnail: attachmentThumbnail,
+                                  backgroundColor: backgroundColor,
                                 ),
                               ),
                           ],
                         ),
                       );
                       if (menuItems != null) {
-                        return ZdsPopupMenu<int>(
-                          verticalOffset: spacing.small,
-                          menuPosition: menuPosition,
-                          items: menuItems ?? [],
-                          onSelected: onMenuItemSelected,
-                          builder: (context, open) {
-                            return Material(
-                              color: colors.surfacePrimary,
-                              child: InkWell(
-                                onTap: open,
-                                child: child,
-                              ),
-                            );
-                          },
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+                            popupMenuTheme: PopupMenuThemeData(color: popupMenuBackgroundColor),
+                          ),
+                          child: ZdsPopupMenu<int>(
+                            verticalOffset: spacing.small,
+                            menuPosition: menuPosition,
+                            items: menuItems ?? [],
+                            onSelected: onMenuItemSelected,
+                            builder: (context, open) {
+                              return Material(
+                                color: backgroundColor,
+                                child: InkWell(
+                                  onTap: open,
+                                  child: child,
+                                ),
+                              );
+                            },
+                          ),
                         );
                       }
-                      return ColoredBox(color: colors.surfacePrimary, child: child);
+                      return ColoredBox(color: backgroundColor, child: child);
                     },
                   ),
                 );
@@ -249,7 +269,9 @@ class ZdsComment extends StatelessWidget {
       ..add(StringProperty('deleteSemanticLabel', deleteSemanticLabel))
       ..add(StringProperty('replySemanticLabel', replySemanticLabel))
       ..add(EnumProperty<ZdsPopupMenuPosition>('menuPosition', menuPosition))
-      ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected));
+      ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(ColorProperty('popupMenuBackgroundColor', popupMenuBackgroundColor));
   }
 }
 
@@ -258,11 +280,13 @@ class _AttachmentRow extends StatelessWidget {
     required this.attachment,
     this.customThumbnail,
     this.downloadCallback,
+    required this.backgroundColor,
   });
 
   final ZdsChatAttachment attachment;
   final VoidCallback? downloadCallback;
   final Widget? customThumbnail;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -271,6 +295,7 @@ class _AttachmentRow extends StatelessWidget {
     final radius = Zeta.of(context).radius;
 
     return Material(
+      color: backgroundColor,
       child: InkWell(
         borderRadius: radius.minimal,
         onTap: downloadCallback,
@@ -324,6 +349,7 @@ class _AttachmentRow extends StatelessWidget {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<ZdsChatAttachment>('attachment', attachment))
-      ..add(ObjectFlagProperty<VoidCallback?>.has('downloadCallback', downloadCallback));
+      ..add(ObjectFlagProperty<VoidCallback?>.has('downloadCallback', downloadCallback))
+      ..add(ColorProperty('backgroundColor', backgroundColor));
   }
 }

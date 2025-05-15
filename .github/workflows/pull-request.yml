@@ -25,6 +25,7 @@ jobs:
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           run-coverage: false
+          run-prev-coverage: false
 
   check-secret:
     runs-on: ubuntu-latest

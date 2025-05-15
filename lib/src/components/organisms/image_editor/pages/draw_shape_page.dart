@@ -1,8 +1,11 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:zeta_flutter/zeta_flutter.dart';
+
 import '../../../../utils/localizations.dart';
 import '../../../atoms.dart';
 import '../models/shape.dart';
@@ -22,8 +25,10 @@ class DrawShapePage extends StatefulWidget {
 
   /// The image to be edited.
   final Image image;
+
   @override
   State<DrawShapePage> createState() => _DrawShapePageState();
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -57,8 +62,14 @@ class _DrawShapePageState extends State<DrawShapePage> {
   Shape? _previewShape;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final strings = ComponentStrings.of(context);
+
     return PopScope(
       canPop: false,
       child: Theme(
@@ -115,14 +126,6 @@ class _DrawShapePageState extends State<DrawShapePage> {
                           );
                           _previewShape = null;
                         }
-                        _shapes.add(
-                          Shape(
-                            type: _selectedShapeType,
-                            start: _startPoint!,
-                            end: _endPoint!,
-                            color: shapeColor,
-                          ),
-                        );
                         _startPoint = null;
                         _endPoint = null;
                       });
@@ -154,6 +157,7 @@ class _DrawShapePageState extends State<DrawShapePage> {
   ///
   /// This method returns a widget that contains buttons for different shape drawing tools.
   Widget _buildBottomNavigationBar(ComponentStrings strings) {
+    final zetaColors = Zeta.of(context).colors;
     return Padding(
       padding: const EdgeInsets.all(8),
       child: SizedBox(
@@ -165,7 +169,11 @@ class _DrawShapePageState extends State<DrawShapePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 EditorIcon(
-                  icon: const Icon(Icons.square_outlined),
+                  isSelected: _selectedShapeType == ShapeType.square,
+                  icon: Icon(
+                    Icons.square_outlined,
+                    color: _selectedShapeType == ShapeType.square ? zetaColors.primary : null,
+                  ),
                   label: strings.get('SQUARE', 'Square'),
                   onPressed: () {
                     setState(() {
@@ -174,7 +182,11 @@ class _DrawShapePageState extends State<DrawShapePage> {
                   },
                 ),
                 EditorIcon(
-                  icon: const Icon(Icons.circle_outlined),
+                  isSelected: _selectedShapeType == ShapeType.circle,
+                  icon: Icon(
+                    Icons.circle_outlined,
+                    color: _selectedShapeType == ShapeType.circle ? zetaColors.primary : null,
+                  ),
                   label: strings.get('CIRCLE', 'Circle'),
                   onPressed: () {
                     setState(() {
@@ -183,7 +195,11 @@ class _DrawShapePageState extends State<DrawShapePage> {
                   },
                 ),
                 EditorIcon(
-                  icon: const Icon(Icons.arrow_forward),
+                  isSelected: _selectedShapeType == ShapeType.arrow,
+                  icon: Icon(
+                    Icons.arrow_forward,
+                    color: _selectedShapeType == ShapeType.arrow ? zetaColors.primary : null,
+                  ),
                   label: strings.get('ARROW', 'Arrow'),
                   onPressed: () {
                     setState(() {
@@ -192,7 +208,11 @@ class _DrawShapePageState extends State<DrawShapePage> {
                   },
                 ),
                 EditorIcon(
-                  icon: const Icon(Icons.horizontal_rule),
+                  isSelected: _selectedShapeType == ShapeType.line,
+                  icon: Icon(
+                    Icons.horizontal_rule,
+                    color: _selectedShapeType == ShapeType.line ? zetaColors.primary : null,
+                  ),
                   label: strings.get('LINE', 'Line'),
                   onPressed: () {
                     setState(() {
@@ -203,7 +223,7 @@ class _DrawShapePageState extends State<DrawShapePage> {
               ],
             ),
             const SizedBox(
-              height: 12,
+              height: 8,
             ),
             Row(
               children: [

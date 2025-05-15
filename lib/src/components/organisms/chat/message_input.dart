@@ -32,6 +32,8 @@ class ZdsMessageInput extends StatefulWidget {
     this.moreConfig,
     this.inlineConfig,
     this.moreOptionItemStyle = ZdsFilePickerOptionItemStyle.vertical,
+    this.addAttachment,
+    this.enforceSheet = true,
     super.key,
   }) : assert(
           (allowVoiceNotes && voiceNoteFileName != null) || !allowVoiceNotes,
@@ -100,6 +102,12 @@ class ZdsMessageInput extends StatefulWidget {
   /// The maximum pixel size of any image sent as an attachment.
   final int maxPixelSize;
 
+  /// The value of Add Attachment in localised language.
+  final String? addAttachment;
+
+  /// The value of enforceSheet is used to show bottom sheet.
+  final bool enforceSheet;
+
   /// Custom configuration for the file picker that appears when the attachment button is clicked.
   ///
   /// If not provided, a default configuration will be used.
@@ -165,7 +173,9 @@ class ZdsMessageInput extends StatefulWidget {
       ..add(IterableProperty<ZdsFilePostProcessor>('postProcessors', postProcessors))
       ..add(DiagnosticsProperty<ZdsFilePickerConfig?>('moreConfig', moreConfig))
       ..add(DiagnosticsProperty<ZdsFilePickerConfig?>('inlineConfig', inlineConfig))
-      ..add(EnumProperty<ZdsFilePickerOptionItemStyle>('optionItemStyle', moreOptionItemStyle));
+      ..add(EnumProperty<ZdsFilePickerOptionItemStyle>('optionItemStyle', moreOptionItemStyle))
+      ..add(StringProperty('addAttachment', addAttachment))
+      ..add(DiagnosticsProperty<bool>('enforceSheet', enforceSheet));
   }
 }
 
@@ -433,8 +443,9 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     const itemHeightHorizontalIndividual = 56;
     final itemHeightHorizontalTotal = itemHeightHorizontalIndividual * moreItemsLength;
     final dividerHeight = _moreConfig.options.length - 1;
-
-    final maxSheetHeight = handleSize +
+    final viewInsets = MediaQuery.of(context).padding.bottom;
+    final maxSheetHeight = viewInsets +
+        handleSize +
         titleHeaderHeight +
         (widget.moreOptionItemStyle == ZdsFilePickerOptionItemStyle.vertical
             ? itemHeightHorizontalTotal + dividerHeight
@@ -442,10 +453,10 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
 
     unawaited(
       showZdsBottomSheet<ZdsFileWrapper>(
-        enforceSheet: true,
+        enforceSheet: widget.enforceSheet,
         backgroundColor: zetaColors.surfacePrimary,
         context: context,
-        maxHeight: maxSheetHeight.toDouble(),
+        maxHeight: maxSheetHeight,
         builder: (_) {
           return Scaffold(
             body: Material(
@@ -463,7 +474,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                               identifier: 'drawer_title',
                               container: true,
                               child: Text(
-                                ComponentStrings.of(context).get('ADD_ATTACHMENTS', 'Add Attachments'),
+                                widget.addAttachment ?? ComponentStrings.of(context).get('ADD', 'Add'),
                                 style: ZetaTextStyles.h5,
                                 overflow: TextOverflow.ellipsis,
                               ),

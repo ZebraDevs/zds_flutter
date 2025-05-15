@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../utils/localizations.dart';
-import '../../atoms.dart';
+import '../../../../zds_flutter.dart';
 import 'pages/crop_page.dart';
 import 'pages/draw_page.dart';
 import 'pages/draw_shape_page.dart';
@@ -138,7 +137,7 @@ class _ImageEditorState extends State<ImageEditorHome> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Row(
               children: [
                 const Spacer(),

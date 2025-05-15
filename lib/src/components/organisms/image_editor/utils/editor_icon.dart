@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../../../../../zds_flutter.dart';
 
 /// A widget that represents an icon with a label.
 ///
@@ -14,6 +15,7 @@ class EditorIcon extends StatelessWidget {
     super.key,
     required this.icon,
     required this.label,
+    this.isSelected = false,
     this.onPressed,
   });
 
@@ -23,17 +25,25 @@ class EditorIcon extends StatelessWidget {
   /// The label to be displayed below the icon.
   final String label;
 
+  ///
+  final bool isSelected;
+
   /// The callback function to be triggered when the icon is tapped.
   final void Function()? onPressed;
+
   @override
   Widget build(BuildContext context) {
+    final zetaColors = Zeta.of(context).colors;
     return InkWell(
       onTap: onPressed,
       child: Column(
         children: [
           icon,
           const SizedBox(height: 12),
-          Text(label),
+          Text(
+            label,
+            style: TextStyle(color: isSelected ? zetaColors.primary : null),
+          ),
         ],
       ),
     );
@@ -44,6 +54,7 @@ class EditorIcon extends StatelessWidget {
     super.debugFillProperties(properties);
     properties
       ..add(StringProperty('label', label))
-      ..add(ObjectFlagProperty<void Function()?>.has('onPressed', onPressed));
+      ..add(ObjectFlagProperty<void Function()?>.has('onPressed', onPressed))
+      ..add(DiagnosticsProperty<bool>('isSelected', isSelected));
   }
 }

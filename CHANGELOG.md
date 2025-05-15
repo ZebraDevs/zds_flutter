@@ -8,6 +8,43 @@
 
 - Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
 
+## [2.2.0](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.5...v2.2.0) (2025-05-12)
+
+
+### ✨ New Features
+
+* **TM-51231:** HTML container read more/less locator updated. ([bd43544](https://github.com/ZebraDevs/zds_flutter/commit/bd43544b84e802d0703f891b27bab6ec3f48979b))
+
+
+### 🪲 Bug Fixes
+
+* **TM-44138:** Font size is visible as default in mobile ([23759fd](https://github.com/ZebraDevs/zds_flutter/commit/23759fd927f65a8b3c5060783c73bd882ef833e8))
+* **TM-50068:** Bottom bar was not showing the selected option. Added 11 new localization strings ([385fa29](https://github.com/ZebraDevs/zds_flutter/commit/385fa29e90253cc8be9a6975b82eb1d6c5684edc))
+* **WFCNG-21648:** The "Add Attachments" title of drawer is not localized in the comments tab ([df8eaf7](https://github.com/ZebraDevs/zds_flutter/commit/df8eaf74c7737a485a5c1f5fe9f6a4b29c670878))
+* **WFCNG-21803:** The drawer is only seen in the comments tab and all the other drawers are seen as dialogue box ([df8eaf7](https://github.com/ZebraDevs/zds_flutter/commit/df8eaf74c7737a485a5c1f5fe9f6a4b29c670878))
+* **WFCNG-23311:** Attachment file thumbnail is missing for comment ([df8eaf7](https://github.com/ZebraDevs/zds_flutter/commit/df8eaf74c7737a485a5c1f5fe9f6a4b29c670878))
+
+## [2.1.5](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.4...v2.1.5) (2025-04-23)
+
+
+### 👀 Reverts
+
+* Reply background color ([#76](https://github.com/ZebraDevs/zds_flutter/issues/76)) ([86b72fb](https://github.com/ZebraDevs/zds_flutter/commit/86b72fb636a4fc901f46b41e8a18f446d91bef09))
+
+## [2.1.4](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.3...v2.1.4) (2025-04-14)
+
+
+### 🪲 Bug Fixes
+
+* Add background color prop to ZdsComment ([#74](https://github.com/ZebraDevs/zds_flutter/issues/74)) ([5d75010](https://github.com/ZebraDevs/zds_flutter/commit/5d75010103fcd5a9db0c931536fdf325aeb009c0))
+* Attachments sheet iOS scroll height ([5d75010](https://github.com/ZebraDevs/zds_flutter/commit/5d75010103fcd5a9db0c931536fdf325aeb009c0))
+* Comment popup background color; ([5d75010](https://github.com/ZebraDevs/zds_flutter/commit/5d75010103fcd5a9db0c931536fdf325aeb009c0))
+
+
+### ⛓️ Dependencies
+
+* Fix verson of camerawesome as newer versions dont support flutter 3.24 ([5d75010](https://github.com/ZebraDevs/zds_flutter/commit/5d75010103fcd5a9db0c931536fdf325aeb009c0))
+
 ## [2.1.3](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.2...v2.1.3) (2025-03-17)
 
 
