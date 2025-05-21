@@ -64,7 +64,7 @@ extension DeltaToHtml on Delta {
               completer.complete('');
             }
             // Dispose the WebView after getting the HTML.
-            webView.dispose();
+            unawaited(webView.dispose());
           },
         );
       },
@@ -127,7 +127,7 @@ extension HtmlToDelta on String {
           callback: (List<dynamic> args) {
             try {
               // Dispose the WebView after getting the Delta.
-              webView.dispose();
+              unawaited(webView.dispose());
               // Parse the Delta from the callback arguments.
               final dynamic resp = jsonDecode(args.first as String);
               // This ignore is used because the `resp['ops']` value is accessed dynamically.

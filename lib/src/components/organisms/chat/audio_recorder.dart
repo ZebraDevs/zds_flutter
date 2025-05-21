@@ -125,7 +125,7 @@ class ZdsVoiceNoteRecorderState extends State<ZdsVoiceNoteRecorder> {
           _waveform.add(0);
         });
         if (_duration >= widget.maxDuration.inMilliseconds) {
-          stop();
+          unawaited(stop());
         }
       });
     } else {

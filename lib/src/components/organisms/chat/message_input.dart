@@ -284,7 +284,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
           final recordingPath = recorderKey.currentState?.recordingDestination;
           if (recordingPath != null) {
             final recording = File(recordingPath);
-            if (recording.existsSync()) recording.delete();
+            if (recording.existsSync()) unawaited(recording.delete());
           }
         }
         return value;

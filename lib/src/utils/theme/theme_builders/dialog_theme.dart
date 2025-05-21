@@ -11,9 +11,9 @@ extension ZetaDialogTheme on ZetaSemantics {
   /// of the current color scheme.
   ///
   /// The shape of the dialog is set to a [RoundedRectangleBorder] with a border radius of 8.
-  DialogTheme dialogTheme() {
+  DialogThemeData dialogTheme() {
     // Return a DialogTheme with custom properties
-    return DialogTheme(
+    return DialogThemeData(
       // Set the background color to the tertiary color of this ZetaColorScheme
       backgroundColor: colors.surfaceDefault,
 

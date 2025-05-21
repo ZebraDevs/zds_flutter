@@ -7,8 +7,8 @@ extension ZetaCardTheme on ZetaSemantics {
   ///
   /// Returns:
   ///   A CardTheme with the applied properties.
-  CardTheme cardTheme() {
-    return CardTheme(
+  CardThemeData cardTheme() {
+    return CardThemeData(
       /// Assigning color to surfaceDefault
       color: colors.surfaceDefault,
 

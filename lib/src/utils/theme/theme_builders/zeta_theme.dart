@@ -117,7 +117,6 @@ extension ZetaThemeBuilder on ZetaSemantics {
       elevatedButtonTheme: elevatedButtonTheme(primaryTextTheme),
       fontFamily: fontFamily,
       iconTheme: iconTheme(color: colors.mainDefault),
-      indicatorColor: colors.mainSecondary,
       inputDecorationTheme: inputDecorationTheme(textTheme),
       listTileTheme: listTileTheme(textTheme),
       outlinedButtonTheme: outlinedButtonTheme(primaryTextTheme),
