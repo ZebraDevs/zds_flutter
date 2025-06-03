@@ -156,6 +156,7 @@ class ZdsIcons {
   static const IconData fullscreen = IconData(0xe972, fontFamily: _fontFamily, fontPackage: packageName);
   static const IconData fullscreen_exit = IconData(0xe971, fontFamily: _fontFamily, fontPackage: packageName);
   static const IconData funnel = IconData(0xe919, fontFamily: _fontFamily, fontPackage: packageName);
+  static const IconData filePresent = IconData(0xea1a, fontFamily: _fontFamily);
   static const IconData globe = IconData(0xe9e2, fontFamily: _fontFamily, fontPackage: packageName);
   static const IconData glossary = IconData(0xe901, fontFamily: _fontFamily, fontPackage: packageName);
   static const IconData grid = IconData(0xe973, fontFamily: _fontFamily, fontPackage: packageName);
@@ -477,8 +478,8 @@ extension IconDataFromExt on String {
   ///
   /// If the string does not contain a file type, or contains an unrecognized filetype, [ZdsIcons.file_o] will be returned.
   IconData fileIcon() {
-    if (isEmpty) return ZdsIcons.file_o;
-    return _extensions[_safeExt] ?? ZdsIcons.file_o;
+    if (isEmpty) return ZdsIcons.filePresent;
+    return _extensions[_safeExt] ?? ZdsIcons.filePresent;
   }
 
   @Deprecated('Use fileIconColor instead.')
