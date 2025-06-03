@@ -143,6 +143,7 @@ class ZdsIcons {
   static const IconData file_o = IconData(0xf016, fontFamily: _fontFamily, fontPackage: packageName);
   static const IconData file_pdf_o = IconData(0xf1c1, fontFamily: _fontFamily, fontPackage: packageName);
   static const IconData file_powerpoint_o = IconData(0xf1c4, fontFamily: _fontFamily, fontPackage: packageName);
+  static const IconData file_present = IconData(0xea1a, fontFamily: _fontFamily, fontPackage: packageName);
   static const IconData file_text_o = IconData(0xf0f6, fontFamily: _fontFamily, fontPackage: packageName);
   static const IconData file_video_o = IconData(0xf1c8, fontFamily: _fontFamily, fontPackage: packageName);
   static const IconData file_word_o = IconData(0xf1c2, fontFamily: _fontFamily, fontPackage: packageName);
@@ -477,8 +478,8 @@ extension IconDataFromExt on String {
   ///
   /// If the string does not contain a file type, or contains an unrecognized filetype, [ZdsIcons.file_o] will be returned.
   IconData fileIcon() {
-    if (isEmpty) return ZdsIcons.file_o;
-    return _extensions[_safeExt] ?? ZdsIcons.file_o;
+    if (isEmpty) return ZdsIcons.file_present;
+    return _extensions[_safeExt] ?? ZdsIcons.file_present;
   }
 
   @Deprecated('Use fileIconColor instead.')
