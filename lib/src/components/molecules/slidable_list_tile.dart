@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:zeta_flutter/zeta_flutter.dart';
+import '../../../zds_flutter.dart';
 
 /// A widget that creates a slidable list tile, which can be slid right-to-left to reveal further actions.
+///
+/// For the correct behavior, any app using this widget should be wrapped with either a [SlidableAutoCloseBehavior] or a [ZdsBottomBarTheme].
+///
 /// Takes a [child] which can be any widget, although a [Row] is recommended to use like so:
 ///  ```dart
 /// ZdsSlidableListTile(
@@ -33,6 +36,7 @@ import 'package:zeta_flutter/zeta_flutter.dart';
 /// null.
 ///
 /// This widget's actions are defined through [ZdsSlidableAction].
+///
 class ZdsSlidableListTile extends StatelessWidget {
   /// A tile that can be slid to reveal further actions.
   ///
@@ -52,6 +56,8 @@ class ZdsSlidableListTile extends StatelessWidget {
     this.slideEnabled = true,
     this.semanticDescription,
     this.excludeSemantics = false,
+    this.closeOnScroll = false,
+    this.groupTag = 'zds-slidable-list-tile',
   }) : assert(actions == null || slideButtonWidth * actions.length <= width, '');
 
   /// The tile's main content. Usually a [Row]
@@ -94,6 +100,17 @@ class ZdsSlidableListTile extends StatelessWidget {
 
   /// Flag to exclude child component semantics.
   final bool excludeSemantics;
+
+  /// Whether to close the slidable when the user scrolls.
+  final bool closeOnScroll;
+
+  /// Tag used to group multiple slidable widgets together.
+  ///
+  /// The default value is 'zds-slidable-list-tile', which means that all slidable widgets with this tag will be grouped together.
+  ///
+  /// This is useful when you have multiple slidable widgets in a scrollable list and you want to ensure that only one of them can be open at a time.
+  final String? groupTag;
+
   @override
   Widget build(BuildContext context) {
     final Map<CustomSemanticsAction, VoidCallback> semanticActions = <CustomSemanticsAction, VoidCallback>{};
@@ -110,6 +127,8 @@ class ZdsSlidableListTile extends StatelessWidget {
       excludeSemantics: excludeSemantics,
       child: Slidable(
         enabled: slideEnabled,
+        closeOnScroll: closeOnScroll,
+        groupTag: groupTag,
         startActionPane: leadingActions != null && leadingActions!.isNotEmpty
             ? ActionPane(
                 motion: const DrawerMotion(),
@@ -158,7 +177,9 @@ class ZdsSlidableListTile extends StatelessWidget {
       ..add(DoubleProperty('minHeight', minHeight))
       ..add(StringProperty('semanticDescription', semanticDescription))
       ..add(DiagnosticsProperty<bool>('excludeSemantics', excludeSemantics))
-      ..add(DoubleProperty('elevation', elevation));
+      ..add(DoubleProperty('elevation', elevation))
+      ..add(DiagnosticsProperty<bool>('closeOnScroll', closeOnScroll))
+      ..add(StringProperty('scrollableGroupTag', groupTag));
   }
 }
 
