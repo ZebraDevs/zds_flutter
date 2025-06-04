@@ -8,6 +8,18 @@
 
 - Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
 
+## [2.2.1](https://github.com/ZebraDevs/zds_flutter/compare/v2.2.0...v2.2.1) (2025-06-04)
+
+
+### 🪲 Bug Fixes
+
+* **WFCNG-21252:** Add auto close to slidable ([#83](https://github.com/ZebraDevs/zds_flutter/issues/83)) ([0c3533c](https://github.com/ZebraDevs/zds_flutter/commit/0c3533c2ecb9c9d0d2a14b80c76a29c553db0f95))
+
+
+### 🧹 Miscellaneous Chores
+
+* **WFCNG-24950:** file present icon ([#81](https://github.com/ZebraDevs/zds_flutter/issues/81)) ([9bf9164](https://github.com/ZebraDevs/zds_flutter/commit/9bf91647edeb05656afd89a891a6ef9923c1ff6f))
+
 ## [2.2.0](https://github.com/ZebraDevs/zds_flutter/compare/v2.1.5...v2.2.0) (2025-05-12)
 
 
