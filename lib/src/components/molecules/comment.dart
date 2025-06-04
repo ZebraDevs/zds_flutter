@@ -143,6 +143,7 @@ class ZdsComment extends StatelessWidget {
                 return ZdsSlidableListTile(
                   width: constraints.maxWidth,
                   closeOnScroll: slidableCloseOnScroll,
+                  groupTag: scrollableGroupTag,
                   elevation: 0,
                   actions: [
                     if (!isReply && onReply != null && replySemanticLabel != null)
