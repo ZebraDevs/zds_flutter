@@ -1,13 +1,3 @@
-## [2.0.2](https://github.com/ZebraDevs/zds_flutter/compare/v2.0.1...v2.0.2) (2025-01-22)
-
-### 🪲 Bug Fixes
-
-- **WFCNG-18145:** Long names no longer overlap the timestamp on ZdsComment ([#61](https://github.com/ZebraDevs/zds_flutter/issues/61)) ([014aed1](https://github.com/ZebraDevs/zds_flutter/commit/014aed184aa3c517781bcb43f95e1fbd2aa929b3))
-
-### 🧹 Miscellaneous Chores
-
-- Update to use the latest lint rules ([#62](https://github.com/ZebraDevs/zds_flutter/issues/62)) ([7d52932](https://github.com/ZebraDevs/zds_flutter/commit/7d529320564516da76f9f8774125f5400d1b183e))
-
 ## [2.2.1](https://github.com/ZebraDevs/zds_flutter/compare/v2.2.0...v2.2.1) (2025-06-04)
 
 
