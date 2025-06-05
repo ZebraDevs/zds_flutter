@@ -37,7 +37,7 @@ class ZdsChatAttachmentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final zeta = Zeta.of(context);
     final colors = zeta.colors;
-    final foregroundColor = iconColor(_fileType, context);
+    final foregroundColor = iconColor(_fileType, context: context);
     final layoutBuilder = LayoutBuilder(
       builder: (context, constraints) {
         return Row(

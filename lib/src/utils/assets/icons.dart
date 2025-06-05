@@ -481,7 +481,7 @@ extension IconDataFromExt on String {
   }
 
   Color fileIconColor(BuildContext context) {
-    return iconColor(_safeExt, context);
+    return iconColor(_safeExt, context: context);
   }
 
   String get _safeExt {
