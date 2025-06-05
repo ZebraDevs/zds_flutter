@@ -10,6 +10,13 @@
 
 * **WFCNG-24950:** file present icon ([#81](https://github.com/ZebraDevs/zds_flutter/issues/81)) ([9bf9164](https://github.com/ZebraDevs/zds_flutter/commit/9bf91647edeb05656afd89a891a6ef9923c1ff6f))
 
+## [2.2.3](https://github.com/ZebraDevs/zds_flutter/compare/v2.2.2...v2.2.3) (2025-06-05)
+
+
+### 🪲 Bug Fixes
+
+* Comment attachment icon color ([cb5db44](https://github.com/ZebraDevs/zds_flutter/commit/cb5db44fb04e0f1c351f46121a649dbbb7845629))
+
 ## [2.2.2](https://github.com/ZebraDevs/zds_flutter/compare/v2.2.1...v2.2.2) (2025-06-05)
 
 
