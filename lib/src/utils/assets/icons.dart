@@ -459,7 +459,7 @@ Color iconColor(String ext, {BuildContext? context}) {
 }
 
 IconData extensionIcon(String ext) {
-  return _extensions[ext._safeExt] ?? ZdsIcons.file_o;
+  return _extensions[ext._safeExt] ?? ZdsIcons.file_present;
 }
 
 extension IconDataFromExt on String {
