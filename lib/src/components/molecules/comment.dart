@@ -330,7 +330,7 @@ class _AttachmentRow extends StatelessWidget {
               else
                 ZetaIcon(
                   extensionIcon('.${attachment.fileType}'),
-                  color: iconColor('.${attachment.fileType}'),
+                  color: iconColor('.${attachment.fileType}', context: context),
                   size: 40,
                 ),
               SizedBox(width: spacing.small),
