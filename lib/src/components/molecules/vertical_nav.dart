@@ -121,7 +121,7 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
                             data: IconThemeData(
                               color: selected
                                   ? Theme.of(context).colorScheme.secondary
-                                  : Zeta.of(context).colors.iconSubtle,
+                                  : Zeta.of(context).colors.mainSubtle,
                               size: 24,
                             ),
                             child: item.icon,
@@ -173,7 +173,7 @@ class _ZdsVerticalNavState extends State<ZdsVerticalNav> {
             color: themeData.colorScheme.surface,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: themeData.colorScheme.onSurface.withOpacity(0.25),
+                color: themeData.colorScheme.onSurface.withValues(alpha: 0.25),
                 blurRadius: 1,
                 offset: const Offset(1, 0),
               ),
@@ -240,16 +240,14 @@ class _SelectedBackground extends StatelessWidget {
         margin: const EdgeInsets.fromLTRB(2, 2, 0, 2),
         padding: const EdgeInsets.only(left: 1),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: <Color>[colors.surfaceTertiary, colors.surfacePrimary],
-          ),
+          color: colors.surfaceDefault,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(4),
             bottomLeft: Radius.circular(4),
           ),
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: themeData.cardTheme.shadowColor ?? Colors.black.withOpacity(0.25),
+              color: themeData.cardTheme.shadowColor ?? Colors.black.withValues(alpha: 0.25),
               blurRadius: 1,
               spreadRadius: 1,
               offset: const Offset(-1, 1),

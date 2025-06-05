@@ -109,12 +109,12 @@ class _ChatReactionsPill extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
                 blurRadius: 1,
                 offset: const Offset(0, 1),
               ),
             ],
-            color: zetaColors.surfacePrimary,
+            color: zetaColors.surfaceDefault,
             border: Border.all(color: zetaColors.borderSubtle),
           ),
           child: Row(
@@ -131,7 +131,7 @@ class _ChatReactionsPill extends StatelessWidget {
                 ExcludeSemantics(
                   child: Text(
                     reactionsAmount,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(color: zetaColors.textSubtle),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(color: zetaColors.mainSubtle),
                   ),
                 ),
               const SizedBox(width: 6),
@@ -217,23 +217,23 @@ class _ChatTagsPill extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
                 blurRadius: 1,
                 offset: const Offset(0, 1),
               ),
             ],
-            color: zetaColors.secondary,
+            color: zetaColors.mainSecondary,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
             child: Row(
               children: [
-                Icon(ZdsIcons.tag, size: 10, color: zetaColors.secondary.onColor),
+                Icon(ZdsIcons.tag, size: 10, color: zetaColors.mainSecondary.onColor),
                 const SizedBox(width: 4),
                 ExcludeSemantics(
                   child: Text(
                     tags.length < 10 ? tags.length.toString() : '9+',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(color: zetaColors.secondary.onColor),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(color: zetaColors.mainSecondary.onColor),
                   ),
                 ),
               ],

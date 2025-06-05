@@ -12,7 +12,7 @@ ZdsBottomBarThemeData buildZdsBottomBarThemeData(BuildContext context) {
     shadows: <BoxShadow>[
       BoxShadow(
         offset: const Offset(0, -1),
-        color: Zeta.of(context).colors.textDefault.withOpacity(0.1),
+        color: Zeta.of(context).colors.mainDefault.withValues(alpha: 0.1),
         blurRadius: 2,
       ),
     ],
@@ -293,17 +293,9 @@ extension ThemeExtension on ThemeData {
   /// Gets prefix icon used for [ZdsSearchField].
   Widget get prefixIcon => Builder(
         builder: (context) {
-          return Icon(ZdsIcons.search, color: Zeta.of(context).colors.iconSubtle);
+          return Icon(ZdsIcons.search, color: Zeta.of(context).colors.mainSubtle);
         },
       );
-
-  /// Gets default theme data for [ZdsListTile].
-  @Deprecated('Use kZdsListTileTheme instead')
-  ZdsListTileTheme get zdsListTileThemeData => kZdsListTileTheme;
-
-  ///Gets default theme data for [ZdsToolbar].
-  @Deprecated('Use kZdsToolbarTheme instead')
-  ZdsToolbarThemeData get zdsToolbarThemeData => kZdsToolbarTheme;
 
   /// Gets default theme data for [ZdsSearchField]
   ThemeData zdsSearchThemeData(ThemeData baseTheme, ZdsSearchFieldVariant variant, ZetaColors zetaColors) {
@@ -326,7 +318,7 @@ extension ThemeExtension on ThemeData {
       );
     }
 
-    final CardTheme cardTheme = this.cardTheme.copyWith(
+    final CardThemeData cardTheme = this.cardTheme.copyWith(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kSearchBorderRadius),
           ),
@@ -341,7 +333,7 @@ extension ThemeExtension on ThemeData {
             ),
           ),
           textSelectionTheme: TextSelectionThemeData(cursorColor: colorScheme.onSurface),
-          hintColor: colorScheme.onSurface.withOpacity(0.5),
+          hintColor: colorScheme.onSurface.withValues(alpha: 0.5),
           cardTheme: cardTheme.copyWith(shadowColor: Colors.transparent),
         );
       case ZdsSearchFieldVariant.elevated:
@@ -351,7 +343,7 @@ extension ThemeExtension on ThemeData {
             cursorColor: colorScheme.onSurface,
           ),
           cardTheme: cardTheme,
-          hintColor: colorScheme.onSurface.withOpacity(0.5),
+          hintColor: colorScheme.onSurface.withValues(alpha: 0.5),
         );
     }
   }
@@ -359,150 +351,14 @@ extension ThemeExtension on ThemeData {
   /// Custom theme for [ZdsDateTimePicker].
   ThemeData get zdsDateTimePickerTheme {
     return copyWith(
-      dialogBackgroundColor: colorScheme.brightness == Brightness.dark ? colorScheme.surface : null,
+      dialogTheme: dialogTheme.copyWith(
+        backgroundColor: colorScheme.brightness == Brightness.dark ? colorScheme.surface : null,
+      ),
       colorScheme: colorScheme.copyWith(
         primary: colorScheme.secondary.withLight(colorScheme.brightness == Brightness.dark ? 0.75 : 1),
         onPrimary: colorScheme.onSecondary,
       ),
     );
-  }
-
-  /// Generates theme for [ZdsTabBar].
-  @Deprecated('Use ZdsTabBar.buildTheme() instead')
-  ZdsTabBarStyleContainer zdsTabBarThemeData(
-    BuildContext context, {
-    required bool hasIcons,
-    required ZdsTabBarColor color,
-    Color? indicatorColor,
-  }) {
-    /// Builds [ZdsTabBarStyleContainer]. Defaults to primary color.
-    ZdsTabBarStyleContainer tabBarStyle(
-      BuildContext context, {
-      required bool hasIcons,
-      required Color selectedText,
-      required Color background,
-      required Color unselectedText,
-      required Color indicator,
-    }) {
-      final double height = hasIcons ? 56.0 : 48.0;
-      final ThemeData theme = Theme.of(context);
-
-      final TabBarTheme tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
-      final TextStyle? labelStyle = hasIcons ? theme.textTheme.bodySmall : theme.textTheme.bodyLarge;
-
-      return ZdsTabBarStyleContainer(
-        customTheme: ZdsTabBarThemeData(
-          decoration: BoxDecoration(color: background),
-          height: height,
-        ),
-        theme: theme.copyWith(
-          tabBarTheme: tabBarTheme.copyWith(
-            labelStyle: labelStyle,
-            unselectedLabelStyle: labelStyle,
-            unselectedLabelColor: unselectedText,
-            labelColor: selectedText,
-            indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(
-                width: 3,
-                color: indicator,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    final zetaColors = Zeta.of(context).colors;
-    switch (color) {
-      case ZdsTabBarColor.primary:
-        return tabBarStyle(
-          context,
-          hasIcons: hasIcons,
-          background: zetaColors.primary,
-          indicator: zetaColors.primary.onColor,
-          selectedText: zetaColors.primary.onColor,
-          unselectedText: zetaColors.primary.onColor.withOpacity(0.5),
-        );
-      case ZdsTabBarColor.basic:
-        return tabBarStyle(
-          context,
-          hasIcons: hasIcons,
-          background: colorScheme.background,
-          indicator: zetaColors.primary,
-          selectedText: zetaColors.textDefault,
-          unselectedText: zetaColors.textSubtle,
-        );
-      case ZdsTabBarColor.surface:
-        return tabBarStyle(
-          context,
-          hasIcons: hasIcons,
-          background: zetaColors.surfacePrimary,
-          indicator: zetaColors.primary,
-          selectedText: zetaColors.textDefault,
-          unselectedText: zetaColors.textSubtle,
-        );
-      case ZdsTabBarColor.appBar:
-        final appBarTheme = Theme.of(context).appBarTheme;
-        return tabBarStyle(
-          context,
-          hasIcons: hasIcons,
-          background: appBarTheme.backgroundColor ?? zetaColors.surfacePrimary,
-          indicator: appBarTheme.foregroundColor ?? zetaColors.primary,
-          selectedText: appBarTheme.foregroundColor ?? zetaColors.textDefault,
-          unselectedText: appBarTheme.foregroundColor?.withOpacity(0.5) ?? zetaColors.textSubtle,
-        );
-    }
-  }
-
-  /// Builds theme variants for [ZdsAppBar].
-  ///
-  /// See also
-  /// * [ZdsTabBarColor].
-  @Deprecated('Use ZdsAppBar.buildTheme() instead.')
-  AppBarTheme buildAppBarTheme(ZdsTabBarColor color) {
-    final isDarkMode = brightness == Brightness.dark;
-    switch (color) {
-      case ZdsTabBarColor.primary:
-      case ZdsTabBarColor.appBar:
-        final fgColor = isDarkMode ? colorScheme.cool.shade90 : colorScheme.onPrimary;
-        final bgColor = isDarkMode ? colorScheme.cool.shade10 : colorScheme.primary;
-        return AppBarTheme(
-          systemOverlayStyle: computeSystemOverlayStyle(bgColor),
-          backgroundColor: bgColor,
-          foregroundColor: fgColor,
-          centerTitle: false,
-          titleSpacing: 0,
-          elevation: 0.5,
-          iconTheme: IconThemeData(color: fgColor),
-          actionsIconTheme: IconThemeData(color: fgColor),
-        );
-      case ZdsTabBarColor.basic:
-        final fgColor = isDarkMode ? colorScheme.cool.shade90 : colorScheme.cool.shade10;
-        final bgColor = isDarkMode ? colorScheme.cool.shade10 : colorScheme.cool.shade90;
-        return AppBarTheme(
-          systemOverlayStyle: computeSystemOverlayStyle(bgColor),
-          backgroundColor: bgColor,
-          foregroundColor: fgColor,
-          centerTitle: false,
-          titleSpacing: 0,
-          elevation: 0.5,
-          iconTheme: IconThemeData(color: fgColor),
-          actionsIconTheme: IconThemeData(color: fgColor),
-        );
-      case ZdsTabBarColor.surface:
-        final fgColor = isDarkMode ? colorScheme.cool.shade90 : colorScheme.onSurface;
-        final bgColor = isDarkMode ? colorScheme.cool.shade10 : colorScheme.surface;
-        return AppBarTheme(
-          systemOverlayStyle: computeSystemOverlayStyle(bgColor),
-          backgroundColor: bgColor,
-          foregroundColor: fgColor,
-          centerTitle: false,
-          titleSpacing: 0,
-          elevation: 0.5,
-          iconTheme: IconThemeData(color: fgColor),
-          actionsIconTheme: IconThemeData(color: fgColor),
-        );
-    }
   }
 
   /// Theme data used to create compact buttons.

@@ -94,7 +94,7 @@ class _AppBarDemoState extends State<AppBarDemo> with SingleTickerProviderStateM
               title: const Text('Basic color scheme'),
               icon: CircleAvatar(
                 radius: 15,
-                backgroundColor: zetaColors.iconInverse,
+                backgroundColor: zetaColors.mainInverse,
                 child: Text(
                   'DM',
                   style: TextStyle(
@@ -115,7 +115,7 @@ class _AppBarDemoState extends State<AppBarDemo> with SingleTickerProviderStateM
               color: ZdsTabBarColor.surface,
               icon: CircleAvatar(
                 radius: 15,
-                backgroundColor: zetaColors.secondary,
+                backgroundColor: zetaColors.mainSecondary,
                 child: Text(
                   'DM',
                   style: TextStyle(

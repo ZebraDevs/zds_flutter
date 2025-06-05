@@ -62,7 +62,7 @@ class ZdsFieldsListTile<T> extends StatelessWidget {
 
   /// The textStyle used for the starting elements of each field.
   ///
-  /// Defaults to [TextTheme.titleSmall] with [ZetaColorSwatch.text] color.
+  /// Defaults to [TextTheme.titleSmall] with [ZetaColors.mainDefault] color.
   final TextStyle? fieldsStartTextStyle;
 
   /// The textStyle used for the end elements of each field.
@@ -133,7 +133,7 @@ class ZdsFieldsListTile<T> extends StatelessWidget {
                 const SizedBox(height: 8),
                 DefaultTextStyle(
                   style: safeTextStyle(themeData.textTheme.bodyMedium).copyWith(
-                    color: Zeta.of(context).colors.textDisabled,
+                    color: Zeta.of(context).colors.mainDisabled,
                   ),
                   child: footnote!,
                 ),
@@ -176,7 +176,7 @@ extension _UIBuilder on ZdsFieldsListTile<dynamic> {
           DefaultTextStyle(
             style: fieldsStartDefaultStyle ??
                 safeTextStyle(themeData.textTheme.titleSmall).copyWith(
-                  color: Zeta.of(context).colors.textSubtle,
+                  color: Zeta.of(context).colors.mainSubtle,
                 ),
             textAlign: TextAlign.start,
             child: Flexible(flex: startFieldFlexFactor ?? 0, child: field.start!),

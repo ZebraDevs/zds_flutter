@@ -180,7 +180,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Zeta.of(context).colors.surfacePrimary,
+      color: Zeta.of(context).colors.borderSubtle,
       child: IntrinsicHeight(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,7 +362,10 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
     final List<Widget> cells = <Widget>[];
     final List<ZdsBlockTableRow> rows = widget.rows;
     final double cellHeight = _cellHeight + widget.cellPadding;
-    final zetaColors = Zeta.of(context).colors;
+    final zeta = Zeta.of(context);
+
+    final zetaColors = zeta.colors;
+
     for (int j = 0; j < rows[index].data.length; j++) {
       final List<Widget> columnWidgets = <Widget>[];
 
@@ -395,7 +398,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
           child: DecoratedBox(
             decoration: BoxDecoration(
               border: isSelected
-                  ? Border.all(color: themeData.colorScheme.secondary, width: 2)
+                  ? Border.all(color: zetaColors.borderPrimary, width: 2)
                   : Border(
                       bottom: BorderSide(
                         width: 1.5,
@@ -407,10 +410,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
                       ),
                     ),
               color: isSelected
-                  ? themeData.colorScheme.secondary.withLight(
-                      0.1,
-                      background: zetaColors.surfaceTertiary,
-                    )
+                  ? zetaColors.primitives.primary.shade90
                   : tableCell.backgroundColor ?? themeData.colorScheme.surface,
             ),
             child: Align(
@@ -422,7 +422,7 @@ class _BlockTable extends State<ZdsBlockTable> with WidgetsBindingObserver {
                         themeData.textTheme.bodySmall?.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
-                          color: tableCell.textColor ?? themeData.colorScheme.onSurface,
+                          color: tableCell.textColor ?? zetaColors.mainDefault,
                         ),
                   ),
             ),

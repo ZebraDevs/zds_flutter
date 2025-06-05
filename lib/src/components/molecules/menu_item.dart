@@ -69,7 +69,7 @@ class ZdsMenuItem extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: IconTheme.merge(
-            data: IconThemeData(size: 24, color: Zeta.of(context).colors.iconSubtle),
+            data: IconThemeData(size: 24, color: Zeta.of(context).colors.mainSubtle),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -92,7 +92,7 @@ class ZdsMenuItem extends StatelessWidget {
                       ),
                     ],
                   ).textStyle(
-                    themeData.textTheme.bodyLarge?.copyWith(color: Zeta.of(context).colors.textSubtle),
+                    themeData.textTheme.bodyLarge?.copyWith(color: Zeta.of(context).colors.mainSubtle),
                   ),
                 ),
                 if (trailing != null) trailing!,

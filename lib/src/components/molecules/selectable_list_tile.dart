@@ -84,17 +84,17 @@ class ZdsSelectableListTile extends StatelessWidget {
     final zetaColors = Zeta.of(context).colors;
 
     return IconTheme(
-      data: themeData.iconTheme.copyWith(size: 24, color: zetaColors.secondary.icon),
+      data: themeData.iconTheme.copyWith(size: 24, color: zetaColors.mainSecondary),
       child: Padding(
         padding: kZdsSelectableListTilePadding,
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(kZdsSelectableListTileBorderRadius)),
           child: Material(
-            color: showSelected ? zetaColors.secondary.surface : themeData.colorScheme.surface,
+            color: showSelected ? zetaColors.surfaceSecondary : themeData.colorScheme.surface,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 border: showSelected
-                    ? Border.all(color: zetaColors.secondary.border)
+                    ? Border.all(color: zetaColors.borderSecondary)
                     : Border.all(color: zetaColors.borderSubtle),
                 borderRadius: const BorderRadius.all(Radius.circular(kZdsSelectableListTileBorderRadius)),
               ),
@@ -135,7 +135,7 @@ class ZdsSelectableListTile extends StatelessWidget {
                                     if (subTitle != null)
                                       Container(child: subTitle).textStyle(
                                         themeData.textTheme.titleSmall!
-                                            .copyWith(color: zetaColors.textSubtle, fontSize: 12),
+                                            .copyWith(color: zetaColors.mainSubtle, fontSize: 12),
                                       ),
                                   ],
                                 ),

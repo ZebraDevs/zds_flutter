@@ -75,7 +75,7 @@ class _ZdsSelectableWidgetState extends State<ZdsSelectableWidget> {
     if (!(widget.copyable ?? false)) return widget.child;
     final zeta = Zeta.of(context).colors;
     return GestureDetector(
-      child: ColoredBox(color: isSelected ? zeta.primary.surface : Colors.transparent, child: widget.child),
+      child: ColoredBox(color: isSelected ? zeta.surfacePrimarySubtle : Colors.transparent, child: widget.child),
       onLongPress: () async {
         if (isSelected) return;
         toggleSelection();

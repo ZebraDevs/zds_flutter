@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../tools/utils.dart' show widgetStatePropertyResolver;
 
-/// This code defines a Dart extension method for [ZetaColorScheme], which uses Material UI components.
-/// It provides a new [switchTheme] method that allows for customization of a [SwitchThemeData] according to the [ZetaColorScheme].
+/// This code defines a Dart extension method for [ZetaSemantics], which uses Material UI components.
+/// It provides a new [switchTheme] method that allows for customization of a [SwitchThemeData] according to the [ZetaSemantics].
 
 /// The [SwitchThemeData] object returned by the [switchTheme] method has three customized properties:
 /// 1. mouseCursor: A [MouseCursor] determined by the Material State.
 /// 2. overlayColor: A [Color] determined by the Material State.
 /// 3. materialTapTargetSize: Defines the size of the tap target.
-extension SwitchExtension on ZetaColorScheme {
+extension SwitchExtension on ZetaSemantics {
   /// Generates a [SwitchThemeData] object with properties
   /// inherited from the parent [ThemeData].
   ///
@@ -33,7 +33,7 @@ extension SwitchExtension on ZetaColorScheme {
 
       /// Defines the overlay [Color] for the [Switch] when it's hovered.
       overlayColor: widgetStatePropertyResolver(
-        hoveredValue: zetaColors.black.withOpacity(0.1),
+        hoveredValue: Colors.black.withValues(alpha: 0.1),
       ),
 
       /// The smallest detectable part of [Switch] that can lead to a tap event.

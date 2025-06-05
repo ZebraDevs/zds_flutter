@@ -6,11 +6,6 @@ import '../../../../zds_flutter.dart';
 
 /// A date range selector that also allows to quickly change the range selected by jumping to the next or
 /// previous set of dates.
-@Deprecated('Use ZdsDateRange instead')
-typedef DateRange = ZdsDateRange;
-
-/// A date range selector that also allows to quickly change the range selected by jumping to the next or
-/// previous set of dates.
 ///
 /// This component is typically used as the title of a [ZdsToolbar], allowing to switch the body's content depending
 /// on the selected range.

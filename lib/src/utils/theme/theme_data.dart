@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:zeta_flutter/zeta_flutter.dart';
@@ -12,14 +11,14 @@ class _ZdsBaseColors {
 
   factory _ZdsBaseColors.fromJson(Map<String, dynamic>? json) {
     // Extracts primary, secondary, and error colors from JSON, with default fallbacks.
-    final primary = (json?['primary'] as String?)?.toColor() ?? ZetaColorBase.blue;
-    final secondary = (json?['secondary'] as String?)?.toColor() ?? ZetaColorBase.blue;
+    final primary = (json?['primary'] as String?)?.toColor() ?? const ZetaPrimitivesLight().blue;
+    final secondary = (json?['secondary'] as String?)?.toColor() ?? const ZetaPrimitivesLight().blue;
 
     var error = (json?['error'] as String?)?.toColor();
     if (error == null && isShadeOfRed(primary)) {
-      error = ZetaColorBase.warm;
+      error = const ZetaPrimitivesLight().warm;
     } else {
-      error = ZetaColorBase.red;
+      error = const ZetaPrimitivesLight().red;
     }
 
     return _ZdsBaseColors(primary: primary, secondary: secondary, error: error);
@@ -31,9 +30,9 @@ class _ZdsBaseColors {
 
   static bool isShadeOfRed(Color color) {
     // Get the red, green, and blue components of the color
-    final red = color.red;
-    final green = color.green;
-    final blue = color.blue;
+    final red = color.r;
+    final green = color.g;
+    final blue = color.b;
 
     // Check if the red component is dominant
     return red > green && red > blue;
@@ -56,26 +55,25 @@ class _ZdsBaseColors {
 /// See also:
 /// * [ZetaProvider]
 /// * [Zeta]
-/// * [ZetaThemeData]
-/// * [ZetaColorScheme]
+/// * [ZetaColors]
 /// * [ZetaAppBarStyle]
 @immutable
 class ZdsThemeData {
   /// Creates a `ZdsThemeData`.
   ///
-  /// The [themeData] and [themeMode] must not be null.
+  /// The [themeMode] must not be null.
   ///
-  /// The [themeData] parameter, which is required, defines the theme data to be used with [ZetaProvider].
   /// The [themeMode] parameter, which is required, defines the theme mode for the [Zeta], and defaults to [ThemeMode.system].
-  /// The [darkAppBarStyle] parameter defines the AppBar style for the dark theme, used to select the colors used in AppBarTheme style from [ZetaColorScheme]. Defaults to [ZetaAppBarStyle.surface].
-  /// The [lightAppBarStyle] parameter defines the AppBar style for the light theme, used to select the colors used in AppBarTheme style from [ZetaColorScheme]. Defaults to [ZetaAppBarStyle.primary].
+  // /// The [darkAppBarStyle] parameter defines the AppBar style for the dark theme, used to select the colors used in AppBarTheme style from [ZetaColorScheme]. Defaults to [ZetaAppBarStyle.surface].
+  // /// The [lightAppBarStyle] parameter defines the AppBar style for the light theme, used to select the colors used in AppBarTheme style from [ZetaColorScheme]. Defaults to [ZetaAppBarStyle.primary].
   const ZdsThemeData._({
-    required this.themeData,
+    // required this.themeData,
     required this.themeMode,
     required this.darkAppBarStyle,
     required this.lightAppBarStyle,
     required this.contrast,
     required this.adjustAccessibility,
+    required this.fontFamily,
     required _ZdsBaseColors lightColors,
     required _ZdsBaseColors darkColors,
   })  : _lightColors = lightColors,
@@ -96,14 +94,16 @@ class ZdsThemeData {
   factory ZdsThemeData.defaultData() {
     // Initialize base colors with default primary, secondary, and error colors.
     final baseColors = _ZdsBaseColors(
-      primary: ZetaColorBase.blue, // Default primary color set to blue.
-      secondary: ZetaColorBase.blue, // Default secondary color set to blue.
-      error: ZetaColorBase.red, // Default error color set to red.
+      primary: const ZetaPrimitivesLight().blue, // Default primary color set to blue.
+      secondary: const ZetaPrimitivesLight().blue, // Default secondary color set to blue.
+      error: const ZetaPrimitivesLight().red, // Default error color set to red.
     );
 
     // Return a new instance of ZdsThemeData with default settings.
     return ZdsThemeData._(
-      themeData: ZetaThemeData(),
+      // themeData: ThemeData(),
+      // themeData: generateZetaTheme(brightness: Brightness.light, colorScheme: , textTheme: textTheme),
+      // themeData: ZetaThemeData(),
       // Initialize with default ZetaThemeData.
       themeMode: ThemeMode.system,
       // Use system default theme mode.
@@ -118,6 +118,7 @@ class ZdsThemeData {
       lightColors: baseColors,
       // Apply the base colors to light theme.
       darkColors: baseColors, // Apply the same base colors to dark theme.
+      fontFamily: kZetaFontFamily,
     );
   }
 
@@ -138,6 +139,8 @@ class ZdsThemeData {
     final lightColors = _ZdsBaseColors.fromJson(light);
     final darkColors = dark != null ? _ZdsBaseColors.fromJson(light) : lightColors;
 
+    final fontFamily = json['fontFamily'] as String? ?? kZetaFontFamily;
+
     return ZdsThemeData._(
       themeMode: themeMode,
       contrast: contrast,
@@ -146,13 +149,14 @@ class ZdsThemeData {
       adjustAccessibility: adjustAccessibility,
       lightAppBarStyle: _zetaAppBarStyle(light),
       darkAppBarStyle: _zetaAppBarStyle(dark),
-      themeData: _zetaThemeDataFromJson(
-        json,
-        contrast,
-        adjustAccessibility,
-        lightColors,
-        darkColors,
-      ),
+      fontFamily: fontFamily,
+      // themeData: _zetaThemeDataFromJson(
+      //   json,
+      //   contrast,
+      //   adjustAccessibility,
+      //   lightColors,
+      //   darkColors,
+      // ),
     );
   }
 
@@ -201,10 +205,10 @@ class ZdsThemeData {
     return ZdsThemeData.fromJsonString(json);
   }
 
-  /// Theme data to be used with [ZetaProvider]
-  ///
-  /// This field hold the instance of [ZetaThemeData] which is used by `ZetaProvider` class.
-  final ZetaThemeData themeData;
+  // /// Theme data to be used with [ZetaProvider]
+  // ///
+  // /// This field hold the instance of [ZetaThemeServiceData] which is used by `ZetaProvider` class.
+  // final ZetaThemeServiceData themeData;
 
   /// The theme mode for the [Zeta]
   ///
@@ -215,13 +219,13 @@ class ZdsThemeData {
   /// AppBar style for the dark theme
   ///
   /// This holds the AppBar style for dark theme mode which is used to
-  /// select the colors from [ZetaColorScheme].
+  /// select the colors from [ZetaColors].
   final ZetaAppBarStyle darkAppBarStyle;
 
   /// AppBar style for the light theme
   ///
   /// This holds the AppBar style for light theme mode which is used to
-  /// select the colors from [ZetaColorScheme].
+  /// select the colors from [ZetaColors].
   final ZetaAppBarStyle lightAppBarStyle;
 
   /// Represents the Zeta accessibility standard.
@@ -239,12 +243,15 @@ class ZdsThemeData {
   /// Base dark colors, used internally to save and retrieve the colors from JSON
   final _ZdsBaseColors _darkColors;
 
+  /// Font override to use
+  final String fontFamily;
+
   /// Converts the [ZdsThemeData] instance to a JSON map.
   Map<String, dynamic> toJson() {
     return {
-      'identifier': themeData.identifier,
+      // 'identifier': themeData.identifier,
       'themeMode': _themeModeToString(themeMode),
-      'fontFamily': themeData.fontFamily,
+      // 'fontFamily': themeData.fontFamily,
       'adjustAccessibility': adjustAccessibility,
       'contrast': _contrastToString(contrast),
       'light': {
@@ -278,70 +285,61 @@ class ZdsThemeData {
     final appBarStyleString = json?['appBarStyle'] as String?;
     return appBarStyleString == 'surface'
         ? ZetaAppBarStyle.surface
-        : appBarStyleString == 'background'
-            // This ignore is used because the `ZetaAppBarStyle.background`,
-            // `ZetaAppBarStyle.secondary`, and `ZetaAppBarStyle.primary` values are marked
-            // as deprecated within the same package. However, they are still in use in the
-            // codebase, and replacing them requires refactoring to a new style system.
-            // The deprecated usage is temporary, and a future update will remove it once
-            // the new styles are fully integrated and tested.
-            // ignore: deprecated_member_use_from_same_package
-            ? ZetaAppBarStyle.background
-            : appBarStyleString == 'secondary'
-                ? ZetaAppBarStyle.secondary
-                : ZetaAppBarStyle.primary;
+        : appBarStyleString == 'secondary'
+            ? ZetaAppBarStyle.secondary
+            : ZetaAppBarStyle.primary;
   }
 
-  /// Parses the given JSON map into [ZetaThemeData].
-  static ZetaThemeData _zetaThemeDataFromJson(
-    Map<String, dynamic> json,
-    ZetaContrast contrast,
-    bool adjustAccessibility,
-    _ZdsBaseColors lightColors,
-    _ZdsBaseColors darkColors,
-  ) {
-    // Constructs and returns a new instance of ZetaThemeData.
-    final light = _colors(lightColors, Brightness.light, contrast, adjustAccessibility);
-    final dark = _colors(darkColors, Brightness.dark, contrast, adjustAccessibility);
+  // // /// Parses the given JSON map into [ZetaThemeServiceData].
+  // static ZetaThemeServiceData _zetaThemeDataFromJson(
+  //   Map<String, dynamic> json,
+  //   ZetaContrast contrast,
+  //   bool adjustAccessibility,
+  //   _ZdsBaseColors lightColors,
+  //   _ZdsBaseColors darkColors,
+  // ) {
+  //   // Constructs and returns a new instance of ZetaThemeData.
+  //   final light = _colors(lightColors, Brightness.light, contrast, adjustAccessibility);
+  //   final dark = _colors(darkColors, Brightness.dark, contrast, adjustAccessibility);
 
-    return ZetaThemeData(
-      identifier: json['identifier'] as String? ?? 'default',
-      // Sets the identifier, defaulting to 'default'.
-      fontFamily: json['fontFamily'] as String? ?? kZetaFontFamily,
-      // Sets the font family, with a default value.
-      contrast: contrast,
-      // Sets the determined contrast.
-      colorsLight: light,
-      // Processes light theme colors.
-      colorsDark: dark, // Processes dark theme colors.
-    );
-  }
+  //   return ZetaThemeServiceData(
+  //     identifier: json['identifier'] as String? ?? 'default',
+  //     // Sets the identifier, defaulting to 'default'.
+  //     fontFamily: json['fontFamily'] as String? ?? kZetaFontFamily,
+  //     // Sets the font family, with a default value.
+  //     contrast: contrast,
+  //     // Sets the determined contrast.
+  //     colorsLight: light,
+  //     // Processes light theme colors.
+  //     colorsDark: dark, // Processes dark theme colors.
+  //   );
+  // }
 
   /// Creates a [ZetaColors] object from the given JSON, brightness, and contrast.
-  static ZetaColors _colors(
-    _ZdsBaseColors colors,
-    Brightness brightness,
-    ZetaContrast contrast,
-    bool adjustAccessibility,
-  ) {
-    // Helper function to create a color swatch based on the given base color.
-    ZetaColorSwatch swatch(Color base) => ZetaColorSwatch.fromColor(base).apply(brightness: brightness);
+  // static ZetaColors _colors(
+  //   _ZdsBaseColors colors,
+  //   Brightness brightness,
+  //   ZetaContrast contrast,
+  //   bool adjustAccessibility,
+  // ) {
+  //   // Helper function to create a color swatch based on the given base color.
+  //   ZetaColorSwatch swatch(Color base) => ZetaColorSwatch.fromColor(base).apply(brightness: brightness);
 
-    // Returns either a dark or light themed [ZetaColors] object based on the brightness.
-    return brightness == Brightness.dark
-        ? ZetaColors.dark(
-            contrast: contrast,
-            primary: swatch(colors.primary),
-            secondary: swatch(colors.secondary),
-            error: swatch(colors.error),
-          )
-        : ZetaColors.light(
-            contrast: contrast,
-            primary: swatch(colors.primary),
-            secondary: swatch(colors.secondary),
-            error: swatch(colors.error),
-          );
-  }
+  //   // Returns either a dark or light themed [ZetaColors] object based on the brightness.
+  //   return brightness == Brightness.dark
+  //       ? ZetaColors.dark(
+  //           contrast: contrast,
+  //           primary: swatch(colors.primary),
+  //           secondary: swatch(colors.mainSecondary),
+  //           error: swatch(colors.error),
+  //         )
+  //       : ZetaColors.light(
+  //           contrast: contrast,
+  //           primary: swatch(colors.primary),
+  //           secondary: swatch(colors.mainSecondary),
+  //           error: swatch(colors.error),
+  //         );
+  // }
 
   /// Helper function to convert [ThemeMode] to string representation.
   static String _themeModeToString(ThemeMode themeMode) {
@@ -360,15 +358,6 @@ class ZdsThemeData {
     switch (appBarStyle) {
       case ZetaAppBarStyle.surface:
         return 'surface';
-      // This ignore is used because the `ZetaAppBarStyle.background` value is marked
-      // as deprecated within the same package. However, it is still in use in the
-      // codebase as part of the conversion process. Refactoring to remove the
-      // deprecated value requires replacing all instances of it, which will be done
-      // in a future update. This usage of the deprecated member is temporary until
-      // the transition is complete.
-      // ignore: deprecated_member_use_from_same_package
-      case ZetaAppBarStyle.background:
-        return 'background';
       case ZetaAppBarStyle.secondary:
         return 'secondary';
       case ZetaAppBarStyle.primary:
@@ -411,9 +400,6 @@ class ZdsThemeData {
 
   /// Creates a copy of this [ZdsThemeData] but with the given fields replaced with the new values.
   ///
-  /// [themeData] (optional): The [ZetaThemeData] that is paired with [ZdsThemeData].
-  /// This is the raw ThemeData instance that is used to construct the [ZdsThemeData] object.
-  ///
   /// [themeMode] (optional): Specifies the mode of the theme - light, dark etc. If a themeMode
   /// is not provided, it will default to the current [ZdsThemeData] theme mode.
   ///
@@ -431,39 +417,54 @@ class ZdsThemeData {
   ///
   /// Returns a new [ZdsThemeData] instance.
   ZdsThemeData copyWith({
-    ZetaThemeData? themeData,
+    ZetaCustomTheme? themeData,
     ThemeMode? themeMode,
     ZetaAppBarStyle? darkAppBarStyle,
     ZetaAppBarStyle? lightAppBarStyle,
     ZetaContrast? contrast,
     bool? adjustAccessibility,
+    String? fontFamily,
   }) {
     var lightColors = _lightColors;
     var darkColors = _darkColors;
 
     if (themeData != null) {
       lightColors = _ZdsBaseColors(
-        primary: themeData.colorsLight.primary.shade60,
-        secondary: themeData.colorsLight.secondary.shade60,
-        error: themeData.colorsLight.error.shade60,
+        primary: themeData.primary ?? const ZetaPrimitivesLight().blue,
+        secondary: themeData.secondary ?? const ZetaPrimitivesLight().blue,
+        error: const ZetaPrimitivesLight().red,
       );
 
       darkColors = _ZdsBaseColors(
-        primary: themeData.colorsLight.primary.shade50,
-        secondary: themeData.colorsLight.secondary.shade50,
-        error: themeData.colorsLight.error.shade50,
+        primary: themeData.primaryDark ?? const ZetaPrimitivesDark().blue,
+        secondary: themeData.secondaryDark ?? const ZetaPrimitivesDark().blue,
+        error: const ZetaPrimitivesDark().red,
       );
     }
 
     return ZdsThemeData._(
       lightColors: lightColors,
       darkColors: darkColors,
-      themeData: themeData ?? this.themeData,
+      // themeData:
+      // themeData: ThemeData(),
+      // themeData: themeData ?? this.themeData,
       themeMode: themeMode ?? this.themeMode,
       darkAppBarStyle: darkAppBarStyle ?? this.darkAppBarStyle,
       lightAppBarStyle: lightAppBarStyle ?? this.lightAppBarStyle,
       contrast: contrast ?? this.contrast,
       adjustAccessibility: adjustAccessibility ?? this.adjustAccessibility,
+      fontFamily: fontFamily ?? this.fontFamily,
+    );
+  }
+
+  /// Converts ZDS legacy theme to Zeta theme.
+  ZetaCustomTheme toCustomTheme() {
+    return ZetaCustomTheme(
+      id: 'zds',
+      primary: _lightColors.primary,
+      secondary: _lightColors.secondary,
+      primaryDark: _darkColors.primary,
+      secondaryDark: _darkColors.secondary,
     );
   }
 }
@@ -484,9 +485,9 @@ class ZetaSwatchGenerator {
     bool adjustAccessibility = false,
   }) {
     return ZetaColorSwatch(
-      contrast: contrast,
-      brightness: brightness,
-      primary: primary.value,
+      // contrast: contrast,
+      // brightness: brightness,
+      primary: primary.toARGB32(),
       swatch: primary.generateSwatch(background: background, adjustPrimary: adjustAccessibility),
     ).apply(brightness: brightness);
   }

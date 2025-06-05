@@ -9,23 +9,42 @@ import '../../../../zds_flutter.dart';
 ///
 /// Otherwise, the background will the same color, but with 10% opacity.
 enum ZdsTagColor {
-  /// [ColorScheme.error].
+  /// [ZetaPrimitives.red].
   error,
 
-  /// [ZetaColors.orange].
+  /// [ZetaPrimitives.orange].
   alert,
 
-  /// Primary color.
+  /// [ZetaPrimitives.primary].
+
   primary,
 
-  /// Secondary color.
+  /// [ZetaPrimitives.secondary].
   secondary,
 
-  /// [ZetaColors.green].
+  /// [ZetaPrimitives.green].
   success,
 
-  /// [ZetaColors.warm]
-  basic,
+  /// [ZetaPrimitives.warm]
+  basic;
+
+  /// Returns the color swatch for this tag color.
+  ZetaColorSwatch toColorSwatch(ZetaPrimitives colors) {
+    switch (this) {
+      case ZdsTagColor.error:
+        return colors.red;
+      case ZdsTagColor.alert:
+        return colors.orange;
+      case ZdsTagColor.primary:
+        return colors.primary;
+      case ZdsTagColor.secondary:
+        return colors.secondary;
+      case ZdsTagColor.success:
+        return colors.green;
+      case ZdsTagColor.basic:
+        return colors.warm;
+    }
+  }
 }
 
 /// A tag used to show status information or selected options.
@@ -123,14 +142,16 @@ class ZdsTag extends StatelessWidget {
   Widget build(BuildContext context) {
     final zetaColors = Zeta.of(context).colors;
 
-    Color fgColor = customColor ?? _resolveFgColor(zetaColors, color);
+    final ZetaColorSwatch swatch = color.toColorSwatch(zetaColors.primitives);
+
+    Color fgColor = customColor ?? swatch.shade60;
     Color bgColor;
 
     if (filled) {
       bgColor = fgColor;
       fgColor = fgColor.onColor;
     } else {
-      bgColor = customBackgroundColor ?? _resolveBgColor(zetaColors, color);
+      bgColor = customBackgroundColor ?? swatch.shade30;
     }
 
     final double height = onClose == null
@@ -198,40 +219,6 @@ class ZdsTag extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Color _resolveFgColor(ZetaColors zetaColors, ZdsTagColor tagColor) {
-    switch (tagColor) {
-      case ZdsTagColor.error:
-        return zetaColors.surfaceNegative;
-      case ZdsTagColor.alert:
-        return zetaColors.surfaceWarning;
-      case ZdsTagColor.primary:
-        return zetaColors.primary;
-      case ZdsTagColor.secondary:
-        return zetaColors.secondary;
-      case ZdsTagColor.success:
-        return zetaColors.surfacePositive;
-      case ZdsTagColor.basic:
-        return zetaColors.warm.shade80;
-    }
-  }
-
-  Color _resolveBgColor(ZetaColors zetaColors, ZdsTagColor tagColor) {
-    switch (tagColor) {
-      case ZdsTagColor.error:
-        return zetaColors.error.surface;
-      case ZdsTagColor.alert:
-        return zetaColors.orange.surface;
-      case ZdsTagColor.primary:
-        return zetaColors.primary.surface;
-      case ZdsTagColor.secondary:
-        return zetaColors.secondary.surface;
-      case ZdsTagColor.success:
-        return zetaColors.green.surface;
-      case ZdsTagColor.basic:
-        return zetaColors.warm.shade30;
-    }
   }
 
   @override

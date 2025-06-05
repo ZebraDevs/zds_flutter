@@ -323,7 +323,7 @@ class ZdsExpansionTileState extends State<ZdsExpansionTile> with SingleTickerPro
             turns: _iconTurns,
             child: Icon(
               widget.expansionTileType == ExpansionTileType.regular ? ZdsIcons.chevron_down : ZdsIcons.chevron_right,
-              color: zeta.colors.iconDefault,
+              color: zeta.colors.mainDefault,
               size: 24,
             ),
           ),
@@ -367,7 +367,7 @@ class ZdsExpansionTileState extends State<ZdsExpansionTile> with SingleTickerPro
                                     children: <Widget>[
                                       DefaultTextStyle(
                                         style: safeTextStyle(themeData.textTheme.bodyLarge)
-                                            .copyWith(color: zeta.colors.textDefault),
+                                            .copyWith(color: zeta.colors.mainDefault),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         child: widget.title,
@@ -376,7 +376,7 @@ class ZdsExpansionTileState extends State<ZdsExpansionTile> with SingleTickerPro
                                         const SizedBox(height: 5),
                                         DefaultTextStyle(
                                           style: themeData.textTheme.bodySmall!.copyWith(
-                                            color: zeta.colors.textSubtle,
+                                            color: zeta.colors.mainSubtle,
                                           ),
                                           child: widget.subtitle!,
                                         ),
@@ -393,7 +393,7 @@ class ZdsExpansionTileState extends State<ZdsExpansionTile> with SingleTickerPro
                                     child: widget.expandWithIconOnly
                                         ? chevronIcon
                                         : IconTheme(
-                                            data: IconThemeData(color: zeta.colors.iconSubtle, size: 24),
+                                            data: IconThemeData(color: zeta.colors.mainSubtle, size: 24),
                                             child: RotationTransition(
                                               turns: _iconTurns,
                                               child: const Icon(ZdsIcons.chevron_down),

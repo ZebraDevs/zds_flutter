@@ -22,7 +22,7 @@ class StatsCardDemo extends StatelessWidget {
               ZdsStat(
                 value: 32.4,
                 description: 'Remaining',
-                color: Zeta.of(context).colors.green,
+                color: Zeta.of(context).colors.mainPositive,
               )
             ],
             title: 'Medical',
@@ -35,7 +35,7 @@ class StatsCardDemo extends StatelessWidget {
               ZdsStat(
                 value: 1.75,
                 description: 'Remaining',
-                color: Zeta.of(context).colors.green,
+                color: Zeta.of(context).colors.mainPositive,
               )
             ],
             title: 'Floating Holidays',
@@ -48,7 +48,7 @@ class StatsCardDemo extends StatelessWidget {
               ZdsStat(
                 value: 5,
                 description: 'Remaining',
-                color: Zeta.of(context).colors.green,
+                color: Zeta.of(context).colors.mainPositive,
               )
             ],
             title: 'Vacation',

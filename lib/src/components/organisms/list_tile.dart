@@ -55,7 +55,7 @@ class ZdsListTile extends StatelessWidget {
   /// Typically a [Text] widget.
   ///
   /// The subtitle's default [TextStyle] depends on [TextTheme.bodyMedium] except
-  /// [TextStyle.color]. The [TextStyle.color] is Zeta.of(context).colors.textSubtle.
+  /// [TextStyle.color]. The [TextStyle.color] is Zeta.of(context).colors.mainSubtle.
   final Widget? subtitle;
 
   /// A widget to display after the title.
@@ -123,7 +123,7 @@ class ZdsListTile extends StatelessWidget {
     final EdgeInsets padding = contentPadding ?? kZdsListTileTheme.contentPadding;
     final TextStyle? titleStyle = themeData.textTheme.bodyMedium;
     final zetaColors = Zeta.of(context).colors;
-    final Color subtitleColor = zetaColors.textSubtle;
+    final Color subtitleColor = zetaColors.mainSubtle;
     final EdgeInsets insets = _resolveInsets(padding);
     final Color effectiveBackground = backgroundColor ??
         (context.findAncestorWidgetOfExactType<ZdsListGroup>() != null

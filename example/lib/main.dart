@@ -22,19 +22,25 @@ void main() async {
 }
 
 class DemoApp extends StatelessWidget {
-  const DemoApp({Key? key, required this.data, required this.themeService}) : super(key: key);
+  const DemoApp({
+    Key? key,
+    required this.data,
+    this.themeService,
+  }) : super(key: key);
 
-  final ZetaThemeService themeService;
+  final ZetaThemeService? themeService;
   final ZdsThemeData data;
 
   @override
   Widget build(BuildContext context) {
     return ZetaProvider(
-      themeService: themeService,
+      themeService: themeService ?? const ZetaDefaultThemeService(),
       initialThemeMode: data.themeMode,
-      initialThemeData: data.themeData,
+      fontFamily: data.fontFamily,
+      initialTheme: 'zds',
       initialContrast: data.contrast,
-      builder: (context, themeData, themeMode) {
+      customThemes: [data.toCustomTheme()],
+      builder: (context, themeData, darkTheme, themeMode) {
         return MaterialApp(
           title: 'Zds Demo',
           localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) {
@@ -56,14 +62,8 @@ class DemoApp extends StatelessWidget {
           ],
           routes: kAllRoutes,
           themeMode: themeMode,
-          theme: themeData.colorsLight.toScheme().toTheme(
-                fontFamily: themeData.fontFamily,
-                appBarStyle: data.lightAppBarStyle,
-              ),
-          darkTheme: themeData.colorsDark.toScheme().toTheme(
-                fontFamily: themeData.fontFamily,
-                appBarStyle: data.darkAppBarStyle,
-              ),
+          theme: themeData,
+          darkTheme: darkTheme,
         );
       },
     );

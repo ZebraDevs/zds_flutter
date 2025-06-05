@@ -165,8 +165,8 @@ class _ZdsDatePickerDialogState extends State<ZdsDatePickerDialog> {
               lastDay: widget.lastDate,
               calendarRowHeight: orientation == Orientation.portrait ? 44 : 38,
               headerPadding: EdgeInsets.zero,
-              calendarHeaderIconColor: Zeta.of(context).colors.iconDefault,
-              calendarHeaderTextColor: Zeta.of(context).colors.textSubtle,
+              calendarHeaderIconColor: Zeta.of(context).colors.mainDefault,
+              calendarHeaderTextColor: Zeta.of(context).colors.mainSubtle,
               startingDayOfWeek: _getStartingDayOfWeek(widget.startDayOfWeek),
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {

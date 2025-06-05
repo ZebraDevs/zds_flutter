@@ -158,7 +158,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
             widget.label!,
             style: widget.labelStyle ??
                 themeData.textTheme.headlineSmall?.copyWith(
-                  color: zetaColors.textSubtle,
+                  color: zetaColors.mainSubtle,
                 ),
           ),
           const SizedBox(height: 4),
@@ -183,7 +183,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
                   suffixPadding: const EdgeInsets.only(right: 8),
                   suffixIcon: Icon(
                     _isOpen ? ZdsIcons.chevron_up : ZdsIcons.chevron_down,
-                    color: zetaColors.iconSubtle,
+                    color: zetaColors.mainSubtle,
                   ),
                   border: border,
                   errorBorder: border,
@@ -210,7 +210,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
               menuItemStyleData: MenuItemStyleData(
                 selectedMenuItemBuilder: (BuildContext context, Widget child) {
                   return ColoredBox(
-                    color: themeData.colorScheme.secondary.withOpacity(0.1),
+                    color: themeData.colorScheme.secondary.withValues(alpha: 0.1),
                     child: child,
                   );
                 },

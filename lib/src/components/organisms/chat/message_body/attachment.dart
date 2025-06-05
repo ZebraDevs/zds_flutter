@@ -48,8 +48,8 @@ class ZdsChatAttachmentWidget extends StatelessWidget {
               height: 80,
               margin: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: colors.surfacePrimary,
-                borderRadius: zeta.radius.rounded,
+                color: colors.surfaceDefault,
+                borderRadius: BorderRadius.all(zeta.radius.rounded),
                 border: Border.all(color: colors.borderSubtle),
               ),
               child: Column(
@@ -71,17 +71,17 @@ class ZdsChatAttachmentWidget extends StatelessWidget {
                 children: [
                   Text(
                     ComponentStrings.of(context).get('SHARE_FILE', 'Shared a file:'),
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.textSubtle),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.mainSubtle),
                   ),
                   const SizedBox.square(dimension: 2),
                   Text(
                     _fileName,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: colors.textDefault),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: colors.mainDefault),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox.square(dimension: 12),
-                  Icon(ZdsIcons.download, size: 20, color: colors.iconSubtle),
+                  Icon(ZdsIcons.download, size: 20, color: colors.mainSubtle),
                 ],
               ),
             ),

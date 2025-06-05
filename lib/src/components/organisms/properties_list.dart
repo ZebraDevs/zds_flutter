@@ -110,7 +110,7 @@ class ZdsPropertiesList extends StatelessWidget {
             label.textStyle(themeData.textTheme.bodyLarge),
             Flexible(
               child: value.textStyle(
-                themeData.textTheme.titleSmall?.copyWith(color: zetaColors.textDefault),
+                themeData.textTheme.titleSmall?.copyWith(color: zetaColors.mainDefault),
               ),
             ),
           ],
@@ -122,9 +122,9 @@ class ZdsPropertiesList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          label.textStyle(themeData.textTheme.titleSmall?.copyWith(color: zetaColors.textSubtle)).space(8),
+          label.textStyle(themeData.textTheme.titleSmall?.copyWith(color: zetaColors.mainSubtle)).space(8),
           value.textStyle(
-            themeData.textTheme.bodyLarge?.copyWith(color: zetaColors.textDefault),
+            themeData.textTheme.bodyLarge?.copyWith(color: zetaColors.mainDefault),
             overflow: TextOverflow.clip,
           ),
         ],

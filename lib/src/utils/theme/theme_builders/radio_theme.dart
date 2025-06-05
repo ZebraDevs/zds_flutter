@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../tools/utils.dart' show widgetStatePropertyResolver;
 
-/// An extension on [ZetaColorScheme].
+/// An extension on [ZetaSemantics].
 ///
 /// This extension adds a method [radioThemeData], which allows for customizing
-/// the appearance of a radio button using the [ZetaColorScheme].
-extension RadioExtension on ZetaColorScheme {
+/// the appearance of a radio button using the [ZetaSemantics].
+extension RadioExtension on ZetaSemantics {
   /// Creates and returns a [RadioThemeData] object.
   ///
   /// Mouse cursors, fill color, overlay color, tap target size, and visual density
@@ -25,16 +25,16 @@ extension RadioExtension on ZetaColorScheme {
 
       /// Defines the fill color for the different states of radio button.
       fillColor: widgetStatePropertyResolver(
-        selectedValue: zetaColors.secondary,
-        hoveredValue: zetaColors.secondary.hover,
-        focusedValue: zetaColors.secondary.hover,
-        disabledValue: zetaColors.secondary.subtle,
-        defaultValue: zetaColors.iconDefault,
+        selectedValue: colors.mainSecondary,
+        hoveredValue: colors.mainDefault,
+        focusedValue: colors.stateSecondaryHover,
+        disabledValue: colors.surfaceSecondarySubtle,
+        defaultValue: colors.mainDefault,
       ),
 
       /// Defines the overlay color for hover state of radio button.
       overlayColor: widgetStatePropertyResolver(
-        hoveredValue: zetaColors.surfaceHover,
+        hoveredValue: colors.surfaceHover,
       ),
 
       /// Defines the size of the material tap target.

@@ -261,9 +261,9 @@ extension LightHexColor on Color {
   /// Lightens this [Color].
   Color withLight(double opacity, {Color? background}) {
     return Color.fromRGBO(
-      _transform(opacity, red, (background ?? Colors.white).red),
-      _transform(opacity, green, (background ?? Colors.white).green),
-      _transform(opacity, blue, (background ?? Colors.white).blue),
+      _transform(opacity, r, (background ?? Colors.white).r),
+      _transform(opacity, g, (background ?? Colors.white).g),
+      _transform(opacity, b, (background ?? Colors.white).b),
       1,
     );
   }
@@ -290,22 +290,22 @@ extension LightHexColor on Color {
   ///
   /// Prefixes a hash sign if [leadingHashSign] is set to true (defaults to true).
   String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
-      '${alpha.toRadixString(16).padLeft(2, '0')}'
-      '${red.toRadixString(16).padLeft(2, '0')}'
-      '${green.toRadixString(16).padLeft(2, '0')}'
-      '${blue.toRadixString(16).padLeft(2, '0')}';
+      '${(a * 255).round().toRadixString(16).padLeft(2, '0')}'
+      '${(r * 255).round().toRadixString(16).padLeft(2, '0')}'
+      '${(g * 255).round().toRadixString(16).padLeft(2, '0')}'
+      '${(b * 255).round().toRadixString(16).padLeft(2, '0')}';
 
   /// Returns this Color's hexcode without the alpha channel.
   ///
   /// Prefixes a hash sign if [leadingHashSign] is set to true (defaults to true).
   String toHexNoAlpha({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
-      '${red.toRadixString(16).padLeft(2, '0')}'
-      '${green.toRadixString(16).padLeft(2, '0')}'
-      '${blue.toRadixString(16).padLeft(2, '0')}';
+      '${(r * 255).round().toRadixString(16).padLeft(2, '0')}'
+      '${(g * 255).round().toRadixString(16).padLeft(2, '0')}'
+      '${(b * 255).round().toRadixString(16).padLeft(2, '0')}';
 }
 
-int _transform(double p, int t, int b) {
-  return (p * t + (1 - p) * b).round();
+int _transform(double p, num t, num b) {
+  return (p * (t * 255) + (1 - p) * (b * 255)).round();
 }
 
 /// Render extensions on [BuildContext].
@@ -381,10 +381,10 @@ extension LaunchUrlInWebView on Uri {
 /// [shade] Shade from 0-1
 Color getShadedColor(Color input, double shade) {
   return Color.fromARGB(
-    input.alpha,
-    changeShade(input.red, 1 - shade),
-    changeShade(input.green, 1 - shade),
-    changeShade(input.blue, 1 - shade),
+    input.a.round(),
+    changeShade(input.r.round(), 1 - shade),
+    changeShade(input.g.round(), 1 - shade),
+    changeShade(input.b.round(), 1 - shade),
   );
 }
 
@@ -417,13 +417,13 @@ Color getRandomColorFromTheme(Object? seed, {List<Color>? colors}) {
 
   if (colors == null || colors.isEmpty) {
     setColors = <ui.Color>[
-      ZetaColorBase.red,
-      ZetaColorBase.orange,
-      ZetaColorBase.yellow,
-      ZetaColorBase.green,
-      ZetaColorBase.blue,
-      ZetaColorBase.teal,
-      ZetaColorBase.pink,
+      const ZetaPrimitivesLight().red,
+      const ZetaPrimitivesLight().orange,
+      const ZetaPrimitivesLight().yellow,
+      const ZetaPrimitivesLight().green,
+      const ZetaPrimitivesLight().blue,
+      const ZetaPrimitivesLight().teal,
+      const ZetaPrimitivesLight().pink,
     ];
   } else {
     setColors = colors;

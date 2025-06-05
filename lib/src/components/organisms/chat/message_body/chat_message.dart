@@ -113,11 +113,11 @@ class ZdsChatMessage extends StatelessWidget {
   ZetaColorSwatch _getColor(BuildContext context) {
     final colors = Zeta.of(context).colors;
     if (highlight) {
-      return colors.yellow;
+      return colors.primitives.yellow;
     } else if (isLocalUser) {
-      return colors.secondary;
+      return colors.primitives.primary;
     } else {
-      return colors.cool;
+      return colors.primitives.cool;
     }
   }
 
@@ -193,7 +193,7 @@ class ZdsChatMessage extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .titleSmall
-                      ?.copyWith(color: message.senderColor ?? Zeta.of(context).colors.textDefault),
+                      ?.copyWith(color: message.senderColor ?? Zeta.of(context).colors.mainDefault),
                 ),
               ),
             ),
@@ -206,8 +206,8 @@ class ZdsChatMessage extends StatelessWidget {
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 500),
                     decoration: BoxDecoration(
-                      color: color.surface,
-                      border: Border.all(color: color.subtle),
+                      color: color.shade10,
+                      border: Border.all(color: color.shade50),
                       borderRadius: _borderRadius,
                     ),
                     child: Material(

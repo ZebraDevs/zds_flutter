@@ -372,7 +372,7 @@ class _CameraWrapperState extends State<_CameraWrapper> {
                     child: AwesomeCircleWidget(
                       theme: theme,
                       size: 45,
-                      child: const Icon(Icons.close, color: ZetaColorBase.white),
+                      child: const Icon(Icons.close, color: Colors.white),
                     ),
                   ),
                 const Spacer(),
@@ -492,13 +492,13 @@ class _ElapsedTime extends StatelessWidget {
     final elapsedTimeStr = _formatDuration(elapsedTime);
     final totalTimeStr = totalTime != null ? _formatDuration(totalTime!) : null;
     return ZdsTag(
-      customBackgroundColor: ZetaColorBase.red,
+      customBackgroundColor: Zeta.of(context).colors.mainNegative,
       child: Text(
         totalTimeStr != null ? '$elapsedTimeStr/$totalTimeStr' : elapsedTimeStr,
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          color: ZetaColorBase.white, // Use the determined text color
+          color: Colors.white, // Use the determined text color
         ),
       ),
     );
@@ -664,10 +664,10 @@ class _CameraButtonPainter extends CustomPainter {
       ..isAntiAlias = true;
     final radius = size.width / 2;
     final center = Offset(size.width / 2, size.height / 2);
-    bgPainter.color = ZetaColorBase.white.withOpacity(.5);
+    bgPainter.color = Colors.white.withValues(alpha: .5);
     canvas.drawCircle(center, radius, bgPainter);
 
-    bgPainter.color = ZetaColorBase.white;
+    bgPainter.color = Colors.white;
     canvas.drawCircle(center, radius - 8, bgPainter);
   }
 
@@ -687,11 +687,11 @@ class _VideoButtonPainter extends CustomPainter {
       ..isAntiAlias = true;
     final radius = size.width / 2;
     final center = Offset(size.width / 2, size.height / 2);
-    bgPainter.color = ZetaColorBase.white.withOpacity(.5);
+    bgPainter.color = Colors.white.withValues(alpha: .5);
     canvas.drawCircle(center, radius, bgPainter);
 
     if (isRecording) {
-      bgPainter.color = ZetaColorBase.red;
+      bgPainter.color = const ZetaPrimitivesLight().red;
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(
@@ -705,7 +705,7 @@ class _VideoButtonPainter extends CustomPainter {
         bgPainter,
       );
     } else {
-      bgPainter.color = ZetaColorBase.red;
+      bgPainter.color = const ZetaPrimitivesLight().red;
       canvas.drawCircle(center, radius - 8, bgPainter);
     }
   }
@@ -794,14 +794,14 @@ class _PreviewActions extends StatelessWidget {
             shape: const CircleBorder(),
             backgroundColor: Colors.black38,
             onPressed: () async => _onPop(context, false),
-            child: const Icon(Icons.close, color: ZetaColorBase.white),
+            child: const Icon(Icons.close, color: Colors.white),
           ),
           FloatingActionButton(
             elevation: 0,
             shape: const CircleBorder(),
             backgroundColor: Colors.black38,
             onPressed: () async => _onPop(context, true),
-            child: const Icon(Icons.done, color: ZetaColorBase.white),
+            child: const Icon(Icons.done, color: Colors.white),
           ),
         ],
       ),

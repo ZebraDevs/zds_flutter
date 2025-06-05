@@ -62,9 +62,9 @@ class ZdsIconTextButton extends StatelessWidget with Diagnosticable {
       width: 112,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        color: backgroundColor ?? zetaColors.primary,
+        color: backgroundColor ?? zetaColors.mainPrimary,
         boxShadow: <BoxShadow>[
-          BoxShadow(blurRadius: 4, color: zetaColors.textDefault.withOpacity(0.2)),
+          BoxShadow(blurRadius: 4, color: zetaColors.mainDefault..withValues(alpha: 0.2)),
         ],
       ),
       child: Material(
@@ -78,13 +78,13 @@ class ZdsIconTextButton extends StatelessWidget with Diagnosticable {
                 Icon(
                   icon,
                   size: 56,
-                  color: iconColor ?? (backgroundColor ?? zetaColors.primary).onColor,
+                  color: iconColor ?? (backgroundColor ?? zetaColors.mainPrimary).onColor,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   label,
                   style: themeData.textTheme.titleSmall?.copyWith(
-                    color: labelColor ?? (backgroundColor ?? zetaColors.primary).onColor,
+                    color: labelColor ?? (backgroundColor ?? zetaColors.mainPrimary).onColor,
                   ),
                 ),
               ],

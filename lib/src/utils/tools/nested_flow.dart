@@ -30,24 +30,12 @@ class ZdsNestedFlow extends StatefulWidget {
   const ZdsNestedFlow({
     super.key,
     this.onGenerateRoute,
-    @Deprecated('Use of shouldClose is redundant') this.shouldClose = true,
-    @Deprecated('Use child or builder property instead') this.rootPage,
     this.child,
     this.builder,
   }) : assert(
-          (child != null ? 1 : 0) + (builder != null ? 1 : 0) + (rootPage != null ? 1 : 0) == 1,
-          'Exactly one of child, builder, or rootPage must be provided',
+          (child != null ? 1 : 0) + (builder != null ? 1 : 0) == 1,
+          'Exactly one of child, or builder must be provided',
         );
-
-  /// Root page for the navigator.
-  @Deprecated('Use child or builder property instead')
-  final Page<dynamic>? rootPage;
-
-  /// Should page be closed when just root page remains on the stack, useful when added as root widget in TabBar.
-  ///
-  /// Defaults to true.
-  @Deprecated('Use of shouldClose is redundant')
-  final bool shouldClose;
 
   /// Child widget for the navigator root page.
   final Widget? child;
@@ -74,8 +62,6 @@ class ZdsNestedFlow extends StatefulWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<Page<dynamic>>('rootPage', rootPage))
-      ..add(DiagnosticsProperty<bool>('shouldClose', shouldClose))
       ..add(DiagnosticsProperty<Widget>('child', child))
       ..add(ObjectFlagProperty<WidgetBuilder?>.has('builder', builder))
       ..add(ObjectFlagProperty<RouteFactory?>.has('onGenerateRoute', onGenerateRoute));
@@ -111,9 +97,7 @@ class ZdsNestedFlowState extends State<ZdsNestedFlow> implements NavigatorObserv
         onGenerateRoute: widget.onGenerateRoute,
         onGenerateInitialRoutes: (navigator, initialRoute) {
           return [
-            if (widget.rootPage != null)
-              widget.rootPage!.createRoute(context)
-            else if (widget.builder != null)
+            if (widget.builder != null)
               ZdsFadePageRouteBuilder(
                 builder: (BuildContext context) {
                   return PopScope(
@@ -173,4 +157,7 @@ class ZdsNestedFlowState extends State<ZdsNestedFlow> implements NavigatorObserv
       Navigator.of(context).pop(await route.popped);
     }
   }
+
+  @override
+  void didChangeTop(Route<dynamic> topRoute, Route<dynamic>? previousTopRoute) {}
 }

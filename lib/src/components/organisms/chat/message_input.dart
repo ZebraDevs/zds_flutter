@@ -260,7 +260,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     if (mounted) {
       return showZdsBottomSheet<ZdsRecording>(
         enforceSheet: true,
-        backgroundColor: Zeta.of(context).colors.surfacePrimary,
+        backgroundColor: Zeta.of(context).colors.surfaceDefault,
         context: context,
         builder: (context) {
           return SingleChildScrollView(
@@ -284,7 +284,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
           final recordingPath = recorderKey.currentState?.recordingDestination;
           if (recordingPath != null) {
             final recording = File(recordingPath);
-            if (recording.existsSync()) recording.delete();
+            if (recording.existsSync()) unawaited(recording.delete());
           }
         }
         return value;
@@ -305,14 +305,14 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
           boxShadow: [
             BoxShadow(
               offset: const Offset(0, -1),
-              color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
               blurRadius: 2,
             ),
-            BoxShadow(offset: const Offset(0, 1), color: zetaColors.surfacePrimary, blurRadius: 2),
+            BoxShadow(offset: const Offset(0, 1), color: zetaColors.surfaceDefault, blurRadius: 2),
           ],
         ),
         child: Material(
-          color: zetaColors.surfacePrimary,
+          color: zetaColors.surfaceDefault,
           child: AnimatedSize(
             duration: const Duration(milliseconds: 250),
             child: Row(
@@ -321,7 +321,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                   IconButton(
                     padding: EdgeInsets.zero,
                     icon: const Icon(ZdsIcons.add),
-                    color: zetaColors.iconSubtle,
+                    color: zetaColors.mainSubtle,
                     tooltip: ComponentStrings.of(context).get(
                       'EXPAND_MESSAGE_OPTIONS',
                       'Expand message options',
@@ -388,7 +388,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                                 ),
                                 if (widget.allowVoiceNotes && !kIsWeb)
                                   IconButton(
-                                    icon: Icon(Icons.mic, size: 24, color: zetaColors.iconSubtle),
+                                    icon: Icon(Icons.mic, size: 24, color: zetaColors.mainSubtle),
                                     tooltip: ComponentStrings.of(context).get(
                                       'ADD_VOICE_NOTE',
                                       'Add voice note',
@@ -454,7 +454,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
     unawaited(
       showZdsBottomSheet<ZdsFileWrapper>(
         enforceSheet: widget.enforceSheet,
-        backgroundColor: zetaColors.surfacePrimary,
+        backgroundColor: zetaColors.surfaceDefault,
         context: context,
         maxHeight: maxSheetHeight,
         builder: (_) {
@@ -475,7 +475,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                               container: true,
                               child: Text(
                                 widget.addAttachment ?? ComponentStrings.of(context).get('ADD', 'Add'),
-                                style: ZetaTextStyles.h5,
+                                style: Zeta.of(context).textStyles.h5,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -485,7 +485,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
                               child: IconButton(
                                 icon: const Icon(ZdsIcons.close, size: 20),
                                 onPressed: Navigator.of(context).pop,
-                                color: zetaColors.iconSubtle,
+                                color: zetaColors.mainSubtle,
                                 splashRadius: 24,
                               ),
                             ),

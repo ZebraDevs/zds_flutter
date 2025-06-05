@@ -51,19 +51,19 @@ class ZdsCheckableButton extends StatelessWidget {
     final Color foreground = isChecked
         ? themeData.colorScheme.secondary.onColor
         : enabled
-            ? zetaColors.iconSubtle
-            : zetaColors.iconDisabled;
+            ? zetaColors.mainSubtle
+            : zetaColors.mainDisabled;
 
     final Color background = !enabled && isChecked
-        ? zetaColors.secondary.subtle
+        ? zetaColors.surfaceSecondarySubtle
         : isChecked
-            ? zetaColors.secondary
+            ? zetaColors.mainSecondary
             : enabled
                 ? zetaColors.surfacePrimary
                 : zetaColors.surfaceDisabled;
 
     final Color borderColor = isChecked
-        ? zetaColors.secondary
+        ? zetaColors.mainSecondary
         : enabled
             ? zetaColors.borderDefault
             : zetaColors.borderDisabled;

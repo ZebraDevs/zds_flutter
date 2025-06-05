@@ -12,40 +12,31 @@ class ZetaThemeModeSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var zeta = Zeta.of(context);
-
-    ZetaColors zetaColors(ThemeMode mode) {
-      if ((mode == ThemeMode.system && MediaQuery.of(context).platformBrightness == Brightness.light) ||
-          mode == ThemeMode.light) {
-        return zeta.themeData.colorsLight;
-      } else {
-        return zeta.themeData.colorsDark;
-      }
-    }
+    final zeta = Zeta.of(context);
+    final colors = zeta.colors;
 
     return DropdownButtonHideUnderline(
       child: DropdownButton<ThemeMode>(
+        padding: EdgeInsets.all(8),
         value: zeta.themeMode,
         elevation: 0,
-        isDense: true,
-        alignment: Alignment.center,
-        icon: SizedBox(width: 8),
+        icon: Nothing(),
         dropdownColor: zeta.colors.borderDisabled,
         items: _themes.map((e) {
-          final colors = zetaColors(e).apply(contrast: zeta.contrast);
           return DropdownMenuItem<ThemeMode>(
             value: e,
             alignment: Alignment.center,
-            child: CircleAvatar(
-              backgroundColor: colors.primary.surface,
-              foregroundColor: colors.primary,
-              child: Icon(
-                  e == ThemeMode.system
-                      ? Icons.system_security_update_good
-                      : e == ThemeMode.light
-                          ? Icons.light_mode
-                          : Icons.dark_mode,
-                  color: colors.primary),
+            child: ZetaAvatar(
+              size: ZetaAvatarSize.xxs,
+              backgroundColor: colors.surfaceDefault,
+              image: Icon(
+                e == ThemeMode.system
+                    ? Icons.system_security_update_good
+                    : e == ThemeMode.light
+                        ? Icons.light_mode
+                        : Icons.dark_mode,
+                color: colors.mainPrimary,
+              ),
             ),
           );
         }).toList(),

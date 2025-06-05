@@ -146,28 +146,28 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
         return _tabBarStyle(
           context,
           hasIcons,
-          background: zetaColors.primary,
-          indicator: zetaColors.primary.onColor,
-          selectedText: zetaColors.primary.onColor,
-          unselectedText: zetaColors.primary.onColor.withOpacity(0.7),
+          background: zetaColors.mainPrimary,
+          indicator: zetaColors.mainPrimary.onColor,
+          selectedText: zetaColors.mainPrimary.onColor,
+          unselectedText: zetaColors.mainPrimary.onColor.withValues(alpha: 0.7),
         );
       case ZdsTabBarColor.basic:
         return _tabBarStyle(
           context,
           hasIcons,
-          background: zetaColors.surfaceTertiary,
-          indicator: zetaColors.primary,
-          selectedText: zetaColors.textDefault,
-          unselectedText: zetaColors.textSubtle,
+          background: zetaColors.surfaceDefault,
+          indicator: zetaColors.mainPrimary,
+          selectedText: zetaColors.mainDefault,
+          unselectedText: zetaColors.mainSubtle,
         );
       case ZdsTabBarColor.surface:
         return _tabBarStyle(
           context,
           hasIcons,
-          background: zetaColors.surfacePrimary,
-          indicator: zetaColors.primary,
-          selectedText: zetaColors.textDefault,
-          unselectedText: zetaColors.textSubtle,
+          background: zetaColors.mainInverse,
+          indicator: zetaColors.mainPrimary,
+          selectedText: zetaColors.mainDefault,
+          unselectedText: zetaColors.mainSubtle,
         );
       case ZdsTabBarColor.appBar:
         final appBarTheme = Theme.of(context).appBarTheme;
@@ -175,9 +175,9 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
           context,
           hasIcons,
           background: appBarTheme.backgroundColor ?? zetaColors.surfacePrimary,
-          indicator: appBarTheme.foregroundColor ?? zetaColors.primary,
-          selectedText: appBarTheme.foregroundColor ?? zetaColors.textDefault,
-          unselectedText: appBarTheme.foregroundColor?.withOpacity(0.7) ?? zetaColors.textSubtle,
+          indicator: appBarTheme.foregroundColor ?? zetaColors.mainPrimary,
+          selectedText: appBarTheme.foregroundColor ?? zetaColors.mainDefault,
+          unselectedText: appBarTheme.foregroundColor?.withValues(alpha: 0.7) ?? zetaColors.mainSubtle,
         );
     }
   }
@@ -194,7 +194,7 @@ class ZdsTabBar extends StatelessWidget implements PreferredSizeWidget {
     final double height = hasIcons ? 56.0 : 48.0;
     final ThemeData theme = Theme.of(context);
 
-    final TabBarTheme tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
+    final TabBarThemeData tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
     final TextStyle? labelStyle = hasIcons ? theme.textTheme.bodySmall : theme.textTheme.bodyLarge;
 
     return ZdsTabBarStyleContainer(

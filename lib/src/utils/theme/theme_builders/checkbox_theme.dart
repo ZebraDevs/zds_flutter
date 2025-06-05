@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_flutter/zeta_flutter.dart' show ZetaColorExtensions, ZetaColorScheme;
+import 'package:zeta_flutter/zeta_flutter.dart';
 
 import '../../tools.dart' show widgetStatePropertyResolver;
 
-/// This is an extension method on [ZetaColorScheme] which is used to customize the [CheckboxThemeData].
-extension ZetaCheckboxTheme on ZetaColorScheme {
-  /// This function returns a [CheckboxThemeData] customized with properties taken from the [ZetaColorScheme].
+/// This is an extension method on [ZetaSemantics] which is used to customize the [CheckboxThemeData].
+extension ZetaCheckboxTheme on ZetaSemantics {
+  /// This function returns a [CheckboxThemeData] customized with properties taken from the [ZetaSemantics].
   ///
   /// Returns:
   ///   A [CheckboxThemeData] with the applied properties.
@@ -20,29 +20,33 @@ extension ZetaCheckboxTheme on ZetaColorScheme {
         defaultValue: SystemMouseCursors.basic,
       ),
 
-      /// Setting up custom fill color for different material states.
-      fillColor: widgetStatePropertyResolver(
-        selectedValue: zetaColors.secondary,
-        hoveredValue: zetaColors.secondary,
-        focusedValue: zetaColors.secondary.hover,
-        disabledValue: zetaColors.secondary.subtle,
-        defaultValue: Colors.transparent,
-      ),
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return colors.mainSecondary;
+        }
+        if (states.contains(WidgetState.disabled)) {
+          return colors.mainDisabled;
+        }
+        if (states.contains(WidgetState.hovered)) {
+          return colors.stateDefaultHover;
+        }
+        return Colors.transparent;
+      }),
 
       /// Setting up the side property.
-      side: BorderSide(color: zetaColors.iconDefault, width: 2),
+      side: BorderSide(color: colors.mainDefault, width: 2),
 
       /// Setting up custom checkColor for different material states.
       checkColor: widgetStatePropertyResolver(
-        selectedValue: onSecondary,
-        hoveredValue: onSecondary,
-        defaultValue: zetaColors.secondary.onColor,
+        selectedValue: colors.mainInverse,
+        hoveredValue: colors.mainInverse,
+        defaultValue: colors.mainInverse,
       ),
 
       /// Setting up custom overlayColor for different material states.
       overlayColor: widgetStatePropertyResolver(
-        hoveredValue: zetaColors.surfaceHover,
-      ),
+          // hoveredValue: colors.surfaceHover,
+          ),
 
       /// Setting tap target size to "padded".
       materialTapTargetSize: MaterialTapTargetSize.padded,

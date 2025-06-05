@@ -162,7 +162,7 @@ class ZdsInputDialogState extends State<ZdsInputDialog> {
               Text(
                 widget.title!,
                 style: theme.textTheme.displaySmall?.copyWith(
-                  color: zetaColors.textDefault,
+                  color: zetaColors.mainDefault,
                 ),
               ),
             Padding(
@@ -203,7 +203,7 @@ class ZdsInputDialogState extends State<ZdsInputDialog> {
                           hintText: widget.hint,
                           errorText: _error,
                           errorStyle: theme.textTheme.bodyMedium?.copyWith(
-                            color: zetaColors.error,
+                            color: zetaColors.mainNegative,
                           ),
                         ),
                       ),

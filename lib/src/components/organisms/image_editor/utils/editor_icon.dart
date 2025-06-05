@@ -42,7 +42,7 @@ class EditorIcon extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             label,
-            style: TextStyle(color: isSelected ? zetaColors.primary : null),
+            style: TextStyle(color: isSelected ? zetaColors.mainPrimary : null),
           ),
         ],
       ),

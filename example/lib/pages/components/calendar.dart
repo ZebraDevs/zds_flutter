@@ -103,7 +103,9 @@ class _CalendarDemoState extends State<CalendarDemo> {
               singleMarkerBuilder: (BuildContext context, DateTime date, dynamic _) {
                 return Container(
                   decoration: BoxDecoration(
-                    color: date.isAfter(DateTime.now()) ? Zeta.of(context).colors.red : Zeta.of(context).colors.green,
+                    color: date.isAfter(DateTime.now())
+                        ? Zeta.of(context).colors.mainNegative
+                        : Zeta.of(context).colors.mainPositive,
                     shape: BoxShape.circle,
                   ),
                   width: 5,

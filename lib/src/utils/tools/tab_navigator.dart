@@ -356,6 +356,9 @@ class ZdsSplitNavigatorState extends State<ZdsSplitNavigator> with FrameCallback
       ..add(DiagnosticsProperty<GlobalKey<NavigatorState>>('navigatorKey', navigatorKey))
       ..add(DiagnosticsProperty<ValueNotifier<String>>('currentRoute', currentRoute));
   }
+
+  @override
+  void didChangeTop(Route<dynamic> topRoute, Route<dynamic>? previousTopRoute) {}
 }
 
 class _SplitContent extends StatelessWidget {
@@ -395,7 +398,7 @@ class _SplitContent extends StatelessWidget {
     final List<BoxShadow>? boxShadow = boxShadowDivider
         ? <BoxShadow>[
             BoxShadow(
-              color: themeData.colorScheme.onSurface.withOpacity(0.1),
+              color: themeData.colorScheme.onSurface.withValues(alpha: 0.1),
               blurRadius: 2,
               offset: const Offset(-1, 0),
             ),

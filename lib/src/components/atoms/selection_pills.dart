@@ -29,8 +29,6 @@ class ZdsSelectionPill extends StatelessWidget {
     this.onClose,
     this.padding = const EdgeInsets.all(9),
     this.color,
-    this.selectedColor,
-    this.borderColor,
   });
 
   /// The button's label.
@@ -66,44 +64,30 @@ class ZdsSelectionPill extends StatelessWidget {
   /// Defaults to primary.
   final ZetaColorSwatch? color;
 
-  ///Use [color] instead. Will be deprecated in future release.
-  ///
-  /// Custom color to override pill background color.
-  ///
-  ///Defaults to `colorScheme.secondary.withOpacity(0.1)`
-  final Color? selectedColor;
-
-  ///Use [color] instead. Will be deprecated in future release.
-  ///
-  /// Custom color to override unselected pill border color.
-  ///
-  /// Defaults to `ZdsColors.greyCoolSwatch[100]`.
-  final Color? borderColor;
-
   @override
   Widget build(BuildContext context) {
     final zetaColors = Zeta.of(context).colors;
     final themeData = Theme.of(context);
     final bool disabled = onTap == null;
+    final ZetaColorSwatch colorSwatch = color ?? zetaColors.primitives.primary;
 
     final Color background = disabled
         ? zetaColors.surfaceDisabled
         : selected
-            ? color?.surface ?? selectedColor?.withOpacity(0.2) ?? zetaColors.secondary.surface
+            ? colorSwatch.shade10
             : themeData.colorScheme.surface;
 
     final Color foreground = disabled
-        ? zetaColors.iconDisabled
+        ? zetaColors.mainDisabled
         : selected
-            ? color?.icon ?? selectedColor ?? zetaColors.secondary.icon
-            : zetaColors.iconSubtle;
+            ? colorSwatch.shade60
+            : zetaColors.mainSubtle;
 
-    final Color border = borderColor ??
-        (disabled
-            ? zetaColors.borderDisabled
-            : selected
-                ? color?.border ?? zetaColors.secondary.border
-                : zetaColors.borderDefault);
+    final Color border = (disabled
+        ? zetaColors.borderDisabled
+        : selected
+            ? colorSwatch.shade60
+            : zetaColors.borderDefault);
 
     return ExpandTapWidget(
       onTap: onTap ?? () {},
@@ -142,9 +126,9 @@ class ZdsSelectionPill extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: themeData.textTheme.bodyMedium?.copyWith(
                             color: disabled
-                                ? zetaColors.textDisabled
+                                ? zetaColors.mainDisabled
                                 : selected
-                                    ? color?.text ?? foreground
+                                    ? color ?? foreground
                                     : themeData.colorScheme.onSurface,
                             fontWeight: selected && !disabled ? FontWeight.w600 : null,
                           ),
@@ -179,8 +163,6 @@ class ZdsSelectionPill extends StatelessWidget {
       ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
       ..add(ObjectFlagProperty<VoidCallback?>.has('onClose', onClose))
       ..add(DiagnosticsProperty<EdgeInsets>('padding', padding))
-      ..add(ColorProperty('selectedColor', selectedColor))
-      ..add(ColorProperty('borderColor', borderColor))
       ..add(ColorProperty('color', color));
   }
 }

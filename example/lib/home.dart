@@ -41,9 +41,7 @@ class _HomePageState extends State<HomePage> {
           return ZdsExpansionTile(
             title: Text(
               rec.key,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: zeta.colors.textDefault,
-                  ),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             child: ZdsListGroup(
               items: items.map((route) {
@@ -51,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                     title: Text(route.title),
                     trailing: Icon(
                       Icons.keyboard_arrow_right,
-                      color: zeta.colors.iconSubtle,
+                      color: zeta.colors.mainSubtle,
                     ),
                     onTap: () => Navigator.of(context).pushNamed(route.routeName));
               }).toList(),

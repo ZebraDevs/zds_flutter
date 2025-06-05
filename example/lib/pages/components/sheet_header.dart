@@ -71,20 +71,20 @@ class SheetHeaderDemo extends StatelessWidget {
           children: [
             ZdsListTile(
               leading: const Text('Urgent'),
-              trailing: ZdsIndex(color: Zeta.of(context).colors.red, child: const Text('U')),
+              trailing: ZdsIndex(color: Zeta.of(context).colors.mainNegative, child: const Text('U')),
             ),
             ZdsListTile(
               leading: const Text('High'),
-              trailing: ZdsIndex(color: Zeta.of(context).colors.orange, child: const Text('1')),
+              trailing: ZdsIndex(color: Zeta.of(context).colors.mainWarning, child: const Text('1')),
             ),
             ZdsListTile(
               leading: const Text('Medium'),
-              trailing: ZdsIndex(color: Zeta.of(context).colors.teal, child: const Text('2')),
+              trailing: ZdsIndex(color: Zeta.of(context).colors.primitives.teal, child: const Text('2')),
             ),
             ZdsListTile(
               leading: const Text('Low'),
               trailing: ZdsIndex(
-                color: Zeta.of(context).colors.green,
+                color: Zeta.of(context).colors.mainPositive,
                 child: const Text('3'),
               ),
             ),

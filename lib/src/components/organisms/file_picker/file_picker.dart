@@ -44,10 +44,6 @@ typedef ZdsFileValidator = Future<FilePickerException?> Function(
 );
 
 /// The configuration used in a [ZdsFilePicker].
-@Deprecated('Use ZdsFilePickerConfig instead of FilePickerConfig.')
-typedef FilePickerConfig = ZdsFilePickerConfig;
-
-/// The configuration used in a [ZdsFilePicker].
 ///
 /// [maxPixelSize] is used to set a maximum side dimension for an image. For example, if the [maxPixelSize] is 500,
 /// images can have a maximum resolution of 500x500. Any image above this resolution will be scaled down to this size.
@@ -482,14 +478,14 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
               Icon(
                 option.icon,
                 size: 24 + ((widget.visualDensity?.horizontal ?? 0) * 4),
-                color: zetaColors.iconSubtle,
+                color: zetaColors.mainSubtle,
               ),
               const SizedBox(width: 20),
               Text(
                 option.getLabel(context),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: style?.copyWith(color: zetaColors.textDefault),
+                style: style?.copyWith(color: zetaColors.mainDefault),
                 textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2.7),
               ).semantics(identifier: option.getLabel(context)),
             ],
@@ -951,7 +947,7 @@ extension on ZdsFilePickerState {
               Icon(
                 option.icon,
                 size: 24 + ((widget.visualDensity?.vertical ?? 0) * 4),
-                color: zetaColors.iconSubtle,
+                color: zetaColors.mainSubtle,
               ),
               if (widget.optionDisplay == ZdsOptionDisplay.standard) ...<Widget>[
                 SizedBox(height: 10 + ((widget.visualDensity?.vertical ?? 0) * 4)),
@@ -959,7 +955,7 @@ extension on ZdsFilePickerState {
                   option.getLabel(context),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: style?.copyWith(color: zetaColors.textSubtle),
+                  style: style?.copyWith(color: zetaColors.mainSubtle),
                   textScaler: MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 2.7),
                 ),
               ],

@@ -140,7 +140,7 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
                                       DefaultTextStyle.merge(
                                         child: subtitle!,
                                         style: theme.primaryTextTheme.titleSmall
-                                            ?.copyWith(color: appBarTheme.foregroundColor?.withOpacity(0.8)),
+                                            ?.copyWith(color: appBarTheme.foregroundColor?.withValues(alpha: 0.8)),
                                       ),
                                   ],
                                 ),
@@ -202,8 +202,8 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
       case ZdsTabBarColor.appBar:
         return Theme.of(context).appBarTheme;
       case ZdsTabBarColor.primary:
-        final fgColor = zetaColors.primary.onColor;
-        final bgColor = zetaColors.primary;
+        final fgColor = zetaColors.mainPrimary.onColor;
+        final bgColor = zetaColors.mainDefault;
         return AppBarTheme(
           systemOverlayStyle: computeSystemOverlayStyle(bgColor),
           backgroundColor: bgColor,
@@ -215,8 +215,8 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
           actionsIconTheme: IconThemeData(color: fgColor),
         );
       case ZdsTabBarColor.basic:
-        final fgColor = zetaColors.textDefault;
-        final bgColor = zetaColors.surfaceTertiary;
+        final fgColor = zetaColors.mainDefault;
+        final bgColor = zetaColors.surfaceDefault;
         return AppBarTheme(
           systemOverlayStyle: computeSystemOverlayStyle(bgColor),
           backgroundColor: bgColor,
@@ -228,8 +228,8 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
           actionsIconTheme: IconThemeData(color: fgColor),
         );
       case ZdsTabBarColor.surface:
-        final fgColor = zetaColors.textDefault;
-        final bgColor = zetaColors.surfacePrimary;
+        final fgColor = zetaColors.mainDefault;
+        final bgColor = zetaColors.mainInverse;
         return AppBarTheme(
           systemOverlayStyle: computeSystemOverlayStyle(bgColor),
           backgroundColor: bgColor,

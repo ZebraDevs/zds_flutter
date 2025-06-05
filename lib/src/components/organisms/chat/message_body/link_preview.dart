@@ -92,9 +92,9 @@ class _ZdsChatLinkPreviewState extends State<ZdsChatLinkPreview> {
     final colors = Zeta.of(context).colors;
 
     return Shimmer.fromColors(
-      baseColor: colors.warm.shade40,
-      highlightColor: colors.warm.shade60,
-      child: Container(height: 16, color: colors.white),
+      baseColor: colors.primitives.warm.shade40,
+      highlightColor: colors.primitives.warm.shade60,
+      child: Container(height: 16, color: Colors.white),
     );
   }
 
@@ -113,7 +113,7 @@ class _ZdsChatLinkPreviewState extends State<ZdsChatLinkPreview> {
     }
     return Text(
       text,
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Zeta.of(context).colors.textSubtle),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Zeta.of(context).colors.mainSubtle),
     );
   }
 
@@ -132,7 +132,7 @@ class _ZdsChatLinkPreviewState extends State<ZdsChatLinkPreview> {
                 borderRadius: const BorderRadius.all(Radius.circular(6)),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Zeta.of(context).colors.warm.shade30.withOpacity(0.2),
+                    color: Zeta.of(context).colors.primitives.warm.shade30.withValues(alpha: 0.2),
                     borderRadius: const BorderRadius.all(Radius.circular(6)),
                   ),
                   padding: const EdgeInsets.all(14),
@@ -144,7 +144,8 @@ class _ZdsChatLinkPreviewState extends State<ZdsChatLinkPreview> {
                         Container(
                           width: 40,
                           height: 40,
-                          decoration: BoxDecoration(color: zetaColors.secondary.shade10, shape: BoxShape.circle),
+                          decoration:
+                              BoxDecoration(color: zetaColors.primitives.secondary.shade10, shape: BoxShape.circle),
                           child: buildImage,
                         ),
                         Expanded(

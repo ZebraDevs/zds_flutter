@@ -25,14 +25,14 @@ class ZdsChatReplyMessageBody extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(6),
           child: ColoredBox(
-            color: zetaColors.warm.shade40,
+            color: zetaColors.primitives.warm.shade40,
             child: Stack(
               children: [
                 Positioned(
                   top: 0,
                   bottom: 0,
                   left: 0,
-                  child: Container(color: zetaColors.iconSubtle, width: 4),
+                  child: Container(color: zetaColors.mainSubtle, width: 4),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

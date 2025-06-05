@@ -196,21 +196,22 @@ class ZdsHtml extends StatelessWidget {
         margin: Margins.zero,
         padding: HtmlPaddings.symmetric(horizontal: 14, vertical: 8),
         border: Border(left: BorderSide(color: zetaColors.borderDisabled, width: 4)),
-        color: zetaColors.textSubtle,
+        color: zetaColors.mainSubtle,
       ),
       'pre': Style(
         margin: Margins.zero,
         padding: HtmlPaddings.all(14),
-        backgroundColor: zetaColors.surfaceTertiary,
+        backgroundColor: zetaColors.surfaceDefault,
         lineHeight: LineHeight.percent(100),
-        color: zetaColors.primary.selected,
+        color: zetaColors.statePrimarySelected,
       ),
       'code': Style(
         margin: Margins.zero,
-        backgroundColor: zetaColors.surfaceTertiary,
+        backgroundColor: zetaColors.surfaceDefault,
         lineHeight: LineHeight.percent(100),
-        color: zetaColors.primary,
+        color: zetaColors.mainPrimary,
       ),
+      'strong': Style(color: zetaColors.mainDefault),
       ...style,
     };
   }

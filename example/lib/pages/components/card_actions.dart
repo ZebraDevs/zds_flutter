@@ -120,14 +120,14 @@ class CardActionsDemo extends StatelessWidget {
                     Text(
                       '04/19/2021 03:35 PM',
                       style: themeData.textTheme.titleSmall?.copyWith(
-                        color: Zeta.of(context).colors.textSubtle,
+                        color: Zeta.of(context).colors.mainSubtle,
                       ),
                     ),
                     const SizedBox(height: 16),
                     Text(
                       'SR-ROC-Rockford IL.00102',
                       style: themeData.textTheme.titleSmall?.copyWith(
-                        color: Zeta.of(context).colors.textSubtle,
+                        color: Zeta.of(context).colors.mainSubtle,
                       ),
                     ),
                   ],

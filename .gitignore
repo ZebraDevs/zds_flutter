@@ -78,3 +78,4 @@ pubspec.lock
 .master/
 **/.fvm/
 .fvmrc
+**/ios/Flutter/

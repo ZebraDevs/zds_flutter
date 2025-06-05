@@ -406,13 +406,13 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.rtf':
     case '.ttf':
     case '.txt':
-      return colors?.blue ?? const Color(0xFF376FC9);
+      return colors?.primitives.blue ?? const Color(0xFF376FC9);
 
     case '.pdf':
     case '.ppt':
     case '.ppr':
     case '.pptx':
-      return colors?.red ?? const Color(0xFFDB0D00);
+      return colors?.primitives.red ?? const Color(0xFFDB0D00);
 
     case '.gif':
     case '.ico':
@@ -422,7 +422,7 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.tif':
     case '.tiff':
     case '.bmp':
-      return colors?.orange ?? const Color(0xFFF56200);
+      return colors?.primitives.orange ?? const Color(0xFFF56200);
 
     case '.flv':
     case '.m4v':
@@ -430,7 +430,7 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.mpeg':
     case '.mpg':
     case '.qt':
-      return colors?.purple ?? const Color(0xFF6F00C6);
+      return colors?.primitives.purple ?? const Color(0xFF6F00C6);
 
     case '.aac':
     case '.au':
@@ -439,22 +439,22 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.mp3':
     case '.mp4':
     case '.wav':
-      return colors?.teal ?? const Color(0xFF70A300);
+      return colors?.primitives.teal ?? const Color(0xFF70A300);
 
     case '.csv':
     case '.xml':
     case '.xls':
     case '.xlsx':
-      return colors?.green ?? const Color(0xFF1F802E);
+      return colors?.primitives.green ?? const Color(0xFF1F802E);
 
     case '.htm':
     case '.rar':
     case '.url':
     case '.zip':
-      return colors?.warm ?? const Color(0xFF888888);
+      return colors?.primitives.warm ?? const Color(0xFF888888);
 
     default:
-      return colors?.iconDefault ?? const Color(0xFF1d1e23);
+      return colors?.mainDefault ?? const Color(0xFF1d1e23);
   }
 }
 
@@ -480,11 +480,6 @@ extension IconDataFromExt on String {
   IconData fileIcon() {
     if (isEmpty) return ZdsIcons.file_present;
     return _extensions[_safeExt] ?? ZdsIcons.file_present;
-  }
-
-  @Deprecated('Use fileIconColor instead.')
-  Icon coloredFileIcon() {
-    return Icon(fileIcon(), color: iconColor(_safeExt));
   }
 
   Color fileIconColor(BuildContext context) {

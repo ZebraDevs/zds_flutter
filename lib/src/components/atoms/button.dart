@@ -248,14 +248,15 @@ class ZdsButton extends StatelessWidget {
     final EdgeInsetsGeometry tp = textPadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 6);
 
     // Determine the default background color.
-    final Color defaultBackground = customColor ?? (isDangerButton ? zetaColors.surfaceNegative : zetaColors.secondary);
+    final Color defaultBackground =
+        customColor ?? (isDangerButton ? zetaColors.surfaceNegative : zetaColors.mainSecondary);
 
     // Common textStyle for all variants.
     final textStyle = WidgetStateProperty.all(textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500));
 
     // Helper function to calculate the overlay color.
     Color calculateOverlay({double opacity = 0.1, Color? background}) {
-      return customColor?.withOpacity(opacity) ?? (background ?? defaultBackground).withOpacity(opacity);
+      return customColor?.withValues(alpha: opacity) ?? (background ?? defaultBackground).withValues(alpha: opacity);
     }
 
     switch (variant) {
@@ -265,7 +266,7 @@ class ZdsButton extends StatelessWidget {
           textStyle: textStyle,
           foregroundColor: widgetStatePropertyResolver(
             defaultValue: defaultBackground.onColor,
-            disabledValue: zetaColors.textDisabled,
+            disabledValue: zetaColors.mainDisabled,
           ),
           backgroundColor: widgetStatePropertyResolver(
             defaultValue: defaultBackground,
@@ -277,7 +278,7 @@ class ZdsButton extends StatelessWidget {
             defaultValue: Colors.transparent,
           ),
           side: widgetStatePropertyResolver(
-            focusedValue: BorderSide(color: zetaColors.secondary.subtle, width: 3),
+            focusedValue: BorderSide(color: zetaColors.surfaceSecondarySubtle, width: 3),
             disabledValue: BorderSide(color: zetaColors.borderDisabled),
           ),
         );
@@ -287,7 +288,7 @@ class ZdsButton extends StatelessWidget {
           textStyle: textStyle,
           foregroundColor: widgetStatePropertyResolver(
             defaultValue: defaultBackground,
-            disabledValue: zetaColors.textDisabled,
+            disabledValue: zetaColors.mainDisabled,
           ),
           backgroundColor: widgetStatePropertyResolver(
             defaultValue: Colors.transparent,
@@ -299,7 +300,7 @@ class ZdsButton extends StatelessWidget {
             pressedValue: calculateOverlay(opacity: 0.2),
           ),
           side: widgetStatePropertyResolver(
-            focusedValue: BorderSide(color: zetaColors.secondary.subtle, width: 3),
+            focusedValue: BorderSide(color: zetaColors.surfaceSecondarySubtle, width: 3),
             defaultValue: BorderSide(color: defaultBackground),
             disabledValue: BorderSide(color: zetaColors.borderDisabled),
           ),
@@ -309,8 +310,8 @@ class ZdsButton extends StatelessWidget {
           padding: WidgetStateProperty.all(tp),
           textStyle: textStyle,
           foregroundColor: widgetStatePropertyResolver(
-            defaultValue: isOnDarkBackground ? zetaColors.textInverse : defaultBackground,
-            disabledValue: zetaColors.textDisabled,
+            defaultValue: isOnDarkBackground ? zetaColors.mainInverse : defaultBackground,
+            disabledValue: zetaColors.mainDisabled,
           ),
           backgroundColor: widgetStatePropertyResolver(
             defaultValue: Colors.transparent,
@@ -321,7 +322,7 @@ class ZdsButton extends StatelessWidget {
             pressedValue: calculateOverlay(opacity: 0.2),
           ),
           side: widgetStatePropertyResolver(
-            focusedValue: BorderSide(color: zetaColors.secondary.subtle, width: 3),
+            focusedValue: BorderSide(color: zetaColors.surfaceSecondarySubtle, width: 3),
             disabledValue: const BorderSide(color: Colors.transparent),
           ),
         );
@@ -330,8 +331,8 @@ class ZdsButton extends StatelessWidget {
           padding: WidgetStateProperty.all(tp),
           textStyle: textStyle,
           foregroundColor: widgetStatePropertyResolver(
-            defaultValue: zetaColors.textDefault,
-            disabledValue: zetaColors.textDisabled,
+            defaultValue: zetaColors.mainDefault,
+            disabledValue: zetaColors.mainDisabled,
           ),
           backgroundColor: widgetStatePropertyResolver(
             defaultValue: Colors.transparent,
@@ -343,7 +344,7 @@ class ZdsButton extends StatelessWidget {
             pressedValue: calculateOverlay(background: zetaColors.borderDefault, opacity: 0.2),
           ),
           side: widgetStatePropertyResolver(
-            focusedValue: BorderSide(color: zetaColors.secondary.subtle, width: 3),
+            focusedValue: BorderSide(color: zetaColors.surfaceSecondarySubtle, width: 3),
             disabledValue: BorderSide(color: zetaColors.borderDisabled),
             defaultValue: BorderSide(color: zetaColors.borderDefault),
           ),

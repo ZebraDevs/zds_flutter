@@ -72,7 +72,7 @@ class ZdsSheetHeader extends StatelessWidget implements PreferredSizeWidget {
                               sortKey: const OrdinalSortKey(1),
                               child: IconTheme(
                                 data: themeData.iconTheme.copyWith(
-                                  color: Zeta.of(context).colors.iconSubtle,
+                                  color: Zeta.of(context).colors.mainSubtle,
                                   size: 24,
                                 ),
                                 child: leading!,
