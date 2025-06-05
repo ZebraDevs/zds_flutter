@@ -31,9 +31,9 @@ class _ZdsBaseColors {
 
   static bool isShadeOfRed(Color color) {
     // Get the red, green, and blue components of the color
-    final red = color.red;
-    final green = color.green;
-    final blue = color.blue;
+    final red = (color.r * 255).round() & 0xFF;
+    final green = (color.g * 255).round() & 0xFF;
+    final blue = (color.b * 255).round() & 0xFF;
 
     // Check if the red component is dominant
     return red > green && red > blue;
@@ -486,7 +486,7 @@ class ZetaSwatchGenerator {
     return ZetaColorSwatch(
       contrast: contrast,
       brightness: brightness,
-      primary: primary.value,
+      primary: primary.toARGB32(),
       swatch: primary.generateSwatch(background: background, adjustPrimary: adjustAccessibility),
     ).apply(brightness: brightness);
   }

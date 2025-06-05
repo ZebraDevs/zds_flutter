@@ -173,4 +173,9 @@ class ZdsNestedFlowState extends State<ZdsNestedFlow> implements NavigatorObserv
       Navigator.of(context).pop(await route.popped);
     }
   }
+
+  @override
+  void didChangeTop(Route<dynamic> topRoute, Route<dynamic>? previousTopRoute) {
+    // TODO(routing): implement didChangeTop
+  }
 }

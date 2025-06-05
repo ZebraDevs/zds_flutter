@@ -223,7 +223,7 @@ class ZdsInputDialogState extends State<ZdsInputDialog> {
                       ZdsButton.muted(
                         semanticLabel: widget.secondaryAction,
                         key: const Key('secondary_button'),
-                        onTap: () async => Navigator.maybePop(context),
+                        onTap: () => Navigator.maybePop(context),
                         child: Text(widget.secondaryAction!),
                       ),
                     if (widget.secondaryAction != null) const SizedBox(width: 8),

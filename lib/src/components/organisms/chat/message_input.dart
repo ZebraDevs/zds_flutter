@@ -284,7 +284,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
           final recordingPath = recorderKey.currentState?.recordingDestination;
           if (recordingPath != null) {
             final recording = File(recordingPath);
-            if (recording.existsSync()) recording.delete();
+            if (recording.existsSync()) unawaited(recording.delete());
           }
         }
         return value;
@@ -305,7 +305,7 @@ class ZdsMessageInputState extends State<ZdsMessageInput> with SingleTickerProvi
           boxShadow: [
             BoxShadow(
               offset: const Offset(0, -1),
-              color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
               blurRadius: 2,
             ),
             BoxShadow(offset: const Offset(0, 1), color: zetaColors.surfacePrimary, blurRadius: 2),

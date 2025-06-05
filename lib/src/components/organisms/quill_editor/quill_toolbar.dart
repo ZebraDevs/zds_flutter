@@ -5,7 +5,6 @@
 // and aligned with the current architecture. Future refactoring may explore
 // alternative ways to organize and expose these dependencies, but for now,
 // they are required for the file's functionality.
-// ignore_for_file: implementation_imports
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';

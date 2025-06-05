@@ -77,4 +77,8 @@ pubspec.lock
 **/node_modules
 .master/
 **/.fvm/
-.fvmrc
+example/ios/Flutter/ephemeral/flutter_lldb_helper.py
+example/ios/Flutter/ephemeral/flutter_lldbinit
+
+# FVM Version Cache
+.fvm/

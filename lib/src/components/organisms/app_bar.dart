@@ -140,7 +140,7 @@ class ZdsAppBar extends StatelessWidget implements PreferredSizeWidget {
                                       DefaultTextStyle.merge(
                                         child: subtitle!,
                                         style: theme.primaryTextTheme.titleSmall
-                                            ?.copyWith(color: appBarTheme.foregroundColor?.withOpacity(0.8)),
+                                            ?.copyWith(color: appBarTheme.foregroundColor?.withValues(alpha: 0.8)),
                                       ),
                                   ],
                                 ),

@@ -145,7 +145,7 @@ class _ImageEditorState extends State<ImageEditorHome> {
                 const SizedBox(width: 8),
                 ZdsButton(
                   child: Text(strings.get('SAVE', 'Save')),
-                  onTap: () async {
+                  onTap: () {
                     unawaited(
                       imageToUint8List(image).then(
                         (imageBytes) {

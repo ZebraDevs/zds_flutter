@@ -118,7 +118,7 @@ class _ZdsStarRatingState extends State<ZdsStarRating> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               decoration: BoxDecoration(
-                color: colors.cool.shade30.withOpacity(_selected ? 1 : 0),
+                color: colors.cool.shade30.withValues(alpha: _selected ? 1 : 0),
                 borderRadius: borderRadius,
               ),
               child: Row(

@@ -76,6 +76,11 @@ class _CommentDemoState extends State<CommentDemo> {
             author: 'John Doe',
             comment: 'This is a comment',
             timeStamp: '09:30 AM',
+            attachment: ZdsChatAttachment(
+              name: 'Blueprints',
+              size: '1234kb',
+              extension: 'ici',
+            ),
           ),
           ZdsComment(
             avatar: ZetaAvatar.initials(

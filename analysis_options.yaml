@@ -1,3 +1,6 @@
+analyzer:
+  errors:
+    unsafe_variance: ignore
 include: package:zds_analysis/analysis_options_lib.yaml
 linter:
   rules:

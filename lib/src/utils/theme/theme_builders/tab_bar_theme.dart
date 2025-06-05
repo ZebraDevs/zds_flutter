@@ -17,8 +17,8 @@ extension TabBarExtension on ZetaColorScheme {
   /// [textTheme] is used to style the labels of the selected and unselected tabs.
   ///
   /// Returns a [TabBarTheme] that matches the [ZetaColorScheme].
-  TabBarTheme tabBarTheme(TextTheme textTheme) {
-    return TabBarTheme(
+  TabBarThemeData tabBarTheme(TextTheme textTheme) {
+    return TabBarThemeData(
       /// The color of the line that appears below the selected tab.
       indicatorColor: zetaColors.secondary,
 

@@ -60,7 +60,7 @@ class ZdsSpeedScrollableList extends StatefulWidget {
 class _ZdsSpeedScrollableListState extends State<ZdsSpeedScrollableList> {
   // Maps an item group to its corresponding key
   final Map<String, GlobalKey> _keyMap = {};
-  final _scrollContentKey = GlobalKey();
+  final GlobalKey<State<StatefulWidget>> _scrollContentKey = GlobalKey();
   final _scrollController = ScrollController();
 
   final _sliderKey = GlobalKey<ZdsSpeedSliderState>();

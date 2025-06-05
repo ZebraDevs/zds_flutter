@@ -119,7 +119,7 @@ class _ExpandableContainerState extends State<_ExpandableContainer> with SingleT
     super.dispose();
   }
 
-  void _afterLayout(_) {
+  void _afterLayout(dynamic _) {
     final RenderBox renderBox = _keyText.currentContext!.findRenderObject()! as RenderBox;
     _textHeight = renderBox.size.height;
     _sizeAnimation = Tween<double>(begin: widget.minHeight, end: _textHeight).animate(_controller);
@@ -262,7 +262,7 @@ class _FadeOpacity extends StatelessWidget {
           stops: const <double>[0, 1],
           colors: <Color>[
             color,
-            color.withOpacity(0.1),
+            color.withValues(alpha: 0.1),
           ],
         ),
       ),

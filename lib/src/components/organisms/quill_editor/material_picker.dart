@@ -125,7 +125,7 @@ class _ZdsMaterialPickerState extends State<ZdsMaterialPicker> {
   void initState() {
     for (final List<Color> colors in _colorTypes) {
       _shadingTypes(colors).forEach((Map<Color, String> color) {
-        if (widget.pickerColor.value == color.keys.first.value) {
+        if (widget.pickerColor.toARGB32() == color.keys.first.toARGB32()) {
           return setState(() {
             _currentColorType = colors;
             _currentShading = color.keys.first;

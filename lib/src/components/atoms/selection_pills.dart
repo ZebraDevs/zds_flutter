@@ -70,7 +70,7 @@ class ZdsSelectionPill extends StatelessWidget {
   ///
   /// Custom color to override pill background color.
   ///
-  ///Defaults to `colorScheme.secondary.withOpacity(0.1)`
+  ///Defaults to `colorScheme.secondary.withValues(alpha:0.1)`
   final Color? selectedColor;
 
   ///Use [color] instead. Will be deprecated in future release.
@@ -89,7 +89,7 @@ class ZdsSelectionPill extends StatelessWidget {
     final Color background = disabled
         ? zetaColors.surfaceDisabled
         : selected
-            ? color?.surface ?? selectedColor?.withOpacity(0.2) ?? zetaColors.secondary.surface
+            ? color?.surface ?? selectedColor?.withValues(alpha: 0.2) ?? zetaColors.secondary.surface
             : themeData.colorScheme.surface;
 
     final Color foreground = disabled
