@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../zds_flutter.dart';
 
@@ -98,13 +99,17 @@ class ZdsBottomBarThemeData {
 }
 
 /// Theme for ZdsBottomBar.
+///
+/// Note: This should wrap the entire widget tree for all apps using ZDS Flutter.
+///
+/// This wrapper also provides the [SlidableAutoCloseBehavior] to ensure that any [Slidable] widgets automatically close when another slidable action is triggered.
 class ZdsBottomBarTheme extends InheritedWidget {
   /// Constructs a [ZdsBottomBarTheme].
-  const ZdsBottomBarTheme({
-    required super.child,
+  ZdsBottomBarTheme({
+    required Widget child,
     required this.data,
     super.key,
-  });
+  }) : super(child: SlidableAutoCloseBehavior(child: child));
 
   /// Theme data to be applied.
   final ZdsBottomBarThemeData data;

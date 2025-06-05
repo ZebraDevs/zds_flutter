@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../zds_flutter.dart';
 
-/// Displays a comment with an optional attachment and delete and reply swipeable actions.
+/// Displays a comment with an optional attachment and delete and reply slidable actions.
+///
+/// For the correct behavior, any app using this widget should be wrapped with either a [SlidableAutoCloseBehavior] or a [ZdsBottomBarTheme].
 class ZdsComment extends StatelessWidget {
   /// Constructs a [ZdsComment] widget.
   const ZdsComment({
@@ -26,6 +28,8 @@ class ZdsComment extends StatelessWidget {
     this.onMenuItemSelected,
     this.backgroundColor,
     this.popupMenuBackgroundColor,
+    this.slidableCloseOnScroll = false,
+    this.scrollableGroupTag = 'zds-comment',
   })  : assert(
           onReply != null && replySemanticLabel != null || onReply == null && replySemanticLabel == null,
           'replySemanticLabel must be not null if onReply is defined',
@@ -98,6 +102,16 @@ class ZdsComment extends StatelessWidget {
   /// Defaults to [ZetaColors.surfacePrimary].
   final Color? popupMenuBackgroundColor;
 
+  /// Whether the slidable actions should close when the list is scrolled.
+  final bool slidableCloseOnScroll;
+
+  /// The tag for the scrollable group.
+  ///
+  /// This is used to group comments in a scrollable list.
+  ///
+  /// The default is 'zds-comment'. This means that all comments will be in the same group, so only one comments slidable actions can be open at a time.
+  final String? scrollableGroupTag;
+
   @override
   Widget build(BuildContext context) {
     final colors = Zeta.of(context).colors;
@@ -128,6 +142,8 @@ class ZdsComment extends StatelessWidget {
               builder: (context, constraints) {
                 return ZdsSlidableListTile(
                   width: constraints.maxWidth,
+                  closeOnScroll: slidableCloseOnScroll,
+                  groupTag: scrollableGroupTag,
                   elevation: 0,
                   actions: [
                     if (!isReply && onReply != null && replySemanticLabel != null)
@@ -271,7 +287,9 @@ class ZdsComment extends StatelessWidget {
       ..add(EnumProperty<ZdsPopupMenuPosition>('menuPosition', menuPosition))
       ..add(ObjectFlagProperty<ValueChanged<int>?>.has('onMenuItemSelected', onMenuItemSelected))
       ..add(ColorProperty('backgroundColor', backgroundColor))
-      ..add(ColorProperty('popupMenuBackgroundColor', popupMenuBackgroundColor));
+      ..add(ColorProperty('popupMenuBackgroundColor', popupMenuBackgroundColor))
+      ..add(DiagnosticsProperty<bool>('slidableCloseOnScroll', slidableCloseOnScroll))
+      ..add(StringProperty('scrollableGroupTag', scrollableGroupTag));
   }
 }
 
