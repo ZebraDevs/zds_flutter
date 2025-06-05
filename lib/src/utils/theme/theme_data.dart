@@ -61,12 +61,11 @@ class _ZdsBaseColors {
 class ZdsThemeData {
   /// Creates a `ZdsThemeData`.
   ///
-  /// The [themeData] and [themeMode] must not be null.
+  /// The [themeMode] must not be null.
   ///
-  /// The [themeData] parameter, which is required, defines the theme data to be used with [ZetaProvider].
   /// The [themeMode] parameter, which is required, defines the theme mode for the [Zeta], and defaults to [ThemeMode.system].
-  /// The [darkAppBarStyle] parameter defines the AppBar style for the dark theme, used to select the colors used in AppBarTheme style from [ZetaColorScheme]. Defaults to [ZetaAppBarStyle.surface].
-  /// The [lightAppBarStyle] parameter defines the AppBar style for the light theme, used to select the colors used in AppBarTheme style from [ZetaColorScheme]. Defaults to [ZetaAppBarStyle.primary].
+  // /// The [darkAppBarStyle] parameter defines the AppBar style for the dark theme, used to select the colors used in AppBarTheme style from [ZetaColorScheme]. Defaults to [ZetaAppBarStyle.surface].
+  // /// The [lightAppBarStyle] parameter defines the AppBar style for the light theme, used to select the colors used in AppBarTheme style from [ZetaColorScheme]. Defaults to [ZetaAppBarStyle.primary].
   const ZdsThemeData._({
     // required this.themeData,
     required this.themeMode,
@@ -74,6 +73,7 @@ class ZdsThemeData {
     required this.lightAppBarStyle,
     required this.contrast,
     required this.adjustAccessibility,
+    required this.fontFamily,
     required _ZdsBaseColors lightColors,
     required _ZdsBaseColors darkColors,
   })  : _lightColors = lightColors,
@@ -118,6 +118,7 @@ class ZdsThemeData {
       lightColors: baseColors,
       // Apply the base colors to light theme.
       darkColors: baseColors, // Apply the same base colors to dark theme.
+      fontFamily: kZetaFontFamily,
     );
   }
 
@@ -138,6 +139,8 @@ class ZdsThemeData {
     final lightColors = _ZdsBaseColors.fromJson(light);
     final darkColors = dark != null ? _ZdsBaseColors.fromJson(light) : lightColors;
 
+    final fontFamily = json['fontFamily'] as String? ?? kZetaFontFamily;
+
     return ZdsThemeData._(
       themeMode: themeMode,
       contrast: contrast,
@@ -146,6 +149,7 @@ class ZdsThemeData {
       adjustAccessibility: adjustAccessibility,
       lightAppBarStyle: _zetaAppBarStyle(light),
       darkAppBarStyle: _zetaAppBarStyle(dark),
+      fontFamily: fontFamily,
       // themeData: _zetaThemeDataFromJson(
       //   json,
       //   contrast,
@@ -238,6 +242,9 @@ class ZdsThemeData {
 
   /// Base dark colors, used internally to save and retrieve the colors from JSON
   final _ZdsBaseColors _darkColors;
+
+  /// Font override to use
+  final String fontFamily;
 
   /// Converts the [ZdsThemeData] instance to a JSON map.
   Map<String, dynamic> toJson() {
@@ -410,32 +417,35 @@ class ZdsThemeData {
   ///
   /// Returns a new [ZdsThemeData] instance.
   ZdsThemeData copyWith({
+    ZetaCustomTheme? themeData,
     ThemeMode? themeMode,
     ZetaAppBarStyle? darkAppBarStyle,
     ZetaAppBarStyle? lightAppBarStyle,
     ZetaContrast? contrast,
     bool? adjustAccessibility,
+    String? fontFamily,
   }) {
     var lightColors = _lightColors;
     var darkColors = _darkColors;
 
-    // if (themeData != null) {
-    //   lightColors = _ZdsBaseColors(
-    //     primary: themeData.colorsLight.primary.shade60,
-    //     secondary: themeData.colorsLight.mainSecondary.shade60,
-    //     error: themeData.colorsLight.error.shade60,
-    //   );
+    if (themeData != null) {
+      lightColors = _ZdsBaseColors(
+        primary: themeData.primary ?? const ZetaPrimitivesLight().blue,
+        secondary: themeData.secondary ?? const ZetaPrimitivesLight().blue,
+        error: const ZetaPrimitivesLight().red,
+      );
 
-    //   darkColors = _ZdsBaseColors(
-    //     primary: themeData.colorsLight.primary.shade50,
-    //     secondary: themeData.colorsLight.mainSecondary.shade50,
-    //     error: themeData.colorsLight.error.shade50,
-    //   );
-    // }
+      darkColors = _ZdsBaseColors(
+        primary: themeData.primaryDark ?? const ZetaPrimitivesDark().blue,
+        secondary: themeData.secondaryDark ?? const ZetaPrimitivesDark().blue,
+        error: const ZetaPrimitivesDark().red,
+      );
+    }
 
     return ZdsThemeData._(
       lightColors: lightColors,
       darkColors: darkColors,
+      // themeData:
       // themeData: ThemeData(),
       // themeData: themeData ?? this.themeData,
       themeMode: themeMode ?? this.themeMode,
@@ -443,6 +453,7 @@ class ZdsThemeData {
       lightAppBarStyle: lightAppBarStyle ?? this.lightAppBarStyle,
       contrast: contrast ?? this.contrast,
       adjustAccessibility: adjustAccessibility ?? this.adjustAccessibility,
+      fontFamily: fontFamily ?? this.fontFamily,
     );
   }
 
@@ -476,7 +487,7 @@ class ZetaSwatchGenerator {
     return ZetaColorSwatch(
       // contrast: contrast,
       // brightness: brightness,
-      primary: primary.value,
+      primary: primary.toARGB32(),
       swatch: primary.generateSwatch(background: background, adjustPrimary: adjustAccessibility),
     ).apply(brightness: brightness);
   }

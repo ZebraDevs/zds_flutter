@@ -36,7 +36,7 @@ class DemoApp extends StatelessWidget {
     return ZetaProvider(
       themeService: themeService ?? const ZetaDefaultThemeService(),
       initialThemeMode: data.themeMode,
-      // initialThemeData: data.themeData,
+      fontFamily: data.fontFamily,
       initialTheme: 'zds',
       initialContrast: data.contrast,
       customThemes: [data.toCustomTheme()],
@@ -62,22 +62,8 @@ class DemoApp extends StatelessWidget {
           ],
           routes: kAllRoutes,
           themeMode: themeMode,
-          // theme: themeData,
-          // theme: themeData.copyWith(scaffoldBackgroundColor: Colors.red),
-          // darkTheme: darkTheme,
-          theme: Zeta.of(context).semantics.toTheme(
-                // fontFamily: themeData.fontFamily,
-                appBarStyle: data.lightAppBarStyle,
-              ),
-          darkTheme: Zeta.of(context).semantics.toTheme(
-                // fontFamily: themeData.fontFamily,
-                appBarStyle: data.darkAppBarStyle,
-                // brightness: Brightness.dark,
-              ),
-          // darkTheme: themeData.colorsDark.toScheme().toTheme(
-          //       fontFamily: themeData.fontFamily,
-          //       appBarStyle: data.darkAppBarStyle,
-          //     ),
+          theme: themeData,
+          darkTheme: darkTheme,
         );
       },
     );

@@ -18,7 +18,7 @@ jobs:
         with:
           cache: true
           channel: stable
-          flutter-version: 3.24.x # TODO UX-1347
+          flutter-version: 3.32.x
       - name: Install dependencies
         run: flutter pub get
       - name: Format code
@@ -38,7 +38,7 @@ jobs:
         with:
           cache: true
           channel: stable
-          flutter-version: 3.24.x # TODO UX-1347
+          flutter-version: 3.32.x
       - name: Setup flutter
         run: flutter pub get
       - name: Build example app
