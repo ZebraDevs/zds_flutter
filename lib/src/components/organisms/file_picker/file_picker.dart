@@ -474,7 +474,7 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
       button: true,
       enabled: true,
       child: InkWell(
-        onTap: () async => handleOptionAction(context, option),
+        onTap: () => handleOptionAction(context, option),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Row(
@@ -523,7 +523,7 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
           trailingActions: <SwipeAction>[
             SwipeAction(
               color: Theme.of(context).colorScheme.error,
-              onTap: (_) async => controller.openFile(context, config, wrapper),
+              onTap: (_) => controller.openFile(context, config, wrapper),
               content: Semantics(
                 focused: true,
                 label: ComponentStrings.of(context).get('DELETE', 'Delete'),
@@ -538,7 +538,7 @@ class ZdsFilePickerState extends State<ZdsFilePicker> with AutomaticKeepAliveCli
             hint: ComponentStrings.of(context).get('SWIPE_TO_REVEAL_SEMANTIC', 'Swipe left to reveal actions'),
             child: ZdsListTile(
               leading: ZdsFilePreview(file: wrapper, size: 50, useCard: false),
-              onTap: () async => controller.openFile(context, config, wrapper),
+              onTap: () => controller.openFile(context, config, wrapper),
               title: Text(
                 wrapper.name ?? ComponentStrings.of(context).get('UNKNOWN', 'Unknown'),
                 maxLines: 1,
@@ -945,7 +945,7 @@ extension on ZdsFilePickerState {
               : isStandard
                   ? 40
                   : 30,
-          onTap: () async => handleOptionAction(context, option),
+          onTap: () => handleOptionAction(context, option),
           child: Column(
             children: <Widget>[
               Icon(
@@ -1145,7 +1145,7 @@ class _MultiInputDialogState extends State<_MultiInputDialog> {
                   if (widget.secondaryAction != null)
                     ZdsButton.muted(
                       child: Text(widget.secondaryAction!),
-                      onTap: () async => Navigator.maybePop(context),
+                      onTap: () => Navigator.maybePop(context),
                     ),
                   if (widget.secondaryAction == null) const Spacer(),
                   const SizedBox(width: 16),

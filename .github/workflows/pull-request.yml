@@ -20,7 +20,7 @@ jobs:
         with:
           cache: true
           channel: stable
-          flutter-version: 3.32.x # TODO UX-1347
+          flutter-version: 3.32.x
       - uses: ZebraDevs/flutter-code-quality@main
         with:
           token: ${{secrets.GITHUB_TOKEN}}
@@ -54,7 +54,7 @@ jobs:
         with:
           cache: true
           channel: stable
-          flutter-version: 3.32.x # TODO UX-1347
+          flutter-version: 3.32.x
       - name: Setup flutter
         run: flutter pub get
       - name: Build example app

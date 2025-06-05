@@ -96,7 +96,7 @@ class ZdsCamera extends StatelessWidget {
     CaptureRequestBuilder? photoPathBuilder,
     CaptureRequestBuilder? videoPathBuilder,
     List<AwesomeFilter>? filters,
-  }) async {
+  }) {
     if (useSystemCamera || kIsWeb) {
       return image_picker.ImagePicker().pickImage(source: image_picker.ImageSource.camera);
     } else {
@@ -127,7 +127,7 @@ class ZdsCamera extends StatelessWidget {
     CaptureRequestBuilder? photoPathBuilder,
     CaptureRequestBuilder? videoPathBuilder,
     Duration? maxVideoDuration,
-  }) async {
+  }) {
     if (kIsWeb) {
       return image_picker.ImagePicker().pickVideo(source: image_picker.ImageSource.camera);
     } else {
@@ -664,7 +664,7 @@ class _CameraButtonPainter extends CustomPainter {
       ..isAntiAlias = true;
     final radius = size.width / 2;
     final center = Offset(size.width / 2, size.height / 2);
-    bgPainter.color = ZetaColorBase.white.withOpacity(.5);
+    bgPainter.color = ZetaColorBase.white.withValues(alpha: .5);
     canvas.drawCircle(center, radius, bgPainter);
 
     bgPainter.color = ZetaColorBase.white;
@@ -687,7 +687,7 @@ class _VideoButtonPainter extends CustomPainter {
       ..isAntiAlias = true;
     final radius = size.width / 2;
     final center = Offset(size.width / 2, size.height / 2);
-    bgPainter.color = ZetaColorBase.white.withOpacity(.5);
+    bgPainter.color = ZetaColorBase.white.withValues(alpha: .5);
     canvas.drawCircle(center, radius, bgPainter);
 
     if (isRecording) {
@@ -793,14 +793,14 @@ class _PreviewActions extends StatelessWidget {
             elevation: 0,
             shape: const CircleBorder(),
             backgroundColor: Colors.black38,
-            onPressed: () async => _onPop(context, false),
+            onPressed: () => _onPop(context, false),
             child: const Icon(Icons.close, color: ZetaColorBase.white),
           ),
           FloatingActionButton(
             elevation: 0,
             shape: const CircleBorder(),
             backgroundColor: Colors.black38,
-            onPressed: () async => _onPop(context, true),
+            onPressed: () => _onPop(context, true),
             child: const Icon(Icons.done, color: ZetaColorBase.white),
           ),
         ],

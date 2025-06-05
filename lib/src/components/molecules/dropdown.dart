@@ -210,7 +210,7 @@ class ZdsDropdownListState<T> extends State<ZdsDropdownList<T>> {
               menuItemStyleData: MenuItemStyleData(
                 selectedMenuItemBuilder: (BuildContext context, Widget child) {
                   return ColoredBox(
-                    color: themeData.colorScheme.secondary.withOpacity(0.1),
+                    color: themeData.colorScheme.secondary.withValues(alpha: 0.1),
                     child: child,
                   );
                 },

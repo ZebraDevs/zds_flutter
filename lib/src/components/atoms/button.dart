@@ -255,7 +255,7 @@ class ZdsButton extends StatelessWidget {
 
     // Helper function to calculate the overlay color.
     Color calculateOverlay({double opacity = 0.1, Color? background}) {
-      return customColor?.withOpacity(opacity) ?? (background ?? defaultBackground).withOpacity(opacity);
+      return customColor?.withValues(alpha: opacity) ?? (background ?? defaultBackground).withValues(alpha: opacity);
     }
 
     switch (variant) {

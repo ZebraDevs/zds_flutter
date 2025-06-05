@@ -51,7 +51,7 @@ class ShapePainter extends CustomPainter {
 
     // Draw the preview shape if it exists
     if (previewShape != null) {
-      paint.color = previewShape!.color.withOpacity(0.5); // Semi-transparent preview
+      paint.color = previewShape!.color.withValues(alpha: 0.5); // Semi-transparent preview
       _drawShape(canvas, paint, previewShape!);
     }
   }

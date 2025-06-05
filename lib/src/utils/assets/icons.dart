@@ -407,7 +407,6 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.ttf':
     case '.txt':
       return colors?.blue ?? const Color(0xFF376FC9);
-
     case '.pdf':
     case '.ppt':
     case '.ppr':
@@ -423,7 +422,6 @@ Color iconColor(String ext, {BuildContext? context}) {
     case '.tiff':
     case '.bmp':
       return colors?.orange ?? const Color(0xFFF56200);
-
     case '.flv':
     case '.m4v':
     case '.mov':
@@ -480,11 +478,6 @@ extension IconDataFromExt on String {
   IconData fileIcon() {
     if (isEmpty) return ZdsIcons.file_present;
     return _extensions[_safeExt] ?? ZdsIcons.file_present;
-  }
-
-  @Deprecated('Use fileIconColor instead.')
-  Icon coloredFileIcon() {
-    return Icon(fileIcon(), color: iconColor(_safeExt));
   }
 
   Color fileIconColor(BuildContext context) {

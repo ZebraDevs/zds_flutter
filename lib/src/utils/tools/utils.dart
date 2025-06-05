@@ -261,9 +261,9 @@ extension LightHexColor on Color {
   /// Lightens this [Color].
   Color withLight(double opacity, {Color? background}) {
     return Color.fromRGBO(
-      _transform(opacity, red, (background ?? Colors.white).red),
-      _transform(opacity, green, (background ?? Colors.white).green),
-      _transform(opacity, blue, (background ?? Colors.white).blue),
+      _transform(opacity, (r * 255).round() & 0xFF, ((background ?? Colors.white).r * 255).round() & 0xFF),
+      _transform(opacity, (g * 255).round() & 0xFF, ((background ?? Colors.white).g * 255).round() & 0xFF),
+      _transform(opacity, (b * 255).round() & 0xFF, ((background ?? Colors.white).b * 255).round() & 0xFF),
       1,
     );
   }
@@ -290,18 +290,18 @@ extension LightHexColor on Color {
   ///
   /// Prefixes a hash sign if [leadingHashSign] is set to true (defaults to true).
   String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
-      '${alpha.toRadixString(16).padLeft(2, '0')}'
-      '${red.toRadixString(16).padLeft(2, '0')}'
-      '${green.toRadixString(16).padLeft(2, '0')}'
-      '${blue.toRadixString(16).padLeft(2, '0')}';
+      '${((a * 255).round() & 0xFF).toRadixString(16).padLeft(2, '0')}'
+      '${((r * 255).round() & 0xFF).toRadixString(16).padLeft(2, '0')}'
+      '${((g * 255).round() & 0xFF).toRadixString(16).padLeft(2, '0')}'
+      '${((b * 255).round() & 0xFF).toRadixString(16).padLeft(2, '0')}';
 
   /// Returns this Color's hexcode without the alpha channel.
   ///
   /// Prefixes a hash sign if [leadingHashSign] is set to true (defaults to true).
   String toHexNoAlpha({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
-      '${red.toRadixString(16).padLeft(2, '0')}'
-      '${green.toRadixString(16).padLeft(2, '0')}'
-      '${blue.toRadixString(16).padLeft(2, '0')}';
+      '${((r * 255).round() & 0xFF).toRadixString(16).padLeft(2, '0')}'
+      '${((g * 255).round() & 0xFF).toRadixString(16).padLeft(2, '0')}'
+      '${((b * 255).round() & 0xFF).toRadixString(16).padLeft(2, '0')}';
 }
 
 int _transform(double p, int t, int b) {
@@ -381,10 +381,10 @@ extension LaunchUrlInWebView on Uri {
 /// [shade] Shade from 0-1
 Color getShadedColor(Color input, double shade) {
   return Color.fromARGB(
-    input.alpha,
-    changeShade(input.red, 1 - shade),
-    changeShade(input.green, 1 - shade),
-    changeShade(input.blue, 1 - shade),
+    (input.a * 255).round() & 0xFF,
+    changeShade((input.r * 255).round() & 0xFF, 1 - shade),
+    changeShade((input.g * 255).round() & 0xFF, 1 - shade),
+    changeShade((input.b * 255).round() & 0xFFF, 1 - shade),
   );
 }
 

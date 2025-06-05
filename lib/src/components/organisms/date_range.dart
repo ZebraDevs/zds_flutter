@@ -339,7 +339,7 @@ class ZdsDateRangeState extends State<ZdsDateRange> {
         if (widget.isSelectable)
           InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(71)),
-            onTap: () async => _showDateSelector(context),
+            onTap: () => _showDateSelector(context),
             child: text.paddingInsets(const EdgeInsets.symmetric(vertical: 8)),
           ),
         Semantics(

@@ -10,7 +10,7 @@ import '../../../../zds_flutter.dart';
 import 'quill_toolbar.dart';
 
 /// Default options for ZDS Quill Toolbar
-final zdsQuillToolbarOptions = QuillToolbarOption.values.toSet();
+final Set<QuillToolbarOption> zdsQuillToolbarOptions = QuillToolbarOption.values.toSet();
 
 /// Represents a Quill editor page.
 class ZdsQuillEditorPage extends StatefulWidget {
@@ -228,7 +228,7 @@ class _ZdsQuillEditorPageState extends State<ZdsQuillEditorPage> with FrameCallb
   /// Used to monitor the character count.
   bool _onReplaceText(int index, int length, Object? data) {
     if (widget.charLimit != 0 && widget.charLimit != 10000) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _characters = _quillController.document.length - 1;
       });
     }
@@ -256,7 +256,7 @@ class _ZdsQuillEditorPageState extends State<ZdsQuillEditorPage> with FrameCallb
       return Center(child: ZdsImages.sadZebra);
     };
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _quillController.moveCursorToEnd();
       _onReplaceText(0, 0, null);
     });
@@ -425,7 +425,7 @@ class _ZdsQuillEditorPageState extends State<ZdsQuillEditorPage> with FrameCallb
             iconSize: 24,
             controller: _quillController,
             enabledColor: appBarFg,
-            disabledColor: appBarFg.withOpacity(0.3),
+            disabledColor: appBarFg.withValues(alpha: 0.3),
             afterPressed: _afterUndoRedo,
             undo: true,
           ),
@@ -435,7 +435,7 @@ class _ZdsQuillEditorPageState extends State<ZdsQuillEditorPage> with FrameCallb
             iconSize: 24,
             controller: _quillController,
             enabledColor: appBarFg,
-            disabledColor: appBarFg.withOpacity(0.3),
+            disabledColor: appBarFg.withValues(alpha: 0.3),
             afterPressed: _afterUndoRedo,
             undo: false,
           ),
@@ -477,7 +477,7 @@ class _ZdsQuillEditorPageState extends State<ZdsQuillEditorPage> with FrameCallb
     return IconButton(
       icon: const Icon(ZdsIcons.check),
       tooltip: ComponentStrings.of(context).get('DONE', 'Done'),
-      onPressed: () async {
+      onPressed: () {
         if (_withinLimit) {
           _fetchingText = true;
           Navigator.of(context).pop(ZdsQuillDelta(document: _quillController.document));
@@ -574,7 +574,7 @@ class _HistoryButtonState extends State<_HistoryButton> {
   Widget build(BuildContext context) {
     _setIconColor();
 
-    widget.controller.changes.listen((quill.DocChange event) async {
+    widget.controller.changes.listen((quill.DocChange event) {
       _setIconColor();
     });
 

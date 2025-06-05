@@ -135,7 +135,6 @@ class ZdsFileWrapper {
     // The use of dynamic calls is unavoidable in this case due to the heterogeneous nature
     // of the `content` property, which can be of different types (e.g., `XFile` or `XUri`).
     // Refactoring to a more strongly-typed structure would require changes to the design.
-    // ignore: avoid_dynamic_calls
     if (other.content.runtimeType != content.runtimeType) return false;
     if (content is XFile && other.content is XFile) {
       final XFile f1 = content as XFile;

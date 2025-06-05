@@ -101,7 +101,7 @@ class ZdsToolbar extends StatelessWidget {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: safeTextStyle(theme.primaryTextTheme.titleSmall).copyWith(
-                                      color: effectiveForeground.withOpacity(0.8),
+                                      color: effectiveForeground.withValues(alpha: 0.8),
                                     ),
                                     child: subtitle!,
                                   ),

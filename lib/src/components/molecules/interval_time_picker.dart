@@ -280,8 +280,8 @@ class _HourMinuteControl extends StatelessWidget {
     final Color backgroundColor = timePickerTheme.hourMinuteColor ??
         WidgetStateColor.resolveWith((Set<WidgetState> states) {
           return states.contains(WidgetState.selected)
-              ? themeData.colorScheme.primary.withOpacity(isDark ? 0.24 : 0.12)
-              : themeData.colorScheme.onSurface.withOpacity(0.12);
+              ? themeData.colorScheme.primary.withValues(alpha: isDark ? 0.24 : 0.12)
+              : themeData.colorScheme.onSurface.withValues(alpha: 0.12);
         });
     final TextStyle style = timePickerTheme.hourMinuteTextStyle ?? themeData.textTheme.displayMedium!;
     final ShapeBorder shape = timePickerTheme.hourMinuteShape ?? _kDefaultShape;
@@ -554,7 +554,9 @@ class _DayPeriodControl extends StatelessWidget {
     final bool isDark = colorScheme.brightness == Brightness.dark;
     final Color textColor = timePickerTheme.dayPeriodTextColor ??
         WidgetStateColor.resolveWith((Set<WidgetState> states) {
-          return states.contains(WidgetState.selected) ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.60);
+          return states.contains(WidgetState.selected)
+              ? colorScheme.primary
+              : colorScheme.onSurface.withValues(alpha: 0.60);
         });
     final Color backgroundColor = timePickerTheme.dayPeriodColor ??
         WidgetStateColor.resolveWith((Set<WidgetState> states) {
@@ -563,7 +565,7 @@ class _DayPeriodControl extends StatelessWidget {
           // and allows the optional elevation overlay for dark mode to be
           // visible.
           return states.contains(WidgetState.selected)
-              ? colorScheme.primary.withOpacity(isDark ? 0.24 : 0.12)
+              ? colorScheme.primary.withValues(alpha: isDark ? 0.24 : 0.12)
               : Colors.transparent;
         });
     final bool amSelected = selectedTime.period == DayPeriod.am;
@@ -581,7 +583,7 @@ class _DayPeriodControl extends StatelessWidget {
         timePickerTheme.dayPeriodShape ?? const RoundedRectangleBorder(borderRadius: _kDefaultBorderRadius);
     final BorderSide borderSide = timePickerTheme.dayPeriodBorderSide ??
         BorderSide(
-          color: Color.alphaBlend(colorScheme.onSurface.withOpacity(0.38), colorScheme.surface),
+          color: Color.alphaBlend(colorScheme.onSurface.withValues(alpha: 0.38), colorScheme.surface),
         );
     // Apply the custom borderSide.
     shape = shape.copyWith(
@@ -1289,7 +1291,8 @@ class _DialState extends State<_Dial> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final TimePickerThemeData pickerTheme = TimePickerTheme.of(context);
-    final Color backgroundColor = pickerTheme.dialBackgroundColor ?? themeData.colorScheme.onSurface.withOpacity(0.12);
+    final Color backgroundColor =
+        pickerTheme.dialBackgroundColor ?? themeData.colorScheme.onSurface.withValues(alpha: 0.12);
     final Color accentColor = pickerTheme.dialHandColor ?? themeData.colorScheme.primary;
     final Color primaryLabelColor =
         WidgetStateProperty.resolveAs(pickerTheme.dialTextColor, <WidgetState>{}) ?? themeData.colorScheme.onSurface;
@@ -1865,12 +1868,12 @@ class _HourMinuteTextFieldState extends State<_HourMinuteTextField> with Restora
         focusedErrorBorder: OutlineInputBorder(
           borderSide: BorderSide(color: colorScheme.error, width: 2),
         ),
-        hintStyle: widget.style.copyWith(color: colorScheme.onSurface.withOpacity(0.36)),
+        hintStyle: widget.style.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.36)),
         // TODO(rami-a): Remove this logic once https://github.com/flutter/flutter/issues/54104 is fixed.
         errorStyle: const TextStyle(fontSize: 0, height: 0), // Prevent the error text from appearing.
       );
     }
-    final Color unfocusedFillColor = timePickerTheme.hourMinuteColor ?? colorScheme.onSurface.withOpacity(0.12);
+    final Color unfocusedFillColor = timePickerTheme.hourMinuteColor ?? colorScheme.onSurface.withValues(alpha: 0.12);
     // If screen reader is in use, make the hint text say hours/minutes.
     // Otherwise, remove the hint text when focused because the centered cursor
     // appears odd above the hint text.
@@ -2381,8 +2384,8 @@ class _IntervalTimePickerDialogState extends State<IntervalTimePickerDialog> wit
         if (_entryMode.value == TimePickerEntryMode.dial || _entryMode.value == TimePickerEntryMode.input)
           IconButton(
             color: TimePickerTheme.of(context).entryModeIconColor ??
-                theme.colorScheme.onSurface.withOpacity(
-                  theme.colorScheme.brightness == Brightness.dark ? 1.0 : 0.6,
+                theme.colorScheme.onSurface.withValues(
+                  alpha: theme.colorScheme.brightness == Brightness.dark ? 1.0 : 0.6,
                 ),
             onPressed: _handleEntryModeToggle,
             icon: Icon(_entryMode.value == TimePickerEntryMode.dial ? Icons.keyboard : Icons.access_time),
@@ -2651,7 +2654,7 @@ Future<TimeOfDay?> showIntervalTimePicker({
   RouteSettings? routeSettings,
   EntryModeChangeCallback? onEntryModeChanged,
   Offset? anchorPoint,
-}) async {
+}) {
   assert(interval >= 1 && interval <= 60, 'Asserts that the interval is inclusive to the range 0 to 60');
   assert(
     debugCheckHasMaterialLocalizations(context),

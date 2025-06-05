@@ -109,7 +109,7 @@ class _ChatReactionsPill extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
                 blurRadius: 1,
                 offset: const Offset(0, 1),
               ),
@@ -217,7 +217,7 @@ class _ChatTagsPill extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
                 blurRadius: 1,
                 offset: const Offset(0, 1),
               ),

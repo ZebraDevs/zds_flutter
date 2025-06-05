@@ -209,8 +209,8 @@ class ZdsQuillToolbarColorButtonState extends State<ZdsQuillToolbarColorButton> 
       );
       return;
     }
-    var hex = _colorToHex(color);
-    hex = '#$hex';
+    final hex = color.toHex();
+
     widget.controller.formatSelection(
       widget.isBackground ? BackgroundAttribute(hex) : ColorAttribute(hex),
     );
@@ -293,7 +293,7 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
   @override
   void initState() {
     super.initState();
-    hexController = TextEditingController(text: _colorToHex(selectedColor));
+    hexController = TextEditingController(text: selectedColor.toHex(leadingHashSign: false));
     if (widget.isToggledColor) {
       selectedColor = widget.isBackground
           ? _hexToColor(widget.selectionStyle.attributes['background']?.value as String?)
@@ -396,7 +396,7 @@ class _ColorPickerDialogState extends State<_ColorPickerDialog> {
                                   labelTypes: List.empty(),
                                   colorPickerWidth: context.isPhone() ? box.maxWidth : 300,
                                   onColorChanged: (color) {
-                                    hexController.text = _colorToHex(color);
+                                    hexController.text = color.toHex(leadingHashSign: false);
                                     selectedColor = color;
                                     colorBoxSetState(() {});
                                   },
@@ -464,10 +464,6 @@ Color _hexToColor(String? hexString) {
   if (effectiveHex.length == 6 || effectiveHex.length == 7) buffer.write('ff');
   buffer.write(effectiveHex);
   return Color(int.tryParse(buffer.toString(), radix: 16) ?? 0xFF000000);
-}
-
-String _colorToHex(Color color) {
-  return color.value.toRadixString(16).padLeft(8, '0').toUpperCase();
 }
 
 Color _stringToColor(String? colorString, [Color? originalColor]) {

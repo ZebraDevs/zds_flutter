@@ -12,7 +12,7 @@ ZdsBottomBarThemeData buildZdsBottomBarThemeData(BuildContext context) {
     shadows: <BoxShadow>[
       BoxShadow(
         offset: const Offset(0, -1),
-        color: Zeta.of(context).colors.textDefault.withOpacity(0.1),
+        color: Zeta.of(context).colors.textDefault.withValues(alpha: 0.1),
         blurRadius: 2,
       ),
     ],
@@ -326,7 +326,7 @@ extension ThemeExtension on ThemeData {
       );
     }
 
-    final CardTheme cardTheme = this.cardTheme.copyWith(
+    final CardThemeData cardTheme = this.cardTheme.copyWith(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kSearchBorderRadius),
           ),
@@ -341,7 +341,7 @@ extension ThemeExtension on ThemeData {
             ),
           ),
           textSelectionTheme: TextSelectionThemeData(cursorColor: colorScheme.onSurface),
-          hintColor: colorScheme.onSurface.withOpacity(0.5),
+          hintColor: colorScheme.onSurface.withValues(alpha: 0.5),
           cardTheme: cardTheme.copyWith(shadowColor: Colors.transparent),
         );
       case ZdsSearchFieldVariant.elevated:
@@ -351,7 +351,7 @@ extension ThemeExtension on ThemeData {
             cursorColor: colorScheme.onSurface,
           ),
           cardTheme: cardTheme,
-          hintColor: colorScheme.onSurface.withOpacity(0.5),
+          hintColor: colorScheme.onSurface.withValues(alpha: 0.5),
         );
     }
   }
@@ -359,7 +359,9 @@ extension ThemeExtension on ThemeData {
   /// Custom theme for [ZdsDateTimePicker].
   ThemeData get zdsDateTimePickerTheme {
     return copyWith(
-      dialogBackgroundColor: colorScheme.brightness == Brightness.dark ? colorScheme.surface : null,
+      dialogTheme: dialogTheme.copyWith(
+        backgroundColor: colorScheme.brightness == Brightness.dark ? colorScheme.surface : null,
+      ),
       colorScheme: colorScheme.copyWith(
         primary: colorScheme.secondary.withLight(colorScheme.brightness == Brightness.dark ? 0.75 : 1),
         onPrimary: colorScheme.onSecondary,
@@ -387,7 +389,7 @@ extension ThemeExtension on ThemeData {
       final double height = hasIcons ? 56.0 : 48.0;
       final ThemeData theme = Theme.of(context);
 
-      final TabBarTheme tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
+      final TabBarThemeData tabBarTheme = theme.tabBarTheme.copyWith(indicatorSize: TabBarIndicatorSize.tab);
       final TextStyle? labelStyle = hasIcons ? theme.textTheme.bodySmall : theme.textTheme.bodyLarge;
 
       return ZdsTabBarStyleContainer(
@@ -421,7 +423,7 @@ extension ThemeExtension on ThemeData {
           background: zetaColors.primary,
           indicator: zetaColors.primary.onColor,
           selectedText: zetaColors.primary.onColor,
-          unselectedText: zetaColors.primary.onColor.withOpacity(0.5),
+          unselectedText: zetaColors.primary.onColor.withValues(alpha: 0.5),
         );
       case ZdsTabBarColor.basic:
         return tabBarStyle(
@@ -449,7 +451,7 @@ extension ThemeExtension on ThemeData {
           background: appBarTheme.backgroundColor ?? zetaColors.surfacePrimary,
           indicator: appBarTheme.foregroundColor ?? zetaColors.primary,
           selectedText: appBarTheme.foregroundColor ?? zetaColors.textDefault,
-          unselectedText: appBarTheme.foregroundColor?.withOpacity(0.5) ?? zetaColors.textSubtle,
+          unselectedText: appBarTheme.foregroundColor?.withValues(alpha: 0.5) ?? zetaColors.textSubtle,
         );
     }
   }

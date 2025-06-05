@@ -38,7 +38,7 @@ class ZdsVideoHtmlExtension extends HtmlExtension {
         builder: (BuildContext ctx, BoxConstraints box) {
           return DecoratedBox(
             decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(ctx).colorScheme.onSurface.withOpacity(0.4), width: 0.5),
+              border: Border.all(color: Theme.of(ctx).colorScheme.onSurface.withValues(alpha: 0.4), width: 0.5),
             ),
             child: ZdsVideoWidget(
               context: context,

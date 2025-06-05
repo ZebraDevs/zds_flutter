@@ -162,7 +162,7 @@ class ZdsSlidableButtonState extends State<ZdsSlidableButton> {
         ? widget.buttonColorEnd!
         : widget.onSlideComplete != null
             ? widget.buttonColor
-            : widget.buttonColor.withOpacity(0.5);
+            : widget.buttonColor.withValues(alpha: 0.5);
 
     return Semantics(
       slider: true,
