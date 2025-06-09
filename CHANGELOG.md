@@ -10,6 +10,13 @@
 
 * **WFCNG-24950:** file present icon ([#81](https://github.com/ZebraDevs/zds_flutter/issues/81)) ([9bf9164](https://github.com/ZebraDevs/zds_flutter/commit/9bf91647edeb05656afd89a891a6ef9923c1ff6f))
 
+## [2.3.0](https://github.com/ZebraDevs/zds_flutter/compare/v2.2.3...v2.3.0) (2025-06-09)
+
+
+### ✨ New Features
+
+* Update to flutter 3.32.x ([#88](https://github.com/ZebraDevs/zds_flutter/issues/88)) ([757501f](https://github.com/ZebraDevs/zds_flutter/commit/757501fde8bf6e6339c1fb7a9d9146c2a79d8b14))
+
 ## [2.2.3](https://github.com/ZebraDevs/zds_flutter/compare/v2.2.2...v2.2.3) (2025-06-05)
 
 
