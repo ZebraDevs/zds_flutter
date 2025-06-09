@@ -59,7 +59,7 @@ class ZdsSpeedSlider extends StatefulWidget {
 /// The state of the [ZdsSpeedSlider]
 class ZdsSpeedSliderState extends State<ZdsSpeedSlider> with FrameCallbackMixin {
   late final ScrollController _scrollController;
-  final GlobalKey _scrollableKey = GlobalKey();
+  final GlobalKey<ScrollableState> _scrollableKey = GlobalKey<ScrollableState>();
   late List<GlobalKey> _itemKeys;
 
   int _selectedIndex = 0;
