@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       - name: Format code
-        run: dart format --fix .
+        run: dart format .
       # TODO: Package uses pre-release packages, so this always fails.
       # - name: Check Publish Warnings
       #   run: dart pub publish --dry-run
