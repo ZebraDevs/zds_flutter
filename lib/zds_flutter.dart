@@ -6,7 +6,7 @@
 // its usage, and is particularly useful when exporting several components or utilities
 // as part of the public API. The use of a library name at the top aids in identifying
 // the package's purpose, especially for consumers of the package.
-//ignore: unnecessary_library_name
+
 library;
 
 export 'package:zeta_flutter/zeta_flutter.dart' hide DeviceType, ListDivider;

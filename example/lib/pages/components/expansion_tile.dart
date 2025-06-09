@@ -88,7 +88,7 @@ class _ExpansionTileDemoState extends State<ExpansionTileDemo> {
                   ZdsExpansionTile(
                     title: const Text('Collect feedback from customers who was'),
                     initiallyExpanded: true,
-                    titleColor: const Color(0xff007ABA).withOpacity(0.1),
+                    titleColor: const Color(0xff007ABA).withValues(alpha: 0.1),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

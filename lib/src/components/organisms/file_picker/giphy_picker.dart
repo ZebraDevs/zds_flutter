@@ -157,7 +157,7 @@ class _ZdsGiphyPickerState extends State<ZdsGiphyPicker> {
                 controller: _searchController,
                 onChange: (String value) {
                   if (_debounce?.isActive ?? false) _debounce?.cancel();
-                  _debounce = Timer(const Duration(milliseconds: 500), () async {
+                  _debounce = Timer(const Duration(milliseconds: 500), () {
                     setState(() {
                       _queryText = value;
                       _listenerQuery();

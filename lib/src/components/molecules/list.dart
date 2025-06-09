@@ -11,7 +11,7 @@ final List<Widget> _emptyChildren =
 
 const Widget _emptyChild = SizedBox(height: 60, width: double.infinity);
 
-Widget _emptyBuilder(_, __) => _emptyChild;
+Widget _emptyBuilder(dynamic _, dynamic __) => _emptyChild;
 
 /// Creates a [ListView] with predefined parameters that match Zds styling and behavior.
 ///

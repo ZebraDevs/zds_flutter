@@ -192,7 +192,6 @@ class ZdsFileSize extends StatelessWidget {
         // handled directly by the FutureBuilder. Although the lint rule warns about discarded
         // futures, in this case, the Future is not discarded but used appropriately in the
         // FutureBuilder's builder function. No additional handling is required here.
-        // ignore: discarded_futures
         future: file!.length(),
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           if (snapshot.data != null) {

@@ -9,10 +9,10 @@ extension ZetaCardTheme on ZetaColorScheme {
   ///
   /// Returns:
   ///   A CardTheme with the applied properties.
-  CardTheme cardTheme() {
+  CardThemeData cardTheme() {
     /// Returns CardTheme after customizing properties like color,
     /// elevation, margin, shadowColor and shape.
-    return CardTheme(
+    return CardThemeData(
       /// Assigning color to surface
       color: surface,
 

@@ -39,7 +39,7 @@ class ZdsSpeedSlider extends StatefulWidget {
   final ScrollController? controller;
 
   /// The default items for the slider.
-  static const defaultItems = _defaultAlphabet;
+  static const List<String> defaultItems = _defaultAlphabet;
 
   @override
   State<ZdsSpeedSlider> createState() => ZdsSpeedSliderState();
@@ -59,7 +59,7 @@ class ZdsSpeedSlider extends StatefulWidget {
 /// The state of the [ZdsSpeedSlider]
 class ZdsSpeedSliderState extends State<ZdsSpeedSlider> with FrameCallbackMixin {
   late final ScrollController _scrollController;
-  final _scrollableKey = GlobalKey();
+  final GlobalKey<ScrollableState> _scrollableKey = GlobalKey<ScrollableState>();
   late List<GlobalKey> _itemKeys;
 
   int _selectedIndex = 0;

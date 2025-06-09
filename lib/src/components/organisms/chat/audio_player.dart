@@ -239,7 +239,7 @@ class ZdsAudioPlayerState extends State<ZdsAudioPlayer> {
     final backgroundColor = widget.decoration.resolveBackgroundColor(context);
     final thumbColor = widget.decoration.resolveThumbColor(context);
     final waveColor = widget.decoration.resolveWaveColor(context);
-    final inactiveTrackColor = backgroundColor.withOpacity(0.5);
+    final inactiveTrackColor = backgroundColor.withValues(alpha: 0.5);
 
     return Material(
       color: backgroundColor,
@@ -253,7 +253,7 @@ class ZdsAudioPlayerState extends State<ZdsAudioPlayer> {
               IconButton(
                 icon: Icon(
                   playing ? Icons.pause_circle_outline : Icons.play_circle_outline,
-                  color: !_disabled ? foregroundColor : foregroundColor.withOpacity(0.5),
+                  color: !_disabled ? foregroundColor : foregroundColor.withValues(alpha: 0.5),
                 ),
                 onPressed: !_disabled
                     ? playing
@@ -353,14 +353,14 @@ class _PlaybackProgress extends StatelessWidget {
               child: SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   activeTrackColor: Colors.transparent,
-                  inactiveTrackColor: backgroundColor.withOpacity(0.4),
+                  inactiveTrackColor: backgroundColor.withValues(alpha: 0.4),
                   trackShape: const RectangularSliderTrackShape(),
                   thumbShape: enabled ? const RoundSliderThumbShape() : SliderComponentShape.noThumb,
                   trackHeight: box.maxHeight,
                   thumbColor: thumbColor,
                   disabledThumbColor: thumbColor,
                   disabledActiveTrackColor: Colors.transparent,
-                  disabledInactiveTrackColor: backgroundColor.withOpacity(0.4),
+                  disabledInactiveTrackColor: backgroundColor.withValues(alpha: 0.4),
                 ),
                 child: Slider(
                   value: min(value, maxValue),
